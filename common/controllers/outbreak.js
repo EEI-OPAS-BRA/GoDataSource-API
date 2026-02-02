@@ -4526,20 +4526,13 @@ module.exports = function (Outbreak) {
   Outbreak.prototype.deleteContactFollowUp = function (personId, followUpId, options, callback) {
     const outbreakId = this.id;
 
-    // make sure person is either a contact or was a contact
+    // delete cases as well as contacts
     app.models.person
       .findOne({
         where: {
           id: personId,
           outbreakId: outbreakId,
-          or: [
-            {
-              type: 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT'
-            },
-            {
-              wasContact: true
-            }
-          ]
+          type: { neq: 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_EVENT' }
         }
       })
       .then((contact) => {

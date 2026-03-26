@@ -1,0 +1,11 @@
+{
+  "id": "russian",
+  "tokens": {
+    "LNG_LAYOUT_MENU_ITEM_FOLLOW_UPS_LABEL": {
+      "translation": "мониторинг"
+    },
+    "LNG_PAGE_LIST_FOLLOW_UPS_TITLE": {
+      "translation": "мониторинг"
+    }
+  }
+}

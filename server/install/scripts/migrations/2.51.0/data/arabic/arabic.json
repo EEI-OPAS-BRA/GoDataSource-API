@@ -1,0 +1,11 @@
+{
+  "id": "arabic",
+  "tokens": {
+    "LNG_LAYOUT_MENU_ITEM_FOLLOW_UPS_LABEL": {
+      "translation": "المتابعة"
+    },
+    "LNG_PAGE_LIST_FOLLOW_UPS_TITLE": {
+      "translation": "المتابعة"
+    }
+  }
+}

@@ -470,8 +470,7 @@ const migrationVersions = [{
       buildNo: 1
     }]
   }]
-},
-{
+}, {
   version: '2.50.2',
   scripts: [{
     fileName: 'template.js',
@@ -486,7 +485,31 @@ const migrationVersions = [{
       buildNo: 9
     }]
   }]
-},];
+}, {
+  version: '2.51.0',
+  scripts: [{
+    fileName: 'languageToken.js',
+    actions: [ {
+      name: 'createUpdateLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdateArabicLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdateFrenchLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdateRussianLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdateSpanishLanguageTokens',
+      buildNo: 1
+    }]
+  }]
+}];
 
 /**
  * Walk through the migrationVersions and get actions that need to be executed based on the last execution map

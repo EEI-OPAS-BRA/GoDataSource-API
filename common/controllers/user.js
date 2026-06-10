@@ -613,9 +613,38 @@ module.exports = function (User) {
         }
       }
 
-      return next();
+      return preventRolePrivilegeEscalation(context, reqBody.roleIds, next);
     });
   });
+
+  /**
+   * Verify the caller is not assigning roles that contain permissions they don't have.
+   * @param {object} context - remoting context
+   * @param {string[]} roleIds - role IDs being assigned
+   * @param {function} next
+   */
+  const preventRolePrivilegeEscalation = (context, roleIds, next) => {
+    if (!Array.isArray(roleIds) || roleIds.length === 0) {
+      return next();
+    }
+    const callerUser = _.get(context, 'req.authData.user');
+    if (!callerUser || !Array.isArray(callerUser.permissionsList)) {
+      return next();
+    }
+    const callerPermissions = new Set(callerUser.permissionsList);
+    app.models.role
+      .find({ where: { id: { inq: roleIds } } })
+      .then((roles) => {
+        const violatingIds = roles
+          .filter((role) => Array.isArray(role.permissionIds) && role.permissionIds.some((p) => !callerPermissions.has(p)))
+          .map((role) => role.id);
+        if (violatingIds.length) {
+          return next(app.utils.apiError.getError('ROLE_PRIVILEGE_ESCALATION', { roleIds: violatingIds.join(', ') }, 403));
+        }
+        return next();
+      })
+      .catch(next);
+  };
 
   /**
    * Validate user password
@@ -657,7 +686,7 @@ module.exports = function (User) {
         }
       }
 
-      return next();
+      return preventRolePrivilegeEscalation(context, reqBody.roleIds, next);
     });
   });
 

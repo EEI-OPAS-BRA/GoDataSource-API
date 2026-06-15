@@ -1,0 +1,11 @@
+{
+  "id": "portuguese_pt",
+  "tokens": {
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CROSS_LOCATION_CREATION": {
+      "translation": "Permitir criação em outras localidades"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CROSS_LOCATION_CREATION_DESCRIPTION": {
+      "translation": "Permite criar casos e contatos em outras localidades além da que é permitido ao usuário que pertence a uma Equipe"
+    }
+  }
+}

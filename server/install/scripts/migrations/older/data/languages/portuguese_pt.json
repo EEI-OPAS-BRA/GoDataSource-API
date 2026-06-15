@@ -5590,6 +5590,12 @@
       "LNG_OUTBREAK_FIELD_LABEL_APPLY_GEOGRAPHIC_RESTRICTIONS_DESCRIPTION": {
         "translation": ""
       },
+      "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CROSS_LOCATION_CREATION": {
+        "translation": "Permitir criação em outras localidades"
+      },
+      "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CROSS_LOCATION_CREATION_DESCRIPTION": {
+        "translation": "Permite criar casos e contatos em localidades fora da área de responsabilidade da equipe do usuário"
+      },
       "LNG_OUTBREAK_FIELD_LABEL_IS_CONTACT_OF_CONTACT_ACTIVE": {
         "translation": "Allow registration of contacts of contacts?"
       },
@@ -11454,6 +11460,12 @@
       },
       "LNG_USER_FIELD_LABEL_DONT_CACHE_FILTERS_DESCRIPTION": {
         "translation": "When true, the system won't cache filter. So every time you come to a list page it will display the list without the previous filters that were applied last time when you accessed the page"
+      },
+      "LNG_USER_FIELD_LABEL_VIEW_MULTIPLE_LOCATIONS": {
+        "translation": "Visualiza múltiplas localidades"
+      },
+      "LNG_USER_FIELD_LABEL_VIEW_MULTIPLE_LOCATIONS_DESCRIPTION": {
+        "translation": "Permite ao utilizador visualizar múltiplas localidades simultaneamente"
       }
     },
     "uiListUsersPage": {

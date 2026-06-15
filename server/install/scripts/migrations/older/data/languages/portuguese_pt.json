@@ -2892,6 +2892,12 @@
       "LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_DESCRIPTION": {
         "translation": "Especifique a natureza deste endereço, local de residência, local de trabalho etc."
       },
+      "LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_NOTIFICATION": {
+        "translation": "Notificação",
+        "modules": [
+          "referenceData"
+        ]
+      },
       "LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_OTHER": {
         "translation": "Outros",
         "modules": [

@@ -835,7 +835,7 @@ module.exports = function (Contact) {
       'contact';
 
     // check for geographical restriction
-    return Contact.addGeographicalRestrictions(options.remotingContext)
+    return Contact.addGeographicalRestrictions(options.remotingContext, undefined, Contact.modelName)
       .then(geographicalRestrictionQuery => {
         if (groupBy === 'case') {
           let contactQuery = {
@@ -1059,7 +1059,7 @@ module.exports = function (Contact) {
     let contactQuery = _.get(filter, 'where', {});
 
     // start with the geographical restrictions promise (so we can link others)
-    let buildQuery = Contact.addGeographicalRestrictions(options.remotingContext, contactQuery)
+    let buildQuery = Contact.addGeographicalRestrictions(options.remotingContext, contactQuery, Contact.modelName)
       .then(updatedFilter => {
         // update contactQuery if needed
         updatedFilter && (contactQuery = updatedFilter);

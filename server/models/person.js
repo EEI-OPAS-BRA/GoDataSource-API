@@ -1671,6 +1671,94 @@ module.exports = function (Person) {
   };
 
   /**
+   * Resolve the contact IDs that become visible to a user via the Notification-location feature.
+   * A contact is included if it is a DIRECT contact of a "privileged case" (a case whose residence
+   * or notification location is among the user's locations) AND the contact's usual place of
+   * residence is within that case's locations (residence + notification).
+   * @param {string} outbreakId
+   * @param {string[]} userAllowedLocationsIds
+   * @returns {Promise<string[]>} contact IDs
+   */
+  Person.getNotificationVisibleContactIds = (outbreakId, userAllowedLocationsIds) => {
+    // 1. privileged cases + their locations (residence + notification)
+    return app.models.case
+      .rawFind({
+        outbreakId: outbreakId,
+        or: [
+          {usualPlaceOfResidenceLocationId: {inq: userAllowedLocationsIds}},
+          {notificationLocationId: {inq: userAllowedLocationsIds}}
+        ]
+      }, {
+        projection: {
+          _id: 1,
+          usualPlaceOfResidenceLocationId: 1,
+          notificationLocationId: 1
+        }
+      })
+      .then(cases => {
+        if (!cases.length) {
+          return [];
+        }
+
+        // caseId -> list of case locations (non-null residence + notification)
+        const caseLocationsMap = {};
+        const caseIds = [];
+        cases.forEach(caseRecord => {
+          caseLocationsMap[caseRecord.id] = [
+            caseRecord.usualPlaceOfResidenceLocationId,
+            caseRecord.notificationLocationId
+          ].filter(locationId => !!locationId);
+          caseIds.push(caseRecord.id);
+        });
+
+        // 2. relationships case<->contact for these cases
+        return app.models.relationship
+          .rawFind({
+            outbreakId: outbreakId,
+            'persons.id': {inq: caseIds}
+          }, {
+            projection: {_id: 1, persons: 1}
+          })
+          .then(relationships => {
+            // contactId -> list of case locations from the linked privileged case(s)
+            const contactAllowedLocations = {};
+            relationships.forEach(relationship => {
+              const casePerson = relationship.persons.find(
+                person => person.type === 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE' && caseLocationsMap[person.id]
+              );
+              const contactPerson = relationship.persons.find(
+                person => person.type === 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT'
+              );
+              if (!casePerson || !contactPerson) {
+                return;
+              }
+              if (!contactAllowedLocations[contactPerson.id]) {
+                contactAllowedLocations[contactPerson.id] = [];
+              }
+              contactAllowedLocations[contactPerson.id].push(...caseLocationsMap[casePerson.id]);
+            });
+
+            const candidateContactIds = Object.keys(contactAllowedLocations);
+            if (!candidateContactIds.length) {
+              return [];
+            }
+
+            // 3. keep only contacts whose residence is within the linked case's locations
+            return app.models.contact
+              .rawFind({
+                _id: {inq: candidateContactIds}
+              }, {
+                projection: {_id: 1, usualPlaceOfResidenceLocationId: 1}
+              })
+              .then(contacts => contacts
+                .filter(contact => contactAllowedLocations[contact.id].indexOf(contact.usualPlaceOfResidenceLocationId) !== -1)
+                .map(contact => contact.id)
+              );
+          });
+      });
+  };
+
+  /**
    * Get bar transmission chains data
    * @param outbreakId
    * @param filter

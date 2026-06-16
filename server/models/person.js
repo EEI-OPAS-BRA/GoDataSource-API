@@ -194,6 +194,8 @@ module.exports = function (Person) {
       const currentAddresses = [];
       // keep a list of previous (previous usual place of residence) addresses
       const previousAddressesWithoutDate = [];
+      // keep a list of notification addresses
+      const notificationAddresses = [];
       // go through the addresses
       personInstance.addresses.forEach(function (address) {
         // store usual place of residence
@@ -202,6 +204,9 @@ module.exports = function (Person) {
           // store previous addresses without dates
         } else if (address.typeId === 'LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_PREVIOUS_USUAL_PLACE_OF_RESIDENCE' && !address.date) {
           previousAddressesWithoutDate.push(address);
+          // store notification addresses
+        } else if (address.typeId === 'LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_NOTIFICATION') {
+          notificationAddresses.push(address);
         }
       });
       // check if there is a current address set
@@ -220,6 +225,12 @@ module.exports = function (Person) {
         error = app.utils.apiError.getError('ADDRESS_PREVIOUS_PLACE_OF_RESIDENCE_MUST_HAVE_DATE', {
           addresses: personInstance.addresses,
           previousUsualPlaceOfResidence: previousAddressesWithoutDate
+        });
+        // check if there are multiple notification addresses set
+      } else if (notificationAddresses.length > 1) {
+        error = app.utils.apiError.getError('ADDRESS_MULTIPLE_NOTIFICATION', {
+          addresses: personInstance.addresses,
+          notification: notificationAddresses
         });
       }
     }
@@ -294,6 +305,8 @@ module.exports = function (Person) {
 
       // set usualPlaceOfResidenceLocationId as null by default
       personInstance.usualPlaceOfResidenceLocationId = null;
+      // set notificationLocationId as null by default
+      personInstance.notificationLocationId = null;
     } else {
       // existing instance, we're interested only in what is modified
       personInstance = context.data;
@@ -320,12 +333,16 @@ module.exports = function (Person) {
       ) {
         // set usualPlaceOfResidenceLocationId
         personInstance.usualPlaceOfResidenceLocationId = null;
+        // events do not use the Notification address type; keep notificationLocationId consistent
+        personInstance.notificationLocationId = null;
         return;
       }
       // address was updated, is usual place of residence and locationId was set
       else {
         // set usualPlaceOfResidenceLocationId
         personInstance.usualPlaceOfResidenceLocationId = personInstance.address.locationId;
+        // events do not use the Notification address type; keep notificationLocationId consistent
+        personInstance.notificationLocationId = null;
         return;
       }
     }
@@ -335,6 +352,8 @@ module.exports = function (Person) {
       // addresses were removed
       // set usualPlaceOfResidenceLocationId
       personInstance.usualPlaceOfResidenceLocationId = null;
+      // set notificationLocationId
+      personInstance.notificationLocationId = null;
       return;
     }
 
@@ -345,6 +364,15 @@ module.exports = function (Person) {
     // get locationId from usual place of residence address and set usualPlaceOfResidenceLocationId
     personInstance.usualPlaceOfResidenceLocationId = usualPlaceOfResidenceAddress && usualPlaceOfResidenceAddress.locationId ?
       usualPlaceOfResidenceAddress.locationId :
+      null;
+
+    // loop through addresses and get notificationLocationId
+    // get notification address
+    let notificationAddress = personInstance.addresses.find(address => address.typeId === addressConstants.notificationType);
+
+    // get locationId from notification address and set notificationLocationId
+    personInstance.notificationLocationId = notificationAddress && notificationAddress.locationId ?
+      notificationAddress.locationId :
       null;
   }
 

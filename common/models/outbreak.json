@@ -212,6 +212,11 @@
       "type": "boolean",
       "default": false
     },
+    "allowNotificationLocationAccess": {
+      "description": "Flag specifying whether teams whose location matches a case's Notification address may view that case and its direct contacts located within the case's locations (residence + notification). Only effective when applyGeographicRestrictions is true. Default: false",
+      "type": "boolean",
+      "default": false
+    },
     "checkLastContactDateAgainstDateOnSet": {
       "description": "Flag specifying whether Date of Last Contact that is BEFORE the Date of Onset of source case. Default: false",
       "type": "boolean",

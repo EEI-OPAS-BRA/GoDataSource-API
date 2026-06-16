@@ -1578,9 +1578,10 @@ module.exports = function (Person) {
    * Note: The updated where filter is returned by the Promise; If there filter doesn't need to be updated nothing will be returned
    * @param context Remoting context from which to get logged in user and outbreak
    * @param where Where filter from which to start
+   * @param modelName Optional model name (e.g. Case/Contact); when set and the outbreak allows notification location access, the filter is widened accordingly. Omitting it preserves the original behavior.
    * @returns {Promise<unknown>|Promise<T>|Promise<void>}
    */
-  Person.addGeographicalRestrictions = (context, where) => {
+  Person.addGeographicalRestrictions = (context, where, modelName) => {
     // for sync, logged user model and outbreak model are added in custom properties
     let loggedInUser = context.req.authData.userModelInstance ?
       context.req.authData.userModelInstance :
@@ -1599,6 +1600,18 @@ module.exports = function (Person) {
       return Promise.resolve();
     }
 
+    // helper: merge the locations query with the incoming where
+    const finalize = (locationsQuery) => Promise.resolve(
+      where && Object.keys(where).length ?
+        {
+          and: [
+            locationsQuery,
+            where
+          ]
+        } :
+        locationsQuery
+    );
+
     // get user allowed locations
     return app.models.user.cache
       .getUserLocationsIds(loggedInUser.id)
@@ -1608,25 +1621,52 @@ module.exports = function (Person) {
           return Promise.resolve();
         }
 
-        // get query for allowed locations
-        const allowedLocationsQuery = {
-          // get models for the calculated locations and the ones that don't have a usual place of residence location set
+        // base restriction (current behavior)
+        // get models for the calculated locations and the ones that don't have a usual place of residence location set
+        const baseLocationsQuery = {
           usualPlaceOfResidenceLocationId: {
             inq: userAllowedLocationsIds.concat([null])
           }
         };
 
-        // update where to only query for allowed locations
-        return Promise.resolve(
-          where && Object.keys(where).length ?
-            {
-              and: [
-                allowedLocationsQuery,
-                where
-              ]
-            } :
-            allowedLocationsQuery
-        );
+        // is notification location access enabled for this outbreak ?
+        const notificationEnabled = outbreak && outbreak.allowNotificationLocationAccess === true;
+
+        // CASE: also allow cases whose Notification address location is in the user's locations
+        if (notificationEnabled && modelName === app.models.case.modelName) {
+          return finalize({
+            or: [
+              baseLocationsQuery,
+              {
+                notificationLocationId: {
+                  inq: userAllowedLocationsIds
+                }
+              }
+            ]
+          });
+        }
+
+        // CONTACT: also allow direct contacts of privileged cases, restricted to caseLocations
+        if (notificationEnabled && modelName === app.models.contact.modelName) {
+          return Person.getNotificationVisibleContactIds(outbreak.id, userAllowedLocationsIds)
+            .then(contactIds => finalize(
+              contactIds.length ?
+                {
+                  or: [
+                    baseLocationsQuery,
+                    {
+                      id: {
+                        inq: contactIds
+                      }
+                    }
+                  ]
+                } :
+                baseLocationsQuery
+            ));
+        }
+
+        // default: unchanged behavior
+        return finalize(baseLocationsQuery);
       });
   };
 

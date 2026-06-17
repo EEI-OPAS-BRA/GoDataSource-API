@@ -521,6 +521,30 @@ const migrationVersions = [{
       buildNo: 1
     }]
   }]
+}, {
+  version: '2.53.0',
+  scripts: [{
+    fileName: 'referenceData.js',
+    actions: [{
+      name: 'createUpdateDefaultReferenceData',
+      buildNo: 1
+    }]
+  }, {
+    fileName: 'languageToken.js',
+    actions: [{
+      name: 'createUpdateLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 1
+    }]
+  }, {
+    fileName: 'person.js',
+    actions: [{
+      name: 'setNotificationLocationIdOnPerson',
+      buildNo: 1
+    }]
+  }]
 }];
 
 /**

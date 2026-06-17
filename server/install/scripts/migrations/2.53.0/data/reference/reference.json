@@ -1,0 +1,17 @@
+{
+  "translations": {
+    "LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_NOTIFICATION": {
+      "translation": "Notification",
+      "modules": [
+        "referenceData"
+      ]
+    }
+  },
+  "referenceData": [
+    {
+      "id": "LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_NOTIFICATION",
+      "categoryId": "LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE",
+      "value": "LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_NOTIFICATION"
+    }
+  ]
+}

@@ -539,6 +539,12 @@ const migrationVersions = [{
       buildNo: 1
     }]
   }, {
+    fileName: 'consolidateNotificationAddressType.js',
+    actions: [{
+      name: 'consolidateLegacyNotificationAddressType',
+      buildNo: 1
+    }]
+  }, {
     fileName: 'person.js',
     actions: [{
       name: 'setNotificationLocationIdOnPerson',

@@ -11395,6 +11395,12 @@
       "LNG_USER_FIELD_LABEL_AVAILABLE_OUTBREAKS": {
         "translation": "Surtos disponíveis "
       },
+      "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM_TITLE": {
+        "translation": "Remover acesso ao surto"
+      },
+      "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM": {
+        "translation": "Você está prestes a remover o acesso a um ou mais surtos. Esta ação revogará a permissão do utilizador para os surtos desmarcados. Tem a certeza de que deseja continuar?"
+      },
       "LNG_USER_FIELD_LABEL_AVAILABLE_OUTBREAKS_DESCRIPTION": {
         "translation": ""
       },

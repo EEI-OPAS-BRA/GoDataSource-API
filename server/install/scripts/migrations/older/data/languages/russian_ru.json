@@ -11395,6 +11395,12 @@
       "LNG_USER_FIELD_LABEL_AVAILABLE_OUTBREAKS": {
         "translation": "Имеющиеся вспышки"
       },
+      "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM_TITLE": {
+        "translation": "Удалить доступ к вспышке"
+      },
+      "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM": {
+        "translation": "Вы собираетесь удалить доступ к одной или нескольким вспышкам. Это действие отзовёт разрешение пользователя для отменённых вспышек. Вы уверены, что хотите продолжить?"
+      },
       "LNG_USER_FIELD_LABEL_AVAILABLE_OUTBREAKS_DESCRIPTION": {
         "translation": ""
       },

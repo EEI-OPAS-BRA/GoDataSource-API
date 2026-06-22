@@ -5597,10 +5597,16 @@
         "translation": ""
       },
       "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CROSS_LOCATION_CREATION": {
-        "translation": "Permitir criação em outras localidades"
+        "translation": "Permitir criação de contatos em outras localidades"
       },
       "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CROSS_LOCATION_CREATION_DESCRIPTION": {
-        "translation": "Permite criar casos e contatos em localidades fora da área de responsabilidade da equipe do usuário"
+        "translation": "Permite criar contatos (criação de contatos em massa) em localidades fora da área de responsabilidade da equipe do usuário"
+      },
+      "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_CROSS_LOCATION_CREATION": {
+        "translation": "Permitir criação de casos em outras localidades"
+      },
+      "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_CROSS_LOCATION_CREATION_DESCRIPTION": {
+        "translation": "Permite criar casos em localidades fora da área de responsabilidade da equipe do usuário; o campo Localização do endereço do caso passa a listar todas as localidades"
       },
       "LNG_OUTBREAK_FIELD_LABEL_IS_CONTACT_OF_CONTACT_ACTIVE": {
         "translation": "Allow registration of contacts of contacts?"

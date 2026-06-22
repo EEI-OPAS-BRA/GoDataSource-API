@@ -542,12 +542,24 @@ const migrationVersions = [{
     fileName: 'consolidateNotificationAddressType.js',
     actions: [{
       name: 'consolidateLegacyNotificationAddressType',
-      buildNo: 1
+      buildNo: 2
     }]
   }, {
     fileName: 'person.js',
     actions: [{
       name: 'setNotificationLocationIdOnPerson',
+      buildNo: 1
+    }]
+  }]
+}, {
+  version: '2.54.0',
+  scripts: [{
+    fileName: 'languageToken.js',
+    actions: [{
+      name: 'createUpdateLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
       buildNo: 1
     }]
   }]

@@ -208,7 +208,12 @@
       "default": false
     },
     "allowCrossLocationCreation": {
-      "description": "Flag specifying whether users may create cases/contacts in locations outside their team's geographic responsibility area. Only effective when applyGeographicRestrictions is true. Default: false",
+      "description": "Flag specifying whether users may create contacts (bulk contact creation) in locations outside their team's geographic responsibility area. Only effective when applyGeographicRestrictions is true. Default: false",
+      "type": "boolean",
+      "default": false
+    },
+    "allowCaseCrossLocationCreation": {
+      "description": "Flag specifying whether users may create cases in locations outside their team's geographic responsibility area. When effective, the case address Location field lists all locations. Only effective when applyGeographicRestrictions is true. Default: false",
       "type": "boolean",
       "default": false
     },

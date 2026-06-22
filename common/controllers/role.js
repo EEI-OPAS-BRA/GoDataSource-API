@@ -77,10 +77,26 @@ module.exports = function (Role) {
    * @param where
    * @param callback
    */
-  Role.countRoles = (where, callback) => {
+  Role.countRoles = (where, options, callback) => {
+    const callerUser = app.utils.remote.getUserFromOptions(options);
+
+    if (!callerUser || !Array.isArray(callerUser.permissionsList)) {
+      return app.models.role
+        .findAggregate({ where }, true)
+        .then((data) => callback(null, data))
+        .catch(callback);
+    }
+
+    const callerPermissions = new Set(callerUser.permissionsList);
     app.models.role
-      .findAggregate({ where }, true)
-      .then((data) => callback(null, data))
+      .findAggregate({ where })
+      .then((roles) => {
+        const count = roles.filter((role) =>
+          !Array.isArray(role.permissionIds) ||
+          role.permissionIds.every((p) => callerPermissions.has(p))
+        ).length;
+        return callback(null, { count, hasMore: false });
+      })
       .catch(callback);
   };
 

@@ -124,7 +124,7 @@ module.exports = function (Role) {
           !Array.isArray(role.permissionIds) ||
           role.permissionIds.every((p) => callerPermissions.has(p))
         ).length;
-        return callback(null, count);
+        return callback(null, { count, hasMore: false });
       })
       .catch(callback);
   };

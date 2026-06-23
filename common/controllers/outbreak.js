@@ -215,6 +215,38 @@ module.exports = function (Outbreak) {
   });
 
   /**
+   * Find outbreaks (minimal, non-sensitive fields) for user management screens.
+   * Unlike the regular 'find', this bypasses the per-user outbreak access
+   * restriction so that user managers can resolve the names of outbreaks assigned
+   * to other users even when those outbreaks are outside their own access scope.
+   * Gated by the 'user_list' permission (see outbreak.json ACL).
+   */
+  Outbreak.findForUserManagement = function (filter, callback) {
+    filter = filter || {};
+
+    // only expose minimal, non-sensitive fields
+    const find = {
+      fields: {
+        id: true,
+        name: true,
+        deleted: true
+      },
+      order: ['name ASC']
+    };
+
+    // allow caller to request deleted outbreaks (used by the users list)
+    if (_.get(filter, 'where.includeDeletedRecords')) {
+      find.deleted = true;
+    }
+
+    // direct model call -> does not trigger the 'find' remote hook restriction
+    app.models.outbreak
+      .find(find)
+      .then((outbreaks) => callback(null, outbreaks))
+      .catch(callback);
+  };
+
+  /**
    * Find relations for a case
    * @param caseId
    * @param filter

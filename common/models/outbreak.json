@@ -1492,6 +1492,12 @@
     },
     {
       "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "findForUserManagement"
+    },
+    {
+      "principalType": "ROLE",
       "principalId": "case_convert_to_contact",
       "permission": "ALLOW",
       "property": "convertCaseToContact"
@@ -2267,6 +2273,32 @@
         {
           "verb": "post",
           "path": "/count"
+        }
+      ]
+    },
+    "findForUserManagement": {
+      "accepts": [
+        {
+          "arg": "filter",
+          "type": "object",
+          "description": "Filter defining fields, where, include, order, offset, and limit - must be a JSON-encoded string ({\"something\":\"value\"})"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "outbreaks",
+          "type": [
+            "outbreak"
+          ],
+          "root": true,
+          "required": true
+        }
+      ],
+      "description": "Get outbreaks (minimal fields) for user management screens, regardless of the current user's outbreak access restrictions.",
+      "http": [
+        {
+          "verb": "get",
+          "path": "/for-user-management"
         }
       ]
     },

@@ -596,6 +596,17 @@ module.exports = function (User) {
         reqBody.securityQuestions = helpers.encryptSecurityQuestions(reqBody.securityQuestions);
       }
 
+      // Preserve outbreaks the caller cannot manage (not in their outbreakIds list).
+      // For outbreaks the caller can manage, honour exactly what was sent (add or remove).
+      if (Array.isArray(reqBody.outbreakIds)) {
+        const callerOutbreaks = _.get(context, 'req.authData.user.outbreakIds');
+        if (Array.isArray(callerOutbreaks) && callerOutbreaks.length && Array.isArray(context.instance.outbreakIds)) {
+          const callerOutbreakSet = new Set(callerOutbreaks);
+          const hidden = context.instance.outbreakIds.filter((id) => !callerOutbreakSet.has(id));
+          reqBody.outbreakIds = [...new Set([...hidden, ...reqBody.outbreakIds])];
+        }
+      }
+
       // If the activeOutbreakId is not part of the available outbreakIds, add it to the array (only if the array is not empty)
       if (reqBody.activeOutbreakId) {
         // If the new outbreakIds don't contain the activeOutbreakId

@@ -6,6 +6,12 @@
     },
     "LNG_PAGE_LIST_FOLLOW_UPS_TITLE": {
       "translation": "Seguimientos"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY": {
+      "translation": "Permitir editar respuestas del cuestionario en la edición masiva"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY_DESCRIPTION": {
+      "translation": "Cuando está activado, las respuestas del cuestionario de contacto se pueden editar como columnas en la página de edición masiva de contactos"
     }
   }
 }

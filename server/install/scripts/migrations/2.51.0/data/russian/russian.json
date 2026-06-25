@@ -6,6 +6,12 @@
     },
     "LNG_PAGE_LIST_FOLLOW_UPS_TITLE": {
       "translation": "мониторинг"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY": {
+      "translation": "Разрешить редактирование ответов анкеты при массовом изменении"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY_DESCRIPTION": {
+      "translation": "Если включено, ответы анкеты контакта можно редактировать в виде столбцов на странице массового изменения контактов"
     }
   }
 }

@@ -6,6 +6,12 @@
     },
     "LNG_PAGE_LIST_FOLLOW_UPS_TITLE": {
       "translation": "المتابعة"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY": {
+      "translation": "السماح بتعديل إجابات الاستبيان في التعديل الجماعي"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY_DESCRIPTION": {
+      "translation": "عند التفعيل، يمكن تعديل إجابات استبيان جهة الاتصال كأعمدة في صفحة التعديل الجماعي لجهات الاتصال"
     }
   }
 }

@@ -6,6 +6,12 @@
     },
     "LNG_PAGE_LIST_FOLLOW_UPS_TITLE": {
       "translation": "Suivis"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY": {
+      "translation": "Autoriser la modification des réponses du questionnaire dans la modification groupée"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY_DESCRIPTION": {
+      "translation": "Lorsque cette option est activée, les réponses du questionnaire de contact peuvent être modifiées sous forme de colonnes sur la page de modification groupée des contacts"
     }
   }
 }

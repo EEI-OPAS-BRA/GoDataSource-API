@@ -62,31 +62,60 @@ module.exports = function (Role) {
 
   /**
    * Retrieve roles
+   * Roles are filtered to only those whose permissions are a subset of the caller's permissions,
+   * preventing privilege escalation when assigning roles during user creation/modification.
    * @param filter
+   * @param options
    * @param callback
    */
-  Role.getRoles = (filter, callback) => {
+  Role.getRoles = (filter, options, callback) => {
+    const callerUser = app.utils.remote.getUserFromOptions(options);
+
+    // build a modified filter that always includes permissionIds so we can filter by it
+    let filterWithPermissions = filter;
+    let removePermissionIds = false;
+    if (callerUser && Array.isArray(callerUser.permissionsList)) {
+      const fields = filter && filter.fields;
+      if (Array.isArray(fields) && !fields.includes('permissionIds')) {
+        filterWithPermissions = Object.assign({}, filter, { fields: fields.concat('permissionIds') });
+        removePermissionIds = true;
+      }
+    }
+
     app.models.role
-      .findAggregate(filter)
-      .then((data) => callback(null, data))
+      .findAggregate(filterWithPermissions)
+      .then((data) => {
+        if (!callerUser || !Array.isArray(callerUser.permissionsList)) {
+          return callback(null, data);
+        }
+        const callerPermissions = new Set(callerUser.permissionsList);
+        const filtered = data.filter((role) =>
+          !Array.isArray(role.permissionIds) ||
+          role.permissionIds.every((permId) => callerPermissions.has(permId))
+        );
+        if (removePermissionIds) {
+          filtered.forEach((role) => delete role.permissionIds);
+        }
+        return callback(null, filtered);
+      })
       .catch(callback);
   };
 
   /**
    * Count roles
+   * Respects the same permission filter as getRoles so the count matches the visible list.
    * @param where
+   * @param options
    * @param callback
    */
   Role.countRoles = (where, options, callback) => {
     const callerUser = app.utils.remote.getUserFromOptions(options);
-
     if (!callerUser || !Array.isArray(callerUser.permissionsList)) {
       return app.models.role
         .findAggregate({ where }, true)
         .then((data) => callback(null, data))
         .catch(callback);
     }
-
     const callerPermissions = new Set(callerUser.permissionsList);
     app.models.role
       .findAggregate({ where })

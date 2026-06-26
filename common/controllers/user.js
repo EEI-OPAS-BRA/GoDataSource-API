@@ -596,6 +596,18 @@ module.exports = function (User) {
         reqBody.securityQuestions = helpers.encryptSecurityQuestions(reqBody.securityQuestions);
       }
 
+      // Preserve outbreaks the caller cannot manage (not in their outbreakIds list).
+      // For outbreaks the caller can manage, honour exactly what was sent (add or remove).
+      if (Array.isArray(reqBody.outbreakIds)) {
+        const callerOutbreaks = _.get(context, 'req.authData.user.outbreakIds');
+        if (Array.isArray(callerOutbreaks) && callerOutbreaks.length && Array.isArray(context.instance.outbreakIds)) {
+          const callerOutbreakSet = new Set(callerOutbreaks);
+          const hidden = context.instance.outbreakIds.filter((id) => !callerOutbreakSet.has(id));
+          reqBody.outbreakIds = [...new Set([...hidden, ...reqBody.outbreakIds])];
+        }
+      }
+
+      // If the activeOutbreakId is not part of the available outbreakIds, add it to the array (only if the array is not empty)    
       // if the activeOutbreakId is not part of the available outbreakIds stop with error
       if (reqBody.activeOutbreakId) {
         if (Array.isArray(reqBody.outbreakIds) &&
@@ -606,9 +618,38 @@ module.exports = function (User) {
         }
       }
 
-      return next();
+      return preventRolePrivilegeEscalation(context, reqBody.roleIds, next);
     });
   });
+
+  /**
+   * Verify the caller is not assigning roles that contain permissions they don't have.
+   * @param {object} context - remoting context
+   * @param {string[]} roleIds - role IDs being assigned
+   * @param {function} next
+   */
+  const preventRolePrivilegeEscalation = (context, roleIds, next) => {
+    if (!Array.isArray(roleIds) || roleIds.length === 0) {
+      return next();
+    }
+    const callerUser = _.get(context, 'req.authData.user');
+    if (!callerUser || !Array.isArray(callerUser.permissionsList)) {
+      return next();
+    }
+    const callerPermissions = new Set(callerUser.permissionsList);
+    app.models.role
+      .find({ where: { id: { inq: roleIds } } })
+      .then((roles) => {
+        const violatingIds = roles
+          .filter((role) => Array.isArray(role.permissionIds) && role.permissionIds.some((p) => !callerPermissions.has(p)))
+          .map((role) => role.id);
+        if (violatingIds.length) {
+          return next(app.utils.apiError.getError('ROLE_PRIVILEGE_ESCALATION', { roleIds: violatingIds.join(', ') }, 403));
+        }
+        return next();
+      })
+      .catch(next);
+  };
 
   /**
    * Validate user password
@@ -650,7 +691,7 @@ module.exports = function (User) {
         }
       }
 
-      return next();
+      return preventRolePrivilegeEscalation(context, reqBody.roleIds, next);
     });
   });
 

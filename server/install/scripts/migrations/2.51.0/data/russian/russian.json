@@ -18,6 +18,12 @@
     },
     "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY_DESCRIPTION": {
       "translation": "Если включено, ответы анкеты контакта можно редактировать в виде столбцов на странице массового изменения контактов"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS": {
+      "translation": "Тип и местоположение адреса необязательны для случаев и контактов"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS_DESCRIPTION": {
+      "translation": "Если включено, поля типа и местоположения адреса не обязательны при создании или изменении случаев и контактов"
     }
   }
 }

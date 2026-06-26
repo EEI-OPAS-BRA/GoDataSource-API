@@ -237,6 +237,11 @@
       "type": "boolean",
       "default": false
     },
+    "optionalCaseContactAddressFields": {
+      "description": "Flag specifying if the address type and location are optional when creating/modifying cases and contacts. Default: false",
+      "type": "boolean",
+      "default": false
+    },
     "allowedRefDataItems": {
       "type": "allowedRefData"
     },

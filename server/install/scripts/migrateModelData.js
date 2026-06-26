@@ -527,22 +527,22 @@ const migrationVersions = [{
       buildNo: 2
     }, {
       name: 'createUpdateLanguageTokens',
-      buildNo: 3
+      buildNo: 4
     }, {
       name: 'createUpdateArabicLanguageTokens',
-      buildNo: 3
+      buildNo: 4
     }, {
       name: 'createUpdateFrenchLanguageTokens',
-      buildNo: 3
+      buildNo: 4
     }, {
       name: 'createUpdatePortugueseLanguageTokens',
-      buildNo: 3
+      buildNo: 4
     }, {
       name: 'createUpdateRussianLanguageTokens',
-      buildNo: 3
+      buildNo: 4
     }, {
       name: 'createUpdateSpanishLanguageTokens',
-      buildNo: 3
+      buildNo: 4
     }]
   }]
 }, {

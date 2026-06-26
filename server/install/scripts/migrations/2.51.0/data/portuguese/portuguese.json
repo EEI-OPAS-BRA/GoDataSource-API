@@ -18,6 +18,12 @@
     },
     "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY_DESCRIPTION": {
       "translation": "Quando ativado, as respostas do questionário de contato podem ser editadas como colunas na página de edição em massa de contatos"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS": {
+      "translation": "Tipo e local do endereço são opcionais para casos e contatos"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS_DESCRIPTION": {
+      "translation": "Quando ativado, os campos tipo e local do endereço não são obrigatórios ao criar ou editar casos e contatos"
     }
   }
 }

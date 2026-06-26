@@ -18,6 +18,12 @@
     },
     "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY_DESCRIPTION": {
       "translation": "عند التفعيل، يمكن تعديل إجابات استبيان جهة الاتصال كأعمدة في صفحة التعديل الجماعي لجهات الاتصال"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS": {
+      "translation": "نوع العنوان والموقع اختياريان للحالات وجهات الاتصال"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS_DESCRIPTION": {
+      "translation": "عند التفعيل، لا يكون حقلا نوع العنوان والموقع مطلوبين عند إنشاء أو تعديل الحالات وجهات الاتصال"
     }
   }
 }

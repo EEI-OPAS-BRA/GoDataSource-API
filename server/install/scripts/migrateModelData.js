@@ -491,19 +491,19 @@ const migrationVersions = [{
     fileName: 'languageToken.js',
     actions: [ {
       name: 'createUpdateLanguageTokens',
-      buildNo: 1
+      buildNo: 2
     }, {
       name: 'createUpdateArabicLanguageTokens',
-      buildNo: 1
+      buildNo: 2
     }, {
       name: 'createUpdateFrenchLanguageTokens',
-      buildNo: 1
+      buildNo: 2
     }, {
       name: 'createUpdatePortugueseLanguageTokens',
-      buildNo: 1
+      buildNo: 2
     }, {
       name: 'createUpdateRussianLanguageTokens',
-      buildNo: 1
+      buildNo: 2
     }, {
       name: 'createUpdateSpanishLanguageTokens',
       buildNo: 1

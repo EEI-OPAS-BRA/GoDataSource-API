@@ -12,6 +12,12 @@
     },
     "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM": {
       "translation": "You are about to remove access to one or more outbreaks. This action will revoke the user's permission for the deselected outbreaks. Are you sure you want to continue?"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY": {
+      "translation": "Allow editing questionnaire answers in bulk modify"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY_DESCRIPTION": {
+      "translation": "When enabled, contact questionnaire answers can be edited as columns on the bulk modify contacts page"
     }
   }
 }

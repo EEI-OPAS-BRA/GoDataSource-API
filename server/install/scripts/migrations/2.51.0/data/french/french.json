@@ -12,6 +12,12 @@
     },
     "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM": {
       "translation": "Vous êtes sur le point de supprimer l'accès à une ou plusieurs épidémies. Cette action révoquera les permissions de l'utilisateur pour les épidémies désélectionnées. Êtes-vous sûr de vouloir continuer ?"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY": {
+      "translation": "Autoriser la modification des réponses du questionnaire dans la modification groupée"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY_DESCRIPTION": {
+      "translation": "Lorsque cette option est activée, les réponses du questionnaire de contact peuvent être modifiées sous forme de colonnes sur la page de modification groupée des contacts"
     }
   }
 }

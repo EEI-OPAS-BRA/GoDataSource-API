@@ -12,6 +12,12 @@
     },
     "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM": {
       "translation": "Вы собираетесь удалить доступ к одной или нескольким вспышкам. Это действие отзовёт разрешение пользователя для отменённых вспышек. Вы уверены, что хотите продолжить?"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY": {
+      "translation": "Разрешить редактирование ответов анкеты при массовом изменении"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY_DESCRIPTION": {
+      "translation": "Если включено, ответы анкеты контакта можно редактировать в виде столбцов на странице массового изменения контактов"
     }
   }
 }

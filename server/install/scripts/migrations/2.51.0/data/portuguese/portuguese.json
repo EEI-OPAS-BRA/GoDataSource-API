@@ -12,6 +12,12 @@
     },
     "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM": {
       "translation": "Você está prestes a remover o acesso a um ou mais surtos. Esta ação revogará a permissão do utilizador para os surtos desmarcados. Tem a certeza de que deseja continuar?"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY": {
+      "translation": "Permitir editar respostas do questionário na edição em massa"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY_DESCRIPTION": {
+      "translation": "Quando ativado, as respostas do questionário de contato podem ser editadas como colunas na página de edição em massa de contatos"
     }
   }
 }

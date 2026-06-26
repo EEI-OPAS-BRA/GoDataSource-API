@@ -232,6 +232,11 @@
       "type": "boolean",
       "default": false
     },
+    "allowQuestionnaireInBulkModify": {
+      "description": "Flag specifying if contact questionnaire answers can be edited as columns in the bulk modify contacts page. Default: false",
+      "type": "boolean",
+      "default": false
+    },
     "allowedRefDataItems": {
       "type": "allowedRefData"
     },

@@ -12,6 +12,12 @@
     },
     "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM": {
       "translation": "أنت على وشك إزالة الوصول إلى فاشية واحدة أو أكثر. ستُلغى صلاحية المستخدم للفاشيات التي تم إلغاء تحديدها. هل أنت متأكد أنك تريد المتابعة؟"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY": {
+      "translation": "السماح بتعديل إجابات الاستبيان في التعديل الجماعي"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY_DESCRIPTION": {
+      "translation": "عند التفعيل، يمكن تعديل إجابات استبيان جهة الاتصال كأعمدة في صفحة التعديل الجماعي لجهات الاتصال"
     }
   }
 }

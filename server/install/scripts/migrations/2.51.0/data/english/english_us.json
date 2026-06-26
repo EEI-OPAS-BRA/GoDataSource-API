@@ -6,6 +6,12 @@
     },
     "LNG_PAGE_LIST_FOLLOW_UPS_TITLE": {
       "translation": "Follow-ups"
+    },
+    "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM_TITLE": {
+      "translation": "Remove outbreak access"
+    },
+    "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM": {
+      "translation": "You are about to remove access to one or more outbreaks. This action will revoke the user's permission for the deselected outbreaks. Are you sure you want to continue?"
     }
   }
 }

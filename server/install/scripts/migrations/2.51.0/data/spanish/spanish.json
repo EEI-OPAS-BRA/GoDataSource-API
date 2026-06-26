@@ -6,6 +6,12 @@
     },
     "LNG_PAGE_LIST_FOLLOW_UPS_TITLE": {
       "translation": "Seguimientos"
+    },
+    "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM_TITLE": {
+      "translation": "Eliminar acceso al brote"
+    },
+    "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM": {
+      "translation": "Está a punto de eliminar el acceso a uno o más brotes. Esta acción revocará el permiso del usuario para los brotes desmarcados. ¿Está seguro de que desea continuar?"
     }
   }
 }

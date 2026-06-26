@@ -182,13 +182,18 @@
           "arg": "where",
           "type": "object",
           "description": "Criteria to match model instances"
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
         }
       ],
       "returns": [
         {
           "arg": "count",
-          "type": "number",
-          "description": "Number of lab results that pass the filter",
+          "type": "object",
+          "description": "Number of roles that pass the filter",
           "root": true,
           "required": true
         }

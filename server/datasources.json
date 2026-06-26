@@ -1,7 +1,7 @@
 {
   "mongoDb": {
     "host": "127.0.0.1",
-    "port": 27000,
+    "port": 27017,
     "url": "",
     "database": "go-data",
     "password": "",
@@ -15,7 +15,8 @@
     "lazyConnect": true,
     "authSource": "admin",
     "prohibitHiddenPropertiesInQuery": false,
-    "useNewUrlParser": false
+    "useNewUrlParser": false,
+    "maxDepthOfData": 64
   },
   "email": {
     "name": "email",

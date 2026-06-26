@@ -32,9 +32,9 @@
   },
   "apiKey": "your_api_key_here",
   "public": {
-    "host": "localhost",
+    "host": "172.29.128.1",
     "protocol": "http",
-    "port": 3000
+    "port": "3000"
   },
   "timezone": "UTC",
   "passwordReset": {
@@ -106,7 +106,14 @@
   "signoutUsersOnRestart": false,
   "cors": {
     "enabled": false,
-    "whitelist": []
+    "whitelist": [
+      "http://54.232.189.113:3000",
+      "https://54.232.189.113:3000",
+      "http://172.17.95.56:3000",
+      "https://172.17.95.56:3000",
+      "http://172.29.128.1:3000",
+      "https://172.29.128.1:3000"
+    ]
   },
   "enableConfigRewrite": true,
   "authToken": {

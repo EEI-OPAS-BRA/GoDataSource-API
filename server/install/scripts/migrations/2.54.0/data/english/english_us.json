@@ -1,0 +1,17 @@
+{
+  "id": "english_us",
+  "tokens": {
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CROSS_LOCATION_CREATION": {
+      "translation": "Allow creating contacts in other locations"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CROSS_LOCATION_CREATION_DESCRIPTION": {
+      "translation": "Allows creating contacts (bulk contact creation) in locations beyond the user's team responsibility area"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_CROSS_LOCATION_CREATION": {
+      "translation": "Allow creating cases in other locations"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_CROSS_LOCATION_CREATION_DESCRIPTION": {
+      "translation": "Allows creating cases in locations beyond the user's team responsibility area; the case address Location field lists all locations"
+    }
+  }
+}

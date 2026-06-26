@@ -761,7 +761,7 @@ module.exports = function (Case) {
     }
 
     // add geographical restrictions if needed
-    return Case.addGeographicalRestrictions(options.remotingContext, filter.where)
+    return Case.addGeographicalRestrictions(options.remotingContext, filter.where, Case.modelName)
       .then(updatedFilter => {
         // update filter.where if needed
         updatedFilter && (filter.where = updatedFilter);
@@ -963,7 +963,7 @@ module.exports = function (Case) {
 
     // add geographical restrictions if needed
     return Case
-      .addGeographicalRestrictions(options.remotingContext, filter.where)
+      .addGeographicalRestrictions(options.remotingContext, filter.where, Case.modelName)
       .then(updatedFilter => {
         // update filter.where if needed
         updatedFilter && (filter.where = updatedFilter);
@@ -1076,7 +1076,7 @@ module.exports = function (Case) {
 
     // add geographical restrictions if needed
     return Case
-      .addGeographicalRestrictions(options.remotingContext, filter.where)
+      .addGeographicalRestrictions(options.remotingContext, filter.where, Case.modelName)
       .then(updatedFilter => {
         // update filter.where if needed
         updatedFilter && (filter.where = updatedFilter);
@@ -1179,7 +1179,7 @@ module.exports = function (Case) {
     let casesQuery = _.get(filter, 'where', {});
 
     // start with the geographical restrictions promise (so we can link others)
-    let buildQuery = Case.addGeographicalRestrictions(options.remotingContext, casesQuery)
+    let buildQuery = Case.addGeographicalRestrictions(options.remotingContext, casesQuery, Case.modelName)
       .then(updatedFilter => {
         // update casesQuery if needed
         updatedFilter && (casesQuery = updatedFilter);
@@ -1303,7 +1303,8 @@ module.exports = function (Case) {
     return Case
       .addGeographicalRestrictions(
         options.remotingContext,
-        filter.where
+        filter.where,
+        Case.modelName
       )
       .then((updatedFilter) => {
         // retrieve reference data

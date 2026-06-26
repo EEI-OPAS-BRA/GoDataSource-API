@@ -1,0 +1,14 @@
+{
+  "id": "portuguese_pt",
+  "tokens": {
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_NOTIFICATION_LOCATION_ACCESS": {
+      "translation": "Permitir acesso por localização de notificação"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_NOTIFICATION_LOCATION_ACCESS_DESCRIPTION": {
+      "translation": "Quando ativado, a equipe cuja localização corresponde ao endereço de Notificação de um caso pode ver esse caso e os contatos diretos dele que estão nas localizações do caso (residência e notificação)"
+    },
+    "LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_NOTIFICATION": {
+      "translation": "Notificação"
+    }
+  }
+}

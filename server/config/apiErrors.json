@@ -295,6 +295,10 @@
     "defaultStatusCode": 422,
     "messagePattern": "Addresses set as Previous Current address must have a date set"
   },
+  "ADDRESS_MULTIPLE_NOTIFICATION": {
+    "defaultStatusCode": 422,
+    "messagePattern": "Multiple addresses set as Notification address. Only one address should be set as Notification address"
+  },
   "READ_DEVICE_INFORMATION_FAILURE": {
     "defaultStatusCode": 422,
     "messagePattern": "Unable to read device information."

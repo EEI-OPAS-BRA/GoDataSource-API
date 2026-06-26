@@ -509,6 +509,60 @@ const migrationVersions = [{
       buildNo: 1
     }]
   }]
+}, {
+  version: '2.52.0',
+  scripts: [{
+    fileName: 'languageToken.js',
+    actions: [{
+      name: 'createUpdateLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 1
+    }]
+  }]
+}, {
+  version: '2.53.0',
+  scripts: [{
+    fileName: 'referenceData.js',
+    actions: [{
+      name: 'createUpdateDefaultReferenceData',
+      buildNo: 1
+    }]
+  }, {
+    fileName: 'languageToken.js',
+    actions: [{
+      name: 'createUpdateLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 1
+    }]
+  }, {
+    fileName: 'consolidateNotificationAddressType.js',
+    actions: [{
+      name: 'consolidateLegacyNotificationAddressType',
+      buildNo: 2
+    }]
+  }, {
+    fileName: 'person.js',
+    actions: [{
+      name: 'setNotificationLocationIdOnPerson',
+      buildNo: 1
+    }]
+  }]
+}, {
+  version: '2.54.0',
+  scripts: [{
+    fileName: 'languageToken.js',
+    actions: [{
+      name: 'createUpdateLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 1
+    }]
+  }]
 }];
 
 /**

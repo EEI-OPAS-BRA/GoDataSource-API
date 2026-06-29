@@ -20,10 +20,10 @@
       "translation": "Lorsque cette option est activée, les réponses du questionnaire de contact peuvent être modifiées sous forme de colonnes sur la page de modification groupée des contacts"
     },
     "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS": {
-      "translation": "Le type et le lieu de l’adresse sont facultatifs pour les cas et les contacts"
+      "translation": "Autoriser l’enregistrement de cas et de contacts sans Adresse Actuelle"
     },
     "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS_DESCRIPTION": {
-      "translation": "Lorsque cette option est activée, les champs type et lieu de l’adresse ne sont pas obligatoires lors de la création ou de la modification des cas et des contacts"
+      "translation": "Lorsque cette option est activée, les cas et les contacts peuvent être enregistrés sans qu’une adresse soit renseignée"
     }
   }
 }

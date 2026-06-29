@@ -20,10 +20,10 @@
       "translation": "When enabled, contact questionnaire answers can be edited as columns on the bulk modify contacts page"
     },
     "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS": {
-      "translation": "Address type and location are optional for cases and contacts"
+      "translation": "Allow registering cases and contacts without a Current address"
     },
     "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS_DESCRIPTION": {
-      "translation": "When enabled, the address type and location fields are not required when creating or modifying cases and contacts"
+      "translation": "When enabled, cases and contacts can be saved without an address being filled in"
     }
   }
 }

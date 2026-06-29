@@ -409,18 +409,6 @@ module.exports = function (Person) {
       context.options.triggerRelationshipUpdates = true;
     }
 
-    // validate addresses
-    // if the record is not being deleted or this is not a system triggered update
-    if (!data.source.all.deleted && !data.source.all.systemTriggeredUpdate) {
-      // validate person addresses
-      const addressValidationError = validatePersonAddresses(data.source.all);
-      // if there is an address validation error
-      if (addressValidationError) {
-        // stop with error
-        return next(addressValidationError);
-      }
-    }
-
     // set duplicate easy find index keys
     if (
       data.source.existingRaw.type === 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE' ||
@@ -462,6 +450,42 @@ module.exports = function (Person) {
     // make sure we update data in order so we don't break anything
     Promise
       .resolve()
+      .then(() => {
+        // validate addresses
+        // if the record is being deleted or this is a system triggered update there is nothing to validate
+        if (data.source.all.deleted || data.source.all.systemTriggeredUpdate) {
+          return;
+        }
+
+        // validate person addresses
+        const addressValidationError = validatePersonAddresses(data.source.all);
+        if (!addressValidationError) {
+          return;
+        }
+
+        // the "missing current address" requirement can be relaxed per outbreak configuration
+        // (allow registering cases/contacts without a current address); every other address
+        // validation error is always enforced
+        if (
+          addressValidationError.code !== 'ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE' ||
+          !data.source.all.outbreakId
+        ) {
+          throw addressValidationError;
+        }
+
+        // check the outbreak configuration before enforcing the current address requirement
+        return app.models.outbreak
+          .findById(data.source.all.outbreakId)
+          .then((outbreak) => {
+            // outbreak allows optional case/contact address fields -> skip the current address requirement
+            if (outbreak && outbreak.optionalCaseContactAddressFields) {
+              return;
+            }
+
+            // otherwise enforce the current address requirement
+            throw addressValidationError;
+          });
+      })
       .then(() => {
         // if there are no dates then there is no point in continuing
         const modelNewData = data.source.all;
@@ -1629,11 +1653,13 @@ module.exports = function (Person) {
           }
         };
 
-        // is notification location access enabled for this outbreak ?
-        const notificationEnabled = outbreak && outbreak.allowNotificationLocationAccess === true;
+        // notification-location access governs CASE visibility for the notifying team
+        const notificationCaseEnabled = outbreak && outbreak.allowNotificationLocationAccess === true;
+        // residence-chain access governs CONTACT visibility for the residence (owner) team
+        const residenceChainEnabled = outbreak && outbreak.allowResidenceChainAccess === true;
 
-        // CASE: also allow cases whose Notification address location is in the user's locations
-        if (notificationEnabled && modelName === app.models.case.modelName) {
+        // CASE: notifying team also sees the case it notified (residence elsewhere)
+        if (notificationCaseEnabled && modelName === app.models.case.modelName) {
           return finalize({
             or: [
               baseLocationsQuery,
@@ -1646,9 +1672,9 @@ module.exports = function (Person) {
           });
         }
 
-        // CONTACT: also allow direct contacts of privileged cases, restricted to caseLocations
-        if (notificationEnabled && modelName === app.models.contact.modelName) {
-          return Person.getNotificationVisibleContactIds(outbreak.id, userAllowedLocationsIds)
+        // CONTACT: residence (owner) team also sees ALL direct contacts of cases it owns by residence
+        if (residenceChainEnabled && modelName === app.models.contact.modelName) {
+          return Person.getResidentCaseContactIds(outbreak.id, userAllowedLocationsIds)
             .then(contactIds => finalize(
               contactIds.length ?
                 {
@@ -1671,89 +1697,55 @@ module.exports = function (Person) {
   };
 
   /**
-   * Resolve the contact IDs that become visible to a user via the Notification-location feature.
-   * A contact is included if it is a DIRECT contact of a "privileged case" (a case whose residence
-   * or notification location is among the user's locations) AND the contact's usual place of
-   * residence is within that case's locations (residence + notification).
+   * Resolve the contact IDs visible to a user through the residence-chain feature: a user who OWNS a
+   * case by residence (the case's usual place of residence is one of the user's team locations) may
+   * see ALL direct contacts of that case, regardless of where each contact resides. Direct contacts
+   * only (no recursive chain). The notifying team gets no special contact reveal here.
    * @param {string} outbreakId
    * @param {string[]} userAllowedLocationsIds
    * @returns {Promise<string[]>} contact IDs
    */
-  Person.getNotificationVisibleContactIds = (outbreakId, userAllowedLocationsIds) => {
-    // 1. privileged cases + their locations (residence + notification)
+  Person.getResidentCaseContactIds = (outbreakId, userAllowedLocationsIds) => {
+    // 1. cases the user owns by residence
     return app.models.case
       .rawFind({
         outbreakId: outbreakId,
-        or: [
-          {usualPlaceOfResidenceLocationId: {inq: userAllowedLocationsIds}},
-          {notificationLocationId: {inq: userAllowedLocationsIds}}
-        ]
+        usualPlaceOfResidenceLocationId: {inq: userAllowedLocationsIds}
       }, {
-        projection: {
-          _id: 1,
-          usualPlaceOfResidenceLocationId: 1,
-          notificationLocationId: 1
-        }
+        projection: {_id: 1}
       })
       .then(cases => {
         if (!cases.length) {
           return [];
         }
-
-        // caseId -> list of case locations (non-null residence + notification)
-        const caseLocationsMap = {};
-        const caseIds = [];
+        const caseIdsMap = {};
         cases.forEach(caseRecord => {
-          caseLocationsMap[caseRecord.id] = [
-            caseRecord.usualPlaceOfResidenceLocationId,
-            caseRecord.notificationLocationId
-          ].filter(locationId => !!locationId);
-          caseIds.push(caseRecord.id);
+          caseIdsMap[caseRecord.id] = true;
         });
 
-        // 2. relationships case<->contact for these cases
+        // 2. relationships case<->contact for these cases -> all direct contacts
         return app.models.relationship
           .rawFind({
             outbreakId: outbreakId,
-            'persons.id': {inq: caseIds}
+            'persons.id': {inq: Object.keys(caseIdsMap)}
           }, {
             projection: {_id: 1, persons: 1}
           })
           .then(relationships => {
-            // contactId -> list of case locations from the linked privileged case(s)
-            const contactAllowedLocations = {};
+            const contactIdsMap = {};
             relationships.forEach(relationship => {
               const casePerson = relationship.persons.find(
-                person => person.type === 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE' && caseLocationsMap[person.id]
+                person => person.type === 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE' &&
+                  caseIdsMap[person.id]
               );
               const contactPerson = relationship.persons.find(
                 person => person.type === 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT'
               );
-              if (!casePerson || !contactPerson) {
-                return;
+              if (casePerson && contactPerson) {
+                contactIdsMap[contactPerson.id] = true;
               }
-              if (!contactAllowedLocations[contactPerson.id]) {
-                contactAllowedLocations[contactPerson.id] = [];
-              }
-              contactAllowedLocations[contactPerson.id].push(...caseLocationsMap[casePerson.id]);
             });
-
-            const candidateContactIds = Object.keys(contactAllowedLocations);
-            if (!candidateContactIds.length) {
-              return [];
-            }
-
-            // 3. keep only contacts whose residence is within the linked case's locations
-            return app.models.contact
-              .rawFind({
-                _id: {inq: candidateContactIds}
-              }, {
-                projection: {_id: 1, usualPlaceOfResidenceLocationId: 1}
-              })
-              .then(contacts => contacts
-                .filter(contact => contactAllowedLocations[contact.id].indexOf(contact.usualPlaceOfResidenceLocationId) !== -1)
-                .map(contact => contact.id)
-              );
+            return Object.keys(contactIdsMap);
           });
       });
   };

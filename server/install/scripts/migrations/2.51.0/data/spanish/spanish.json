@@ -20,10 +20,10 @@
       "translation": "Cuando está activado, las respuestas del cuestionario de contacto se pueden editar como columnas en la página de edición masiva de contactos"
     },
     "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS": {
-      "translation": "El tipo y la ubicación de la dirección son opcionales para casos y contactos"
+      "translation": "Permitir registrar casos y contactos sin Dirección actual"
     },
     "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS_DESCRIPTION": {
-      "translation": "Cuando está activado, los campos de tipo y ubicación de la dirección no son obligatorios al crear o modificar casos y contactos"
+      "translation": "Cuando está activado, los casos y contactos pueden guardarse sin que se complete una dirección"
     }
   }
 }

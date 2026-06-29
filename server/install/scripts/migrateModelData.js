@@ -527,22 +527,22 @@ const migrationVersions = [{
       buildNo: 2
     }, {
       name: 'createUpdateLanguageTokens',
-      buildNo: 4
+      buildNo: 5
     }, {
       name: 'createUpdateArabicLanguageTokens',
-      buildNo: 4
+      buildNo: 5
     }, {
       name: 'createUpdateFrenchLanguageTokens',
-      buildNo: 4
+      buildNo: 5
     }, {
       name: 'createUpdatePortugueseLanguageTokens',
-      buildNo: 4
+      buildNo: 5
     }, {
       name: 'createUpdateRussianLanguageTokens',
-      buildNo: 4
+      buildNo: 5
     }, {
       name: 'createUpdateSpanishLanguageTokens',
-      buildNo: 4
+      buildNo: 5
     }]
   }]
 }, {
@@ -589,6 +589,18 @@ const migrationVersions = [{
   }]
 }, {
   version: '2.54.0',
+  scripts: [{
+    fileName: 'languageToken.js',
+    actions: [{
+      name: 'createUpdateLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 1
+    }]
+  }]
+}, {
+  version: '2.55.0',
   scripts: [{
     fileName: 'languageToken.js',
     actions: [{

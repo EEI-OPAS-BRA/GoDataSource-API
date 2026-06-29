@@ -1421,12 +1421,12 @@ module.exports = function (FollowUp) {
           }
         };
 
-        // is notification location access enabled for this outbreak ?
-        const notificationEnabled = outbreak && outbreak.allowNotificationLocationAccess === true;
+        // is residence-chain access enabled for this outbreak ?
+        const residenceChainEnabled = outbreak && outbreak.allowResidenceChainAccess === true;
 
-        // when enabled, also reveal follow-ups of the contacts made visible through a notifying case
-        const buildLocationsQuery = notificationEnabled ?
-          app.models.person.getNotificationVisibleContactIds(outbreak.id, userAllowedLocationsIds)
+        // when enabled, also reveal follow-ups of the direct contacts of cases the user owns by residence
+        const buildLocationsQuery = residenceChainEnabled ?
+          app.models.person.getResidentCaseContactIds(outbreak.id, userAllowedLocationsIds)
             .then(contactIds => contactIds.length ?
               {
                 or: [

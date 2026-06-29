@@ -161,8 +161,11 @@ module.exports = function (Outbreak) {
   Outbreak.beforeRemote('find', function (context, modelInstance, next) {
     // get logged in user outbreak restrictions
     const restrictedOutbreakIds = _.get(context, 'req.authData.user.outbreakIds', []);
+    // system administrators can see every outbreak regardless of their outbreak restrictions
+    const isSystemAdmin = (_.get(context, 'req.authData.user.roles', []) || [])
+      .some((role) => role.id === 'ROLE_SYSTEM_ADMINISTRATOR');
     // if there are any restrictions set
-    if (restrictedOutbreakIds.length) {
+    if (!isSystemAdmin && restrictedOutbreakIds.length) {
       // update filters to search only in the outbreaks accessible to the user
       context.args.filter = app.utils.remote
         .mergeFilters({
@@ -178,7 +181,10 @@ module.exports = function (Outbreak) {
 
   Outbreak.beforeRemote('count', function (context, modelInstance, next) {
     const restrictedOutbreakIds = _.get(context, 'req.authData.user.outbreakIds', []);
-    if (restrictedOutbreakIds.length) {
+    // system administrators can see every outbreak regardless of their outbreak restrictions
+    const isSystemAdmin = (_.get(context, 'req.authData.user.roles', []) || [])
+      .some((role) => role.id === 'ROLE_SYSTEM_ADMINISTRATOR');
+    if (!isSystemAdmin && restrictedOutbreakIds.length) {
       // do we have delete filter ?
       let filter = {where: _.get(context, 'args.where', {})};
 

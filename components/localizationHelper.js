@@ -5,7 +5,10 @@ const momentLib = require('moment-timezone');
 const momentRange = require('moment-range');
 const moment = momentRange.extendMoment(momentLib);
 const EpiWeek = require('epi-week');
-const timezone = require('../server/config.json').timezone || 'UTC';
+const config = require('../server/config.json');
+const timezone = config.timezone || 'UTC';
+const dateDisplayFormat = config.dateDisplayFormat || 'YYYY-MM-DD';
+const dateTimeDisplayFormat = config.dateTimeDisplayFormat || 'YYYY-MM-DD HH:mm';
 
 // default timezone
 moment.tz.setDefault(timezone);
@@ -370,9 +373,25 @@ const getTimezone = function () {
   return timezone;
 };
 
+/**
+ * Retrieve date display format
+ */
+const getDateDisplayFormat = function () {
+  return dateDisplayFormat;
+};
+
+/**
+ * Retrieve date and time display format
+ */
+const getDateTimeDisplayFormat = function () {
+  return dateTimeDisplayFormat;
+};
+
 // exports
 module.exports = {
   getTimezone,
+  getDateDisplayFormat,
+  getDateTimeDisplayFormat,
   isInstanceOfMoment,
   now,
   today,

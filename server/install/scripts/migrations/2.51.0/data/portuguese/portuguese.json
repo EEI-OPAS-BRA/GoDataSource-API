@@ -24,6 +24,18 @@
     },
     "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS_DESCRIPTION": {
       "translation": "Quando ativado, casos e contatos podem ser salvos sem que um endereço seja preenchido"
+    },
+    "LNG_COMMON_LABEL_EXPANDED_BY_DEFAULT": {
+      "translation": "Expandido por padrão"
+    },
+    "LNG_ADDRESS_FIELD_LABEL_LOGRADOURO": {
+      "translation": "Logradouro"
+    },
+    "LNG_ADDRESS_FIELD_LABEL_NUMERO": {
+      "translation": "Número"
+    },
+    "LNG_ADDRESS_FIELD_LABEL_COMPLEMENTO": {
+      "translation": "Complemento"
     }
   }
 }

@@ -535,6 +535,12 @@
       "principalType": "ROLE",
       "principalId": "contact_list",
       "permission": "ALLOW",
+      "property": "findContactsWithRelationships"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "contact_list",
+      "permission": "ALLOW",
       "property": "countContacts"
     },
     {
@@ -7687,6 +7693,41 @@
           "path": "/contacts/filter"
         }
       ]
+    },
+    "prototype.findContactsWithRelationships": {
+      "accepts": [
+        {
+          "arg": "filter",
+          "type": "object",
+          "description": "**IMPORTANT when calling outside of /explorer** (e.g. raw HTTP client): this value must be sent wrapped under a `filter` key in the JSON body - `{\"filter\": {\"where\": {...}, \"limit\": 20}}`. Sending the object directly as the body (without the `filter` wrapper) makes it be silently ignored (returns everything, unfiltered).\n\n**Standard fields:** `where`, `fields`, `order`, `limit`, `skip`. There's no `page` - paginate with `skip = (page - 1) * limit`. **`limit` is capped at 50 contacts per call** (silently clamped down if omitted or higher, matches the frontend's own default page size) - this endpoint isn't batched like the export flow, it resolves every matched contact's relationships and related person data in memory and serializes it synchronously before responding, so the cap protects server memory/responsiveness. It does not block pulling everything overall, just forces you to page through it with `skip`/`limit` instead of one huge call. Use `POST /outbreaks/{id}/contacts/filtered-count` (same `where`/sub-filters, no limit) to get the total count for building pagination.\n\n**`where` - direct contact fields** (any field of the contact model), e.g. `active`, `wasCase`, `wasContactOfContact`, `firstName`, `gender`, `riskLevel`, `dateOfLastContact`, `dateOfReporting`, `usualPlaceOfResidenceLocationId`, `deleted`, `updatedAt`, `createdAt`:\n- Equality: `{\"active\":true}`\n- Date/number range: use `between`, NOT `gte`+`lte` together on the same field (known LoopBack bug, silently returns unfiltered results) - `{\"dateOfLastContact\":{\"between\":[\"2026-06-01\",\"2026-06-30\"]}}`\n- Nested fields (dot notation): `{\"followUp.status\":\"...\"}` (contact's current aggregated follow-up state), `{\"addresses.locationId\":\"...\"}` (any address, e.g. usual residence)\n- Soft-deleted contacts are excluded by default. To include them, add `\"deleted\":true` at the **root** of `filter` (not inside `where`): `{\"filter\":{\"deleted\":true,\"where\":{\"deleted\":true}}}` returns only deleted contacts; `{\"filter\":{\"deleted\":true,\"where\":{}}}` returns both.\n\n**`where.case` / `where.followUp` / `where.relationship`** - special sub-filters (MongoDB syntax), matched against the related model instead of the contact itself. They only decide which contacts are returned - every relationship of a matched contact is always returned in full (can't be filtered individually):\n- `where.case` - fields of the `case` model, e.g. `classification`\n- `where.followUp` - fields of the daily follow-up record model, e.g. `statusId`, `date` (NOT the same as `followUp.status` above, which is the contact's own aggregated summary)\n- `where.relationship` - fields of the `relationship` model, e.g. `active`, `certaintyLevelId`, `exposureTypeId`\n\nGeographic restrictions based on the logged in user's permissions are applied automatically and can't be overridden here.\n\n**Examples** (value of `filter.where`):\n- By name: `{\"firstName\":\"John\"}`\n- Active contacts of confirmed cases: `{\"active\":true,\"case\":{\"classification\":\"LNG_REFERENCE_DATA_CATEGORY_CASE_CLASSIFICATION_CONFIRMED\"}}`\n- Contacts whose current follow-up is still ongoing: `{\"followUp.status\":\"LNG_REFERENCE_DATA_CONTACT_FINAL_FOLLOW_UP_STATUS_TYPE_UNDER_FOLLOW_UP\"}`\n- Contacts last exposed in June/2026: `{\"dateOfLastContact\":{\"between\":[\"2026-06-01\",\"2026-06-30\"]}}`"
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "contacts",
+          "type": [
+            "contactWithRelationships"
+          ],
+          "description": "List of contacts that match the search criteria (at most 'meta.limit' of them). Each contact includes all its regular fields plus a 'relationships' array; each relationship includes all its regular fields plus 'relatedPersonId' and 'relatedPersonData' (id, type, visualId and name of the case/contact/event on the other end of the relationship, already resolved).",
+          "required": true
+        },
+        {
+          "arg": "meta",
+          "type": "paginationMeta",
+          "description": "Pagination info: 'total' matching records (ignoring skip/limit), 'skip'/'limit' actually applied, and 'count' of records included in this response. Use 'total' + 'limit' to know how many pages there are.",
+          "required": true
+        }
+      ],
+      "description": "Queries contacts of the outbreak and, for each one, resolves its relationships plus the data of the related person (case/contact/event) on the other end, all in a single call - so the caller doesn't need to combine GET/POST /contacts, /contacts/{id}/relationships and /people separately. Equivalent to a lightweight version of the contacts export (POST /contacts/export), but returned synchronously as JSON instead of going through the export/download job flow. Response shape: `{\"contacts\": [...], \"meta\": {\"total\": ..., \"skip\": ..., \"limit\": ..., \"count\": ...}}`. See the `filter` parameter below for the full list of supported filters and usage examples - when calling from outside /explorer, remember to wrap it as `{\"filter\": {...}}` in the request body.",
+      "http": {
+        "verb": "post",
+        "path": "/contacts-with-relationships/filter"
+      }
     },
     "prototype.caseDelayBetweenOnsetAndLabTesting": {
       "accepts": [

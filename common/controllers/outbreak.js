@@ -1475,16 +1475,24 @@ module.exports = function (Outbreak) {
       .then(function (personIds) {
         // if there was a people filter
         if (personIds) {
-          // make sure both people in a relation match the filter passed
+          // include a relation if AT LEAST ONE of its people matches the filter passed,
+          // so the matched people are shown together with their directly related people
+          // (e.g. filtering a case by name also brings its related contacts)
           filter = app.utils.remote
             .mergeFilters({
               where: {
-                'persons.0.id': {
-                  inq: personIds
-                },
-                'persons.1.id': {
-                  inq: personIds
-                }
+                or: [
+                  {
+                    'persons.0.id': {
+                      inq: personIds
+                    }
+                  },
+                  {
+                    'persons.1.id': {
+                      inq: personIds
+                    }
+                  }
+                ]
               }
             }, filter);
         }

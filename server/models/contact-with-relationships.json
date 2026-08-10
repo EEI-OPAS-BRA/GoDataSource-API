@@ -1,0 +1,20 @@
+{
+  "name": "contactWithRelationships",
+  "base": "contact",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "relationships": {
+      "type": [
+        "relationshipWithRelatedPersonData"
+      ],
+      "description": "All relationships this contact is part of, each one already including the data of the person (case/contact/event) on the other end"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

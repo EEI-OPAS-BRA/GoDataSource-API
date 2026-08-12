@@ -36,6 +36,9 @@
     },
     "LNG_ADDRESS_FIELD_LABEL_COMPLEMENTO": {
       "translation": "Complemento"
+    },
+    "LNG_ADDRESS_FIELD_LABEL_BAIRRO": {
+      "translation": "Bairro"
     }
   }
 }

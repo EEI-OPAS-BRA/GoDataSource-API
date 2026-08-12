@@ -36,6 +36,9 @@
     },
     "LNG_ADDRESS_FIELD_LABEL_COMPLEMENTO": {
       "translation": "Дополнение"
+    },
+    "LNG_ADDRESS_FIELD_LABEL_BAIRRO": {
+      "translation": "Район"
     }
   }
 }

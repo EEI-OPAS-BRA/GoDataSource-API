@@ -36,6 +36,9 @@
     },
     "LNG_ADDRESS_FIELD_LABEL_COMPLEMENTO": {
       "translation": "Complément"
+    },
+    "LNG_ADDRESS_FIELD_LABEL_BAIRRO": {
+      "translation": "Quartier"
     }
   }
 }

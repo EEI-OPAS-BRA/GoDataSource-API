@@ -405,18 +405,33 @@ module.exports = function (Outbreak) {
         }
       }, filter);
 
+    // a relationship whose other end the user cannot read must answer exactly like a missing one, otherwise the
+    // error itself confirms that the record exists
+    const notFound = () => app.utils.apiError.getError('MODEL_NOT_FOUND_IN_CONTEXT', {
+      model: app.models.relationship.modelName,
+      id: relationshipId,
+      contextModel: app.models[type].modelName,
+      contextId: personId
+    });
+
     app.models.relationship
       .findOne(_filter)
       .then(function (relationship) {
         if (!relationship) {
-          throw app.utils.apiError.getError('MODEL_NOT_FOUND_IN_CONTEXT', {
-            model: app.models.relationship.modelName,
-            id: relationshipId,
-            contextModel: app.models[type].modelName,
-            contextId: personId
-          });
+          throw notFound();
         }
 
+        return Outbreak.helpers
+          .filterRelationshipsByRelatedPersonVisibility(personId, [relationship], options)
+          .then(function (visibleRelationships) {
+            if (!visibleRelationships.length) {
+              throw notFound();
+            }
+
+            return relationship;
+          });
+      })
+      .then(function (relationship) {
         // retrieve person information
         app.models.relationship.retrieveUserSupportedRelations(
           {

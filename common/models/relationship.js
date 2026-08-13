@@ -1228,6 +1228,46 @@ module.exports = function (Relationship) {
   };
 
   /**
+   * Filter a list of related person IDs down to the ones the logged in user is allowed to read
+   * Note: the received list is returned untouched when the user is not geographically restricted, so an
+   * unrestricted request costs no extra query
+   * @param personIds
+   * @param options
+   * @return {Promise<Array>}
+   */
+  Relationship.filterVisibleRelatedPersonIds = function (personIds, options) {
+    // nothing to filter
+    if (!personIds.length) {
+      return Promise.resolve(personIds);
+    }
+
+    // a failure to resolve the restriction must fail the request, never fall back to an unfiltered read
+    return app.models.person
+      .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
+      .then((geographicalRestrictionsQuery) => {
+        // user is not restricted, everything the caller asked for stays visible
+        if (!geographicalRestrictionsQuery) {
+          return personIds;
+        }
+
+        return app.models.person
+          .rawFind({
+            and: [
+              {
+                id: {
+                  inq: personIds
+                }
+              },
+              geographicalRestrictionsQuery
+            ]
+          }, {
+            projection: {_id: 1}
+          })
+          .then((people) => people.map((person) => person.id));
+      });
+  };
+
+  /**
    * Find relationship exposures for a person
    * @param outbreakId
    * @param personId

@@ -132,14 +132,30 @@ module.exports = function (Outbreak) {
   };
 
   /**
+   * Apply the caller pagination on an already filtered relationship list
+   * @param relationships
+   * @param skip
+   * @param limit
+   * @return {Array}
+   */
+  Outbreak.helpers.applyRelationshipPagination = function (relationships, skip, limit) {
+    if (skip === undefined && limit === undefined) {
+      return relationships;
+    }
+
+    const start = skip || 0;
+    return relationships.slice(start, limit === undefined ? undefined : start + limit);
+  };
+
+  /**
    * Drop the relationships whose other end the logged in user is not allowed to read
    * Note: only the person on the other end is checked, the anchor person is always kept
    * @param personId
    * @param relationships
-   * @param options
+   * @param geographicalRestrictionsQuery Result of Person.addGeographicalRestrictionsForMixedPersonTypes
    * @return {Promise<Array>}
    */
-  Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility = function (personId, relationships, options) {
+  Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility = function (personId, relationships, geographicalRestrictionsQuery) {
     // collect the people on the other end of each relationship
     const otherPeopleIds = [];
     relationships.forEach(function (relationship) {
@@ -151,7 +167,7 @@ module.exports = function (Outbreak) {
     });
 
     return app.models.relationship
-      .filterVisibleRelatedPersonIds(otherPeopleIds, options)
+      .filterVisibleRelatedPersonIds(otherPeopleIds, geographicalRestrictionsQuery)
       .then(function (visiblePeopleIds) {
         const visiblePeopleMap = {};
         visiblePeopleIds.forEach(function (visiblePersonId) {
@@ -159,7 +175,7 @@ module.exports = function (Outbreak) {
         });
 
         return relationships.filter(function (relationship) {
-          return !Array.isArray(relationship.persons) ||
+          return Array.isArray(relationship.persons) &&
             relationship.persons.every(function (person) {
               return person.id === personId ||
                 visiblePeopleMap[person.id];
@@ -183,10 +199,33 @@ module.exports = function (Outbreak) {
         }
       }, filter);
 
-    app.models.relationship
-      .find(_filter)
-      .then(function (relationships) {
-        return Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility(personId, relationships, options);
+    app.models.person
+      .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
+      .then(function (geographicalRestrictionsQuery) {
+        // unrestricted caller keeps the original query, pagination included
+        if (!geographicalRestrictionsQuery) {
+          return app.models.relationship.find(_filter);
+        }
+
+        // hidden relationships have to go before the page is cut, otherwise page 1 comes back short while
+        // page 2 is empty
+        const skip = _filter.skip;
+        const limit = _filter.limit;
+        delete _filter.skip;
+        delete _filter.limit;
+
+        return app.models.relationship
+          .find(_filter)
+          .then(function (relationships) {
+            return Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility(
+              personId,
+              relationships,
+              geographicalRestrictionsQuery
+            );
+          })
+          .then(function (relationships) {
+            return Outbreak.helpers.applyRelationshipPagination(relationships, skip, limit);
+          });
       })
       .then(function (relationships) {
         callback(null, relationships);
@@ -421,8 +460,15 @@ module.exports = function (Outbreak) {
           throw notFound();
         }
 
-        return Outbreak.helpers
-          .filterRelationshipsByRelatedPersonVisibility(personId, [relationship], options)
+        return app.models.person
+          .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
+          .then(function (geographicalRestrictionsQuery) {
+            return Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility(
+              personId,
+              [relationship],
+              geographicalRestrictionsQuery
+            );
+          })
           .then(function (visibleRelationships) {
             if (!visibleRelationships.length) {
               throw notFound();
@@ -617,14 +663,30 @@ module.exports = function (Outbreak) {
       },
       {where: where});
 
-    // the count must match the list, so it is computed on the set the list would return
-    app.models.relationship
-      .find({where: _filter.where})
-      .then(function (relationships) {
-        return Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility(personId, relationships, options);
+    app.models.person
+      .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
+      .then(function (geographicalRestrictionsQuery) {
+        // unrestricted caller keeps the server side count
+        if (!geographicalRestrictionsQuery) {
+          return app.models.relationship.count(_filter.where);
+        }
+
+        // the count must match the list, so it is computed on the set the list would return
+        return app.models.relationship
+          .find({where: _filter.where})
+          .then(function (relationships) {
+            return Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility(
+              personId,
+              relationships,
+              geographicalRestrictionsQuery
+            );
+          })
+          .then(function (relationships) {
+            return relationships.length;
+          });
       })
       .then(function (relationships) {
-        callback(null, relationships.length);
+        callback(null, relationships);
       })
       .catch(callback);
   };
@@ -646,10 +708,27 @@ module.exports = function (Outbreak) {
       filter
     );
 
-    app.models.relationship
-      .find(_filter)
-      .then((result) => {
-        return Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility(personId, result, options);
+    app.models.person
+      .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
+      .then((geographicalRestrictionsQuery) => {
+        // unrestricted caller keeps the original query
+        if (!geographicalRestrictionsQuery) {
+          return app.models.relationship.find(_filter);
+        }
+
+        // the total has to be counted on the whole filtered set, so it matches the list the caller pages through
+        delete _filter.skip;
+        delete _filter.limit;
+
+        return app.models.relationship
+          .find(_filter)
+          .then((result) => {
+            return Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility(
+              personId,
+              result,
+              geographicalRestrictionsQuery
+            );
+          });
       })
       .then((result) => {
         callback(null, app.utils.remote.searchByRelationProperty.deepSearchByRelationProperty(result, _filter).length);

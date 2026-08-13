@@ -1245,42 +1245,32 @@ module.exports = function (Relationship) {
 
   /**
    * Filter a list of related person IDs down to the ones the logged in user is allowed to read
-   * Note: the received list is returned untouched when the user is not geographically restricted, so an
-   * unrestricted request costs no extra query
+   * Note: the restriction query is resolved by the caller and passed in, so a request that reads several
+   * relationship sets resolves it only once
    * @param personIds
-   * @param options
+   * @param geographicalRestrictionsQuery Result of Person.addGeographicalRestrictionsForMixedPersonTypes
    * @return {Promise<Array>}
    */
-  Relationship.filterVisibleRelatedPersonIds = function (personIds, options) {
-    // nothing to filter
-    if (!personIds.length) {
+  Relationship.filterVisibleRelatedPersonIds = function (personIds, geographicalRestrictionsQuery) {
+    // user is not restricted, or there is nothing to filter
+    if (!geographicalRestrictionsQuery || !personIds.length) {
       return Promise.resolve(personIds);
     }
 
-    // a failure to resolve the restriction must fail the request, never fall back to an unfiltered read
     return app.models.person
-      .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
-      .then((geographicalRestrictionsQuery) => {
-        // user is not restricted, everything the caller asked for stays visible
-        if (!geographicalRestrictionsQuery) {
-          return personIds;
-        }
-
-        return app.models.person
-          .rawFind({
-            and: [
-              {
-                id: {
-                  inq: personIds
-                }
-              },
-              geographicalRestrictionsQuery
-            ]
-          }, {
-            projection: {_id: 1}
-          })
-          .then((people) => people.map((person) => person.id));
-      });
+      .rawFind({
+        and: [
+          {
+            id: {
+              inq: personIds
+            }
+          },
+          geographicalRestrictionsQuery
+        ]
+      }, {
+        projection: {_id: 1}
+      })
+      .then((people) => people.map((person) => person.id));
   };
 
   /**

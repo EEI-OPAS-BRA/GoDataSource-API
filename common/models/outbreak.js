@@ -135,9 +135,10 @@ module.exports = function (Outbreak) {
    * Find relations for a person
    * @param personId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.helpers.findPersonRelationships = function (personId, filter, callback) {
+  Outbreak.helpers.findPersonRelationships = function (personId, filter, options, callback) {
     const _filter = app.utils.remote
       .mergeFilters({
         where: {
@@ -352,9 +353,10 @@ module.exports = function (Outbreak) {
    * @param relationshipId
    * @param type
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.helpers.getPersonRelationship = function (personId, relationshipId, type, filter, callback) {
+  Outbreak.helpers.getPersonRelationship = function (personId, relationshipId, type, filter, options, callback) {
     const _filter = app.utils.remote
       .mergeFilters({
         where: {
@@ -548,9 +550,10 @@ module.exports = function (Outbreak) {
    * Count relations for a person
    * @param personId
    * @param where
+   * @param options
    * @param callback
    */
-  Outbreak.helpers.countPersonRelationships = function (personId, where, callback) {
+  Outbreak.helpers.countPersonRelationships = function (personId, where, options, callback) {
     const _filter = app.utils.remote.mergeFilters(
       {
         where: {
@@ -571,9 +574,10 @@ module.exports = function (Outbreak) {
    * Count filtered relations for a person
    * @param personId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.helpers.filteredCountPersonRelationships = function (personId, filter, callback) {
+  Outbreak.helpers.filteredCountPersonRelationships = function (personId, filter, options, callback) {
     const _filter = app.utils.remote.mergeFilters(
       {
         where: {

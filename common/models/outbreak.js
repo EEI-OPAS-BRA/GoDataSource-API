@@ -132,6 +132,43 @@ module.exports = function (Outbreak) {
   };
 
   /**
+   * Drop the relationships whose other end the logged in user is not allowed to read
+   * Note: only the person on the other end is checked, the anchor person is always kept
+   * @param personId
+   * @param relationships
+   * @param options
+   * @return {Promise<Array>}
+   */
+  Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility = function (personId, relationships, options) {
+    // collect the people on the other end of each relationship
+    const otherPeopleIds = [];
+    relationships.forEach(function (relationship) {
+      Array.isArray(relationship.persons) && relationship.persons.forEach(function (person) {
+        if (person.id !== personId) {
+          otherPeopleIds.push(person.id);
+        }
+      });
+    });
+
+    return app.models.relationship
+      .filterVisibleRelatedPersonIds(otherPeopleIds, options)
+      .then(function (visiblePeopleIds) {
+        const visiblePeopleMap = {};
+        visiblePeopleIds.forEach(function (visiblePersonId) {
+          visiblePeopleMap[visiblePersonId] = true;
+        });
+
+        return relationships.filter(function (relationship) {
+          return !Array.isArray(relationship.persons) ||
+            relationship.persons.every(function (person) {
+              return person.id === personId ||
+                visiblePeopleMap[person.id];
+            });
+        });
+      });
+  };
+
+  /**
    * Find relations for a person
    * @param personId
    * @param filter
@@ -148,6 +185,9 @@ module.exports = function (Outbreak) {
 
     app.models.relationship
       .find(_filter)
+      .then(function (relationships) {
+        return Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility(personId, relationships, options);
+      })
       .then(function (relationships) {
         callback(null, relationships);
       })
@@ -562,10 +602,14 @@ module.exports = function (Outbreak) {
       },
       {where: where});
 
+    // the count must match the list, so it is computed on the set the list would return
     app.models.relationship
-      .count(_filter.where)
+      .find({where: _filter.where})
       .then(function (relationships) {
-        callback(null, relationships);
+        return Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility(personId, relationships, options);
+      })
+      .then(function (relationships) {
+        callback(null, relationships.length);
       })
       .catch(callback);
   };
@@ -589,6 +633,9 @@ module.exports = function (Outbreak) {
 
     app.models.relationship
       .find(_filter)
+      .then((result) => {
+        return Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility(personId, result, options);
+      })
       .then((result) => {
         callback(null, app.utils.remote.searchByRelationProperty.deepSearchByRelationProperty(result, _filter).length);
       })

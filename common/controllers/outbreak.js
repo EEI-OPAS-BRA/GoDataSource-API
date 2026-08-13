@@ -1400,7 +1400,7 @@ module.exports = function (Outbreak) {
 
     // start with geographical restriction
     return app.models.person
-      .addGeographicalRestrictions(options.remotingContext)
+      .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
       .then(geographicalRestrictionsQuery => {
         geographicalRestrictionsQueryCache = geographicalRestrictionsQuery;
 

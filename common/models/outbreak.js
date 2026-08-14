@@ -463,18 +463,24 @@ module.exports = function (Outbreak) {
         return app.models.person
           .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
           .then(function (geographicalRestrictionsQuery) {
-            return Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility(
-              personId,
-              [relationship],
-              geographicalRestrictionsQuery
-            );
-          })
-          .then(function (visibleRelationships) {
-            if (!visibleRelationships.length) {
-              throw notFound();
+            // unrestricted caller reads exactly what it reads today
+            if (!geographicalRestrictionsQuery) {
+              return relationship;
             }
 
-            return relationship;
+            return Outbreak.helpers
+              .filterRelationshipsByRelatedPersonVisibility(
+                personId,
+                [relationship],
+                geographicalRestrictionsQuery
+              )
+              .then(function (visibleRelationships) {
+                if (!visibleRelationships.length) {
+                  throw notFound();
+                }
+
+                return relationship;
+              });
           });
       })
       .then(function (relationship) {

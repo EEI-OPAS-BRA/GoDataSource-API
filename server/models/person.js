@@ -1697,6 +1697,116 @@ module.exports = function (Person) {
   };
 
   /**
+   * Add geographical restriction in where prop of the filter for logged in user, for a set of people of MIXED
+   * types (case / contact / event / contact of contact) queried in one go.
+   * Note: The updated where filter is returned by the Promise; If there filter doesn't need to be updated nothing will be returned
+   * @param context Remoting context from which to get logged in user and outbreak
+   * @param where Where filter from which to start
+   * @returns {Promise<unknown>|Promise<T>|Promise<void>}
+   */
+  Person.addGeographicalRestrictionsForMixedPersonTypes = (context, where) => {
+    // for sync, logged user model and outbreak model are added in custom properties
+    let loggedInUser = context.req.authData.userModelInstance ?
+      context.req.authData.userModelInstance :
+      context.req.authData.user;
+    let outbreak = context.outbreakModelInstance ?
+      context.outbreakModelInstance :
+      context.instance;
+
+    // apply geographic restrictions ?
+    // for mobile sync, the contact createdBy user will be used
+    if (
+      loggedInUser === undefined ||
+      !app.models.user.helpers.applyGeographicRestrictions(loggedInUser, outbreak)
+    ) {
+      // no need to apply geographic restrictions
+      return Promise.resolve();
+    }
+
+    // helper: merge the locations query with the incoming where
+    const finalize = (locationsQuery) => Promise.resolve(
+      where && Object.keys(where).length ?
+        {
+          and: [
+            locationsQuery,
+            where
+          ]
+        } :
+        locationsQuery
+    );
+
+    // get user allowed locations
+    return app.models.user.cache
+      .getUserLocationsIds(loggedInUser.id)
+      .then(userAllowedLocationsIds => {
+        if (!userAllowedLocationsIds.length) {
+          // need to get data from all locations
+          return Promise.resolve();
+        }
+
+        // base restriction (current behavior)
+        // get models for the calculated locations and the ones that don't have a usual place of residence location set
+        const baseLocationsQuery = {
+          usualPlaceOfResidenceLocationId: {
+            inq: userAllowedLocationsIds.concat([null])
+          }
+        };
+
+        // notification-location access governs CASE visibility for the notifying team
+        const notificationCaseEnabled = outbreak && outbreak.allowNotificationLocationAccess === true;
+        // residence-chain access governs CONTACT visibility for the residence (owner) team
+        const residenceChainEnabled = outbreak && outbreak.allowResidenceChainAccess === true;
+
+        // no widening configured, the query is the one the per model restriction builds
+        if (
+          !notificationCaseEnabled &&
+          !residenceChainEnabled
+        ) {
+          return finalize(baseLocationsQuery);
+        }
+
+        // each reveal is scoped to the person type it applies to, so a mixed type query stays correct
+        const orQueries = [baseLocationsQuery];
+
+        // CASE: notifying team also sees the case it notified (residence elsewhere)
+        if (notificationCaseEnabled) {
+          orQueries.push({
+            type: 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE',
+            notificationLocationId: {
+              inq: userAllowedLocationsIds
+            }
+          });
+        }
+
+        // CONTACT: residence (owner) team also sees ALL direct contacts of cases it owns by residence
+        // resolved once per call, since it costs 3 queries
+        return (
+          residenceChainEnabled ?
+            Person.getResidentCaseContactIds(outbreak.id, userAllowedLocationsIds) :
+            Promise.resolve([])
+        )
+          .then(contactIds => {
+            if (contactIds.length) {
+              orQueries.push({
+                type: 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT',
+                id: {
+                  inq: contactIds
+                }
+              });
+            }
+
+            return finalize(
+              orQueries.length > 1 ?
+                {
+                  or: orQueries
+                } :
+                baseLocationsQuery
+            );
+          });
+      });
+  };
+
+  /**
    * Resolve the contact IDs visible to a user through the residence-chain feature: a user who OWNS a
    * case by residence (the case's usual place of residence is one of the user's team locations) may
    * see ALL direct contacts of that case, regardless of where each contact resides. Direct contacts

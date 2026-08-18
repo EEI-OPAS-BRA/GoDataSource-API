@@ -292,6 +292,22 @@
     "dataSource": null,
     "public": false
   },
+  "relatedPersonData": {
+    "dataSource": null,
+    "public": false
+  },
+  "relationshipWithRelatedPersonData": {
+    "dataSource": null,
+    "public": false
+  },
+  "contactWithRelationships": {
+    "dataSource": null,
+    "public": false
+  },
+  "paginationMeta": {
+    "dataSource": null,
+    "public": false
+  },
   "exposureOrContact": {
     "dataSource": null,
     "public": false

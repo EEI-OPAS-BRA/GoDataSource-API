@@ -24,6 +24,16 @@ const exportHelper = require('./../../components/exportHelper');
 // used in contact import
 const contactImportBatchSize = _.get(Config, 'jobSettings.importResources.batchSize', 100);
 
+// used in findContactsWithRelationships: unlike the export flow (which processes records in
+// batches, see config.export.batchSize), this endpoint resolves relationships + related person
+// data for every matched contact and builds the whole JSON response in memory (and serializes it
+// synchronously, blocking the event loop for everyone else) in one go. This caps how many
+// contacts can be requested per call, to protect server memory/responsiveness - it does not limit
+// how much data can be pulled overall, callers can still page through everything with skip/limit.
+// Matches the frontend's own default page size (Constants.DEFAULT_PAGE_SIZE), so normal usage
+// never hits this cap.
+const MAX_CONTACTS_WITH_RELATIONSHIPS_LIMIT = 50;
+
 module.exports = function (Outbreak) {
   /**
    * Attach before remote (GET outbreaks/{id}/contacts) hooks
@@ -53,6 +63,155 @@ module.exports = function (Outbreak) {
       })
       .then(function (contacts) {
         callback(null, contacts);
+      })
+      .catch(callback);
+  };
+
+  /**
+   * Attach before remote (POST outbreaks/{id}/contacts-with-relationships/filter) hooks
+   */
+  Outbreak.beforeRemote('prototype.findContactsWithRelationships', function (context, modelInstance, next) {
+    // filter information based on available permissions
+    Outbreak.helpers.filterPersonInformationBasedOnAccessPermissions('LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT', context);
+    next();
+  });
+
+  /**
+   * Find outbreak contacts, and for each one, resolve its relationships plus the data of the
+   * related person (case/contact/event) on the other end - all in a single call, so the caller
+   * doesn't need to combine /contacts, /contacts/:nk/relationships and /people separately.
+   * @param filter Supports 'where.case', 'where.followUp' MongoDB compatible queries
+   * @param options
+   * @param callback
+   */
+  Outbreak.prototype.findContactsWithRelationships = function (filter, options, callback) {
+    const outbreakId = this.id;
+
+    // cap the number of contacts that can be requested in a single call (protects server
+    // memory, see MAX_CONTACTS_WITH_RELATIONSHIPS_LIMIT above) - if no limit was requested, or
+    // a higher one was, it's silently clamped down to the max instead of erroring out
+    filter = filter || {};
+    filter.limit = filter.limit ?
+      Math.min(filter.limit, MAX_CONTACTS_WITH_RELATIONSHIPS_LIMIT) :
+      MAX_CONTACTS_WITH_RELATIONSHIPS_LIMIT;
+    // keep track of the pagination params the caller asked for (preFilterForOutbreak/find don't
+    // return these back, and 'filter' gets shadowed by the resolved filter below)
+    const appliedLimit = filter.limit;
+    const appliedSkip = filter.skip || 0;
+
+    // pre-filter using related data (case, followUps) - same as findContacts
+    app.models.contact
+      .preFilterForOutbreak(this, filter, options)
+      .then(function (filter) {
+        // run the page of contacts and the total count (same resolved where, no limit/skip) in
+        // parallel - the count is needed for the 'meta' pagination info in the response
+        return Promise.all([
+          app.models.contact.find(filter),
+          app.models.contact.count(filter.where)
+        ]);
+      })
+      .then(function ([contacts, total]) {
+        const meta = {
+          total: total,
+          skip: appliedSkip,
+          limit: appliedLimit,
+          count: contacts.length
+        };
+
+        // nothing to do if there are no contacts matching the filter
+        if (!contacts.length) {
+          return callback(null, [], meta);
+        }
+
+        const contactIds = contacts.map((contact) => contact.id);
+
+        // find relationships that have at least one of these contacts as a participant
+        return app.models.relationship
+          .find({
+            where: {
+              outbreakId: outbreakId,
+              'persons.id': {
+                inq: contactIds
+              }
+            }
+          })
+          .then(function (relationships) {
+            // group relationships by the contact they belong to & collect the ids of the
+            // people on the other end of each relationship (case/contact/event)
+            const relationshipsByContactId = {};
+            const relatedPersonIds = {};
+
+            relationships.forEach(function (relationship) {
+              const relationshipData = relationship.toJSON();
+              const persons = relationshipData.persons || [];
+
+              // person(s) on the other end of the relationship (not the contact itself)
+              const otherPersons = persons.filter((person) => !contactIds.includes(person.id));
+              otherPersons.forEach((person) => {
+                relatedPersonIds[person.id] = true;
+              });
+
+              // attach a copy of this relationship (tagged with the related person id) to
+              // every contact (from our result set) that is part of it
+              persons
+                .filter((person) => contactIds.includes(person.id))
+                .forEach((contactPerson) => {
+                  if (!relationshipsByContactId[contactPerson.id]) {
+                    relationshipsByContactId[contactPerson.id] = [];
+                  }
+
+                  relationshipsByContactId[contactPerson.id].push(Object.assign({}, relationshipData, {
+                    relatedPersonId: otherPersons.length ? otherPersons[0].id : null
+                  }));
+                });
+            });
+
+            // batch fetch data for all related people, regardless of their type
+            // (case / contact / event / contact of contact)
+            return app.models.person
+              .find({
+                where: {
+                  id: {
+                    inq: Object.keys(relatedPersonIds)
+                  }
+                },
+                fields: {
+                  id: true,
+                  type: true,
+                  visualId: true,
+                  name: true,
+                  firstName: true,
+                  middleName: true,
+                  lastName: true
+                }
+              })
+              .then(function (relatedPeople) {
+                const relatedPeopleMap = {};
+                relatedPeople.forEach((person) => {
+                  relatedPeopleMap[person.id] = person.toJSON();
+                });
+
+                // merge everything together: contact -> relationships -> relatedPersonData
+                const result = contacts.map(function (contact) {
+                  const contactData = contact.toJSON();
+                  const contactRelationships = relationshipsByContactId[contactData.id] || [];
+
+                  contactData.relationships = contactRelationships.map((relationship) => Object.assign(
+                    {},
+                    relationship,
+                    {
+                      relatedPersonData: relationship.relatedPersonId ?
+                        relatedPeopleMap[relationship.relatedPersonId] :
+                        null
+                    }
+                  ));
+
+                  return contactData;
+                });
+
+                callback(null, result, meta);
+              });
+          });
       })
       .catch(callback);
   };

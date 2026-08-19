@@ -1082,8 +1082,9 @@ module.exports = function (Relationship) {
    * @param [filter]
    * @param [findContacts]
    * @param [onlyCount]
+   * @param options
    */
-  Relationship.findOrCountPersonRelationshipExposuresOrContacts = function (outbreakId, personId, filter = {}, findContacts = true, onlyCount = false) {
+  Relationship.findOrCountPersonRelationshipExposuresOrContacts = function (outbreakId, personId, filter = {}, findContacts = true, onlyCount = false, options) {
     // get relationship query
     const _relationshipQuery = _.get(filter, 'where.relationship');
 
@@ -1189,7 +1190,22 @@ module.exports = function (Relationship) {
 
           // find other people
           return app.models.person
-            .find(peopleFilter)
+            .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
+            .then((geographicalRestrictionsQuery) => {
+              // people the user cannot read must reach neither the result nor the count, so the restriction is
+              // merged into the people query itself, ahead of the pagination applied below
+              if (geographicalRestrictionsQuery) {
+                peopleFilter.where = {
+                  and: [
+                    peopleFilter.where,
+                    geographicalRestrictionsQuery
+                  ]
+                };
+              }
+
+              return app.models.person
+                .find(peopleFilter);
+            })
             .then(function (people) {
               // build result
               let result = [];
@@ -1228,14 +1244,45 @@ module.exports = function (Relationship) {
   };
 
   /**
+   * Filter a list of related person IDs down to the ones the logged in user is allowed to read
+   * Note: the restriction query is resolved by the caller and passed in, so a request that reads several
+   * relationship sets resolves it only once
+   * @param personIds
+   * @param geographicalRestrictionsQuery Result of Person.addGeographicalRestrictionsForMixedPersonTypes
+   * @return {Promise<Array>}
+   */
+  Relationship.filterVisibleRelatedPersonIds = function (personIds, geographicalRestrictionsQuery) {
+    // user is not restricted, or there is nothing to filter
+    if (!geographicalRestrictionsQuery || !personIds.length) {
+      return Promise.resolve(personIds);
+    }
+
+    return app.models.person
+      .rawFind({
+        and: [
+          {
+            id: {
+              inq: personIds
+            }
+          },
+          geographicalRestrictionsQuery
+        ]
+      }, {
+        projection: {_id: 1}
+      })
+      .then((people) => people.map((person) => person.id));
+  };
+
+  /**
    * Find relationship exposures for a person
    * @param outbreakId
    * @param personId
    * @param filter
+   * @param options
    * @return {*}
    */
-  Relationship.findPersonRelationshipExposures = function (outbreakId, personId, filter) {
-    return Relationship.findOrCountPersonRelationshipExposuresOrContacts(outbreakId, personId, filter, false);
+  Relationship.findPersonRelationshipExposures = function (outbreakId, personId, filter, options) {
+    return Relationship.findOrCountPersonRelationshipExposuresOrContacts(outbreakId, personId, filter, false, false, options);
   };
 
   /**
@@ -1243,10 +1290,11 @@ module.exports = function (Relationship) {
    * @param outbreakId
    * @param personId
    * @param filter
+   * @param options
    * @return {*}
    */
-  Relationship.countPersonRelationshipExposures = function (outbreakId, personId, filter) {
-    return Relationship.findOrCountPersonRelationshipExposuresOrContacts(outbreakId, personId, filter, false, true);
+  Relationship.countPersonRelationshipExposures = function (outbreakId, personId, filter, options) {
+    return Relationship.findOrCountPersonRelationshipExposuresOrContacts(outbreakId, personId, filter, false, true, options);
   };
 
   /**
@@ -1254,10 +1302,11 @@ module.exports = function (Relationship) {
    * @param outbreakId
    * @param personId
    * @param filter
+   * @param options
    * @return {*}
    */
-  Relationship.findPersonRelationshipContacts = function (outbreakId, personId, filter) {
-    return Relationship.findOrCountPersonRelationshipExposuresOrContacts(outbreakId, personId, filter);
+  Relationship.findPersonRelationshipContacts = function (outbreakId, personId, filter, options) {
+    return Relationship.findOrCountPersonRelationshipExposuresOrContacts(outbreakId, personId, filter, true, false, options);
   };
 
   /**
@@ -1265,10 +1314,11 @@ module.exports = function (Relationship) {
    * @param outbreakId
    * @param personId
    * @param filter
+   * @param options
    * @return {*}
    */
-  Relationship.countPersonRelationshipContacts = function (outbreakId, personId, filter) {
-    return Relationship.findOrCountPersonRelationshipExposuresOrContacts(outbreakId, personId, filter, true, true);
+  Relationship.countPersonRelationshipContacts = function (outbreakId, personId, filter, options) {
+    return Relationship.findOrCountPersonRelationshipExposuresOrContacts(outbreakId, personId, filter, true, true, options);
   };
 
   /**

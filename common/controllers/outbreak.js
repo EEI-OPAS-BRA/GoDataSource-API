@@ -256,30 +256,33 @@ module.exports = function (Outbreak) {
    * Find relations for a case
    * @param caseId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.findCaseRelationships = function (caseId, filter, callback) {
-    helpers.findPersonRelationships(caseId, filter, callback);
+  Outbreak.prototype.findCaseRelationships = function (caseId, filter, options, callback) {
+    helpers.findPersonRelationships(caseId, filter, options, callback);
   };
 
   /**
    * Find relations for a contact
    * @param contactId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.findContactRelationships = function (contactId, filter, callback) {
-    helpers.findPersonRelationships(contactId, filter, callback);
+  Outbreak.prototype.findContactRelationships = function (contactId, filter, options, callback) {
+    helpers.findPersonRelationships(contactId, filter, options, callback);
   };
 
   /**
    * Find relations for a event
    * @param eventId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.findEventRelationships = function (eventId, filter, callback) {
-    helpers.findPersonRelationships(eventId, filter, callback);
+  Outbreak.prototype.findEventRelationships = function (eventId, filter, options, callback) {
+    helpers.findPersonRelationships(eventId, filter, options, callback);
   };
 
   /**
@@ -361,10 +364,11 @@ module.exports = function (Outbreak) {
    * @param caseId
    * @param relationshipId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.getCaseRelationship = function (caseId, relationshipId, filter, callback) {
-    helpers.getPersonRelationship(caseId, relationshipId, 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE', filter, callback);
+  Outbreak.prototype.getCaseRelationship = function (caseId, relationshipId, filter, options, callback) {
+    helpers.getPersonRelationship(caseId, relationshipId, 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE', filter, options, callback);
   };
 
   /**
@@ -372,10 +376,11 @@ module.exports = function (Outbreak) {
    * @param contactId
    * @param relationshipId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.getContactRelationship = function (contactId, relationshipId, filter, callback) {
-    helpers.getPersonRelationship(contactId, relationshipId, 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT', filter, callback);
+  Outbreak.prototype.getContactRelationship = function (contactId, relationshipId, filter, options, callback) {
+    helpers.getPersonRelationship(contactId, relationshipId, 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT', filter, options, callback);
   };
 
   /**
@@ -383,10 +388,11 @@ module.exports = function (Outbreak) {
    * @param eventId
    * @param relationshipId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.getEventRelationship = function (eventId, relationshipId, filter, callback) {
-    helpers.getPersonRelationship(eventId, relationshipId, 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_EVENT', filter, callback);
+  Outbreak.prototype.getEventRelationship = function (eventId, relationshipId, filter, options, callback) {
+    helpers.getPersonRelationship(eventId, relationshipId, 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_EVENT', filter, options, callback);
   };
 
   /**
@@ -480,9 +486,10 @@ module.exports = function (Outbreak) {
    * Count relations for a case
    * @param caseId
    * @param where
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.countCaseRelationships = function (caseId, where, callback) {
+  Outbreak.prototype.countCaseRelationships = function (caseId, where, options, callback) {
     // make sure case is valid
     app.models.case
       .findById(caseId)
@@ -493,7 +500,7 @@ module.exports = function (Outbreak) {
             id: caseId
           }));
         }
-        helpers.countPersonRelationships(caseId, where, callback);
+        helpers.countPersonRelationships(caseId, where, options, callback);
       })
       .catch(callback);
   };
@@ -502,9 +509,10 @@ module.exports = function (Outbreak) {
    * Count filtered relations for a case
    * @param caseId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.filteredCountCaseRelationships = function (caseId, filter, callback) {
+  Outbreak.prototype.filteredCountCaseRelationships = function (caseId, filter, options, callback) {
     // make sure case is valid
     app.models.case
       .findById(caseId)
@@ -515,7 +523,7 @@ module.exports = function (Outbreak) {
             id: caseId
           }));
         }
-        helpers.filteredCountPersonRelationships(caseId, filter, callback);
+        helpers.filteredCountPersonRelationships(caseId, filter, options, callback);
       })
       .catch(callback);
   };
@@ -524,9 +532,10 @@ module.exports = function (Outbreak) {
    * Count relations for a contact
    * @param contactId
    * @param where
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.countContactRelationships = function (contactId, where, callback) {
+  Outbreak.prototype.countContactRelationships = function (contactId, where, options, callback) {
     // make sure contact is valid
     app.models.contact
       .findById(contactId)
@@ -537,7 +546,7 @@ module.exports = function (Outbreak) {
             id: contactId
           }));
         }
-        helpers.countPersonRelationships(contactId, where, callback);
+        helpers.countPersonRelationships(contactId, where, options, callback);
       })
       .catch(callback);
   };
@@ -546,9 +555,10 @@ module.exports = function (Outbreak) {
    * Count filtered relations for a contact
    * @param contactId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.filteredCountContactRelationships = function (contactId, filter, callback) {
+  Outbreak.prototype.filteredCountContactRelationships = function (contactId, filter, options, callback) {
     // make sure case is valid
     app.models.contact
       .findById(contactId)
@@ -559,7 +569,7 @@ module.exports = function (Outbreak) {
             id: contactId
           }));
         }
-        helpers.filteredCountPersonRelationships(contactId, filter, callback);
+        helpers.filteredCountPersonRelationships(contactId, filter, options, callback);
       })
       .catch(callback);
   };
@@ -568,9 +578,10 @@ module.exports = function (Outbreak) {
    * Count relations for an event
    * @param eventId
    * @param where
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.countEventRelationships = function (eventId, where, callback) {
+  Outbreak.prototype.countEventRelationships = function (eventId, where, options, callback) {
     // make sure event is valid
     app.models.event
       .findById(eventId)
@@ -581,7 +592,7 @@ module.exports = function (Outbreak) {
             id: eventId
           }));
         }
-        helpers.countPersonRelationships(eventId, where, callback);
+        helpers.countPersonRelationships(eventId, where, options, callback);
       })
       .catch(callback);
   };
@@ -590,9 +601,10 @@ module.exports = function (Outbreak) {
    * Count filtered relations for an event
    * @param eventId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.filteredCountEventRelationships = function (eventId, filter, callback) {
+  Outbreak.prototype.filteredCountEventRelationships = function (eventId, filter, options, callback) {
     // make sure case is valid
     app.models.event
       .findById(eventId)
@@ -603,7 +615,7 @@ module.exports = function (Outbreak) {
             id: eventId
           }));
         }
-        helpers.filteredCountPersonRelationships(eventId, filter, callback);
+        helpers.filteredCountPersonRelationships(eventId, filter, options, callback);
       })
       .catch(callback);
   };
@@ -3202,11 +3214,12 @@ module.exports = function (Outbreak) {
    * Find relationship exposures for a case
    * @param caseId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.findCaseRelationshipExposures = function (caseId, filter, callback) {
+  Outbreak.prototype.findCaseRelationshipExposures = function (caseId, filter, options, callback) {
     app.models.relationship
-      .findPersonRelationshipExposures(this.id, caseId, filter)
+      .findPersonRelationshipExposures(this.id, caseId, filter, options)
       .then(function (exposures) {
         callback(null, exposures);
       })
@@ -3217,11 +3230,12 @@ module.exports = function (Outbreak) {
    * Count relationship exposures for a case
    * @param caseId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.countCaseRelationshipExposures = function (caseId, filter, callback) {
+  Outbreak.prototype.countCaseRelationshipExposures = function (caseId, filter, options, callback) {
     app.models.relationship
-      .countPersonRelationshipExposures(this.id, caseId, filter)
+      .countPersonRelationshipExposures(this.id, caseId, filter, options)
       .then(function (exposures) {
         callback(null, exposures);
       })
@@ -3232,11 +3246,12 @@ module.exports = function (Outbreak) {
    * Find relationship contacts for a case. Relationship contacts are the relationships where the case is a source (it has nothing to do with person type contact)
    * @param caseId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.findCaseRelationshipContacts = function (caseId, filter, callback) {
+  Outbreak.prototype.findCaseRelationshipContacts = function (caseId, filter, options, callback) {
     app.models.relationship
-      .findPersonRelationshipContacts(this.id, caseId, filter)
+      .findPersonRelationshipContacts(this.id, caseId, filter, options)
       .then(function (contacts) {
         callback(null, contacts);
       })
@@ -3247,11 +3262,12 @@ module.exports = function (Outbreak) {
    * Count relationship contacts for a case. Relationship contacts are the relationships where the case is a source (it has nothing to do with person type contact)
    * @param caseId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.countCaseRelationshipContacts = function (caseId, filter, callback) {
+  Outbreak.prototype.countCaseRelationshipContacts = function (caseId, filter, options, callback) {
     app.models.relationship
-      .countPersonRelationshipContacts(this.id, caseId, filter)
+      .countPersonRelationshipContacts(this.id, caseId, filter, options)
       .then(function (contacts) {
         callback(null, contacts);
       })
@@ -3262,11 +3278,12 @@ module.exports = function (Outbreak) {
    * Find relationship exposures for a contact
    * @param contactId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.findContactRelationshipExposures = function (contactId, filter, callback) {
+  Outbreak.prototype.findContactRelationshipExposures = function (contactId, filter, options, callback) {
     app.models.relationship
-      .findPersonRelationshipExposures(this.id, contactId, filter)
+      .findPersonRelationshipExposures(this.id, contactId, filter, options)
       .then(function (exposures) {
         callback(null, exposures);
       })
@@ -3277,11 +3294,12 @@ module.exports = function (Outbreak) {
    * Count relationship exposures for a contact
    * @param caseId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.countContactRelationshipExposures = function (caseId, filter, callback) {
+  Outbreak.prototype.countContactRelationshipExposures = function (caseId, filter, options, callback) {
     app.models.relationship
-      .countPersonRelationshipExposures(this.id, caseId, filter)
+      .countPersonRelationshipExposures(this.id, caseId, filter, options)
       .then(function (exposures) {
         callback(null, exposures);
       })
@@ -3292,11 +3310,12 @@ module.exports = function (Outbreak) {
    * Find relationship contacts for a contact. Relationship contacts are the relationships where the contact is a source (it has nothing to do with person type contact)
    * @param contactId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.findContactRelationshipContacts = function (contactId, filter, callback) {
+  Outbreak.prototype.findContactRelationshipContacts = function (contactId, filter, options, callback) {
     app.models.relationship
-      .findPersonRelationshipContacts(this.id, contactId, filter)
+      .findPersonRelationshipContacts(this.id, contactId, filter, options)
       .then(function (contacts) {
         callback(null, contacts);
       })
@@ -3307,11 +3326,12 @@ module.exports = function (Outbreak) {
    * Count relationship contacts for a contact. Relationship contacts are the relationships where the contact is a source (it has nothing to do with person type contact)
    * @param contactId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.countContactRelationshipContacts = function (contactId, filter, callback) {
+  Outbreak.prototype.countContactRelationshipContacts = function (contactId, filter, options, callback) {
     app.models.relationship
-      .countPersonRelationshipContacts(this.id, contactId, filter)
+      .countPersonRelationshipContacts(this.id, contactId, filter, options)
       .then(function (contacts) {
         callback(null, contacts);
       })
@@ -3322,11 +3342,12 @@ module.exports = function (Outbreak) {
    * Find relationship exposures for a contact
    * @param eventId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.findEventRelationshipExposures = function (eventId, filter, callback) {
+  Outbreak.prototype.findEventRelationshipExposures = function (eventId, filter, options, callback) {
     app.models.relationship
-      .findPersonRelationshipExposures(this.id, eventId, filter)
+      .findPersonRelationshipExposures(this.id, eventId, filter, options)
       .then(function (exposures) {
         callback(null, exposures);
       })
@@ -3337,11 +3358,12 @@ module.exports = function (Outbreak) {
    * Count relationship exposures for a contact
    * @param eventId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.countEventRelationshipExposures = function (eventId, filter, callback) {
+  Outbreak.prototype.countEventRelationshipExposures = function (eventId, filter, options, callback) {
     app.models.relationship
-      .countPersonRelationshipExposures(this.id, eventId, filter)
+      .countPersonRelationshipExposures(this.id, eventId, filter, options)
       .then(function (exposures) {
         callback(null, exposures);
       })
@@ -3352,11 +3374,12 @@ module.exports = function (Outbreak) {
    * Find relationship contacts for a event. Relationship contacts are the relationships where the event is a source (it has nothing to do with person type contact)
    * @param eventId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.findEventRelationshipContacts = function (eventId, filter, callback) {
+  Outbreak.prototype.findEventRelationshipContacts = function (eventId, filter, options, callback) {
     app.models.relationship
-      .findPersonRelationshipContacts(this.id, eventId, filter)
+      .findPersonRelationshipContacts(this.id, eventId, filter, options)
       .then(function (contacts) {
         callback(null, contacts);
       })
@@ -3368,11 +3391,12 @@ module.exports = function (Outbreak) {
    * Count relationship contacts for a event. Relationship contacts are the relationships where the event is a source (it has nothing to do with person type contact)
    * @param eventId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.countEventRelationshipContacts = function (eventId, filter, callback) {
+  Outbreak.prototype.countEventRelationshipContacts = function (eventId, filter, options, callback) {
     app.models.relationship
-      .countPersonRelationshipContacts(this.id, eventId, filter)
+      .countPersonRelationshipContacts(this.id, eventId, filter, options)
       .then(function (contacts) {
         callback(null, contacts);
       })
@@ -4190,10 +4214,11 @@ module.exports = function (Outbreak) {
    * Find relations for a contact of contact
    * @param contactOfContactId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.findContactOfContactRelationships = function (contactOfContactId, filter, callback) {
-    helpers.findPersonRelationships(contactOfContactId, filter, callback);
+  Outbreak.prototype.findContactOfContactRelationships = function (contactOfContactId, filter, options, callback) {
+    helpers.findPersonRelationships(contactOfContactId, filter, options, callback);
   };
 
   /**
@@ -4230,14 +4255,16 @@ module.exports = function (Outbreak) {
    * @param contactOfContactId
    * @param relationshipId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.getContactOfContactRelationship = function (contactOfContactId, relationshipId, filter, callback) {
+  Outbreak.prototype.getContactOfContactRelationship = function (contactOfContactId, relationshipId, filter, options, callback) {
     helpers.getPersonRelationship(
       contactOfContactId,
       relationshipId,
       'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT_OF_CONTACT',
       filter,
+      options,
       callback
     );
   };
@@ -4281,9 +4308,10 @@ module.exports = function (Outbreak) {
    * Count relations for a contact of contact
    * @param contactOfContactId
    * @param where
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.countContactOfContactRelationships = function (contactOfContactId, where, callback) {
+  Outbreak.prototype.countContactOfContactRelationships = function (contactOfContactId, where, options, callback) {
     app.models.contactOfContact
       .findById(contactOfContactId)
       .then((contact) => {
@@ -4293,7 +4321,7 @@ module.exports = function (Outbreak) {
             id: contactOfContactId
           }));
         }
-        helpers.countPersonRelationships(contactOfContactId, where, callback);
+        helpers.countPersonRelationships(contactOfContactId, where, options, callback);
       })
       .catch(callback);
   };
@@ -4302,11 +4330,12 @@ module.exports = function (Outbreak) {
    * Find relationship contacts for a contact of contact. Relationship contacts are the relationships where the contact of contact is a source (it has nothing to do with person type contact)
    * @param contactOfContactId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.findContactOfContactRelationshipContacts = function (contactOfContactId, filter, callback) {
+  Outbreak.prototype.findContactOfContactRelationshipContacts = function (contactOfContactId, filter, options, callback) {
     app.models.relationship
-      .findPersonRelationshipContacts(this.id, contactOfContactId, filter)
+      .findPersonRelationshipContacts(this.id, contactOfContactId, filter, options)
       .then(function (contactsOfContacts) {
         callback(null, contactsOfContacts);
       })
@@ -4317,11 +4346,12 @@ module.exports = function (Outbreak) {
    * Count relationship contacts for a contact. Relationship contacts are the relationships where the contact is a source (it has nothing to do with person type contact)
    * @param contactOfContactId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.countContactOfContactRelationshipContacts = function (contactOfContactId, filter, callback) {
+  Outbreak.prototype.countContactOfContactRelationshipContacts = function (contactOfContactId, filter, options, callback) {
     app.models.relationship
-      .countPersonRelationshipContacts(this.id, contactOfContactId, filter)
+      .countPersonRelationshipContacts(this.id, contactOfContactId, filter, options)
       .then(function (contactsOfContacts) {
         callback(null, contactsOfContacts);
       })
@@ -4333,11 +4363,12 @@ module.exports = function (Outbreak) {
    * Find relationship exposures for a contact of contact
    * @param contactOfContactId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.findContactOfContactRelationshipExposures = function (contactOfContactId, filter, callback) {
+  Outbreak.prototype.findContactOfContactRelationshipExposures = function (contactOfContactId, filter, options, callback) {
     app.models.relationship
-      .findPersonRelationshipExposures(this.id, contactOfContactId, filter)
+      .findPersonRelationshipExposures(this.id, contactOfContactId, filter, options)
       .then(function (exposures) {
         callback(null, exposures);
       })
@@ -4348,11 +4379,12 @@ module.exports = function (Outbreak) {
    * Count relationship exposures for a contact of contact
    * @param contactOfContactId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.prototype.countContactOfContactRelationshipExposures = function (contactOfContactId, filter, callback) {
+  Outbreak.prototype.countContactOfContactRelationshipExposures = function (contactOfContactId, filter, options, callback) {
     app.models.relationship
-      .countPersonRelationshipExposures(this.id, contactOfContactId, filter)
+      .countPersonRelationshipExposures(this.id, contactOfContactId, filter, options)
       .then(function (exposures) {
         callback(null, exposures);
       })

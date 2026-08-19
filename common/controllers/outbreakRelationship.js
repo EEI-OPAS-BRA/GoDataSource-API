@@ -355,7 +355,7 @@ module.exports = function (Outbreak) {
   /**
    * Count outbreak relationships
    */
-  Outbreak.prototype.countRelationships = function (where, callback) {
+  Outbreak.prototype.countRelationships = function (where, options, callback) {
     // required conditions
     const requiredWhere = {
       outbreakId: this.id

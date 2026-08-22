@@ -5600,7 +5600,7 @@
         "translation": "Allow creating contacts in other locations"
       },
       "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CROSS_LOCATION_CREATION_DESCRIPTION": {
-        "translation": "Allows creating contacts (bulk contact creation) in locations beyond the user's team responsibility area"
+        "translation": "Allows creating contacts in locations beyond the user's team responsibility area, in both single and bulk contact creation; the contact address Location field lists all locations"
       },
       "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_CROSS_LOCATION_CREATION": {
         "translation": "Allow creating cases in other locations"

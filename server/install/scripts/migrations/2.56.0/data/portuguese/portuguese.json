@@ -1,0 +1,8 @@
+{
+  "id": "portuguese_pt",
+  "tokens": {
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CROSS_LOCATION_CREATION_DESCRIPTION": {
+      "translation": "Permite criar contatos em localidades fora da área de responsabilidade da equipe do usuário, tanto na criação única quanto na criação em massa; o campo Localização do endereço do contato passa a listar todas as localidades"
+    }
+  }
+}

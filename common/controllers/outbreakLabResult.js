@@ -273,6 +273,13 @@ module.exports = function (Outbreak) {
       delete filter.where.dontTranslateValues;
     }
 
+    // parse dontIncludeTimestamp query param
+    let dontIncludeTimestamp = false;
+    if (filter.where.hasOwnProperty('dontIncludeTimestamp')) {
+      dontIncludeTimestamp = filter.where.dontIncludeTimestamp;
+      delete filter.where.dontIncludeTimestamp;
+    }
+
     // parse jsonReplaceUndefinedWithNull query param
     let jsonReplaceUndefinedWithNull = false;
     if (filter.where.hasOwnProperty('jsonReplaceUndefinedWithNull')) {
@@ -359,6 +366,7 @@ module.exports = function (Outbreak) {
             useQuestionVariable,
             useDbColumns,
             dontTranslateValues,
+            dontIncludeTimestamp,
             jsonReplaceUndefinedWithNull,
             contextUserLanguageId: app.utils.remote.getUserFromOptions(options).languageId
           },

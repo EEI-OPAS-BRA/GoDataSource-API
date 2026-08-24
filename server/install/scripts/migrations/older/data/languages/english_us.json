@@ -4539,6 +4539,12 @@
       },
       "LNG_COMMON_LABEL_EXPORT_USE_DB_COLUMNS_NO_TRANSLATED_VALUES_DESCRIPTION": {
         "translation": "Receive values the same way they are in database (useful for scripts)"
+      },
+      "LNG_COMMON_LABEL_EXPORT_DONT_INCLUDE_TIMESTAMP": {
+        "translation": "Don't include time in date fields"
+      },
+      "LNG_COMMON_LABEL_EXPORT_DONT_INCLUDE_TIMESTAMP_DESCRIPTION": {
+        "translation": "Export only the date. When unchecked dates are exported with time"
       }
     },
     "uiGeneralActions": {

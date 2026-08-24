@@ -4539,6 +4539,12 @@
       },
       "LNG_COMMON_LABEL_EXPORT_USE_DB_COLUMNS_NO_TRANSLATED_VALUES_DESCRIPTION": {
         "translation": "Receive values the same way they are in database (useful for scripts)"
+      },
+      "LNG_COMMON_LABEL_EXPORT_DONT_INCLUDE_TIMESTAMP": {
+        "translation": "Não incluir hora nos campos de data"
+      },
+      "LNG_COMMON_LABEL_EXPORT_DONT_INCLUDE_TIMESTAMP_DESCRIPTION": {
+        "translation": "Exporta apenas a data. Sem marcar, as datas são exportadas com hora"
       }
     },
     "uiGeneralActions": {

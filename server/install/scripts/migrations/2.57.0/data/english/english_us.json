@@ -1,0 +1,11 @@
+{
+  "id": "english_us",
+  "tokens": {
+    "LNG_COMMON_LABEL_EXPORT_DONT_INCLUDE_TIMESTAMP": {
+      "translation": "Don't include time in date fields"
+    },
+    "LNG_COMMON_LABEL_EXPORT_DONT_INCLUDE_TIMESTAMP_DESCRIPTION": {
+      "translation": "Export only the date. When unchecked dates are exported with time"
+    }
+  }
+}

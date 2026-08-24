@@ -92,6 +92,24 @@ const formatDate = function (value) {
 };
 
 /**
+ * Format a date using the configured display format
+ * If the date is not valid, return the received value
+ * @param value
+ * @param includeTimestamp If true, the date & time display format is used
+ * @returns {string}
+ */
+const formatDisplayDate = function (value, includeTimestamp) {
+  const date = toMoment(value);
+  return date.isValid() ?
+    date.format(
+      includeTimestamp ?
+        dateTimeDisplayFormat :
+        dateDisplayFormat
+    ) :
+    value;
+};
+
+/**
  * Convert to date
  * @returns {moment.Moment}
  */
@@ -401,6 +419,7 @@ module.exports = {
   getRange,
   getDateDisplayValue,
   formatDate,
+  formatDisplayDate,
   toMoment,
   isValidDate,
   getChunksForInterval,

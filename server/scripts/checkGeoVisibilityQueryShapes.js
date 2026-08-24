@@ -97,10 +97,34 @@ const buildContext = (outbreakProperties) => {
   };
 };
 
-const baseLocationsQuery = {
-  usualPlaceOfResidenceLocationId: {
-    inq: USER_LOCATION_IDS.concat([null])
+// the geographic anchor of a record: its usual place of residence, the notification address when the
+// residence address is missing, and no anchor at all when the record has neither
+const baseLocationClauses = [
+  {
+    usualPlaceOfResidenceLocationId: {
+      inq: USER_LOCATION_IDS
+    }
+  },
+  {
+    usualPlaceOfResidenceLocationId: {
+      inq: [null]
+    },
+    notificationLocationId: {
+      inq: USER_LOCATION_IDS
+    }
+  },
+  {
+    usualPlaceOfResidenceLocationId: {
+      inq: [null]
+    },
+    notificationLocationId: {
+      inq: [null]
+    }
   }
+];
+
+const baseLocationsQuery = {
+  or: baseLocationClauses
 };
 
 const notificationCaseQuery = {
@@ -115,6 +139,86 @@ const residenceChainContactQuery = {
   id: {
     inq: RESIDENT_CASE_CONTACT_IDS
   }
+};
+
+// people used to assert what a query actually lets through, one per geographic anchor combination
+const people = {
+  residenceInside: {
+    type: 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE',
+    usualPlaceOfResidenceLocationId: 'location-niteroi',
+    notificationLocationId: null
+  },
+  residenceOutside: {
+    type: 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE',
+    usualPlaceOfResidenceLocationId: 'location-rio',
+    notificationLocationId: null
+  },
+  noLocationAtAll: {
+    type: 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE',
+    usualPlaceOfResidenceLocationId: null,
+    notificationLocationId: null
+  },
+  notificationOnlyInside: {
+    type: 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE',
+    usualPlaceOfResidenceLocationId: null,
+    notificationLocationId: 'location-niteroi'
+  },
+  notificationOnlyOutside: {
+    type: 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE',
+    usualPlaceOfResidenceLocationId: null,
+    notificationLocationId: 'location-rio'
+  },
+  residenceOutsideNotifiedInside: {
+    type: 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE',
+    usualPlaceOfResidenceLocationId: 'location-rio',
+    notificationLocationId: 'location-niteroi'
+  }
+};
+
+/**
+ * Evaluate a where query against a record, covering the operators these restrictions build
+ * (or / and / inq / equality), with null matching a missing property the way mongo does
+ * @param query
+ * @param record
+ * @returns {boolean}
+ */
+const matches = (query, record) => {
+  return Object.keys(query).every(property => {
+    const condition = query[property];
+
+    if (property === 'or') {
+      return condition.some(subQuery => matches(subQuery, record));
+    }
+
+    if (property === 'and') {
+      return condition.every(subQuery => matches(subQuery, record));
+    }
+
+    const value = record[property] === undefined ?
+      null :
+      record[property];
+
+    if (
+      condition !== null &&
+      typeof condition === 'object'
+    ) {
+      return condition.inq.indexOf(value) !== -1;
+    }
+
+    return value === condition;
+  });
+};
+
+/**
+ * Assert which of the fixture people a query lets through
+ * @param query
+ * @param expectedVisiblePeople
+ */
+const assertVisiblePeople = (query, expectedVisiblePeople) => {
+  assert.deepStrictEqual(
+    Object.keys(people).filter(name => matches(query, people[name])),
+    expectedVisiblePeople
+  );
 };
 
 // scenarios, each asserting one query shape
@@ -175,10 +279,7 @@ const scenarios = [
         }))
         .then(query => {
           assert.deepStrictEqual(query, {
-            or: [
-              baseLocationsQuery,
-              notificationCaseQuery
-            ]
+            or: baseLocationClauses.concat([notificationCaseQuery])
           });
         });
     }
@@ -193,12 +294,44 @@ const scenarios = [
         }))
         .then(query => {
           assert.deepStrictEqual(query, {
-            or: [
-              baseLocationsQuery,
-              residenceChainContactQuery
-            ]
+            or: baseLocationClauses.concat([residenceChainContactQuery])
           });
           assert.strictEqual(residentCaseContactIdsCalls, 1);
+        });
+    }
+  },
+  {
+    name: 'with both toggles off, a record anchored only by its notification address stays with the notifying team',
+    run: () => {
+      return Person
+        .addGeographicalRestrictions(buildContext({}), undefined, 'case')
+        .then(query => {
+          assertVisiblePeople(query, [
+            // the user's own locality, by residence
+            'residenceInside',
+            // no anchor at all, visible to everybody so it is not lost
+            'noLocationAtAll',
+            // no residence, so the notification address anchors it here
+            'notificationOnlyInside'
+          ]);
+        });
+    }
+  },
+  {
+    name: 'the notification address anchors a record only when it has no residence address',
+    run: () => {
+      return Person
+        .addGeographicalRestrictions(buildContext({
+          allowNotificationLocationAccess: true
+        }), undefined, 'case')
+        .then(query => {
+          assertVisiblePeople(query, [
+            'residenceInside',
+            'noLocationAtAll',
+            'notificationOnlyInside',
+            // revealed by the toggle, not by the anchor fallback
+            'residenceOutsideNotifiedInside'
+          ]);
         });
     }
   },
@@ -212,11 +345,10 @@ const scenarios = [
         }))
         .then(query => {
           assert.deepStrictEqual(query, {
-            or: [
-              baseLocationsQuery,
+            or: baseLocationClauses.concat([
               notificationCaseQuery,
               residenceChainContactQuery
-            ]
+            ])
           });
         });
     }

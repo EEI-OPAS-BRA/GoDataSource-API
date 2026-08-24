@@ -1598,6 +1598,42 @@ module.exports = function (Person) {
   };
 
   /**
+   * Build the clauses that place a person inside the locations a user is responsible for.
+   * A person is anchored by the location of its usual place of residence address. When that address is
+   * missing, the notification address anchors it instead, so a record registered with only a Notification
+   * address stays with the notifying team instead of becoming visible to every team. A person carrying
+   * neither address has no anchor at all and stays visible to everybody, so it is not lost.
+   * Note: this is the anchor of the record, not a visibility widening, so it does not depend on the outbreak toggles.
+   * Note: "no location" is expressed as inq [null] and not as null, because the mongo connector turns a plain
+   * null into a $type check that misses records saved before the property existed, while $in [null] matches both.
+   * @param {string[]} userAllowedLocationsIds
+   * @returns {Object[]} clauses meant to be OR-ed together
+   */
+  Person.getBaseLocationClauses = (userAllowedLocationsIds) => {
+    const noLocation = {
+      inq: [null]
+    };
+
+    return [
+      {
+        usualPlaceOfResidenceLocationId: {
+          inq: userAllowedLocationsIds
+        }
+      },
+      {
+        usualPlaceOfResidenceLocationId: noLocation,
+        notificationLocationId: {
+          inq: userAllowedLocationsIds
+        }
+      },
+      {
+        usualPlaceOfResidenceLocationId: noLocation,
+        notificationLocationId: noLocation
+      }
+    ];
+  };
+
+  /**
    * Add geographical restriction in where prop of the filter for logged in user
    * Note: The updated where filter is returned by the Promise; If there filter doesn't need to be updated nothing will be returned
    * @param context Remoting context from which to get logged in user and outbreak
@@ -1645,12 +1681,10 @@ module.exports = function (Person) {
           return Promise.resolve();
         }
 
-        // base restriction (current behavior)
-        // get models for the calculated locations and the ones that don't have a usual place of residence location set
+        // base restriction
+        const baseLocationClauses = Person.getBaseLocationClauses(userAllowedLocationsIds);
         const baseLocationsQuery = {
-          usualPlaceOfResidenceLocationId: {
-            inq: userAllowedLocationsIds.concat([null])
-          }
+          or: baseLocationClauses
         };
 
         // notification-location access governs CASE visibility for the notifying team
@@ -1661,14 +1695,13 @@ module.exports = function (Person) {
         // CASE: notifying team also sees the case it notified (residence elsewhere)
         if (notificationCaseEnabled && modelName === app.models.case.modelName) {
           return finalize({
-            or: [
-              baseLocationsQuery,
+            or: baseLocationClauses.concat([
               {
                 notificationLocationId: {
                   inq: userAllowedLocationsIds
                 }
               }
-            ]
+            ])
           });
         }
 
@@ -1678,14 +1711,13 @@ module.exports = function (Person) {
             .then(contactIds => finalize(
               contactIds.length ?
                 {
-                  or: [
-                    baseLocationsQuery,
+                  or: baseLocationClauses.concat([
                     {
                       id: {
                         inq: contactIds
                       }
                     }
-                  ]
+                  ])
                 } :
                 baseLocationsQuery
             ));
@@ -1744,12 +1776,10 @@ module.exports = function (Person) {
           return Promise.resolve();
         }
 
-        // base restriction (current behavior)
-        // get models for the calculated locations and the ones that don't have a usual place of residence location set
+        // base restriction
+        const baseLocationClauses = Person.getBaseLocationClauses(userAllowedLocationsIds);
         const baseLocationsQuery = {
-          usualPlaceOfResidenceLocationId: {
-            inq: userAllowedLocationsIds.concat([null])
-          }
+          or: baseLocationClauses
         };
 
         // notification-location access governs CASE visibility for the notifying team
@@ -1766,7 +1796,7 @@ module.exports = function (Person) {
         }
 
         // each reveal is scoped to the person type it applies to, so a mixed type query stays correct
-        const orQueries = [baseLocationsQuery];
+        const orQueries = baseLocationClauses.slice();
 
         // CASE: notifying team also sees the case it notified (residence elsewhere)
         if (notificationCaseEnabled) {
@@ -1796,7 +1826,7 @@ module.exports = function (Person) {
             }
 
             return finalize(
-              orQueries.length > 1 ?
+              orQueries.length > baseLocationClauses.length ?
                 {
                   or: orQueries
                 } :

@@ -10932,6 +10932,9 @@
           "unauthenticated"
         ]
       },
+      "LNG_FORM_VALIDATION_ERROR_AT_LEAST_ONE_ITEM_REQUIRED": {
+        "translation": "At least one item must be added"
+      },
       "LNG_FORM_VALIDATION_ERROR_GENERAL_ASYNC": {
         "translation": "Invalid data",
         "modules": [

@@ -1,0 +1,8 @@
+{
+  "id": "portuguese_pt",
+  "tokens": {
+    "LNG_FORM_VALIDATION_ERROR_AT_LEAST_ONE_ITEM_REQUIRED": {
+      "translation": "É necessário adicionar pelo menos um item"
+    }
+  }
+}

@@ -5614,6 +5614,12 @@
       "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_CROSS_LOCATION_CREATION_DESCRIPTION": {
         "translation": "Permite criar casos em localidades fora da área de responsabilidade da equipe do usuário; o campo Localização do endereço do caso passa a listar todas as localidades"
       },
+      "LNG_OUTBREAK_FIELD_LABEL_PREVENT_ADDRESS_DELETION": {
+        "translation": "Impossibilitar exclusão de endereço"
+      },
+      "LNG_OUTBREAK_FIELD_LABEL_PREVENT_ADDRESS_DELETION_DESCRIPTION": {
+        "translation": "Quando ativado, o botão de excluir fica indisponível nos blocos de endereço de casos, contatos e contatos de contato"
+      },
       "LNG_OUTBREAK_FIELD_LABEL_ALLOW_RESIDENCE_CHAIN_ACCESS": {
         "translation": "Permitir que a equipe veja toda a cadeia de contatos de um caso residente"
       },

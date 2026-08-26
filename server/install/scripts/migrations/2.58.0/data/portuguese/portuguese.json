@@ -3,6 +3,12 @@
   "tokens": {
     "LNG_FORM_VALIDATION_ERROR_AT_LEAST_ONE_ITEM_REQUIRED": {
       "translation": "É necessário adicionar pelo menos um item"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_PREVENT_ADDRESS_DELETION": {
+      "translation": "Impossibilitar exclusão de endereço"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_PREVENT_ADDRESS_DELETION_DESCRIPTION": {
+      "translation": "Quando ativado, o botão de excluir fica indisponível nos blocos de endereço de casos, contatos e contatos de contato"
     }
   }
 }

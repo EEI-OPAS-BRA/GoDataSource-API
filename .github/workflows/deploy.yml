@@ -1,0 +1,59 @@
+name: Deploy
+
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target instance'
+        type: choice
+        options: [teste, opas]
+        default: teste
+      promote:
+        description: 'Merge dev into homologacao before deploying (opas only)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  INSTANCE: ${{ github.event_name == 'push' && 'teste' || inputs.environment }}
+
+# Never cancel a running deploy: aborting midway leaves the instance undefined.
+concurrency:
+  group: deploy-${{ github.event_name == 'push' && 'teste' || inputs.environment }}
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    if: github.event_name == 'workflow_dispatch' && inputs.promote && inputs.environment == 'opas'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: homologacao
+          fetch-depth: 0
+
+      - name: Merge dev into homologacao
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin dev
+          # Merge, never rebase: deploy targets are pulled with --ff-only.
+          git merge --no-edit origin/dev
+          git push origin homologacao
+
+  deploy:
+    needs: [promote]
+    # Runs when promote is skipped, but still blocks on a failed promote.
+    if: ${{ !cancelled() && !failure() }}
+    runs-on: [self-hosted, godata-server]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy API
+        run: ./ops/deploy-api.sh --instance "$INSTANCE"

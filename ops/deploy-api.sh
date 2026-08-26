@@ -20,12 +20,25 @@ while [[ $# -gt 0 ]]; do
 done
 
 case "$INSTANCE" in
-  teste) PM2_SERVICE="godata-teste"; EXPECTED_BRANCH="dev" ;;
-  opas)  PM2_SERVICE="godata";       EXPECTED_BRANCH="homologacao" ;;
+  teste) EXPECTED_BRANCH="dev" ;;
+  opas)  EXPECTED_BRANCH="homologacao" ;;
   *) die "--instance must be 'teste' or 'opas' (got: '${INSTANCE:-empty}')" ;;
 esac
 
-API_DIR="$HOME/git/$INSTANCE/GoDataSource-API"
+# Everything that describes the deploy host lives outside this repository, which
+# is public. See ops/deploy.env.example for the expected contents.
+DEPLOY_ENV="${GODATA_DEPLOY_ENV:-$HOME/.config/godata/deploy.env}"
+[[ -f "$DEPLOY_ENV" ]] || die "deploy settings file not found: $DEPLOY_ENV"
+# shellcheck disable=SC1090
+set -a; . "$DEPLOY_ENV"; set +a
+
+service_var="GODATA_SERVICE_${INSTANCE^^}"
+PM2_SERVICE="${!service_var:-}"
+[[ -n "$PM2_SERVICE" ]] || die "$service_var not set in $DEPLOY_ENV"
+[[ -n "${GODATA_ROOT:-}" ]] || die "GODATA_ROOT not set in $DEPLOY_ENV"
+[[ -n "${GODATA_BACKUP_ROOT:-}" ]] || die "GODATA_BACKUP_ROOT not set in $DEPLOY_ENV"
+
+API_DIR="$GODATA_ROOT/$INSTANCE/GoDataSource-API"
 [[ -d "$API_DIR/.git" ]] || die "directory for instance '$INSTANCE' not found"
 
 # The frontend deploy restarts the same process and lives in another repository,
@@ -108,10 +121,10 @@ fi
 
 if [[ "$SKIP_MIGRATE" != true ]]; then
   if [[ "$SKIP_BACKUP" != true ]]; then
-    BACKUP_DIR="$HOME/backups-deploy/$DB-$(date +%Y%m%d-%H%M%S)"
+    BACKUP_DIR="$GODATA_BACKUP_ROOT/$DB-$(date +%Y%m%d-%H%M%S)"
     mongodump --db="$DB" --out="$BACKUP_DIR" >/dev/null
     # Bound the retained dumps so the disk does not fill up silently.
-    find "$HOME/backups-deploy" -maxdepth 1 -type d -name "$DB-*" | sort | head -n -10 | \
+    find "$GODATA_BACKUP_ROOT" -maxdepth 1 -type d -name "$DB-*" | sort | head -n -10 | \
       xargs -r rm -rf
     log "backup created"
   fi

@@ -207,6 +207,26 @@
       "type": "boolean",
       "default": false
     },
+    "allowCrossLocationCreation": {
+      "description": "Flag specifying whether users may create contacts (bulk contact creation) in locations outside their team's geographic responsibility area. Only effective when applyGeographicRestrictions is true. Default: false",
+      "type": "boolean",
+      "default": false
+    },
+    "allowCaseCrossLocationCreation": {
+      "description": "Flag specifying whether users may create cases in locations outside their team's geographic responsibility area. When effective, the case address Location field lists all locations. Only effective when applyGeographicRestrictions is true. Default: false",
+      "type": "boolean",
+      "default": false
+    },
+    "allowNotificationLocationAccess": {
+      "description": "Flag specifying whether teams whose location matches a case's Notification address may view that case and its direct contacts located within the case's locations (residence + notification). Only effective when applyGeographicRestrictions is true. Default: false",
+      "type": "boolean",
+      "default": false
+    },
+    "allowResidenceChainAccess": {
+      "description": "Flag specifying whether a team responsible for a case's residence location may view ALL direct contacts of that case, in any location. Only effective when applyGeographicRestrictions is true. Default: false",
+      "type": "boolean",
+      "default": false
+    },
     "checkLastContactDateAgainstDateOnSet": {
       "description": "Flag specifying whether Date of Last Contact that is BEFORE the Date of Onset of source case. Default: false",
       "type": "boolean",
@@ -214,6 +234,16 @@
     },
     "disableModifyingLegacyQuestionnaire": {
       "description": "Flag specifying if the modifying of the legacy questionnaire is disabled. Default: false",
+      "type": "boolean",
+      "default": false
+    },
+    "allowQuestionnaireInBulkModify": {
+      "description": "Flag specifying if contact questionnaire answers can be edited as columns in the bulk modify contacts page. Default: false",
+      "type": "boolean",
+      "default": false
+    },
+    "optionalCaseContactAddressFields": {
+      "description": "Flag specifying if the address type and location are optional when creating/modifying cases and contacts. Default: false",
       "type": "boolean",
       "default": false
     },
@@ -1492,6 +1522,12 @@
     },
     {
       "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "findForUserManagement"
+    },
+    {
+      "principalType": "ROLE",
       "principalId": "case_convert_to_contact",
       "permission": "ALLOW",
       "property": "convertCaseToContact"
@@ -2267,6 +2303,32 @@
         {
           "verb": "post",
           "path": "/count"
+        }
+      ]
+    },
+    "findForUserManagement": {
+      "accepts": [
+        {
+          "arg": "filter",
+          "type": "object",
+          "description": "Filter defining fields, where, include, order, offset, and limit - must be a JSON-encoded string ({\"something\":\"value\"})"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "outbreaks",
+          "type": [
+            "outbreak"
+          ],
+          "root": true,
+          "required": true
+        }
+      ],
+      "description": "Get outbreaks (minimal fields) for user management screens, regardless of the current user's outbreak access restrictions.",
+      "http": [
+        {
+          "verb": "get",
+          "path": "/for-user-management"
         }
       ]
     },

@@ -1413,26 +1413,49 @@ module.exports = function (FollowUp) {
           return Promise.resolve();
         }
 
-        // get query for allowed locations
-        let allowedLocationsQuery = {
-          // get models for the calculated locations and the ones that don't have a usual place of residence location set
+        // base restriction (current behavior)
+        // get models for the calculated locations and the ones that don't have a usual place of residence location set
+        const baseLocationsQuery = {
           usualPlaceOfResidenceLocationId: {
             inq: userAllowedLocationsIds.concat([null])
           }
         };
 
-        // append input query
-        if (where && Object.keys(where).length) {
-          allowedLocationsQuery = {
-            and: [
-              allowedLocationsQuery,
-              where
-            ]
-          };
-        }
+        // is residence-chain access enabled for this outbreak ?
+        const residenceChainEnabled = outbreak && outbreak.allowResidenceChainAccess === true;
 
-        // update where to only query for allowed locations
-        return Promise.resolve(allowedLocationsQuery);
+        // when enabled, also reveal follow-ups of the direct contacts of cases the user owns by residence
+        const buildLocationsQuery = residenceChainEnabled ?
+          app.models.person.getResidentCaseContactIds(outbreak.id, userAllowedLocationsIds)
+            .then(contactIds => contactIds.length ?
+              {
+                or: [
+                  baseLocationsQuery,
+                  {
+                    personId: {
+                      inq: contactIds
+                    }
+                  }
+                ]
+              } :
+              baseLocationsQuery
+            ) :
+          Promise.resolve(baseLocationsQuery);
+
+        // append input query and update where to only query for allowed locations
+        return buildLocationsQuery
+          .then(allowedLocationsQuery => {
+            if (where && Object.keys(where).length) {
+              return {
+                and: [
+                  allowedLocationsQuery,
+                  where
+                ]
+              };
+            }
+
+            return allowedLocationsQuery;
+          });
       });
   };
 };

@@ -174,6 +174,8 @@ module.exports = function (SystemSettings) {
         {},
         app.utils.helpers.getBuildInformation(), {
           timezone: localizationHelper.getTimezone(),
+          dateDisplayFormat: localizationHelper.getDateDisplayFormat(),
+          dateTimeDisplayFormat: localizationHelper.getDateTimeDisplayFormat(),
           tokenTTL: config.authToken && config.authToken.ttl ?
             config.authToken.ttl :
             app.models.user.settings.ttl,

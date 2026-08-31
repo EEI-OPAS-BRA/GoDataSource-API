@@ -1,0 +1,41 @@
+{
+  "id": "russian",
+  "tokens": {
+    "LNG_LAYOUT_MENU_ITEM_FOLLOW_UPS_LABEL": {
+      "translation": "мониторинг"
+    },
+    "LNG_PAGE_LIST_FOLLOW_UPS_TITLE": {
+      "translation": "мониторинг"
+    },
+    "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM_TITLE": {
+      "translation": "Удалить доступ к вспышке"
+    },
+    "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM": {
+      "translation": "Вы собираетесь удалить доступ к одной или нескольким вспышкам. Это действие отзовёт разрешение пользователя для отменённых вспышек. Вы уверены, что хотите продолжить?"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY": {
+      "translation": "Разрешить редактирование ответов анкеты при массовом изменении"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY_DESCRIPTION": {
+      "translation": "Если включено, ответы анкеты контакта можно редактировать в виде столбцов на странице массового изменения контактов"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS": {
+      "translation": "Разрешить регистрацию случаев и контактов без Действующий адрес"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS_DESCRIPTION": {
+      "translation": "Если включено, случаи и контакты можно сохранять без заполнения адреса"
+    },
+    "LNG_COMMON_LABEL_EXPANDED_BY_DEFAULT": {
+      "translation": "Развёрнуто по умолчанию"
+    },
+    "LNG_ADDRESS_FIELD_LABEL_LOGRADOURO": {
+      "translation": "Улица"
+    },
+    "LNG_ADDRESS_FIELD_LABEL_NUMERO": {
+      "translation": "Номер"
+    },
+    "LNG_ADDRESS_FIELD_LABEL_COMPLEMENTO": {
+      "translation": "Дополнение"
+    }
+  }
+}

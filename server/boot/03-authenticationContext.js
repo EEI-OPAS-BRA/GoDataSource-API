@@ -49,6 +49,10 @@ module.exports = function (app) {
                     context.req.authData.user.roles = roles;
                     // also store the list of permissions
                     context.req.authData.user.permissionsList = roles.reduce((permissions, role) => permissions.concat(role.permissionIds), []);
+                    // system administrator always has every permission (including future ones)
+                    if (roles.some((role) => role.id === 'ROLE_SYSTEM_ADMINISTRATOR')) {
+                      context.req.authData.user.permissionsList = (app.models.role.allAllowedPermissions || []).slice();
+                    }
                     return done(null);
                   })
                   .catch(done);
@@ -143,6 +147,10 @@ module.exports = function (app) {
                             context.req.authData.user.roles = roles;
                             // also store the list of permissions
                             context.req.authData.user.permissionsList = roles.reduce((permissions, role) => permissions.concat(role.permissionIds), []);
+                            // system administrator always has every permission (including future ones)
+                            if (roles.some((role) => role.id === 'ROLE_SYSTEM_ADMINISTRATOR')) {
+                              context.req.authData.user.permissionsList = (app.models.role.allAllowedPermissions || []).slice();
+                            }
                             return done(null);
                           })
                           .catch(done);

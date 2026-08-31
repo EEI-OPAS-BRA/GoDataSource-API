@@ -33,7 +33,7 @@ module.exports = function (Outbreak) {
   Outbreak.beforeRemote('prototype.__count__cases', function (context, modelInstance, next) {
     // add geographical restrictions if needed
     app.models.case
-      .addGeographicalRestrictions(context, context.args.where)
+      .addGeographicalRestrictions(context, context.args.where, app.models.case.modelName)
       .then(updatedFilter => {
         // update where if needed
         updatedFilter && (context.args.where = updatedFilter);
@@ -562,7 +562,8 @@ module.exports = function (Outbreak) {
     app.models.case
       .addGeographicalRestrictions(
         options.remotingContext,
-        filter.where
+        filter.where,
+        app.models.case.modelName
       )
       .then(updatedFilter => {
         // update casesQuery if needed
@@ -665,7 +666,7 @@ module.exports = function (Outbreak) {
 
     // add geographical restrictions if needed
     app.models.case
-      .addGeographicalRestrictions(options.remotingContext, filter.where)
+      .addGeographicalRestrictions(options.remotingContext, filter.where, app.models.case.modelName)
       .then(updatedFilter => {
         // update filter.where if needed
         updatedFilter && (filter.where = updatedFilter);
@@ -972,7 +973,7 @@ module.exports = function (Outbreak) {
 
     // add geographical restrictions if needed
     app.models.case
-      .addGeographicalRestrictions(options.remotingContext, filter.where)
+      .addGeographicalRestrictions(options.remotingContext, filter.where, app.models.case.modelName)
       .then(updatedFilter => {
         // update filter.where if needed
         updatedFilter && (filter.where = updatedFilter);
@@ -1135,7 +1136,7 @@ module.exports = function (Outbreak) {
     // Note: even though the given cases should already be in the geographical restriction
     // we are adding this additional condition to prevent security breaches
     app.models.case
-      .addGeographicalRestrictions(options.remotingContext, filter.where)
+      .addGeographicalRestrictions(options.remotingContext, filter.where, app.models.case.modelName)
       .then(updatedFilter => {
         // update filter.where if needed
         updatedFilter && (filter.where = updatedFilter);

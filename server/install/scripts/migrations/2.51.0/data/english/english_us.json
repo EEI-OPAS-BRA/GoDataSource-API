@@ -1,0 +1,41 @@
+{
+  "id": "english_us",
+  "tokens": {
+    "LNG_LAYOUT_MENU_ITEM_FOLLOW_UPS_LABEL": {
+      "translation": "Follow-ups"
+    },
+    "LNG_PAGE_LIST_FOLLOW_UPS_TITLE": {
+      "translation": "Follow-ups"
+    },
+    "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM_TITLE": {
+      "translation": "Remove outbreak access"
+    },
+    "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM": {
+      "translation": "You are about to remove access to one or more outbreaks. This action will revoke the user's permission for the deselected outbreaks. Are you sure you want to continue?"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY": {
+      "translation": "Allow editing questionnaire answers in bulk modify"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY_DESCRIPTION": {
+      "translation": "When enabled, contact questionnaire answers can be edited as columns on the bulk modify contacts page"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS": {
+      "translation": "Allow registering cases and contacts without a Current address"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS_DESCRIPTION": {
+      "translation": "When enabled, cases and contacts can be saved without an address being filled in"
+    },
+    "LNG_COMMON_LABEL_EXPANDED_BY_DEFAULT": {
+      "translation": "Expanded by default"
+    },
+    "LNG_ADDRESS_FIELD_LABEL_LOGRADOURO": {
+      "translation": "Street"
+    },
+    "LNG_ADDRESS_FIELD_LABEL_NUMERO": {
+      "translation": "Number"
+    },
+    "LNG_ADDRESS_FIELD_LABEL_COMPLEMENTO": {
+      "translation": "Complement"
+    }
+  }
+}

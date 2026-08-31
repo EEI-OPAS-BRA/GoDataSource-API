@@ -1,0 +1,11 @@
+{
+  "id": "portuguese_pt",
+  "tokens": {
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_RESIDENCE_CHAIN_ACCESS": {
+      "translation": "Permitir que a equipe veja toda a cadeia de contatos de um caso residente"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_RESIDENCE_CHAIN_ACCESS_DESCRIPTION": {
+      "translation": "Quando ativado, a equipe responsável pela localização de residência de um caso pode ver todos os contatos diretos desse caso em qualquer localização (não apenas os do seu território). Só tem efeito quando as restrições geográficas se aplicam. Não afeta as equipes da localização de notificação."
+    }
+  }
+}

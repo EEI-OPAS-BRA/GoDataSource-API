@@ -668,7 +668,7 @@ module.exports = function (Outbreak) {
 
     // add geographical restriction to filter if needed
     app.models.contact
-      .addGeographicalRestrictions(options.remotingContext, contactQuery)
+      .addGeographicalRestrictions(options.remotingContext, contactQuery, app.models.contact.modelName)
       .then(updatedFilter => {
         updatedFilter && (contactQuery = updatedFilter);
 
@@ -1255,7 +1255,8 @@ module.exports = function (Outbreak) {
     app.models.contact
       .addGeographicalRestrictions(
         options.remotingContext,
-        filter.where
+        filter.where,
+        app.models.contact.modelName
       )
       .then((updatedFilter) => {
         // update casesQuery if needed

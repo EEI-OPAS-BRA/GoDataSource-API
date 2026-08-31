@@ -1,0 +1,41 @@
+{
+  "id": "spanish",
+  "tokens": {
+    "LNG_LAYOUT_MENU_ITEM_FOLLOW_UPS_LABEL": {
+      "translation": "Seguimientos"
+    },
+    "LNG_PAGE_LIST_FOLLOW_UPS_TITLE": {
+      "translation": "Seguimientos"
+    },
+    "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM_TITLE": {
+      "translation": "Eliminar acceso al brote"
+    },
+    "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM": {
+      "translation": "Está a punto de eliminar el acceso a uno o más brotes. Esta acción revocará el permiso del usuario para los brotes desmarcados. ¿Está seguro de que desea continuar?"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY": {
+      "translation": "Permitir editar respuestas del cuestionario en la edición masiva"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_QUESTIONNAIRE_IN_BULK_MODIFY_DESCRIPTION": {
+      "translation": "Cuando está activado, las respuestas del cuestionario de contacto se pueden editar como columnas en la página de edición masiva de contactos"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS": {
+      "translation": "Permitir registrar casos y contactos sin Dirección actual"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS_DESCRIPTION": {
+      "translation": "Cuando está activado, los casos y contactos pueden guardarse sin que se complete una dirección"
+    },
+    "LNG_COMMON_LABEL_EXPANDED_BY_DEFAULT": {
+      "translation": "Expandido por defecto"
+    },
+    "LNG_ADDRESS_FIELD_LABEL_LOGRADOURO": {
+      "translation": "Calle"
+    },
+    "LNG_ADDRESS_FIELD_LABEL_NUMERO": {
+      "translation": "Número"
+    },
+    "LNG_ADDRESS_FIELD_LABEL_COMPLEMENTO": {
+      "translation": "Complemento"
+    }
+  }
+}

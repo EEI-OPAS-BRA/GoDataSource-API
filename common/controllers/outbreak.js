@@ -161,8 +161,11 @@ module.exports = function (Outbreak) {
   Outbreak.beforeRemote('find', function (context, modelInstance, next) {
     // get logged in user outbreak restrictions
     const restrictedOutbreakIds = _.get(context, 'req.authData.user.outbreakIds', []);
+    // system administrators can see every outbreak regardless of their outbreak restrictions
+    const isSystemAdmin = (_.get(context, 'req.authData.user.roles', []) || [])
+      .some((role) => role.id === 'ROLE_SYSTEM_ADMINISTRATOR');
     // if there are any restrictions set
-    if (restrictedOutbreakIds.length) {
+    if (!isSystemAdmin && restrictedOutbreakIds.length) {
       // update filters to search only in the outbreaks accessible to the user
       context.args.filter = app.utils.remote
         .mergeFilters({
@@ -178,7 +181,10 @@ module.exports = function (Outbreak) {
 
   Outbreak.beforeRemote('count', function (context, modelInstance, next) {
     const restrictedOutbreakIds = _.get(context, 'req.authData.user.outbreakIds', []);
-    if (restrictedOutbreakIds.length) {
+    // system administrators can see every outbreak regardless of their outbreak restrictions
+    const isSystemAdmin = (_.get(context, 'req.authData.user.roles', []) || [])
+      .some((role) => role.id === 'ROLE_SYSTEM_ADMINISTRATOR');
+    if (!isSystemAdmin && restrictedOutbreakIds.length) {
       // do we have delete filter ?
       let filter = {where: _.get(context, 'args.where', {})};
 
@@ -213,6 +219,38 @@ module.exports = function (Outbreak) {
     // finished
     next();
   });
+
+  /**
+   * Find outbreaks (minimal, non-sensitive fields) for user management screens.
+   * Unlike the regular 'find', this bypasses the per-user outbreak access
+   * restriction so that user managers can resolve the names of outbreaks assigned
+   * to other users even when those outbreaks are outside their own access scope.
+   * Gated by the 'user_list' permission (see outbreak.json ACL).
+   */
+  Outbreak.findForUserManagement = function (filter, callback) {
+    filter = filter || {};
+
+    // only expose minimal, non-sensitive fields
+    const find = {
+      fields: {
+        id: true,
+        name: true,
+        deleted: true
+      },
+      order: ['name ASC']
+    };
+
+    // allow caller to request deleted outbreaks (used by the users list)
+    if (_.get(filter, 'where.includeDeletedRecords')) {
+      find.deleted = true;
+    }
+
+    // direct model call -> does not trigger the 'find' remote hook restriction
+    app.models.outbreak
+      .find(find)
+      .then((outbreaks) => callback(null, outbreaks))
+      .catch(callback);
+  };
 
   /**
    * Find relations for a case
@@ -1437,16 +1475,24 @@ module.exports = function (Outbreak) {
       .then(function (personIds) {
         // if there was a people filter
         if (personIds) {
-          // make sure both people in a relation match the filter passed
+          // include a relation if AT LEAST ONE of its people matches the filter passed,
+          // so the matched people are shown together with their directly related people
+          // (e.g. filtering a case by name also brings its related contacts)
           filter = app.utils.remote
             .mergeFilters({
               where: {
-                'persons.0.id': {
-                  inq: personIds
-                },
-                'persons.1.id': {
-                  inq: personIds
-                }
+                or: [
+                  {
+                    'persons.0.id': {
+                      inq: personIds
+                    }
+                  },
+                  {
+                    'persons.1.id': {
+                      inq: personIds
+                    }
+                  }
+                ]
               }
             }, filter);
         }
@@ -4526,20 +4572,13 @@ module.exports = function (Outbreak) {
   Outbreak.prototype.deleteContactFollowUp = function (personId, followUpId, options, callback) {
     const outbreakId = this.id;
 
-    // make sure person is either a contact or was a contact
+    // delete cases as well as contacts
     app.models.person
       .findOne({
         where: {
           id: personId,
           outbreakId: outbreakId,
-          or: [
-            {
-              type: 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT'
-            },
-            {
-              wasContact: true
-            }
-          ]
+          type: { neq: 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_EVENT' }
         }
       })
       .then((contact) => {

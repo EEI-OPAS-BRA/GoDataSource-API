@@ -470,8 +470,7 @@ const migrationVersions = [{
       buildNo: 1
     }]
   }]
-},
-{
+}, {
   version: '2.50.2',
   scripts: [{
     fileName: 'template.js',
@@ -486,7 +485,169 @@ const migrationVersions = [{
       buildNo: 9
     }]
   }]
-},];
+}, {
+  version: '2.51.0',
+  scripts: [{
+    fileName: 'languageToken.js',
+    actions: [ {
+      name: 'createUpdateLanguageTokens',
+      buildNo: 2
+    }, {
+      name: 'createUpdateArabicLanguageTokens',
+      buildNo: 2
+    }, {
+      name: 'createUpdateFrenchLanguageTokens',
+      buildNo: 2
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 2
+    }, {
+      name: 'createUpdateRussianLanguageTokens',
+      buildNo: 2
+    }, {
+      name: 'createUpdateSpanishLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdateLanguageTokens',
+      buildNo: 2
+    }, {
+      name: 'createUpdateArabicLanguageTokens',
+      buildNo: 2
+    }, {
+      name: 'createUpdateFrenchLanguageTokens',
+      buildNo: 2
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 2
+    }, {
+      name: 'createUpdateRussianLanguageTokens',
+      buildNo: 2
+    }, {
+      name: 'createUpdateSpanishLanguageTokens',
+      buildNo: 2
+    }, {
+      name: 'createUpdateLanguageTokens',
+      buildNo: 5
+    }, {
+      name: 'createUpdateArabicLanguageTokens',
+      buildNo: 5
+    }, {
+      name: 'createUpdateFrenchLanguageTokens',
+      buildNo: 5
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 5
+    }, {
+      name: 'createUpdateRussianLanguageTokens',
+      buildNo: 5
+    }, {
+      name: 'createUpdateSpanishLanguageTokens',
+      buildNo: 5
+    }, {
+      name: 'createUpdateLanguageTokens',
+      buildNo: 6
+    }, {
+      name: 'createUpdateArabicLanguageTokens',
+      buildNo: 6
+    }, {
+      name: 'createUpdateFrenchLanguageTokens',
+      buildNo: 6
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 6
+    }, {
+      name: 'createUpdateRussianLanguageTokens',
+      buildNo: 6
+    }, {
+      name: 'createUpdateSpanishLanguageTokens',
+      buildNo: 6
+    }, {
+      name: 'createUpdateLanguageTokens',
+      buildNo: 7
+    }, {
+      name: 'createUpdateArabicLanguageTokens',
+      buildNo: 7
+    }, {
+      name: 'createUpdateFrenchLanguageTokens',
+      buildNo: 7
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 7
+    }, {
+      name: 'createUpdateRussianLanguageTokens',
+      buildNo: 7
+    }, {
+      name: 'createUpdateSpanishLanguageTokens',
+      buildNo: 7
+    }]
+  }]
+}, {
+  version: '2.52.0',
+  scripts: [{
+    fileName: 'languageToken.js',
+    actions: [{
+      name: 'createUpdateLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 1
+    }]
+  }]
+}, {
+  version: '2.53.0',
+  scripts: [{
+    fileName: 'referenceData.js',
+    actions: [{
+      name: 'createUpdateDefaultReferenceData',
+      buildNo: 1
+    }]
+  }, {
+    fileName: 'languageToken.js',
+    actions: [{
+      name: 'createUpdateLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 1
+    }]
+  }, {
+    fileName: 'consolidateNotificationAddressType.js',
+    actions: [{
+      name: 'consolidateLegacyNotificationAddressType',
+      buildNo: 2
+    }]
+  }, {
+    fileName: 'person.js',
+    actions: [{
+      name: 'setNotificationLocationIdOnPerson',
+      buildNo: 1
+    }]
+  }]
+}, {
+  version: '2.54.0',
+  scripts: [{
+    fileName: 'languageToken.js',
+    actions: [{
+      name: 'createUpdateLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 1
+    }]
+  }]
+}, {
+  version: '2.55.0',
+  scripts: [{
+    fileName: 'languageToken.js',
+    actions: [{
+      name: 'createUpdateLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 1
+    }]
+  }]
+}];
 
 /**
  * Walk through the migrationVersions and get actions that need to be executed based on the last execution map

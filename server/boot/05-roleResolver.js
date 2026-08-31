@@ -103,7 +103,7 @@ module.exports = function (app) {
 
     // check if the request is for outbreak or subresource
     // this check assumes that in the path, 'outbreak/' is followed by it's id. However, there are a few instances where that is not the case
-    if (outbreakIdMatch && outbreakIdMatch[1] && !['count', 'export', 'import-importable-file-using-map'].includes(outbreakIdMatch[1])) {
+    if (outbreakIdMatch && outbreakIdMatch[1] && !['count', 'export', 'import-importable-file-using-map', 'for-user-management'].includes(outbreakIdMatch[1])) {
       // check if user has outbreak ids restrictions and check if he has access to the given outbreak
       if (userAuthData.outbreakIds &&
         Array.isArray(userAuthData.outbreakIds) &&

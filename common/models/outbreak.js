@@ -132,55 +132,47 @@ module.exports = function (Outbreak) {
   };
 
   /**
-   * Apply the caller pagination on an already filtered relationship list
-   * @param relationships
-   * @param skip
-   * @param limit
-   * @return {Array}
+   * Withhold the name of the people the logged in user is not allowed to read
+   * Note: a relationship carries no name of its own, but the caller may ask for the people behind it
+   * (include=people), and the name of a person the user may not read must not come along. The people
+   * themselves stay in the response, so the relationship data around them stays readable and the counters
+   * keep matching the lists
+   * @param relationships One relationship or a list of them
+   * @param options
+   * @return {Promise<*>}
    */
-  Outbreak.helpers.applyRelationshipPagination = function (relationships, skip, limit) {
-    if (skip === undefined && limit === undefined) {
-      return relationships;
-    }
-
-    const start = skip || 0;
-    return relationships.slice(start, limit === undefined ? undefined : start + limit);
-  };
-
-  /**
-   * Drop the relationships whose other end the logged in user is not allowed to read
-   * Note: only the person on the other end is checked, the anchor person is always kept
-   * @param personId
-   * @param relationships
-   * @param geographicalRestrictionsQuery Result of Person.addGeographicalRestrictionsForMixedPersonTypes
-   * @return {Promise<Array>}
-   */
-  Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility = function (personId, relationships, geographicalRestrictionsQuery) {
-    // collect the people on the other end of each relationship
-    const otherPeopleIds = [];
-    relationships.forEach(function (relationship) {
-      Array.isArray(relationship.persons) && relationship.persons.forEach(function (person) {
-        if (person.id !== personId) {
-          otherPeopleIds.push(person.id);
-        }
+  Outbreak.helpers.maskRestrictedRelationshipPeopleNames = function (relationships, options) {
+    // collect the people the caller asked for, across every relationship
+    const people = [];
+    (Array.isArray(relationships) ? relationships : [relationships]).forEach(function (relationship) {
+      Array.isArray(relationship.people) && relationship.people.forEach(function (person) {
+        people.push(person);
       });
     });
 
-    return app.models.relationship
-      .filterVisibleRelatedPersonIds(otherPeopleIds, geographicalRestrictionsQuery)
-      .then(function (visiblePeopleIds) {
-        const visiblePeopleMap = {};
-        visiblePeopleIds.forEach(function (visiblePersonId) {
-          visiblePeopleMap[visiblePersonId] = true;
+    // the caller did not ask for the people, so there is no name to withhold
+    if (!people.length) {
+      return Promise.resolve(relationships);
+    }
+
+    return app.models.person
+      .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
+      .then(function (geographicalRestrictionsQuery) {
+        return app.models.relationship.resolveRestrictedPeopleMap(
+          people.map(function (person) {
+            return person.id;
+          }),
+          geographicalRestrictionsQuery
+        );
+      })
+      .then(function (restrictedPeopleMap) {
+        people.forEach(function (person) {
+          if (restrictedPeopleMap[person.id]) {
+            app.models.relationship.maskPersonName(person);
+          }
         });
 
-        return relationships.filter(function (relationship) {
-          return Array.isArray(relationship.persons) &&
-            relationship.persons.every(function (person) {
-              return person.id === personId ||
-                visiblePeopleMap[person.id];
-            });
-        });
+        return relationships;
       });
   };
 
@@ -199,33 +191,10 @@ module.exports = function (Outbreak) {
         }
       }, filter);
 
-    app.models.person
-      .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
-      .then(function (geographicalRestrictionsQuery) {
-        // unrestricted caller keeps the original query, pagination included
-        if (!geographicalRestrictionsQuery) {
-          return app.models.relationship.find(_filter);
-        }
-
-        // hidden relationships have to go before the page is cut, otherwise page 1 comes back short while
-        // page 2 is empty
-        const skip = _filter.skip;
-        const limit = _filter.limit;
-        delete _filter.skip;
-        delete _filter.limit;
-
-        return app.models.relationship
-          .find(_filter)
-          .then(function (relationships) {
-            return Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility(
-              personId,
-              relationships,
-              geographicalRestrictionsQuery
-            );
-          })
-          .then(function (relationships) {
-            return Outbreak.helpers.applyRelationshipPagination(relationships, skip, limit);
-          });
+    app.models.relationship
+      .find(_filter)
+      .then(function (relationships) {
+        return Outbreak.helpers.maskRestrictedRelationshipPeopleNames(relationships, options);
       })
       .then(function (relationships) {
         callback(null, relationships);
@@ -444,44 +413,19 @@ module.exports = function (Outbreak) {
         }
       }, filter);
 
-    // a relationship whose other end the user cannot read must answer exactly like a missing one, otherwise the
-    // error itself confirms that the record exists
-    const notFound = () => app.utils.apiError.getError('MODEL_NOT_FOUND_IN_CONTEXT', {
-      model: app.models.relationship.modelName,
-      id: relationshipId,
-      contextModel: app.models[type].modelName,
-      contextId: personId
-    });
-
     app.models.relationship
       .findOne(_filter)
       .then(function (relationship) {
         if (!relationship) {
-          throw notFound();
+          throw app.utils.apiError.getError('MODEL_NOT_FOUND_IN_CONTEXT', {
+            model: app.models.relationship.modelName,
+            id: relationshipId,
+            contextModel: app.models[type].modelName,
+            contextId: personId
+          });
         }
 
-        return app.models.person
-          .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
-          .then(function (geographicalRestrictionsQuery) {
-            // unrestricted caller reads exactly what it reads today
-            if (!geographicalRestrictionsQuery) {
-              return relationship;
-            }
-
-            return Outbreak.helpers
-              .filterRelationshipsByRelatedPersonVisibility(
-                personId,
-                [relationship],
-                geographicalRestrictionsQuery
-              )
-              .then(function (visibleRelationships) {
-                if (!visibleRelationships.length) {
-                  throw notFound();
-                }
-
-                return relationship;
-              });
-          });
+        return Outbreak.helpers.maskRestrictedRelationshipPeopleNames(relationship, options);
       })
       .then(function (relationship) {
         // retrieve person information
@@ -669,28 +613,8 @@ module.exports = function (Outbreak) {
       },
       {where: where});
 
-    app.models.person
-      .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
-      .then(function (geographicalRestrictionsQuery) {
-        // unrestricted caller keeps the server side count
-        if (!geographicalRestrictionsQuery) {
-          return app.models.relationship.count(_filter.where);
-        }
-
-        // the count must match the list, so it is computed on the set the list would return
-        return app.models.relationship
-          .find({where: _filter.where})
-          .then(function (relationships) {
-            return Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility(
-              personId,
-              relationships,
-              geographicalRestrictionsQuery
-            );
-          })
-          .then(function (relationships) {
-            return relationships.length;
-          });
-      })
+    app.models.relationship
+      .count(_filter.where)
       .then(function (relationships) {
         callback(null, relationships);
       })
@@ -714,28 +638,8 @@ module.exports = function (Outbreak) {
       filter
     );
 
-    app.models.person
-      .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
-      .then((geographicalRestrictionsQuery) => {
-        // unrestricted caller keeps the original query
-        if (!geographicalRestrictionsQuery) {
-          return app.models.relationship.find(_filter);
-        }
-
-        // the total has to be counted on the whole filtered set, so it matches the list the caller pages through
-        delete _filter.skip;
-        delete _filter.limit;
-
-        return app.models.relationship
-          .find(_filter)
-          .then((result) => {
-            return Outbreak.helpers.filterRelationshipsByRelatedPersonVisibility(
-              personId,
-              result,
-              geographicalRestrictionsQuery
-            );
-          });
-      })
+    app.models.relationship
+      .find(_filter)
       .then((result) => {
         callback(null, app.utils.remote.searchByRelationProperty.deepSearchByRelationProperty(result, _filter).length);
       })

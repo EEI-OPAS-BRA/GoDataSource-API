@@ -1190,23 +1190,37 @@ module.exports = function (Relationship) {
 
           // find other people
           return app.models.person
-            .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
-            .then((geographicalRestrictionsQuery) => {
-              // people the user cannot read must reach neither the result nor the count, so the restriction is
-              // merged into the people query itself, ahead of the pagination applied below
-              if (geographicalRestrictionsQuery) {
-                peopleFilter.where = {
-                  and: [
-                    peopleFilter.where,
-                    geographicalRestrictionsQuery
-                  ]
+            .find(peopleFilter)
+            .then(function (people) {
+              // a person the user is not allowed to read still belongs in the list and in the count, only its
+              // name is withheld, so the visible set is resolved instead of being cut out of the query
+              // Note: the count needs no name, so it does not pay for this query
+              if (onlyCount) {
+                return {
+                  people: people,
+                  restrictedPeopleMap: {}
                 };
               }
 
               return app.models.person
-                .find(peopleFilter);
+                .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
+                .then((geographicalRestrictionsQuery) => {
+                  return Relationship.resolveRestrictedPeopleMap(
+                    people.map((person) => person.id),
+                    geographicalRestrictionsQuery
+                  );
+                })
+                .then((restrictedPeopleMap) => {
+                  return {
+                    people: people,
+                    restrictedPeopleMap: restrictedPeopleMap
+                  };
+                });
             })
-            .then(function (people) {
+            .then(function (peopleAndRestrictions) {
+              const people = peopleAndRestrictions.people;
+              const restrictedPeopleMap = peopleAndRestrictions.restrictedPeopleMap;
+
               // build result
               let result = [];
               // go through all the people
@@ -1216,6 +1230,10 @@ module.exports = function (Relationship) {
                   personRelationshipMap[person.id].forEach(function (relationship) {
                     // clone person record
                     const record = JSON.parse(JSON.stringify(person));
+                    // withhold the name of the people the user is not allowed to read
+                    if (restrictedPeopleMap[person.id]) {
+                      Relationship.maskPersonName(record);
+                    }
                     // attach relationship info
                     record.relationship = relationship;
                     // add record to the result
@@ -1271,6 +1289,57 @@ module.exports = function (Relationship) {
         projection: {_id: 1}
       })
       .then((people) => people.map((person) => person.id));
+  };
+
+  /**
+   * Resolve which of the given people the logged in user is NOT allowed to read
+   * Note: the restriction query is resolved by the caller and passed in, so a request that reads several
+   * relationship sets resolves it only once
+   * @param personIds
+   * @param geographicalRestrictionsQuery Result of Person.addGeographicalRestrictionsForMixedPersonTypes
+   * @return {Promise<Object>} Map of restricted person ID to true
+   */
+  Relationship.resolveRestrictedPeopleMap = function (personIds, geographicalRestrictionsQuery) {
+    // user is not restricted, or there is nobody to check
+    if (!geographicalRestrictionsQuery || !personIds.length) {
+      return Promise.resolve({});
+    }
+
+    return Relationship
+      .filterVisibleRelatedPersonIds(personIds, geographicalRestrictionsQuery)
+      .then((visiblePersonIds) => {
+        const visiblePeopleMap = {};
+        visiblePersonIds.forEach((visiblePersonId) => {
+          visiblePeopleMap[visiblePersonId] = true;
+        });
+
+        const restrictedPeopleMap = {};
+        personIds.forEach((personId) => {
+          if (!visiblePeopleMap[personId]) {
+            restrictedPeopleMap[personId] = true;
+          }
+        });
+
+        return restrictedPeopleMap;
+      });
+  };
+
+  /**
+   * Withhold the name of a person the logged in user is not allowed to read
+   * Note: only the name is removed. Everything else (visual ID, address, dates, classification and the
+   * relationship data itself) stays, so the record still shows up and still counts
+   * @param person Person record, either a model instance or a plain object
+   * @return {*} The same person, for chaining
+   */
+  Relationship.maskPersonName = function (person) {
+    // event people carry their name under 'name', the other types under the name parts
+    ['firstName', 'middleName', 'lastName', 'name'].forEach((property) => {
+      if (person[property] !== undefined) {
+        person[property] = null;
+      }
+    });
+
+    return person;
   };
 
   /**

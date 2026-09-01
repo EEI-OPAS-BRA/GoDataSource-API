@@ -1222,7 +1222,10 @@ module.exports = function (FollowUp) {
                   record.contact.addresses.length > 0
                 ) {
                   const contactResidence = record.contact.addresses.find((address) => address.typeId === 'LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_USUAL_PLACE_OF_RESIDENCE');
-                  if (contactResidence.locationId) {
+                  if (
+                    contactResidence &&
+                    contactResidence.locationId
+                  ) {
                     locationIds[contactResidence.locationId] = true;
                   }
                 }
@@ -1265,6 +1268,7 @@ module.exports = function (FollowUp) {
                   ) {
                     const contactResidence = record.contact.addresses.find((address) => address.typeId === 'LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_USUAL_PLACE_OF_RESIDENCE');
                     if (
+                      contactResidence &&
                       contactResidence.locationId &&
                       locationsMap[contactResidence.locationId]
                     ) {

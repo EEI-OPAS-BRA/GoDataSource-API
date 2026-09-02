@@ -247,6 +247,11 @@
       "type": "boolean",
       "default": false
     },
+    "preventAddressDeletion": {
+      "description": "Flag specifying if the address delete button is hidden when creating/modifying cases, contacts and contacts of contacts. Default: false",
+      "type": "boolean",
+      "default": false
+    },
     "allowedRefDataItems": {
       "type": "allowedRefData"
     },

@@ -1,0 +1,14 @@
+{
+  "id": "english_us",
+  "tokens": {
+    "LNG_FORM_VALIDATION_ERROR_AT_LEAST_ONE_ITEM_REQUIRED": {
+      "translation": "At least one item must be added"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_PREVENT_ADDRESS_DELETION": {
+      "translation": "Prevent address deletion"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_PREVENT_ADDRESS_DELETION_DESCRIPTION": {
+      "translation": "When enabled, the delete button is hidden on the address blocks of cases, contacts and contacts of contacts"
+    }
+  }
+}

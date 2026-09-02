@@ -28,15 +28,15 @@ esac
 # Everything that describes the deploy host lives outside this repository, which
 # is public. See ops/deploy.env.example for the expected contents.
 DEPLOY_ENV="${GODATA_DEPLOY_ENV:-$HOME/.config/godata/deploy.env}"
-[[ -f "$DEPLOY_ENV" ]] || die "deploy settings file not found: $DEPLOY_ENV"
+[[ -f "$DEPLOY_ENV" ]] || die "deploy settings file not found (see ops/deploy.env.example)"
 # shellcheck disable=SC1090
 set -a; . "$DEPLOY_ENV"; set +a
 
 service_var="GODATA_SERVICE_${INSTANCE^^}"
 PM2_SERVICE="${!service_var:-}"
-[[ -n "$PM2_SERVICE" ]] || die "$service_var not set in $DEPLOY_ENV"
-[[ -n "${GODATA_ROOT:-}" ]] || die "GODATA_ROOT not set in $DEPLOY_ENV"
-[[ -n "${GODATA_BACKUP_ROOT:-}" ]] || die "GODATA_BACKUP_ROOT not set in $DEPLOY_ENV"
+[[ -n "$PM2_SERVICE" ]] || die "$service_var not set in the deploy settings file"
+[[ -n "${GODATA_ROOT:-}" ]] || die "GODATA_ROOT not set in the deploy settings file"
+[[ -n "${GODATA_BACKUP_ROOT:-}" ]] || die "GODATA_BACKUP_ROOT not set in the deploy settings file"
 
 API_DIR="$GODATA_ROOT/$INSTANCE/GoDataSource-API"
 [[ -d "$API_DIR/.git" ]] || die "directory for instance '$INSTANCE' not found"
@@ -45,6 +45,10 @@ API_DIR="$GODATA_ROOT/$INSTANCE/GoDataSource-API"
 # which GitHub cannot serialize against this one.
 exec 9>"/tmp/godata-deploy-$INSTANCE.lock"
 flock -w 900 9 || die "timed out after 15min waiting for another deploy of instance '$INSTANCE'"
+
+# Verbose sub-command output describes the host, and the Actions log is public.
+RUN_LOG="/tmp/godata-deploy-$INSTANCE.log"
+: >"$RUN_LOG"
 
 # nvm keeps node/npm/pm2 out of a non-interactive PATH.
 export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
@@ -55,8 +59,8 @@ for bin in node npm pm2 curl mongodump; do
 done
 
 # Read from the instance instead of hardcoding, so the wrong target cannot be hit.
-PORT="$(node -p "require('$API_DIR/server/config.json').port")"
-DB="$(node -p "require('$API_DIR/server/datasources.json').mongoDb.database")"
+PORT="$(node -p "require('$API_DIR/server/config.json').port" 2>/dev/null)" || die "could not read the port of instance '$INSTANCE'"
+DB="$(node -p "require('$API_DIR/server/datasources.json').mongoDb.database" 2>/dev/null)" || die "could not read the database of instance '$INSTANCE'"
 log "instance=$INSTANCE branch=$EXPECTED_BRANCH"
 
 CURRENT_BRANCH="$(git -C "$API_DIR" rev-parse --abbrev-ref HEAD)"
@@ -116,24 +120,24 @@ fi
 if [[ "$TARGET" != "$PREV" ]] && \
    git -C "$API_DIR" diff --name-only "$PREV..$TARGET" | grep -qx 'package-lock.json'; then
   log "lockfile changed, running npm ci"
-  (cd "$API_DIR" && npm ci --no-audit --no-fund)
+  (cd "$API_DIR" && npm ci --no-audit --no-fund) >>"$RUN_LOG" 2>&1 || die "npm ci failed, see $RUN_LOG on the host"
 fi
 
 if [[ "$SKIP_MIGRATE" != true ]]; then
   if [[ "$SKIP_BACKUP" != true ]]; then
     BACKUP_DIR="$GODATA_BACKUP_ROOT/$DB-$(date +%Y%m%d-%H%M%S)"
-    mongodump --db="$DB" --out="$BACKUP_DIR" >/dev/null
+    mongodump --db="$DB" --out="$BACKUP_DIR" >>"$RUN_LOG" 2>&1 || die "backup failed, see $RUN_LOG on the host"
     # Bound the retained dumps so the disk does not fill up silently.
     find "$GODATA_BACKUP_ROOT" -maxdepth 1 -type d -name "$DB-*" | sort | head -n -10 | \
       xargs -r rm -rf
     log "backup created"
   fi
   log "running migrate-database"
-  (cd "$API_DIR" && npm run migrate-database)
+  (cd "$API_DIR" && npm run migrate-database) >>"$RUN_LOG" 2>&1 || die "migration failed, see $RUN_LOG on the host"
 fi
 
 log "restarting service"
-pm2 restart "$PM2_SERVICE" --update-env
+pm2 restart "$PM2_SERVICE" --update-env >>"$RUN_LOG" 2>&1 || die "restart failed, see $RUN_LOG on the host"
 
 if health_check; then
   log "deploy finished: $(git -C "$API_DIR" rev-parse --short HEAD)"
@@ -146,9 +150,9 @@ log "starting rollback"
 git -C "$API_DIR" reset --hard "$PREV"
 restore_local_config
 if git -C "$API_DIR" diff --name-only "$PREV..$TARGET" | grep -qx 'package-lock.json'; then
-  (cd "$API_DIR" && npm ci --no-audit --no-fund)
+  (cd "$API_DIR" && npm ci --no-audit --no-fund) >>"$RUN_LOG" 2>&1 || die "npm ci failed, see $RUN_LOG on the host"
 fi
-pm2 restart "$PM2_SERVICE" --update-env
+pm2 restart "$PM2_SERVICE" --update-env >>"$RUN_LOG" 2>&1 || die "restart failed, see $RUN_LOG on the host"
 
 if health_check; then
   die "deploy failed and was rolled back. The instance is up with the previous code."

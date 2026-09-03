@@ -47,7 +47,7 @@ exec 9>"/tmp/godata-deploy-$INSTANCE.lock"
 flock -w 900 9 || die "timed out after 15min waiting for another deploy of instance '$INSTANCE'"
 
 # Verbose sub-command output describes the host, and the Actions log is public.
-RUN_LOG="/tmp/godata-deploy-$INSTANCE.log"
+RUN_LOG="/tmp/godata-deploy-api-$INSTANCE.log"
 : >"$RUN_LOG"
 
 # nvm keeps node/npm/pm2 out of a non-interactive PATH.

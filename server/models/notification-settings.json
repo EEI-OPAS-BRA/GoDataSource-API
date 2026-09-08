@@ -1,0 +1,34 @@
+{
+  "name": "notificationSettings",
+  "base": "Model",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "hidden": [
+    "id"
+  ],
+  "properties": {
+    "historyCount": {
+      "type": "number",
+      "default": 20
+    },
+    "checkInterval": {
+      "type": "number",
+      "default": 5
+    },
+    "checkIntervalUnit": {
+      "type": "string",
+      "enum": [
+        "m",
+        "h",
+        "d"
+      ],
+      "default": "m"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

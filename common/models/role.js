@@ -1158,6 +1158,57 @@ module.exports = function (Role) {
       ]
     },
 
+    // Team Notification
+    {
+      groupAllId: 'team_notification_all',
+      groupLabel: 'LNG_ROLE_AVAILABLE_PERMISSIONS_GROUP_TEAM_NOTIFICATION',
+      groupDescription: 'LNG_ROLE_AVAILABLE_PERMISSIONS_GROUP_TEAM_NOTIFICATION_DESCRIPTION',
+      permissions: [
+        {
+          id: 'team_notification_list',
+          label: 'LNG_ROLE_AVAILABLE_PERMISSIONS_LIST_TEAM_NOTIFICATION',
+          description: 'LNG_ROLE_AVAILABLE_PERMISSIONS_LIST_TEAM_NOTIFICATION_DESCRIPTION',
+          requires: []
+        },
+        {
+          id: 'team_notification_view',
+          label: 'LNG_ROLE_AVAILABLE_PERMISSIONS_VIEW_TEAM_NOTIFICATION',
+          description: 'LNG_ROLE_AVAILABLE_PERMISSIONS_VIEW_TEAM_NOTIFICATION_DESCRIPTION',
+          requires: []
+        },
+        {
+          id: 'team_notification_create',
+          label: 'LNG_ROLE_AVAILABLE_PERMISSIONS_CREATE_TEAM_NOTIFICATION',
+          description: 'LNG_ROLE_AVAILABLE_PERMISSIONS_CREATE_TEAM_NOTIFICATION_DESCRIPTION',
+          requires: [
+            'team_list'
+          ]
+        },
+        {
+          id: 'team_notification_modify',
+          label: 'LNG_ROLE_AVAILABLE_PERMISSIONS_MODIFY_TEAM_NOTIFICATION',
+          description: 'LNG_ROLE_AVAILABLE_PERMISSIONS_MODIFY_TEAM_NOTIFICATION_DESCRIPTION',
+          requires: [
+            'team_notification_view'
+          ]
+        },
+        {
+          id: 'team_notification_delete',
+          label: 'LNG_ROLE_AVAILABLE_PERMISSIONS_DELETE_TEAM_NOTIFICATION',
+          description: 'LNG_ROLE_AVAILABLE_PERMISSIONS_DELETE_TEAM_NOTIFICATION_DESCRIPTION',
+          requires: [
+            'team_notification_view'
+          ]
+        },
+        {
+          id: 'team_notification_mark_read',
+          label: 'LNG_ROLE_AVAILABLE_PERMISSIONS_MARK_READ_TEAM_NOTIFICATION',
+          description: 'LNG_ROLE_AVAILABLE_PERMISSIONS_MARK_READ_TEAM_NOTIFICATION_DESCRIPTION',
+          requires: []
+        }
+      ]
+    },
+
     // Cluster
     {
       groupAllId: 'cluster_all',

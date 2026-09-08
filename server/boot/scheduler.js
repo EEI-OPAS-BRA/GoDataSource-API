@@ -603,6 +603,103 @@ module.exports = function (app) {
       done();
     },
 
+    // check active recurring team notifications and fire due occurrences
+    (done) => {
+      // get system settings, to determine the configured check cadence
+      app.models.systemSettings
+        .findOne()
+        .then(function (systemSettings) {
+          const notificationSettings = (systemSettings && systemSettings.notificationSettings) || {};
+          const checkInterval = notificationSettings.checkInterval || 5;
+          const checkIntervalUnit = notificationSettings.checkIntervalUnit || 'm';
+
+          // if routines configuration doesn't exist, create it
+          if (!routinesConfig.teamNotifications) {
+            routinesConfig.teamNotifications = {
+              startTime: localizationHelper.now(),
+              lastExecutedTime: null,
+              timeUnit: checkIntervalUnit,
+              interval: checkInterval
+            };
+          } else {
+            // make sure the interval/unit didn't change in the meantime
+            routinesConfig.teamNotifications.interval = checkInterval;
+            routinesConfig.teamNotifications.timeUnit = checkIntervalUnit;
+          }
+
+          // cache routine config
+          let teamNotificationsRoutineConfig = routinesConfig.teamNotifications;
+
+          // if routine was executed at least once, use that date as base date for checks
+          let baseTime = teamNotificationsRoutineConfig.lastExecutedTime ?
+            teamNotificationsRoutineConfig.lastExecutedTime :
+            teamNotificationsRoutineConfig.startTime;
+
+          // not due yet, nothing to do
+          if (!shouldExecute(baseTime, teamNotificationsRoutineConfig.interval, teamNotificationsRoutineConfig.timeUnit)) {
+            return;
+          }
+
+          // save the last execution time to now
+          teamNotificationsRoutineConfig.lastExecutedTime = localizationHelper.now();
+
+          // get active recurring team notifications
+          return app.models.teamNotification
+            .find({
+              where: {
+                active: true,
+                recurring: true
+              }
+            })
+            .then(function (teamNotifications) {
+              // determine which notifications are individually due and fire them
+              const now = localizationHelper.now();
+              const dueNotifications = teamNotifications.filter(function (teamNotification) {
+                if (!teamNotification.recurrenceInterval || !teamNotification.recurrenceUnit) {
+                  return false;
+                }
+
+                // never triggered before; the after save hook should have set this on creation, but just in case
+                if (!teamNotification.lastTriggeredAt) {
+                  return true;
+                }
+
+                return shouldExecute(
+                  teamNotification.lastTriggeredAt,
+                  teamNotification.recurrenceInterval,
+                  teamNotification.recurrenceUnit
+                );
+              });
+
+              return Promise.all(dueNotifications.map(function (teamNotification) {
+                const triggeredAt = now.toDate();
+
+                return app.models.teamNotificationOccurrence
+                  .create({
+                    teamNotificationId: teamNotification.id,
+                    teamId: teamNotification.teamId,
+                    title: teamNotification.title,
+                    message: teamNotification.message,
+                    severity: teamNotification.severity,
+                    triggeredAt: triggeredAt,
+                    readBy: []
+                  })
+                  .then(function () {
+                    return teamNotification.updateAttributes({
+                      lastTriggeredAt: triggeredAt
+                    });
+                  });
+              }));
+            });
+        })
+        .catch(function (err) {
+          app.logger.debug(`Scheduler: Failed to check team notifications. Error: ${err}`);
+        })
+        .then(function () {
+          return done();
+        });
+    },
+
     // delete audit logs older than n days
     (done) => {
       try {

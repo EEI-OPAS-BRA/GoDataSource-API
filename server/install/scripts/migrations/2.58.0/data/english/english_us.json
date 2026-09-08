@@ -1,0 +1,185 @@
+{
+  "id": "english_us",
+  "tokens": {
+    "LNG_COMMON_BUTTON_MARK_ALL_AS_READ": {
+      "translation": "Mark all as read"
+    },
+    "LNG_LAYOUT_MENU_ITEM_TEAM_NOTIFICATIONS_LABEL": {
+      "translation": "Team notifications"
+    },
+    "LNG_LAYOUT_MENU_ITEM_TEAM_NOTIFICATIONS_NO_DATA_LABEL": {
+      "translation": "No notifications"
+    },
+    "LNG_LAYOUT_MENU_ITEM_NOTIFICATION_SETTINGS_LABEL": {
+      "translation": "Notification settings"
+    },
+    "LNG_DIALOG_CONFIRM_DELETE_TEAM_NOTIFICATION": {
+      "translation": "Are you sure you want to delete notification \"{{name}}\"?"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_TEAM": {
+      "translation": "Team"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_TITLE": {
+      "translation": "Title"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_MESSAGE": {
+      "translation": "Message"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_SEVERITY": {
+      "translation": "Severity"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_RECURRING": {
+      "translation": "Recurring"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_RECURRENCE_INTERVAL": {
+      "translation": "Recurrence interval"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_RECURRENCE_UNIT": {
+      "translation": "Recurrence unit"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_ACTIVE": {
+      "translation": "Active"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_CREATED_AT": {
+      "translation": "Created at"
+    },
+    "LNG_TEAM_NOTIFICATION_SEVERITY_GREEN": {
+      "translation": "Green"
+    },
+    "LNG_TEAM_NOTIFICATION_SEVERITY_YELLOW": {
+      "translation": "Yellow"
+    },
+    "LNG_TEAM_NOTIFICATION_SEVERITY_RED": {
+      "translation": "Red"
+    },
+    "LNG_TEAM_NOTIFICATION_RECURRENCE_UNIT_HOURS": {
+      "translation": "Hours"
+    },
+    "LNG_TEAM_NOTIFICATION_RECURRENCE_UNIT_DAYS": {
+      "translation": "Days"
+    },
+    "LNG_PAGE_LIST_TEAM_NOTIFICATIONS_TITLE": {
+      "translation": "Team notifications"
+    },
+    "LNG_PAGE_LIST_TEAM_NOTIFICATIONS_ACTION_MODIFY": {
+      "translation": "Modify notification"
+    },
+    "LNG_PAGE_LIST_TEAM_NOTIFICATIONS_ACTION_ENABLE_DISABLE": {
+      "translation": "Enable / Disable"
+    },
+    "LNG_PAGE_LIST_TEAM_NOTIFICATIONS_ACTION_TOGGLE_ENABLED_SUCCESS_MESSAGE": {
+      "translation": "Notification updated successfully"
+    },
+    "LNG_PAGE_LIST_TEAM_NOTIFICATIONS_ACTION_DELETE": {
+      "translation": "Delete notification"
+    },
+    "LNG_PAGE_LIST_TEAM_NOTIFICATIONS_ACTION_DELETE_SUCCESS_MESSAGE": {
+      "translation": "Notification deleted successfully"
+    },
+    "LNG_PAGE_CREATE_TEAM_NOTIFICATION_TITLE": {
+      "translation": "Create team notification"
+    },
+    "LNG_PAGE_CREATE_TEAM_NOTIFICATION_ACTION_CREATE_TEAM_NOTIFICATION_SUCCESS_MESSAGE": {
+      "translation": "Notification created successfully"
+    },
+    "LNG_PAGE_MODIFY_TEAM_NOTIFICATION_TITLE": {
+      "translation": "Modify team notification"
+    },
+    "LNG_PAGE_MODIFY_TEAM_NOTIFICATION_ACTION_MODIFY_TEAM_NOTIFICATION_SUCCESS_MESSAGE": {
+      "translation": "Notification modified successfully"
+    },
+    "LNG_PAGE_NOTIFICATION_SETTINGS_TITLE": {
+      "translation": "Notification settings"
+    },
+    "LNG_PAGE_NOTIFICATION_SETTINGS_DESCRIPTION": {
+      "translation": "Configure how many notifications are shown in the history and how often the system checks for recurring notifications."
+    },
+    "LNG_PAGE_NOTIFICATION_SETTINGS_ACTION_CONFIGURE_BUTTON": {
+      "translation": "Configure"
+    },
+    "LNG_PAGE_NOTIFICATION_SETTINGS_DIALOG_TITLE": {
+      "translation": "Configure notifications"
+    },
+    "LNG_PAGE_NOTIFICATION_SETTINGS_DIALOG_EXISTING_CONFIGURATION_INFO": {
+      "translation": "Current configuration"
+    },
+    "LNG_PAGE_NOTIFICATION_SETTINGS_DIALOG_SUCCESS_MESSAGE": {
+      "translation": "Settings saved successfully"
+    },
+    "LNG_NOTIFICATION_SETTINGS_FIELD_LABEL_HISTORY_COUNT": {
+      "translation": "Number of notifications in history"
+    },
+    "LNG_NOTIFICATION_SETTINGS_FIELD_LABEL_HISTORY_COUNT_DESCRIPTION": {
+      "translation": "Maximum number of notifications shown in each user's history"
+    },
+    "LNG_NOTIFICATION_SETTINGS_FIELD_LABEL_CHECK_INTERVAL": {
+      "translation": "Check interval"
+    },
+    "LNG_NOTIFICATION_SETTINGS_FIELD_LABEL_CHECK_INTERVAL_DESCRIPTION": {
+      "translation": "How often the system checks for due recurring notifications"
+    },
+    "LNG_NOTIFICATION_SETTINGS_FIELD_LABEL_CHECK_INTERVAL_UNIT": {
+      "translation": "Check interval unit"
+    },
+    "LNG_NOTIFICATION_SETTINGS_CHECK_INTERVAL_UNIT_MINUTES": {
+      "translation": "Minutes"
+    },
+    "LNG_NOTIFICATION_SETTINGS_CHECK_INTERVAL_UNIT_HOURS": {
+      "translation": "Hours"
+    },
+    "LNG_NOTIFICATION_SETTINGS_CHECK_INTERVAL_UNIT_DAYS": {
+      "translation": "Days"
+    },
+    "LNG_PAGE_CREATE_OUTBREAK_LABEL_NOTIFY_TEAM": {
+      "translation": "Notify team"
+    },
+    "LNG_PAGE_CREATE_OUTBREAK_LABEL_NOTIFY_TEAM_DESCRIPTION": {
+      "translation": "Sends a notification to the selected team as soon as the outbreak is created"
+    },
+    "LNG_PAGE_CREATE_OUTBREAK_LABEL_NOTIFY_TEAM_ID": {
+      "translation": "Team to notify"
+    },
+    "LNG_PAGE_CREATE_OUTBREAK_LABEL_NOTIFY_TEAM_ID_DESCRIPTION": {
+      "translation": "Team that will receive the notification"
+    },
+    "LNG_PAGE_CREATE_OUTBREAK_NOTIFY_TEAM_DEFAULT_TITLE": {
+      "translation": "New outbreak registered"
+    },
+    "LNG_PAGE_CREATE_CASE_TAB_NOTIFY_TEAM": {
+      "translation": "Notify team"
+    },
+    "LNG_PAGE_CREATE_CASE_LABEL_NOTIFY_TEAM": {
+      "translation": "Notify team"
+    },
+    "LNG_PAGE_CREATE_CASE_LABEL_NOTIFY_TEAM_DESCRIPTION": {
+      "translation": "Sends a notification to the selected team as soon as the case is created"
+    },
+    "LNG_PAGE_CREATE_CASE_LABEL_NOTIFY_TEAM_ID": {
+      "translation": "Team to notify"
+    },
+    "LNG_PAGE_CREATE_CASE_LABEL_NOTIFY_TEAM_ID_DESCRIPTION": {
+      "translation": "Team that will receive the notification"
+    },
+    "LNG_PAGE_CREATE_CASE_NOTIFY_TEAM_DEFAULT_TITLE": {
+      "translation": "New case registered"
+    },
+    "LNG_PAGE_CREATE_CONTACT_TAB_NOTIFY_TEAM": {
+      "translation": "Notify team"
+    },
+    "LNG_PAGE_CREATE_CONTACT_LABEL_NOTIFY_TEAM": {
+      "translation": "Notify team"
+    },
+    "LNG_PAGE_CREATE_CONTACT_LABEL_NOTIFY_TEAM_DESCRIPTION": {
+      "translation": "Sends a notification to the selected team as soon as the contact is created"
+    },
+    "LNG_PAGE_CREATE_CONTACT_LABEL_NOTIFY_TEAM_ID": {
+      "translation": "Team to notify"
+    },
+    "LNG_PAGE_CREATE_CONTACT_LABEL_NOTIFY_TEAM_ID_DESCRIPTION": {
+      "translation": "Team that will receive the notification"
+    },
+    "LNG_PAGE_CREATE_CONTACT_NOTIFY_TEAM_DEFAULT_TITLE": {
+      "translation": "New contact registered"
+    }
+  }
+}

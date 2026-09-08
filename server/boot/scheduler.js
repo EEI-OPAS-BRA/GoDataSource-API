@@ -18,7 +18,10 @@ const shouldExecute = function (startTime, interval, timeUnit) {
   let unitsMap = {
     h: 'hours',
     m: 'minutes',
-    d: 'days'
+    d: 'days',
+    w: 'weeks',
+    M: 'months',
+    y: 'years'
   };
   return localizationHelper.now().isAfter(localizationHelper.toMoment(startTime).add(interval, unitsMap[timeUnit]));
 };

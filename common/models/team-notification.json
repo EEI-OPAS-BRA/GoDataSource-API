@@ -39,7 +39,10 @@
       "type": "string",
       "enum": [
         "h",
-        "d"
+        "d",
+        "w",
+        "M",
+        "y"
       ]
     },
     "active": {

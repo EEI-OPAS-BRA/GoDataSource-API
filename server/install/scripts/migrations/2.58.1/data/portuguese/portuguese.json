@@ -1,0 +1,14 @@
+{
+  "id": "portuguese_pt",
+  "tokens": {
+    "LNG_TEAM_NOTIFICATION_RECURRENCE_UNIT_WEEKS": {
+      "translation": "Semanas"
+    },
+    "LNG_TEAM_NOTIFICATION_RECURRENCE_UNIT_MONTHS": {
+      "translation": "Meses"
+    },
+    "LNG_TEAM_NOTIFICATION_RECURRENCE_UNIT_YEARS": {
+      "translation": "Anos"
+    }
+  }
+}

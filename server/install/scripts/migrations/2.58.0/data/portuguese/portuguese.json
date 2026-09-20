@@ -1,0 +1,83 @@
+{
+  "id": "portuguese_pt",
+  "tokens": {
+    "LNG_INFO_BANNER_ACTION_SHOW": {
+      "translation": "Ver como funciona"
+    },
+    "LNG_INFO_BANNER_ACTION_HIDE": {
+      "translation": "Ocultar"
+    },
+    "LNG_INFO_BANNER_STEPS_TITLE": {
+      "translation": "Como funciona"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_TITLE": {
+      "translation": "Para que servem os servidores upstream?"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_DESCRIPTION": {
+      "translation": "Servidores upstream são outras instâncias do Go.Data (por exemplo, um servidor central) para onde esta instância envia os seus dados. Cadastre-os aqui e controle quando a sincronização acontece."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_1_TITLE": {
+      "translation": "Cadastre o servidor"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_1_DESCRIPTION": {
+      "translation": "Informe a URL da outra instância do Go.Data e o ID e o segredo do cliente gerados nela, na página de Aplicativos cliente."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_2_TITLE": {
+      "translation": "Escolha quando sincronizar"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_2_DESCRIPTION": {
+      "translation": "Inicie manualmente pelo botão de sincronizar, defina um intervalo (em horas) para a sincronização automática ou ative \"Sincronizar em cada alteração\" para enviar as mudanças assim que acontecem."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_3_TITLE": {
+      "translation": "Os dados são enviados"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_3_DESCRIPTION": {
+      "translation": "Esta instância exporta seus dados e os envia ao servidor upstream, que faz a importação. A primeira sincronização envia tudo; as seguintes enviam apenas o que mudou desde a última sincronização bem-sucedida."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_4_TITLE": {
+      "translation": "Acompanhe o resultado"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_4_DESCRIPTION": {
+      "translation": "O resultado (sucesso, sucesso com avisos ou falha) fica registrado na página Sincronizar Logs."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_NOTE_1": {
+      "translation": "A sincronização é de mão única: os dados são enviados desta instância para o servidor upstream, e não o contrário."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_NOTE_2": {
+      "translation": "Servidores upstream não podem ser editados. Para alterar um, exclua-o e cadastre-o novamente."
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_TITLE": {
+      "translation": "Para que servem os aplicativos cliente?"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_DESCRIPTION": {
+      "translation": "Aplicativos cliente são as credenciais que permitem que outros sistemas se conectem a esta instância: o aplicativo móvel, ou outra instância do Go.Data que envia seus dados para cá cadastrando esta instância como servidor upstream."
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_1_TITLE": {
+      "translation": "Crie o aplicativo"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_1_DESCRIPTION": {
+      "translation": "Dê um nome a ele. O ID e o segredo do cliente podem ser gerados automaticamente."
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_2_TITLE": {
+      "translation": "Escolha os surtos"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_2_DESCRIPTION": {
+      "translation": "Limite a quais surtos o aplicativo tem acesso. Deixe vazio para permitir todos os surtos."
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_3_TITLE": {
+      "translation": "Compartilhe as credenciais"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_3_DESCRIPTION": {
+      "translation": "Use o ID e o segredo do cliente ao cadastrar esta instância como servidor upstream na outra instância do Go.Data, ou baixe o arquivo de configuração (QR code) para configurar o aplicativo móvel."
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_4_TITLE": {
+      "translation": "Controle o acesso"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_4_DESCRIPTION": {
+      "translation": "As requisições só são aceitas enquanto o aplicativo estiver ativo e as credenciais forem válidas. Desative-o para bloquear o acesso sem excluí-lo."
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_NOTE_1": {
+      "translation": "Trate o segredo do cliente como uma senha: quem o possui pode se conectar a esta instância como esse aplicativo."
+    }
+  }
+}

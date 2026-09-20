@@ -10,6 +10,24 @@
     "LNG_INFO_BANNER_STEPS_TITLE": {
       "translation": "How it works"
     },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_LAST_SYNC_DATE": {
+      "translation": "Last sync date"
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_LAST_SYNC_STATUS": {
+      "translation": "Last sync status"
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_LAST_SYNC_LOGS": {
+      "translation": "Logs"
+    },
+    "LNG_UPSTREAM_SERVER_LAST_SYNC_NEVER": {
+      "translation": "Never synchronized"
+    },
+    "LNG_UPSTREAM_SERVER_LAST_SYNC_NO_MESSAGES": {
+      "translation": "No errors or warnings"
+    },
+    "LNG_UPSTREAM_SERVER_LAST_SYNC_VIEW_LOGS": {
+      "translation": "View logs"
+    },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_TITLE": {
       "translation": "What are upstream servers?"
     },

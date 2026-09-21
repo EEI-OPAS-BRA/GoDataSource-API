@@ -21,6 +21,24 @@
     },
     "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_TITLE": {
       "translation": "Track synchronization"
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_URL_DESCRIPTION": {
+      "translation": "Address of the API of the other Go.Data instance, the one that will receive the data. It must end with /api. Example: http://localhost:3000/api"
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_TIMEOUT_DESCRIPTION": {
+      "translation": "Time limit, in milliseconds, for each request made to this server. Use 0 for no limit."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_SYNC_INTERVAL_DESCRIPTION": {
+      "translation": "Interval, in hours, between automatic synchronizations. Use 0 to disable the automatic synchronization."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_SYNC_ENABLED_DESCRIPTION": {
+      "translation": "When disabled, this server is ignored by the manual, automatic and on every change synchronizations."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_CREDENTIALS_CLIENT_ID_DESCRIPTION": {
+      "translation": "Client ID created in the \"Receive data from servers\" page of the other Go.Data instance."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_CREDENTIALS_CLIENT_SECRET_DESCRIPTION": {
+      "translation": "Client secret created in the \"Receive data from servers\" page of the other Go.Data instance."
     }
   }
 }

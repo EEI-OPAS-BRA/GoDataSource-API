@@ -8,8 +8,21 @@ const _ = require('lodash');
 const syncConfig = require('../../server/config.json').sync;
 const localizationHelper = require('../../components/localizationHelper');
 const Platform = require('../../components/platform');
+const upstreamServerCheck = require('../../components/upstreamServerCheck');
 
 module.exports = function (Sync) {
+
+  /**
+   * Check if an upstream server is online and, when credentials are sent, if they are accepted
+   * @param data {url, clientId, clientSecret}
+   * @param callback
+   */
+  Sync.checkUpstreamServer = function (data, callback) {
+    upstreamServerCheck
+      .check(data)
+      .then((result) => callback(null, result))
+      .catch(callback);
+  };
 
   /**
    * Get encrypt/decrypt password for sync process

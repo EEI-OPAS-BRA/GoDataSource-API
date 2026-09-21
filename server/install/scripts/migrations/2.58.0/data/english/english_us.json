@@ -96,6 +96,69 @@
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_NOTE_1": {
       "translation": "Treat the client secret like a password: anyone who has it can connect to this instance as that application."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_SECTION_GENERAL": {
+      "translation": "General"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_SECTION_CONNECTION": {
+      "translation": "Connection"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_SECTION_SYNCHRONIZATION": {
+      "translation": "Synchronization"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_BUTTON": {
+      "translation": "Check if the server is online"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_CHECKING": {
+      "translation": "Checking the server..."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_ONLINE": {
+      "translation": "Server online. Click to check again"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_OFFLINE": {
+      "translation": "Could not connect to the server. Click to try again"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_ONLINE_MESSAGE": {
+      "translation": "Server online ({{ms}} ms)."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_TEST_CONNECTION_BUTTON": {
+      "translation": "Test connection"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_CREDENTIALS_ACCEPTED_ALL_OUTBREAKS": {
+      "translation": "Connection established. The credentials were accepted, with access to all outbreaks."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_CREDENTIALS_ACCEPTED_SOME_OUTBREAKS": {
+      "translation": "Connection established. The credentials were accepted, with access to {{count}} outbreak(s)."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_CONNECTION_REFUSED": {
+      "translation": "Connection refused. Check the address and the port, and if the other instance is running."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_HOST_NOT_FOUND": {
+      "translation": "Address not found. Check the name of the server."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_TIMEOUT": {
+      "translation": "The server did not respond in time."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_CERTIFICATE": {
+      "translation": "Could not establish a secure connection: there is a problem with the SSL certificate of the server."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_NOT_GODATA": {
+      "translation": "The address responded, but it does not look like a Go.Data server."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_INVALID_CREDENTIALS": {
+      "translation": "The server is online, but the credentials were rejected. Check the client ID and secret, and if the application is active on the other instance."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_API_NOT_FOUND": {
+      "translation": "The server is online, but the API was not found at this address. The URL must end with /api."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_INVALID_URL": {
+      "translation": "Invalid URL. Use a complete address, for example http://localhost:3000/api."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_CONNECTION_FAILED": {
+      "translation": "Could not connect to the server."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_URL_ALREADY_REGISTERED": {
+      "translation": "A server with this URL is already registered. To change it, delete it in the list and add it again, or use a different address."
     }
   }
 }

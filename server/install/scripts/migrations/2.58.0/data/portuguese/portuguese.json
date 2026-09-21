@@ -117,6 +117,87 @@
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_NOTE_1": {
       "translation": "Trate o segredo do cliente como uma senha: quem o possui pode se conectar a esta instância como esse aplicativo."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_SECTION_GENERAL": {
+      "translation": "Geral"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_SECTION_CONNECTION": {
+      "translation": "Conexão"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_SECTION_SYNCHRONIZATION": {
+      "translation": "Sincronização"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_BUTTON": {
+      "translation": "Verificar se o servidor está online"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_CHECKING": {
+      "translation": "Verificando o servidor..."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_ONLINE": {
+      "translation": "Servidor online. Clique para verificar novamente"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_OFFLINE": {
+      "translation": "Não foi possível conectar ao servidor. Clique para tentar novamente"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_ONLINE_MESSAGE": {
+      "translation": "Servidor online ({{ms}} ms)."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_TEST_CONNECTION_BUTTON": {
+      "translation": "Testar conexão"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_CREDENTIALS_ACCEPTED_ALL_OUTBREAKS": {
+      "translation": "Conexão estabelecida. As credenciais foram aceitas, com acesso a todos os surtos."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_CREDENTIALS_ACCEPTED_SOME_OUTBREAKS": {
+      "translation": "Conexão estabelecida. As credenciais foram aceitas, com acesso a {{count}} surto(s)."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_CONNECTION_REFUSED": {
+      "translation": "Conexão recusada. Confira o endereço e a porta e se a outra instância está em execução."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_HOST_NOT_FOUND": {
+      "translation": "Endereço não encontrado. Confira o nome do servidor."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_TIMEOUT": {
+      "translation": "O servidor não respondeu a tempo."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_CERTIFICATE": {
+      "translation": "Não foi possível estabelecer uma conexão segura: há um problema com o certificado SSL do servidor."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_NOT_GODATA": {
+      "translation": "O endereço respondeu, mas não parece ser um servidor Go.Data."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_INVALID_CREDENTIALS": {
+      "translation": "O servidor está online, mas as credenciais foram rejeitadas. Confira o ID e o segredo do cliente e se o aplicativo está ativo na outra instância."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_API_NOT_FOUND": {
+      "translation": "O servidor está online, mas a API não foi encontrada neste endereço. A URL deve terminar em /api."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_INVALID_URL": {
+      "translation": "URL inválida. Use um endereço completo, por exemplo http://localhost:3000/api."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_CONNECTION_FAILED": {
+      "translation": "Não foi possível conectar ao servidor."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_URL_DESCRIPTION": {
+      "translation": "Endereço da API da outra instância do Go.Data, a que vai receber os dados. Deve terminar em /api. Exemplo: http://localhost:3000/api"
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_TIMEOUT_DESCRIPTION": {
+      "translation": "Tempo limite, em milissegundos, de cada requisição feita a este servidor. Use 0 para não ter limite."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_SYNC_INTERVAL_DESCRIPTION": {
+      "translation": "Intervalo, em horas, entre as sincronizações automáticas. Use 0 para desativar a sincronização automática."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_SYNC_ENABLED_DESCRIPTION": {
+      "translation": "Quando desativado, o servidor é ignorado nas sincronizações manual, automática e a cada alteração."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_CREDENTIALS_CLIENT_ID_DESCRIPTION": {
+      "translation": "ID do cliente criado na página \"Receber dados de Servidores\" da outra instância do Go.Data."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_CREDENTIALS_CLIENT_SECRET_DESCRIPTION": {
+      "translation": "Segredo do cliente criado na página \"Receber dados de Servidores\" da outra instância do Go.Data."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_URL_ALREADY_REGISTERED": {
+      "translation": "Já existe um servidor cadastrado com esta URL. Para alterá-lo, exclua-o na lista e cadastre-o de novo, ou use outro endereço."
     }
   }
 }

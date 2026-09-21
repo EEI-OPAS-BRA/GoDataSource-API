@@ -38,6 +38,12 @@
     },
     {
       "principalType": "ROLE",
+      "principalId": "system_settings_modify",
+      "permission": "ALLOW",
+      "property": "checkUpstreamServer"
+    },
+    {
+      "principalType": "ROLE",
       "principalId": "$client_application",
       "permissions": "ALLOW",
       "property": "getDatabaseSnapshot"
@@ -328,6 +334,33 @@
       "http": {
         "verb": "post",
         "path": "/"
+      }
+    },
+    "checkUpstreamServer": {
+      "accepts": [
+        {
+          "arg": "data",
+          "type": "object",
+          "http": {
+            "source": "body"
+          },
+          "required": true,
+          "description": "url (required): upstream server api url; clientId & clientSecret (optional): when both are sent the credentials are also checked"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "result",
+          "type": "object",
+          "root": true,
+          "required": true,
+          "description": "server: {online, statusCode, errorCode, responseTimeMs}; credentials: null or {valid, statusCode, errorCode, outbreakIDs}"
+        }
+      ],
+      "description": "Check if an upstream server is online (status route) and, when credentials are sent, if the credentials are accepted",
+      "http": {
+        "verb": "post",
+        "path": "/check-upstream-server"
       }
     },
     "getDatabaseSnapshotForMobile": {

@@ -116,6 +116,12 @@ let syncModels = syncCollections.concat(['case', 'contact', 'event', 'contactOfC
 // eg: person model - visualId
 const collectionsToSyncInSeries = ['person'];
 
+// some records are created by each instance on its own (e.g. language tokens added by migrations), so the same record has different ids in different instances
+// on import, if there is no record with the received id, these models are matched by these properties before creating a new record; otherwise the record would be duplicated
+const collectionsNaturalKeyMap = {
+  languageToken: ['languageId', 'token']
+};
+
 // for which records we should always retrieve only NOT deleted records?
 const collectionsExcludeDeletedRecords = {
   languageToken: true
@@ -734,6 +740,58 @@ const syncRecord = function (app, logger, model, record, options, done) {
         deleted: true
       });
     });
+
+    // the same record might exist with a different id, since it was created by this instance and not received from another one
+    const naturalKeyProperties = collectionsNaturalKeyMap[model.modelName];
+    if (naturalKeyProperties) {
+      findRecord = findRecord.then((dbRecord) => {
+        // found by id
+        if (dbRecord) {
+          return dbRecord;
+        }
+
+        // can't match records that don't have all the properties
+        const naturalKeyQuery = {};
+        const hasNaturalKey = naturalKeyProperties.every((property) => {
+          const value = record[property];
+          if (value === undefined || value === null || value === '') {
+            return false;
+          }
+
+          naturalKeyQuery[property] = value;
+          return true;
+        });
+        if (!hasNaturalKey) {
+          return null;
+        }
+
+        log('debug', `Record with id ${record.id} not found. Trying to find record with ${JSON.stringify(naturalKeyQuery)}.`);
+
+        // in case there already are duplicates, use the most recently updated one
+        return model
+          .find({
+            where: naturalKeyQuery,
+            order: 'updatedAt DESC',
+            limit: 1,
+            deleted: true
+          })
+          .then((results) => {
+            if (!results || !results.length) {
+              // no db record was found; continue with creating the record
+              return null;
+            }
+
+            // use the record that already exists, keeping its id
+            log('debug', `Record with id ${record.id} matched the existing record with id ${results[0].id}, so no new record is created.`);
+            record.id = results[0].id;
+            if (record._id !== undefined) {
+              record._id = results[0].id;
+            }
+
+            return results[0];
+          });
+      });
+    }
   }
   // some models might query for different unique identifiers when id is not present
   else if (

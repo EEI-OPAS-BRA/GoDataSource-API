@@ -65,7 +65,7 @@
       "translation": "Escolha quando sincronizar"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_2_DESCRIPTION": {
-      "translation": "Inicie manualmente pelo botão de sincronizar, defina um intervalo (em horas) para a sincronização automática ou ative \"Sincronizar em cada alteração\" para enviar as mudanças assim que acontecem."
+      "translation": "Inicie manualmente pelo botão de sincronizar (dá para enviar também dados mais antigos ou tudo), defina um intervalo (em horas) para a sincronização automática ou ative \"Sincronizar em cada alteração\" para enviar as mudanças assim que acontecem."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_3_TITLE": {
       "translation": "Os dados são enviados"
@@ -81,9 +81,6 @@
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_NOTE_1": {
       "translation": "A sincronização é de mão única: os dados são enviados desta instância para o servidor upstream, e não o contrário."
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_NOTE_2": {
-      "translation": "Servidores upstream não podem ser editados. Para alterar um, exclua-o e cadastre-o novamente."
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_TITLE": {
       "translation": "Para que serve esta tela?"
@@ -197,7 +194,79 @@
       "translation": "Segredo do cliente criado na página \"Receber dados de Servidores\" da outra instância do Go.Data."
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_URL_ALREADY_REGISTERED": {
-      "translation": "Já existe um servidor cadastrado com esta URL. Para alterá-lo, exclua-o na lista e cadastre-o de novo, ou use outro endereço."
+      "translation": "Já existe um servidor cadastrado com esta URL. Para alterá-lo, use o ícone de lápis na lista, ou use outro endereço."
+    },
+    "LNG_UPSTREAM_SERVER_LAST_SYNC_UP_TO_DATE": {
+      "translation": "Já atualizado"
+    },
+    "LNG_UPSTREAM_SERVER_LAST_SYNC_NO_NEW_DATA": {
+      "translation": "Nenhum dado novo para enviar"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_UP_TO_DATE_MESSAGE": {
+      "translation": "O servidor já está atualizado: não há dados novos para enviar."
+    },
+    "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_TITLE": {
+      "translation": "Modificar servidor upstream: {{name}}"
+    },
+    "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_ACTION_MODIFY_UPSTREAM_SERVER_SUCCESS_MESSAGE": {
+      "translation": "Servidor upstream atualizado"
+    },
+    "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_NOT_FOUND": {
+      "translation": "Servidor upstream não encontrado. Ele pode ter sido excluído."
+    },
+    "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_URL_CHANGED_NOTE": {
+      "translation": "A URL foi alterada. O histórico de sincronização é mantido por URL, então a próxima sincronização enviará todos os dados para este novo endereço."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_ACTION_MODIFY_SERVER": {
+      "translation": "Modificar servidor"
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_CONNECTION": {
+      "translation": "Conexão"
+    },
+    "LNG_UPSTREAM_SERVER_CONNECTION_CHECKING": {
+      "translation": "Verificando..."
+    },
+    "LNG_UPSTREAM_SERVER_CONNECTION_CHECKING_MESSAGE": {
+      "translation": "Verificando o servidor e as credenciais..."
+    },
+    "LNG_UPSTREAM_SERVER_CONNECTION_ONLINE": {
+      "translation": "Online"
+    },
+    "LNG_UPSTREAM_SERVER_CONNECTION_INVALID_CREDENTIALS": {
+      "translation": "Credenciais inválidas"
+    },
+    "LNG_UPSTREAM_SERVER_CONNECTION_API_NOT_FOUND": {
+      "translation": "API não encontrada"
+    },
+    "LNG_UPSTREAM_SERVER_CONNECTION_OFFLINE": {
+      "translation": "Offline"
+    },
+    "LNG_UPSTREAM_SERVER_CONNECTION_UNKNOWN": {
+      "translation": "Não verificado"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_MODE": {
+      "translation": "Dados a enviar"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_MODE_TOOLTIP": {
+      "translation": "Apenas o que mudou desde a última sincronização: a opção usual. Tudo o que mudou desde uma data: envia também dados mais antigos, por exemplo para preencher um servidor que foi recriado. Todos os dados: envia tudo."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_MODE_SINCE_LAST": {
+      "translation": "Apenas o que mudou desde a última sincronização"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_MODE_FROM_DATE": {
+      "translation": "Tudo o que mudou desde uma data"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_MODE_ALL": {
+      "translation": "Todos os dados"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_FROM_DATE": {
+      "translation": "Alterados desde"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_FROM_DATE_TOOLTIP": {
+      "translation": "Os registros criados ou alterados desde esta data são enviados. Só tem efeito se a data for anterior à última sincronização com sucesso; caso contrário, vale a última sincronização com sucesso."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_START_BUTTON": {
+      "translation": "Iniciar sincronização"
     }
   }
 }

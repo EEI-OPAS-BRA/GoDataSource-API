@@ -12,6 +12,14 @@
     "upstreamServerURL": {
       "type": "string",
       "required": true
+    },
+    "fromDate": {
+      "type": "date",
+      "description": "Send the data that was updated since this date. It only has effect if it is older than the start of the last successful sync with the server (or when there wasn't any), since the data updated between them would never be sent"
+    },
+    "fullSync": {
+      "type": "boolean",
+      "description": "Send all the data, no matter when the last successful sync with the server was made. When true, fromDate is ignored"
     }
   },
   "validations": [],

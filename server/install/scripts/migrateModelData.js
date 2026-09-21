@@ -677,13 +677,13 @@ const migrationVersions = [{
     fileName: 'languageToken.js',
     actions: [{
       name: 'createUpdateLanguageTokens',
-      buildNo: 6
+      buildNo: 10
     }, {
       name: 'createUpdateSingleEnglishLanguageTokens',
       buildNo: 2
     }, {
       name: 'createUpdatePortugueseLanguageTokens',
-      buildNo: 6
+      buildNo: 10
     }]
   }]
 }];

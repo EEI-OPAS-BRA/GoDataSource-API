@@ -9,6 +9,7 @@ const syncConfig = require('../../server/config.json').sync;
 const localizationHelper = require('../../components/localizationHelper');
 const Platform = require('../../components/platform');
 const upstreamServerCheck = require('../../components/upstreamServerCheck');
+const syncFromDate = require('../../components/syncFromDate');
 
 module.exports = function (Sync) {
 
@@ -809,6 +810,19 @@ module.exports = function (Sync) {
       }));
     }
 
+    // validate the date chosen to start sending data; it doesn't matter if all the data was requested
+    let requestedFromDate;
+    if (
+      data.fromDate &&
+      !data.fullSync
+    ) {
+      try {
+        requestedFromDate = syncFromDate.validateRequestedFromDate(data.fromDate);
+      } catch (err) {
+        return callback(err);
+      }
+    }
+
     // initialize flag to know if the callback function was already called
     // need to do this as we will call it and then continue doing some actions
     let callbackCalled = false;
@@ -902,15 +916,19 @@ module.exports = function (Sync) {
             order: 'actionStartDate DESC'
           })
           .then(function (lastSyncLogEntry) {
-            if (!lastSyncLogEntry) {
-              // there was no sync done with the upstream server; will sync all data from the DB
-              app.logger.debug(`Sync ${syncLogEntry.id}: No successful sync was found for the upstream server with URL '${upstreamServerEntry.url}'. Syncing all data from the DB.`);
+            // determine the date from which we will sync the data
+            // by default it is the start of the last successful sync (or all data if there wasn't any), but the user can ask for more data
+            const fromDateResult = syncFromDate.determineFromDate({
+              fullSync: data.fullSync,
+              requestedFromDate: requestedFromDate,
+              lastSyncStartDate: lastSyncLogEntry ? lastSyncLogEntry.actionStartDate : undefined
+            });
+
+            if (fromDateResult.fromDate) {
+              syncLogEntry.informationStartDate = fromDateResult.fromDate;
+              app.logger.debug(`Sync ${syncLogEntry.id}: ${fromDateResult.reason} (upstream server: ${upstreamServerEntry.url}). Syncing data from '${fromDateResult.fromDate.toISOString()}' onwards`);
             } else {
-              // get date from which we will sync the data
-              // in order to prevent data loss from the moment where the sync was started to the moment when the actionStartDate was set, get data from 1 minute earlier
-              let syncDate = localizationHelper.toMoment(lastSyncLogEntry.actionStartDate).subtract(1, 'minutes');
-              syncLogEntry.informationStartDate = syncDate;
-              app.logger.debug(`Sync ${syncLogEntry.id}: Latest successful sync with the upstream server (${upstreamServerEntry.url}) was done on '${localizationHelper.toMoment(syncLogEntry.informationStartDate).toISOString()}'. Syncing data from that date onwards`);
+              app.logger.debug(`Sync ${syncLogEntry.id}: ${fromDateResult.reason} (upstream server: ${upstreamServerEntry.url}). Syncing all data from the DB.`);
             }
 
             // save added details in the sync log entry

@@ -4,6 +4,10 @@ services:
     image: mongo:7.0.26
     container_name: godata-mongo
     restart: unless-stopped
+    ulimits:
+      nofile:
+        soft: 64000
+        hard: 64000
     ports:
       - "27017:27017"
     volumes:

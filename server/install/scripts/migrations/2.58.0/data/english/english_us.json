@@ -29,16 +29,16 @@
       "translation": "View logs"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_TITLE": {
-      "translation": "What are upstream servers?"
+      "translation": "What is this page for?"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_DESCRIPTION": {
-      "translation": "Upstream servers are other Go.Data instances (for example, a central server) that this instance sends its data to. Register them here and control when the synchronization happens."
+      "translation": "Register here the other Go.Data instances (upstream servers, for example a central server) that this instance sends its data to, and control when the synchronization happens."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_1_TITLE": {
       "translation": "Register the server"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_1_DESCRIPTION": {
-      "translation": "Add the URL of the other Go.Data instance and the client ID and secret generated there, in its Client applications page."
+      "translation": "Add the URL of the other Go.Data instance and the client ID and secret generated there, in its \"Receive data from servers\" page."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_2_TITLE": {
       "translation": "Choose when to sync"
@@ -56,7 +56,7 @@
       "translation": "Follow the result"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_4_DESCRIPTION": {
-      "translation": "The outcome (success, success with warnings or failed) is recorded in the Sync Logs page."
+      "translation": "The outcome (success, success with warnings or failed) is recorded in the \"Track synchronization\" page."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_NOTE_1": {
       "translation": "Synchronization is one-way: data is sent from this instance to the upstream server, not the other way around."
@@ -65,10 +65,10 @@
       "translation": "Upstream servers can't be edited. To change one, delete it and add it again."
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_TITLE": {
-      "translation": "What are client applications?"
+      "translation": "What is this page for?"
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_DESCRIPTION": {
-      "translation": "Client applications are the credentials that let other systems connect to this instance: the mobile app, or another Go.Data instance that sends its data here by registering this instance as its upstream server."
+      "translation": "Here you create the credentials that let other systems connect to this instance and send data to it: another Go.Data instance that sends its data here (by registering this instance in its \"Send data to servers\" page), or the mobile app."
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_1_TITLE": {
       "translation": "Create the application"
@@ -86,7 +86,7 @@
       "translation": "Share the credentials"
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_3_DESCRIPTION": {
-      "translation": "Use the client ID and secret when registering this instance as an upstream server on the other Go.Data, or download the configuration file (QR code) to set up the mobile app."
+      "translation": "Use the client ID and secret when registering this instance in \"Send data to servers\" on the other Go.Data, or download the configuration file (QR code) to set up the mobile app."
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_4_TITLE": {
       "translation": "Control the access"

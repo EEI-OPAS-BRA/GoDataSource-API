@@ -1,0 +1,26 @@
+{
+  "id": "english_us",
+  "tokens": {
+    "LNG_LAYOUT_MENU_ITEM_UPSTREAM_SERVERS_LABEL": {
+      "translation": "Send data to servers"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TITLE": {
+      "translation": "Send data to servers"
+    },
+    "LNG_LAYOUT_MENU_ITEM_CLIENT_APPLICATIONS_LABEL": {
+      "translation": "Receive data from servers"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TITLE": {
+      "translation": "Receive data from servers"
+    },
+    "LNG_APP_PAGE_SYSTEM_CLIENT_APPLICATIONS": {
+      "translation": "Receive data from servers"
+    },
+    "LNG_LAYOUT_MENU_ITEM_SYNC_LABEL": {
+      "translation": "Track synchronization"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_TITLE": {
+      "translation": "Track synchronization"
+    }
+  }
+}

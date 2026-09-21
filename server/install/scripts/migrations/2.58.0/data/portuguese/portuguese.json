@@ -1,6 +1,27 @@
 {
   "id": "portuguese_pt",
   "tokens": {
+    "LNG_LAYOUT_MENU_ITEM_UPSTREAM_SERVERS_LABEL": {
+      "translation": "Enviar dados para Servidores"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TITLE": {
+      "translation": "Enviar dados para Servidores"
+    },
+    "LNG_LAYOUT_MENU_ITEM_CLIENT_APPLICATIONS_LABEL": {
+      "translation": "Receber dados de Servidores"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TITLE": {
+      "translation": "Receber dados de Servidores"
+    },
+    "LNG_APP_PAGE_SYSTEM_CLIENT_APPLICATIONS": {
+      "translation": "Receber dados de Servidores"
+    },
+    "LNG_LAYOUT_MENU_ITEM_SYNC_LABEL": {
+      "translation": "Acompanhar sincronização"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_TITLE": {
+      "translation": "Acompanhar sincronização"
+    },
     "LNG_INFO_BANNER_ACTION_SHOW": {
       "translation": "Ver como funciona"
     },
@@ -29,16 +50,16 @@
       "translation": "Ver logs"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_TITLE": {
-      "translation": "Para que servem os servidores upstream?"
+      "translation": "Para que serve esta tela?"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_DESCRIPTION": {
-      "translation": "Servidores upstream são outras instâncias do Go.Data (por exemplo, um servidor central) para onde esta instância envia os seus dados. Cadastre-os aqui e controle quando a sincronização acontece."
+      "translation": "Cadastre aqui as outras instâncias do Go.Data (servidores upstream, por exemplo um servidor central) para onde esta instância envia os seus dados e controle quando a sincronização acontece."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_1_TITLE": {
       "translation": "Cadastre o servidor"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_1_DESCRIPTION": {
-      "translation": "Informe a URL da outra instância do Go.Data e o ID e o segredo do cliente gerados nela, na página de Aplicativos cliente."
+      "translation": "Informe a URL da outra instância do Go.Data e o ID e o segredo do cliente gerados nela, na página \"Receber dados de Servidores\"."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_2_TITLE": {
       "translation": "Escolha quando sincronizar"
@@ -56,7 +77,7 @@
       "translation": "Acompanhe o resultado"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_4_DESCRIPTION": {
-      "translation": "O resultado (sucesso, sucesso com avisos ou falha) fica registrado na página Sincronizar Logs."
+      "translation": "O resultado (sucesso, sucesso com avisos ou falha) fica registrado na página \"Acompanhar sincronização\"."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_NOTE_1": {
       "translation": "A sincronização é de mão única: os dados são enviados desta instância para o servidor upstream, e não o contrário."
@@ -65,10 +86,10 @@
       "translation": "Servidores upstream não podem ser editados. Para alterar um, exclua-o e cadastre-o novamente."
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_TITLE": {
-      "translation": "Para que servem os aplicativos cliente?"
+      "translation": "Para que serve esta tela?"
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_DESCRIPTION": {
-      "translation": "Aplicativos cliente são as credenciais que permitem que outros sistemas se conectem a esta instância: o aplicativo móvel, ou outra instância do Go.Data que envia seus dados para cá cadastrando esta instância como servidor upstream."
+      "translation": "Aqui você cria as credenciais que permitem que outros sistemas se conectem a esta instância e enviem dados para ela: outra instância do Go.Data que envia seus dados para cá (cadastrando esta instância em \"Enviar dados para Servidores\") ou o aplicativo móvel."
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_1_TITLE": {
       "translation": "Crie o aplicativo"
@@ -86,7 +107,7 @@
       "translation": "Compartilhe as credenciais"
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_3_DESCRIPTION": {
-      "translation": "Use o ID e o segredo do cliente ao cadastrar esta instância como servidor upstream na outra instância do Go.Data, ou baixe o arquivo de configuração (QR code) para configurar o aplicativo móvel."
+      "translation": "Use o ID e o segredo do cliente ao cadastrar esta instância em \"Enviar dados para Servidores\" na outra instância do Go.Data, ou baixe o arquivo de configuração (QR code) para configurar o aplicativo móvel."
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_4_TITLE": {
       "translation": "Controle o acesso"

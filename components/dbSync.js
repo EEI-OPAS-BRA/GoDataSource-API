@@ -103,7 +103,8 @@ let syncExcludeList = [
   'helpCategory',
   'helpItem',
   'device',
-  'deviceHistory'
+  'deviceHistory',
+  'migrationLog'
 ];
 let syncCollections = Object.keys(collectionsMap).filter((collection) => syncExcludeList.indexOf(collection) === -1);
 
@@ -822,7 +823,7 @@ const syncRecord = function (app, logger, model, record, options, done) {
             record: 'dbRecord',
             flag: syncRecordFlags.UNTOUCHED
           });
-        } 
+        }
 
         log('debug', `Record not found (id: ${record.id}), creating record.`);
         return model

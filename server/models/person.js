@@ -185,9 +185,18 @@ module.exports = function (Person) {
    * @param personInstance
    * @return {*}
    */
-  function validatePersonAddresses(personInstance) {
+  function validatePersonAddresses(personInstance, requireCurrentAddress) {
     // keep validation error
     let error;
+    // a person without addresses has no usual place of residence
+    if (
+      requireCurrentAddress &&
+      (!Array.isArray(personInstance.addresses) || !personInstance.addresses.length)
+    ) {
+      return app.utils.apiError.getError('ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE', {
+        addresses: []
+      });
+    }
     // if the person has addresses defined
     if (Array.isArray(personInstance.addresses) && personInstance.addresses.length) {
       // keep a list of current (usual place of residence) addresses
@@ -457,8 +466,22 @@ module.exports = function (Person) {
           return;
         }
 
+        // the usual place of residence requirement is enforced on create and whenever the request
+        // changes the addresses, so records saved before this rule can still be edited;
+        // sync keeps replicating records as they are on the source server
+        const requireCurrentAddress = [
+          app.models.case.modelName,
+          app.models.contact.modelName,
+          app.models.contactOfContact.modelName
+        ].indexOf(context.Model.modelName) > -1 &&
+          !(context.options && context.options._sync) &&
+          (
+            context.isNewInstance ||
+            (data.source.updated && data.source.updated.addresses !== undefined)
+          );
+
         // validate person addresses
-        const addressValidationError = validatePersonAddresses(data.source.all);
+        const addressValidationError = validatePersonAddresses(data.source.all, requireCurrentAddress);
         if (!addressValidationError) {
           return;
         }

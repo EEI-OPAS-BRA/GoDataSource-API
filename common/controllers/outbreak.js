@@ -1410,6 +1410,11 @@ module.exports = function (Outbreak) {
     // initialize geographical restriction query to be cached in promise.then
     let geographicalRestrictionsQueryCache;
 
+    // whether the resolved person IDs should also narrow down which relationships are fetched;
+    // this must stay false for a plain geographic restriction, since a chain still needs the
+    // out-of-scope relationships to reconstruct its real shape (the people get masked, not dropped)
+    let restrictRelationshipsByPersonIds = false;
+
     // start with geographical restriction
     return app.models.person
       .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
@@ -1447,6 +1452,10 @@ module.exports = function (Outbreak) {
         let personQuery;
 
         if (personFilter) {
+          // an explicit person filter narrows down which chains are returned, so it must
+          // keep restricting the relationships fetched, same as before
+          restrictRelationshipsByPersonIds = true;
+
           personQuery = {
             and: [
               {
@@ -1485,8 +1494,10 @@ module.exports = function (Outbreak) {
         }
       })
       .then(function (personIds) {
-        // if there was a people filter
-        if (personIds) {
+        // if there was an explicit people filter, narrow the relationships to it; a plain
+        // geographic restriction keeps the full relationship set so chains stay whole, and
+        // masks the out-of-scope people afterwards instead
+        if (personIds && restrictRelationshipsByPersonIds) {
           // include a relation if AT LEAST ONE of its people matches the filter passed,
           // so the matched people are shown together with their directly related people
           // (e.g. filtering a case by name also brings its related contacts)

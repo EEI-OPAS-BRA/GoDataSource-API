@@ -1338,6 +1338,7 @@ module.exports = function (Relationship) {
         person[property] = null;
       }
     });
+    person.masked = true;
 
     return person;
   };

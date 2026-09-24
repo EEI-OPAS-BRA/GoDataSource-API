@@ -252,9 +252,11 @@ const scenarios = [
           assert.strictEqual(restrictedCase.firstName, null);
           assert.strictEqual(restrictedCase.middleName, null);
           assert.strictEqual(restrictedCase.lastName, null);
+          assert.strictEqual(restrictedCase.masked, true);
 
           const restrictedEvent = findRecord(records, RESTRICTED_EVENT_ID);
           assert.strictEqual(restrictedEvent.name, null);
+          assert.strictEqual(restrictedEvent.masked, true);
         });
     }
   },
@@ -282,6 +284,7 @@ const scenarios = [
           assert.strictEqual(visible.firstName, 'Joana');
           assert.strictEqual(visible.middleName, 'Maria');
           assert.strictEqual(visible.lastName, 'Souza');
+          assert.strictEqual(visible.masked, undefined);
         });
     }
   },
@@ -348,8 +351,11 @@ const scenarios = [
           assert.strictEqual(restrictedCase.middleName, null);
           assert.strictEqual(restrictedCase.lastName, null);
           assert.strictEqual(restrictedCase.visualId, 'CASE-0012');
+          assert.strictEqual(restrictedCase.masked, true);
 
-          assert.strictEqual(findRecord(relationship.people, RESTRICTED_EVENT_ID).name, null);
+          const restrictedEvent = findRecord(relationship.people, RESTRICTED_EVENT_ID);
+          assert.strictEqual(restrictedEvent.name, null);
+          assert.strictEqual(restrictedEvent.masked, true);
         });
     }
   },
@@ -381,7 +387,7 @@ const scenarios = [
     }
   },
   {
-    name: 'masking adds no field that the record did not already have',
+    name: 'masking adds only the explicit marker field',
     run: () => {
       const event = {
         id: RESTRICTED_EVENT_ID,
@@ -391,9 +397,10 @@ const scenarios = [
 
       Relationship.maskPersonName(event);
 
-      assert.deepStrictEqual(Object.keys(event), ['id', 'name', 'visualId']);
+      assert.deepStrictEqual(Object.keys(event), ['id', 'name', 'visualId', 'masked']);
       assert.strictEqual(event.name, null);
       assert.strictEqual(event.visualId, 'EVENT-0002');
+      assert.strictEqual(event.masked, true);
 
       return Promise.resolve();
     }

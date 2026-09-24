@@ -334,12 +334,8 @@ module.exports = function (Relationship) {
               }
             }
           }).where;
-        geographicalRestrictionsQuery && (personQuery = {
-          and: [
-            personQuery,
-            geographicalRestrictionsQuery
-          ]
-        });
+        // Note: people outside the user's geographic scope are fetched too (not filtered out
+        // here), so a chain keeps its real shape; they get masked below instead of dropped.
         // use raw queries for related people
         return app.models.person
           .rawFind(
@@ -354,33 +350,44 @@ module.exports = function (Relationship) {
             people.forEach(function (person) {
               peopleMap[person.id] = person;
             });
-            // add people to relations
-            relationships.forEach(function (relationship) {
-              // add people information to the relationship
-              relationship.people = [];
-              Array.isArray(relationship.persons) && relationship.persons.forEach(function (person) {
-                if (peopleMap[person.id]) {
-                  relationship.people.push(peopleMap[person.id]);
+
+            // withhold the name of people outside the user's geographic scope while keeping
+            // their relationships intact
+            return app.models.relationship
+              .resolveRestrictedPeopleMap(Object.keys(peopleMap), geographicalRestrictionsQuery)
+              .then(function (restrictedPeopleMap) {
+                Object.keys(restrictedPeopleMap).forEach(function (personId) {
+                  app.models.relationship.maskPersonName(peopleMap[personId]);
+                });
+
+                // add people to relations
+                relationships.forEach(function (relationship) {
+                  // add people information to the relationship
+                  relationship.people = [];
+                  Array.isArray(relationship.persons) && relationship.persons.forEach(function (person) {
+                    if (peopleMap[person.id]) {
+                      relationship.people.push(peopleMap[person.id]);
+                    }
+                  });
+                });
+                // add filterParent support
+                relationships = app.utils.remote.searchByRelationProperty.deepSearchByRelationProperty(relationships, filter);
+                if (countOnly) {
+                  // count transmission chain - set activeChainStartDate - used for determining if a chain is active - to be specified endDate (by default today)
+                  transmissionChain.count(relationships, followUpPeriod, {activeChainStartDate: endDate}, callback);
+                } else {
+                  // build transmission chain - set activeChainStartDate - used for determining if a chain is active - to be specified endDate (by default today)
+                  transmissionChain.build(
+                    relationships,
+                    followUpPeriod,
+                    {
+                      activeChainStartDate: endDate,
+                      countContacts: countContacts,
+                      noContactChains: noContactChains
+                    },
+                    callback);
                 }
               });
-            });
-            // add filterParent support
-            relationships = app.utils.remote.searchByRelationProperty.deepSearchByRelationProperty(relationships, filter);
-            if (countOnly) {
-              // count transmission chain - set activeChainStartDate - used for determining if a chain is active - to be specified endDate (by default today)
-              transmissionChain.count(relationships, followUpPeriod, {activeChainStartDate: endDate}, callback);
-            } else {
-              // build transmission chain - set activeChainStartDate - used for determining if a chain is active - to be specified endDate (by default today)
-              transmissionChain.build(
-                relationships,
-                followUpPeriod,
-                {
-                  activeChainStartDate: endDate,
-                  countContacts: countContacts,
-                  noContactChains: noContactChains
-                },
-                callback);
-            }
           });
       })
       .catch(callback);
@@ -1338,6 +1345,7 @@ module.exports = function (Relationship) {
         person[property] = null;
       }
     });
+    person.masked = true;
 
     return person;
   };

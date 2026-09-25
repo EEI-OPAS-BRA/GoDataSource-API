@@ -1,0 +1,69 @@
+{
+  "name": "teamNotificationOccurrence",
+  "base": "extendedPersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "teamNotificationId": {
+      "type": "string",
+      "required": true
+    },
+    "teamId": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "message": {
+      "type": "string",
+      "required": true
+    },
+    "severity": {
+      "type": "string",
+      "required": true
+    },
+    "triggeredAt": {
+      "type": "date",
+      "required": true
+    },
+    "readBy": {
+      "type": [
+        "string"
+      ],
+      "default": []
+    }
+  },
+  "indexes": {
+    "teamId_index": {
+      "teamId": 1
+    },
+    "triggeredAt_index": {
+      "triggeredAt": 1
+    }
+  },
+  "validations": [],
+  "relations": {
+    "team": {
+      "type": "belongsTo",
+      "model": "team",
+      "foreignKey": "teamId"
+    },
+    "teamNotification": {
+      "type": "belongsTo",
+      "model": "teamNotification",
+      "foreignKey": "teamNotificationId"
+    }
+  },
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    }
+  ],
+  "methods": {}
+}

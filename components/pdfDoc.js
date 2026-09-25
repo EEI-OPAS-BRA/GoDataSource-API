@@ -446,6 +446,12 @@ const createQuestionnaire = function (doc, questions, withData, title, options) 
             break;
         }
       }
+
+      // handle additional questions attached directly to the question
+      if (item.additionalQuestions && item.additionalQuestions.length) {
+        doc.moveDown(0.5);
+        addQuestions(item.additionalQuestions, questionMargin, level + 1);
+      }
     });
   })(questions, false, 0);
 

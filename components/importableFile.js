@@ -199,6 +199,7 @@ const getJsonHeaders = function (filePath, extension, options) {
             (questions || []).forEach(question => {
               questionnaireMaxAnswersMap[modelName][question.variable] = 0;
               (question.answers || []).forEach(answer => parseQuestion(answer.additionalQuestions));
+              parseQuestion(question.additionalQuestions);
             });
           })(modelQuestionnaire);
         }
@@ -1416,6 +1417,8 @@ const upload = function (file, decryptPassword, outbreak, languageId, options) {
               (question.answers || []).forEach(answer => {
                 getLanguageToken(answer.additionalQuestions || []);
               });
+
+              getLanguageToken(question.additionalQuestions || []);
             });
         })(assocModelOptions.extendedForm.templateMultiDateQuestions);
 

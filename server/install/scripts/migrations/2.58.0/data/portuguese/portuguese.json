@@ -1,6 +1,105 @@
 {
   "id": "portuguese_pt",
   "tokens": {
+    "LNG_INFO_BANNER_SYNCED_DATA_TITLE": {
+      "translation": "Quais dados são sincronizados?"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_INCLUDED_TITLE": {
+      "translation": "Sincronizados"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_OUTBREAKS": {
+      "translation": "Surtos"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_OUTBREAKS_DESCRIPTION": {
+      "translation": "Configurações dos surtos, incluindo os questionários."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_PERSONS": {
+      "translation": "Casos, contatos, contatos de contatos e eventos"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_PERSONS_DESCRIPTION": {
+      "translation": "Os registros e as respostas dos questionários."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_FOLLOW_UPS": {
+      "translation": "Acompanhamentos"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_FOLLOW_UPS_DESCRIPTION": {
+      "translation": "As visitas de acompanhamento dos contatos."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_LAB_RESULTS": {
+      "translation": "Resultados de laboratório"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_LAB_RESULTS_DESCRIPTION": {
+      "translation": "Amostras e resultados dos exames."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_RELATIONSHIPS": {
+      "translation": "Relacionamentos e clusters"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_RELATIONSHIPS_DESCRIPTION": {
+      "translation": "Exposições e contatos entre as pessoas, e os clusters aos quais pertencem."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_TRANSMISSION_CHAINS": {
+      "translation": "Cadeias de transmissão"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_TRANSMISSION_CHAINS_DESCRIPTION": {
+      "translation": "As cadeias de transmissão salvas."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_FILES": {
+      "translation": "Arquivos anexados"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_FILES_DESCRIPTION": {
+      "translation": "Arquivos anexados aos registros."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_REFERENCE_DATA": {
+      "translation": "Dados de referência e localidades"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_REFERENCE_DATA_DESCRIPTION": {
+      "translation": "As opções das listas e a hierarquia de localidades."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_LANGUAGES": {
+      "translation": "Idiomas e traduções"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_LANGUAGES_DESCRIPTION": {
+      "translation": "Os idiomas e os textos do sistema, dos questionários e das listas."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_USERS": {
+      "translation": "Usuários e equipes"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_USERS_DESCRIPTION": {
+      "translation": "Os usuários chegam sem perfil e com senha aleatória; é preciso definir os dois na outra instância antes que possam entrar."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_TEMPLATES": {
+      "translation": "Modelos e configurações de importação e filtros"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_TEMPLATES_DESCRIPTION": {
+      "translation": "Modelos de surto, ícones, mapeamentos de importação e filtros salvos."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_TITLE": {
+      "translation": "Não sincronizados"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_ROLES": {
+      "translation": "Perfis de usuário"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_SYSTEM_SETTINGS": {
+      "translation": "Configurações do sistema"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_CLIENTS_AND_DEVICES": {
+      "translation": "Credenciais de clientes e dispositivos"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_AUDIT_LOG": {
+      "translation": "Log de auditoria"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_HELP": {
+      "translation": "Conteúdo de ajuda"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_NOTE_CHANGES_ONLY": {
+      "translation": "Por padrão, só é enviado o que foi criado, alterado ou excluído desde a última sincronização bem-sucedida."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_NOTE_OUTBREAKS": {
+      "translation": "Só são enviados os dados dos surtos permitidos para as credenciais do cliente."
+    },
+    "LNG_LAYOUT_MENU_ITEM_DATA_SYNC_LABEL": {
+      "translation": "Sincronização de dados"
+    },
     "LNG_LAYOUT_MENU_ITEM_UPSTREAM_SERVERS_LABEL": {
       "translation": "Enviar dados para Servidores"
     },
@@ -125,22 +224,13 @@
       "translation": "Sincronização"
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_BUTTON": {
-      "translation": "Verificar se o servidor está online"
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_CHECKING": {
-      "translation": "Verificando o servidor..."
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_ONLINE": {
-      "translation": "Servidor online. Clique para verificar novamente"
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_OFFLINE": {
-      "translation": "Não foi possível conectar ao servidor. Clique para tentar novamente"
+      "translation": "Testar servidor"
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_ONLINE_MESSAGE": {
       "translation": "Servidor online ({{ms}} ms)."
     },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_TEST_CONNECTION_BUTTON": {
-      "translation": "Testar conexão"
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_TEST_CREDENTIALS_BUTTON": {
+      "translation": "Testar credenciais"
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_CREDENTIALS_ACCEPTED_ALL_OUTBREAKS": {
       "translation": "Conexão estabelecida. As credenciais foram aceitas, com acesso a todos os surtos."

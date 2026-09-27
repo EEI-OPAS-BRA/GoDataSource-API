@@ -1,6 +1,105 @@
 {
   "id": "english_us",
   "tokens": {
+    "LNG_INFO_BANNER_SYNCED_DATA_TITLE": {
+      "translation": "Which data is synchronized?"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_INCLUDED_TITLE": {
+      "translation": "Synchronized"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_OUTBREAKS": {
+      "translation": "Outbreaks"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_OUTBREAKS_DESCRIPTION": {
+      "translation": "Outbreak settings, including their questionnaires."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_PERSONS": {
+      "translation": "Cases, contacts, contacts of contacts and events"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_PERSONS_DESCRIPTION": {
+      "translation": "The records and the answers to their questionnaires."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_FOLLOW_UPS": {
+      "translation": "Follow-ups"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_FOLLOW_UPS_DESCRIPTION": {
+      "translation": "Follow-up visits of the contacts."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_LAB_RESULTS": {
+      "translation": "Lab results"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_LAB_RESULTS_DESCRIPTION": {
+      "translation": "Samples and test results."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_RELATIONSHIPS": {
+      "translation": "Relationships and clusters"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_RELATIONSHIPS_DESCRIPTION": {
+      "translation": "Exposures and contacts between people, and the clusters they belong to."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_TRANSMISSION_CHAINS": {
+      "translation": "Transmission chains"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_TRANSMISSION_CHAINS_DESCRIPTION": {
+      "translation": "Saved transmission chain snapshots."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_FILES": {
+      "translation": "Attached files"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_FILES_DESCRIPTION": {
+      "translation": "Files attached to the records."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_REFERENCE_DATA": {
+      "translation": "Reference data and locations"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_REFERENCE_DATA_DESCRIPTION": {
+      "translation": "Options available in the lists and the location hierarchy."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_LANGUAGES": {
+      "translation": "Languages and translations"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_LANGUAGES_DESCRIPTION": {
+      "translation": "Languages and the texts of the system, questionnaires and lists."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_USERS": {
+      "translation": "Users and teams"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_USERS_DESCRIPTION": {
+      "translation": "Users arrive without roles and with a random password; the other instance must set them before they can log in."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_TEMPLATES": {
+      "translation": "Templates and settings for import and filters"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_TEMPLATES_DESCRIPTION": {
+      "translation": "Outbreak templates, icons, import mappings and saved filters."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_TITLE": {
+      "translation": "Not synchronized"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_ROLES": {
+      "translation": "User roles"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_SYSTEM_SETTINGS": {
+      "translation": "System settings"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_CLIENTS_AND_DEVICES": {
+      "translation": "Client credentials and devices"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_AUDIT_LOG": {
+      "translation": "Audit log"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_HELP": {
+      "translation": "Help content"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_NOTE_CHANGES_ONLY": {
+      "translation": "By default, only what was created, changed or deleted since the last successful synchronization is sent."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_NOTE_OUTBREAKS": {
+      "translation": "Only the data of the outbreaks allowed for the client credentials is sent."
+    },
+    "LNG_LAYOUT_MENU_ITEM_DATA_SYNC_LABEL": {
+      "translation": "Data synchronization"
+    },
     "LNG_INFO_BANNER_ACTION_SHOW": {
       "translation": "Show how it works"
     },
@@ -104,22 +203,13 @@
       "translation": "Synchronization"
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_BUTTON": {
-      "translation": "Check if the server is online"
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_CHECKING": {
-      "translation": "Checking the server..."
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_ONLINE": {
-      "translation": "Server online. Click to check again"
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_OFFLINE": {
-      "translation": "Could not connect to the server. Click to try again"
+      "translation": "Test server"
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_ONLINE_MESSAGE": {
       "translation": "Server online ({{ms}} ms)."
     },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_TEST_CONNECTION_BUTTON": {
-      "translation": "Test connection"
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_TEST_CREDENTIALS_BUTTON": {
+      "translation": "Test credentials"
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_CREDENTIALS_ACCEPTED_ALL_OUTBREAKS": {
       "translation": "Connection established. The credentials were accepted, with access to all outbreaks."

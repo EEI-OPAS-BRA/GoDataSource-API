@@ -357,6 +357,18 @@
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_START_BUTTON": {
       "translation": "Iniciar sincronização"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_SECTION_GENERAL": {
+      "translation": "Geral"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_SECTION_ACCESS": {
+      "translation": "Acesso"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_SECTION_CREDENTIALS": {
+      "translation": "Credenciais"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_COPY_CREDENTIAL_SUCCESS_MESSAGE": {
+      "translation": "Credencial copiada para a área de transferência."
     }
   }
 }

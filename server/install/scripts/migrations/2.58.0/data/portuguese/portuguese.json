@@ -369,6 +369,48 @@
     },
     "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_COPY_CREDENTIAL_SUCCESS_MESSAGE": {
       "translation": "Credencial copiada para a área de transferência."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_TITLE": {
+      "translation": "Para que serve esta tela?"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_DESCRIPTION": {
+      "translation": "Aqui fica o histórico de todas as sincronizações desta instância: os dados enviados para servidores upstream e os dados recebidos de outros servidores ou de pacotes de sincronização importados."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_1_TITLE": {
+      "translation": "Cada sincronização gera um registro"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_1_DESCRIPTION": {
+      "translation": "Um registro é criado quando esta instância envia dados para um servidor upstream (a coluna \"URL do servidor\" é preenchida) ou recebe dados de outro servidor ou de um pacote importado (a coluna \"ID do cliente\" é preenchida)."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_2_TITLE": {
+      "translation": "Confira o status"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_2_DESCRIPTION": {
+      "translation": "Em andamento, Sucesso, Sucesso com avisos ou Falha. As datas de início e de conclusão mostram quanto tempo levou, e a data de início das informações indica a partir de quando os dados enviados foram considerados."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_3_TITLE": {
+      "translation": "Investigue os problemas"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_3_DESCRIPTION": {
+      "translation": "Quando uma sincronização falha ou tem avisos, clique no ícone de olho da linha para ver os detalhes do erro."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_4_TITLE": {
+      "translation": "Use as ações rápidas"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_4_DESCRIPTION": {
+      "translation": "Pelo menu \"Ações rápidas\" é possível configurar um backup antes de cada sincronização, importar ou exportar um pacote de sincronização (para instâncias sem conexão entre si) e excluir registros antigos."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_NOTE_1": {
+      "translation": "O último registro com sucesso de cada servidor define a partir de quando a próxima sincronização envia os dados. Excluí-lo não altera os dados, mas a próxima sincronização pode reenviar mais registros."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_DIRECTION": {
+      "translation": "Direção"
+    },
+    "LNG_SYNC_DIRECTION_SENT": {
+      "translation": "Enviado"
+    },
+    "LNG_SYNC_DIRECTION_RECEIVED": {
+      "translation": "Recebido"
     }
   }
 }

@@ -330,6 +330,48 @@
     },
     "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_COPY_CREDENTIAL_SUCCESS_MESSAGE": {
       "translation": "Credential copied to clipboard."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_TITLE": {
+      "translation": "What is this page for?"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_DESCRIPTION": {
+      "translation": "Here you find the history of every synchronization of this instance: the data it sent to upstream servers and the data it received from other servers or from imported sync packages."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_1_TITLE": {
+      "translation": "Each synchronization is logged"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_1_DESCRIPTION": {
+      "translation": "A log is created when this instance sends data to an upstream server (the \"Server URL\" column is filled) or receives data from another server or an imported package (the \"Client ID\" column is filled)."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_2_TITLE": {
+      "translation": "Check the status"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_2_DESCRIPTION": {
+      "translation": "In progress, Success, Success with warnings or Failed. The start and completion dates show how long it took, and the information start date shows from when the sent data was taken."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_3_TITLE": {
+      "translation": "Investigate problems"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_3_DESCRIPTION": {
+      "translation": "When a synchronization fails or has warnings, click the eye icon on the row to see the error details."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_4_TITLE": {
+      "translation": "Use the quick actions"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_4_DESCRIPTION": {
+      "translation": "From the \"Quick actions\" menu you can set a backup to run before each synchronization, import or export a sync package (for instances that cannot reach each other) and delete old logs."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_NOTE_1": {
+      "translation": "The last successful log of each server defines from when the next synchronization sends data. Deleting it doesn't change the data, but the next synchronization may send more records again."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_DIRECTION": {
+      "translation": "Direction"
+    },
+    "LNG_SYNC_DIRECTION_SENT": {
+      "translation": "Sent"
+    },
+    "LNG_SYNC_DIRECTION_RECEIVED": {
+      "translation": "Received"
     }
   }
 }

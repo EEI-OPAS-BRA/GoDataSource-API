@@ -695,6 +695,9 @@ const syncRecord = function (app, logger, model, record, options, done) {
   let findRecord = Promise.resolve();
   let alternateQueryForRecord;
 
+  // record matched a db record that has a different id (e.g. a default language token created by each instance)
+  let matchedByNaturalKey = false;
+
   // check if a record with the given id exists if record.id exists
   if (
     record.id !== undefined &&
@@ -783,6 +786,7 @@ const syncRecord = function (app, logger, model, record, options, done) {
 
             // use the record that already exists, keeping its id
             log('debug', `Record with id ${record.id} matched the existing record with id ${results[0].id}, so no new record is created.`);
+            matchedByNaturalKey = true;
             record.id = results[0].id;
             if (record._id !== undefined) {
               record._id = results[0].id;
@@ -901,6 +905,19 @@ const syncRecord = function (app, logger, model, record, options, done) {
         ['team', 'user'].includes(model.name)
       ) {
         log('debug', `Record found (id: ${record.id}) but it is a ${model.name} in a sync from a client instance. Skipped record`);
+        return Promise.resolve({
+          record: dbRecord,
+          flag: syncRecordFlags.UNTOUCHED
+        });
+      }
+
+      // if we are in a sync action from another Go.Data instance and the record is one that this instance created too, don't update it
+      // e.g. default language tokens: an instance that is updated later would overwrite the translations customized here
+      if (
+        options.snapshotFromClient &&
+        matchedByNaturalKey
+      ) {
+        log('debug', `Record found (id: ${record.id}) by ${JSON.stringify(collectionsNaturalKeyMap[model.modelName])} in a sync from a client instance. Skipped record`);
         return Promise.resolve({
           record: dbRecord,
           flag: syncRecordFlags.UNTOUCHED

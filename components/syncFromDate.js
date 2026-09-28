@@ -31,6 +31,7 @@ const validateRequestedFromDate = (value) => {
  * updates records that are newer than the ones it has.
  * The user can't ask for less data than the default, otherwise what was updated between the last sync and the chosen date
  * would never be sent: the next syncs continue from the start of this one.
+ * When there is no successful sync the default is all the data, so the chosen date is ignored.
  *
  * @param {Object} options
  * @param {Date|string|Moment} [options.lastSyncStartDate] start of the last successful sync with the server
@@ -65,15 +66,15 @@ const determineFromDate = (options) => {
     };
   }
 
-  const requestedFromDate = localizationHelper.toMoment(options.requestedFromDate);
-
-  // there is no default to protect
+  // the first successful sync must send all the data, otherwise what was updated before the chosen date would never be sent
   if (!automaticFromDate) {
     return {
-      fromDate: requestedFromDate,
-      reason: 'No successful sync was found; using the chosen date'
+      fromDate: undefined,
+      reason: 'Chosen date ignored because no successful sync was found'
     };
   }
+
+  const requestedFromDate = localizationHelper.toMoment(options.requestedFromDate);
 
   // an older date sends more data
   if (requestedFromDate.isBefore(automaticFromDate)) {

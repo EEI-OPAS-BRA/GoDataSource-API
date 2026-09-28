@@ -353,7 +353,7 @@
       "translation": "Alterados desde"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_FROM_DATE_TOOLTIP": {
-      "translation": "Os registros criados ou alterados desde esta data são enviados. Só tem efeito se a data for anterior à última sincronização com sucesso; caso contrário, vale a última sincronização com sucesso."
+      "translation": "Os registros criados ou alterados desde esta data são enviados. Só tem efeito se a data for anterior à última sincronização com sucesso; caso contrário, vale a última sincronização com sucesso. Se ainda não houve sincronização com sucesso, todos os dados são enviados."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_START_BUTTON": {
       "translation": "Iniciar sincronização"

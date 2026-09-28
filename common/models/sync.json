@@ -38,7 +38,7 @@
     },
     {
       "principalType": "ROLE",
-      "principalId": "system_settings_modify",
+      "principalId": "upstream_server_create",
       "permission": "ALLOW",
       "property": "checkUpstreamServer"
     },

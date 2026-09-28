@@ -314,7 +314,7 @@
       "translation": "Changed since"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_FROM_DATE_TOOLTIP": {
-      "translation": "Records created or updated since this date are sent. It only has effect if the date is older than the last successful synchronization; otherwise the last successful synchronization is used."
+      "translation": "Records created or updated since this date are sent. It only has effect if the date is older than the last successful synchronization; otherwise the last successful synchronization is used. If there was no successful synchronization yet, all the data is sent."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_START_BUTTON": {
       "translation": "Start synchronization"

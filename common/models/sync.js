@@ -205,10 +205,15 @@ module.exports = function (Sync) {
               }
 
               // filter files that match a collection name
+              // another Go.Data instance can send only the synced collections, otherwise it could overwrite data that belongs to this instance (e.g. migrationLog, roles, system settings)
               let collectionsFiles = filenames.filter((filename) => {
                 // split filename into 'collection name' and 'extension'
                 filename = filename.split('.');
-                return filename[0] && dbSync.collectionsMap.hasOwnProperty(filename[0]);
+                return filename[0] && (
+                  reqOptions.snapshotFromClient ?
+                    dbSync.syncCollections.includes(filename[0]) :
+                    dbSync.collectionsMap.hasOwnProperty(filename[0])
+                );
               });
 
               // sort collectionFiles by batch number

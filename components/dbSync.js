@@ -103,7 +103,8 @@ let syncExcludeList = [
   'helpCategory',
   'helpItem',
   'device',
-  'deviceHistory'
+  'deviceHistory',
+  'migrationLog'
 ];
 let syncCollections = Object.keys(collectionsMap).filter((collection) => syncExcludeList.indexOf(collection) === -1);
 
@@ -114,6 +115,12 @@ let syncModels = syncCollections.concat(['case', 'contact', 'event', 'contactOfC
 // on import sync package we need to sync in series some collections that generate values based on resources in DB
 // eg: person model - visualId
 const collectionsToSyncInSeries = ['person'];
+
+// some records are created by each instance on its own (e.g. language tokens added by migrations), so the same record has different ids in different instances
+// on import, if there is no record with the received id, these models are matched by these properties before creating a new record; otherwise the record would be duplicated
+const collectionsNaturalKeyMap = {
+  languageToken: ['languageId', 'token']
+};
 
 // for which records we should always retrieve only NOT deleted records?
 const collectionsExcludeDeletedRecords = {
@@ -688,6 +695,9 @@ const syncRecord = function (app, logger, model, record, options, done) {
   let findRecord = Promise.resolve();
   let alternateQueryForRecord;
 
+  // record matched a db record that has a different id (e.g. a default language token created by each instance)
+  let matchedByNaturalKey = false;
+
   // check if a record with the given id exists if record.id exists
   if (
     record.id !== undefined &&
@@ -733,6 +743,59 @@ const syncRecord = function (app, logger, model, record, options, done) {
         deleted: true
       });
     });
+
+    // the same record might exist with a different id, since it was created by this instance and not received from another one
+    const naturalKeyProperties = collectionsNaturalKeyMap[model.modelName];
+    if (naturalKeyProperties) {
+      findRecord = findRecord.then((dbRecord) => {
+        // found by id
+        if (dbRecord) {
+          return dbRecord;
+        }
+
+        // can't match records that don't have all the properties
+        const naturalKeyQuery = {};
+        const hasNaturalKey = naturalKeyProperties.every((property) => {
+          const value = record[property];
+          if (value === undefined || value === null || value === '') {
+            return false;
+          }
+
+          naturalKeyQuery[property] = value;
+          return true;
+        });
+        if (!hasNaturalKey) {
+          return null;
+        }
+
+        log('debug', `Record with id ${record.id} not found. Trying to find record with ${JSON.stringify(naturalKeyQuery)}.`);
+
+        // in case there already are duplicates, use the most recently updated one
+        return model
+          .find({
+            where: naturalKeyQuery,
+            order: 'updatedAt DESC',
+            limit: 1,
+            deleted: true
+          })
+          .then((results) => {
+            if (!results || !results.length) {
+              // no db record was found; continue with creating the record
+              return null;
+            }
+
+            // use the record that already exists, keeping its id
+            log('debug', `Record with id ${record.id} matched the existing record with id ${results[0].id}, so no new record is created.`);
+            matchedByNaturalKey = true;
+            record.id = results[0].id;
+            if (record._id !== undefined) {
+              record._id = results[0].id;
+            }
+
+            return results[0];
+          });
+      });
+    }
   }
   // some models might query for different unique identifiers when id is not present
   else if (
@@ -822,7 +885,7 @@ const syncRecord = function (app, logger, model, record, options, done) {
             record: 'dbRecord',
             flag: syncRecordFlags.UNTOUCHED
           });
-        } 
+        }
 
         log('debug', `Record not found (id: ${record.id}), creating record.`);
         return model
@@ -842,6 +905,19 @@ const syncRecord = function (app, logger, model, record, options, done) {
         ['team', 'user'].includes(model.name)
       ) {
         log('debug', `Record found (id: ${record.id}) but it is a ${model.name} in a sync from a client instance. Skipped record`);
+        return Promise.resolve({
+          record: dbRecord,
+          flag: syncRecordFlags.UNTOUCHED
+        });
+      }
+
+      // if we are in a sync action from another Go.Data instance and the record is one that this instance created too, don't update it
+      // e.g. default language tokens: an instance that is updated later would overwrite the translations customized here
+      if (
+        options.snapshotFromClient &&
+        matchedByNaturalKey
+      ) {
+        log('debug', `Record found (id: ${record.id}) by ${JSON.stringify(collectionsNaturalKeyMap[model.modelName])} in a sync from a client instance. Skipped record`);
         return Promise.resolve({
           record: dbRecord,
           flag: syncRecordFlags.UNTOUCHED

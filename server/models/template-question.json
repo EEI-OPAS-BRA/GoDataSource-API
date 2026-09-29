@@ -62,6 +62,12 @@
       "type": [
         "templateQuestionAnswer"
       ]
+    },
+    "additionalQuestions": {
+      "type": [
+        "templateQuestion"
+      ],
+      "description": "Sub-questions displayed once this question has been answered (used for answer types that don't have selectable answer options, e.g. free text, numeric, date/time, file upload)"
     }
   },
   "validations": [],

@@ -27,6 +27,9 @@
     "dataBackup": {
       "type": "dataBackup"
     },
+    "notificationSettings": {
+      "type": "notificationSettings"
+    },
     "nodeFields": {
       "type": [
         "string"

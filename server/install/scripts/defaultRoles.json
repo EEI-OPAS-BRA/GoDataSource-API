@@ -45,6 +45,8 @@
       "relationship_all",
       "team_list",
       "team_view",
+      "team_notification_list",
+      "team_notification_view",
       "cot_all",
       "dashboard_all",
 
@@ -117,7 +119,8 @@
       "contact_grouped_by_risk",
       "contact_of_contact_grouped_by_risk",
       "follow_up_grouped_by_team",
-      "team_list"
+      "team_list",
+      "team_notification_list"
     ]
   },
   "Contact tracing coordinator": {
@@ -140,6 +143,7 @@
       "contact_all",
       "follow_up_all",
       "team_all",
+      "team_notification_all",
 
       "case_view",
       "cluster_list",
@@ -198,8 +202,10 @@
       "follow_up_bulk_modify",
       "follow_up_grouped_by_team",
       "team_view",
+      "team_notification_view",
 
       "team_list",
+      "team_notification_list",
       "case_view",
       "cluster_list",
       "contact_create",
@@ -311,6 +317,7 @@
       "follow_up_grouped_by_team",
       "outbreak_view",
       "team_list",
+      "team_notification_list",
       "user_list_for_filters",
       "user_modify_own_account"
     ]

@@ -1,377 +1,185 @@
 {
   "id": "english_us",
   "tokens": {
-    "LNG_INFO_BANNER_SYNCED_DATA_TITLE": {
-      "translation": "Which data is synchronized?"
+    "LNG_COMMON_BUTTON_MARK_ALL_AS_READ": {
+      "translation": "Mark all as read"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_INCLUDED_TITLE": {
-      "translation": "Synchronized"
+    "LNG_LAYOUT_MENU_ITEM_TEAM_NOTIFICATIONS_LABEL": {
+      "translation": "Team notifications"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_OUTBREAKS": {
-      "translation": "Outbreaks"
+    "LNG_LAYOUT_MENU_ITEM_TEAM_NOTIFICATIONS_NO_DATA_LABEL": {
+      "translation": "No notifications"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_OUTBREAKS_DESCRIPTION": {
-      "translation": "Outbreak settings, including their questionnaires."
+    "LNG_LAYOUT_MENU_ITEM_NOTIFICATION_SETTINGS_LABEL": {
+      "translation": "Notification settings"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_PERSONS": {
-      "translation": "Cases, contacts, contacts of contacts and events"
+    "LNG_DIALOG_CONFIRM_DELETE_TEAM_NOTIFICATION": {
+      "translation": "Are you sure you want to delete notification \"{{name}}\"?"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_PERSONS_DESCRIPTION": {
-      "translation": "The records and the answers to their questionnaires."
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_TEAM": {
+      "translation": "Team"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_FOLLOW_UPS": {
-      "translation": "Follow-ups"
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_TITLE": {
+      "translation": "Title"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_FOLLOW_UPS_DESCRIPTION": {
-      "translation": "Follow-up visits of the contacts."
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_MESSAGE": {
+      "translation": "Message"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_LAB_RESULTS": {
-      "translation": "Lab results"
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_SEVERITY": {
+      "translation": "Severity"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_LAB_RESULTS_DESCRIPTION": {
-      "translation": "Samples and test results."
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_RECURRING": {
+      "translation": "Recurring"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_RELATIONSHIPS": {
-      "translation": "Relationships and clusters"
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_RECURRENCE_INTERVAL": {
+      "translation": "Recurrence interval"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_RELATIONSHIPS_DESCRIPTION": {
-      "translation": "Exposures and contacts between people, and the clusters they belong to."
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_RECURRENCE_UNIT": {
+      "translation": "Recurrence unit"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_TRANSMISSION_CHAINS": {
-      "translation": "Transmission chains"
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_ACTIVE": {
+      "translation": "Active"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_TRANSMISSION_CHAINS_DESCRIPTION": {
-      "translation": "Saved transmission chain snapshots."
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_CREATED_AT": {
+      "translation": "Created at"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_FILES": {
-      "translation": "Attached files"
+    "LNG_TEAM_NOTIFICATION_SEVERITY_GREEN": {
+      "translation": "Green"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_FILES_DESCRIPTION": {
-      "translation": "Files attached to the records."
+    "LNG_TEAM_NOTIFICATION_SEVERITY_YELLOW": {
+      "translation": "Yellow"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_REFERENCE_DATA": {
-      "translation": "Reference data and locations"
+    "LNG_TEAM_NOTIFICATION_SEVERITY_RED": {
+      "translation": "Red"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_REFERENCE_DATA_DESCRIPTION": {
-      "translation": "Options available in the lists and the location hierarchy."
+    "LNG_TEAM_NOTIFICATION_RECURRENCE_UNIT_HOURS": {
+      "translation": "Hours"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_LANGUAGES": {
-      "translation": "Languages and translations"
+    "LNG_TEAM_NOTIFICATION_RECURRENCE_UNIT_DAYS": {
+      "translation": "Days"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_LANGUAGES_DESCRIPTION": {
-      "translation": "Languages and the texts of the system, questionnaires and lists."
+    "LNG_PAGE_LIST_TEAM_NOTIFICATIONS_TITLE": {
+      "translation": "Team notifications"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_USERS": {
-      "translation": "Users and teams"
+    "LNG_PAGE_LIST_TEAM_NOTIFICATIONS_ACTION_MODIFY": {
+      "translation": "Modify notification"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_USERS_DESCRIPTION": {
-      "translation": "Users arrive without roles and with a random password; the other instance must set them before they can log in."
+    "LNG_PAGE_LIST_TEAM_NOTIFICATIONS_ACTION_ENABLE_DISABLE": {
+      "translation": "Enable / Disable"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_TEMPLATES": {
-      "translation": "Templates and settings for import and filters"
+    "LNG_PAGE_LIST_TEAM_NOTIFICATIONS_ACTION_TOGGLE_ENABLED_SUCCESS_MESSAGE": {
+      "translation": "Notification updated successfully"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_TEMPLATES_DESCRIPTION": {
-      "translation": "Outbreak templates, icons, import mappings and saved filters."
+    "LNG_PAGE_LIST_TEAM_NOTIFICATIONS_ACTION_DELETE": {
+      "translation": "Delete notification"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_TITLE": {
-      "translation": "Not synchronized"
+    "LNG_PAGE_LIST_TEAM_NOTIFICATIONS_ACTION_DELETE_SUCCESS_MESSAGE": {
+      "translation": "Notification deleted successfully"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_ROLES": {
-      "translation": "User roles"
+    "LNG_PAGE_CREATE_TEAM_NOTIFICATION_TITLE": {
+      "translation": "Create team notification"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_SYSTEM_SETTINGS": {
-      "translation": "System settings"
+    "LNG_PAGE_CREATE_TEAM_NOTIFICATION_ACTION_CREATE_TEAM_NOTIFICATION_SUCCESS_MESSAGE": {
+      "translation": "Notification created successfully"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_CLIENTS_AND_DEVICES": {
-      "translation": "Client credentials and devices"
+    "LNG_PAGE_MODIFY_TEAM_NOTIFICATION_TITLE": {
+      "translation": "Modify team notification"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_AUDIT_LOG": {
-      "translation": "Audit log"
+    "LNG_PAGE_MODIFY_TEAM_NOTIFICATION_ACTION_MODIFY_TEAM_NOTIFICATION_SUCCESS_MESSAGE": {
+      "translation": "Notification modified successfully"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_HELP": {
-      "translation": "Help content"
+    "LNG_PAGE_NOTIFICATION_SETTINGS_TITLE": {
+      "translation": "Notification settings"
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_NOTE_CHANGES_ONLY": {
-      "translation": "By default, only what was created, changed or deleted since the last successful synchronization is sent."
+    "LNG_PAGE_NOTIFICATION_SETTINGS_DESCRIPTION": {
+      "translation": "Configure how many notifications are shown in the history and how often the system checks for recurring notifications."
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_NOTE_OUTBREAKS": {
-      "translation": "Only the data of the outbreaks allowed for the client credentials is sent."
+    "LNG_PAGE_NOTIFICATION_SETTINGS_ACTION_CONFIGURE_BUTTON": {
+      "translation": "Configure"
     },
-    "LNG_LAYOUT_MENU_ITEM_DATA_SYNC_LABEL": {
-      "translation": "Data synchronization"
+    "LNG_PAGE_NOTIFICATION_SETTINGS_DIALOG_TITLE": {
+      "translation": "Configure notifications"
     },
-    "LNG_INFO_BANNER_ACTION_SHOW": {
-      "translation": "Show how it works"
+    "LNG_PAGE_NOTIFICATION_SETTINGS_DIALOG_EXISTING_CONFIGURATION_INFO": {
+      "translation": "Current configuration"
     },
-    "LNG_INFO_BANNER_ACTION_HIDE": {
-      "translation": "Hide"
+    "LNG_PAGE_NOTIFICATION_SETTINGS_DIALOG_SUCCESS_MESSAGE": {
+      "translation": "Settings saved successfully"
     },
-    "LNG_INFO_BANNER_STEPS_TITLE": {
-      "translation": "How it works"
+    "LNG_NOTIFICATION_SETTINGS_FIELD_LABEL_HISTORY_COUNT": {
+      "translation": "Number of notifications in history"
     },
-    "LNG_UPSTREAM_SERVER_FIELD_LABEL_LAST_SYNC_DATE": {
-      "translation": "Last sync date"
+    "LNG_NOTIFICATION_SETTINGS_FIELD_LABEL_HISTORY_COUNT_DESCRIPTION": {
+      "translation": "Maximum number of notifications shown in each user's history"
     },
-    "LNG_UPSTREAM_SERVER_FIELD_LABEL_LAST_SYNC_STATUS": {
-      "translation": "Last sync status"
+    "LNG_NOTIFICATION_SETTINGS_FIELD_LABEL_CHECK_INTERVAL": {
+      "translation": "Check interval"
     },
-    "LNG_UPSTREAM_SERVER_FIELD_LABEL_LAST_SYNC_LOGS": {
-      "translation": "Logs"
+    "LNG_NOTIFICATION_SETTINGS_FIELD_LABEL_CHECK_INTERVAL_DESCRIPTION": {
+      "translation": "How often the system checks for due recurring notifications"
     },
-    "LNG_UPSTREAM_SERVER_LAST_SYNC_NEVER": {
-      "translation": "Never synchronized"
+    "LNG_NOTIFICATION_SETTINGS_FIELD_LABEL_CHECK_INTERVAL_UNIT": {
+      "translation": "Check interval unit"
     },
-    "LNG_UPSTREAM_SERVER_LAST_SYNC_NO_MESSAGES": {
-      "translation": "No errors or warnings"
+    "LNG_NOTIFICATION_SETTINGS_CHECK_INTERVAL_UNIT_MINUTES": {
+      "translation": "Minutes"
     },
-    "LNG_UPSTREAM_SERVER_LAST_SYNC_VIEW_LOGS": {
-      "translation": "View logs"
+    "LNG_NOTIFICATION_SETTINGS_CHECK_INTERVAL_UNIT_HOURS": {
+      "translation": "Hours"
     },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_TITLE": {
-      "translation": "What is this page for?"
+    "LNG_NOTIFICATION_SETTINGS_CHECK_INTERVAL_UNIT_DAYS": {
+      "translation": "Days"
     },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_DESCRIPTION": {
-      "translation": "Register here the other Go.Data instances (upstream servers, for example a central server) that this instance sends its data to, and control when the synchronization happens."
+    "LNG_PAGE_CREATE_OUTBREAK_LABEL_NOTIFY_TEAM": {
+      "translation": "Notify team"
     },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_1_TITLE": {
-      "translation": "Register the server"
+    "LNG_PAGE_CREATE_OUTBREAK_LABEL_NOTIFY_TEAM_DESCRIPTION": {
+      "translation": "Sends a notification to the selected team as soon as the outbreak is created"
     },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_1_DESCRIPTION": {
-      "translation": "Add the URL of the other Go.Data instance and the client ID and secret generated there, in its \"Receive data from servers\" page."
+    "LNG_PAGE_CREATE_OUTBREAK_LABEL_NOTIFY_TEAM_ID": {
+      "translation": "Team to notify"
     },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_2_TITLE": {
-      "translation": "Choose when to sync"
+    "LNG_PAGE_CREATE_OUTBREAK_LABEL_NOTIFY_TEAM_ID_DESCRIPTION": {
+      "translation": "Team that will receive the notification"
     },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_2_DESCRIPTION": {
-      "translation": "Start it manually with the sync button (you can also send older data or everything), set an interval (in hours) for automatic sync, or enable \"Sync on every change\" to send changes as they happen."
+    "LNG_PAGE_CREATE_OUTBREAK_NOTIFY_TEAM_DEFAULT_TITLE": {
+      "translation": "New outbreak registered"
     },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_3_TITLE": {
-      "translation": "Data is sent"
+    "LNG_PAGE_CREATE_CASE_TAB_NOTIFY_TEAM": {
+      "translation": "Notify team"
     },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_3_DESCRIPTION": {
-      "translation": "This instance exports its data and sends it to the upstream server, which imports it. The first sync sends everything; the next ones send only what changed since the last successful sync."
+    "LNG_PAGE_CREATE_CASE_LABEL_NOTIFY_TEAM": {
+      "translation": "Notify team"
     },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_4_TITLE": {
-      "translation": "Follow the result"
+    "LNG_PAGE_CREATE_CASE_LABEL_NOTIFY_TEAM_DESCRIPTION": {
+      "translation": "Sends a notification to the selected team as soon as the case is created"
     },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_4_DESCRIPTION": {
-      "translation": "The outcome (success, success with warnings or failed) is recorded in the \"Track synchronization\" page."
+    "LNG_PAGE_CREATE_CASE_LABEL_NOTIFY_TEAM_ID": {
+      "translation": "Team to notify"
     },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_NOTE_1": {
-      "translation": "Synchronization is one-way: data is sent from this instance to the upstream server, not the other way around."
+    "LNG_PAGE_CREATE_CASE_LABEL_NOTIFY_TEAM_ID_DESCRIPTION": {
+      "translation": "Team that will receive the notification"
     },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_TITLE": {
-      "translation": "What is this page for?"
+    "LNG_PAGE_CREATE_CASE_NOTIFY_TEAM_DEFAULT_TITLE": {
+      "translation": "New case registered"
     },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_DESCRIPTION": {
-      "translation": "Here you create the credentials that let other systems connect to this instance and send data to it: another Go.Data instance that sends its data here (by registering this instance in its \"Send data to servers\" page), or the mobile app."
+    "LNG_PAGE_CREATE_CONTACT_TAB_NOTIFY_TEAM": {
+      "translation": "Notify team"
     },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_1_TITLE": {
-      "translation": "Create the application"
+    "LNG_PAGE_CREATE_CONTACT_LABEL_NOTIFY_TEAM": {
+      "translation": "Notify team"
     },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_1_DESCRIPTION": {
-      "translation": "Give it a name. The client ID and secret can be generated automatically."
+    "LNG_PAGE_CREATE_CONTACT_LABEL_NOTIFY_TEAM_DESCRIPTION": {
+      "translation": "Sends a notification to the selected team as soon as the contact is created"
     },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_2_TITLE": {
-      "translation": "Choose the outbreaks"
+    "LNG_PAGE_CREATE_CONTACT_LABEL_NOTIFY_TEAM_ID": {
+      "translation": "Team to notify"
     },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_2_DESCRIPTION": {
-      "translation": "Limit which outbreaks the application can access. Leave it empty to allow all outbreaks."
+    "LNG_PAGE_CREATE_CONTACT_LABEL_NOTIFY_TEAM_ID_DESCRIPTION": {
+      "translation": "Team that will receive the notification"
     },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_3_TITLE": {
-      "translation": "Share the credentials"
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_3_DESCRIPTION": {
-      "translation": "Use the client ID and secret when registering this instance in \"Send data to servers\" on the other Go.Data, or download the configuration file (QR code) to set up the mobile app."
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_4_TITLE": {
-      "translation": "Control the access"
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_4_DESCRIPTION": {
-      "translation": "Requests are accepted only while the application is active and the credentials match. Deactivate it to block access without deleting it."
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_NOTE_1": {
-      "translation": "Treat the client secret like a password: anyone who has it can connect to this instance as that application."
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_SECTION_GENERAL": {
-      "translation": "General"
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_SECTION_CONNECTION": {
-      "translation": "Connection"
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_SECTION_SYNCHRONIZATION": {
-      "translation": "Synchronization"
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_BUTTON": {
-      "translation": "Test server"
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_ONLINE_MESSAGE": {
-      "translation": "Server online ({{ms}} ms)."
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_TEST_CREDENTIALS_BUTTON": {
-      "translation": "Test credentials"
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_CREDENTIALS_ACCEPTED_ALL_OUTBREAKS": {
-      "translation": "Connection established. The credentials were accepted, with access to all outbreaks."
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_CREDENTIALS_ACCEPTED_SOME_OUTBREAKS": {
-      "translation": "Connection established. The credentials were accepted, with access to {{count}} outbreak(s)."
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_CONNECTION_REFUSED": {
-      "translation": "Connection refused. Check the address and the port, and if the other instance is running."
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_HOST_NOT_FOUND": {
-      "translation": "Address not found. Check the name of the server."
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_TIMEOUT": {
-      "translation": "The server did not respond in time."
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_CERTIFICATE": {
-      "translation": "Could not establish a secure connection: there is a problem with the SSL certificate of the server."
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_NOT_GODATA": {
-      "translation": "The address responded, but it does not look like a Go.Data server."
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_INVALID_CREDENTIALS": {
-      "translation": "The server is online, but the credentials were rejected. Check the client ID and secret, and if the application is active on the other instance."
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_API_NOT_FOUND": {
-      "translation": "The server is online, but the API was not found at this address. The URL must end with /api."
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_INVALID_URL": {
-      "translation": "Invalid URL. Use a complete address, for example http://localhost:3000/api."
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_CONNECTION_FAILED": {
-      "translation": "Could not connect to the server."
-    },
-    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_URL_ALREADY_REGISTERED": {
-      "translation": "A server with this URL is already registered. To change it, use the pencil icon in the list, or use a different address."
-    },
-    "LNG_UPSTREAM_SERVER_LAST_SYNC_UP_TO_DATE": {
-      "translation": "Already up to date"
-    },
-    "LNG_UPSTREAM_SERVER_LAST_SYNC_NO_NEW_DATA": {
-      "translation": "No new data to send"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_UP_TO_DATE_MESSAGE": {
-      "translation": "The server is already up to date: there is no new data to send."
-    },
-    "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_TITLE": {
-      "translation": "Modify upstream server: {{name}}"
-    },
-    "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_ACTION_MODIFY_UPSTREAM_SERVER_SUCCESS_MESSAGE": {
-      "translation": "Upstream server updated"
-    },
-    "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_NOT_FOUND": {
-      "translation": "Upstream server not found. It may have been deleted."
-    },
-    "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_URL_CHANGED_NOTE": {
-      "translation": "The URL was changed. The synchronization history is kept by URL, so the next synchronization will send all the data to this new address."
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_ACTION_MODIFY_SERVER": {
-      "translation": "Modify server"
-    },
-    "LNG_UPSTREAM_SERVER_FIELD_LABEL_CONNECTION": {
-      "translation": "Connection"
-    },
-    "LNG_UPSTREAM_SERVER_CONNECTION_CHECKING": {
-      "translation": "Checking..."
-    },
-    "LNG_UPSTREAM_SERVER_CONNECTION_CHECKING_MESSAGE": {
-      "translation": "Checking the server and its credentials..."
-    },
-    "LNG_UPSTREAM_SERVER_CONNECTION_ONLINE": {
-      "translation": "Online"
-    },
-    "LNG_UPSTREAM_SERVER_CONNECTION_INVALID_CREDENTIALS": {
-      "translation": "Invalid credentials"
-    },
-    "LNG_UPSTREAM_SERVER_CONNECTION_API_NOT_FOUND": {
-      "translation": "API not found"
-    },
-    "LNG_UPSTREAM_SERVER_CONNECTION_OFFLINE": {
-      "translation": "Offline"
-    },
-    "LNG_UPSTREAM_SERVER_CONNECTION_UNKNOWN": {
-      "translation": "Not checked"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_MODE": {
-      "translation": "Data to send"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_MODE_TOOLTIP": {
-      "translation": "Only what changed since the last synchronization: the usual option. Everything changed since a date: also sends older data, for example to fill a server that was recreated. All data: sends everything."
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_MODE_SINCE_LAST": {
-      "translation": "Only what changed since the last synchronization"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_MODE_FROM_DATE": {
-      "translation": "Everything changed since a date"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_MODE_ALL": {
-      "translation": "All data"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_FROM_DATE": {
-      "translation": "Changed since"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_FROM_DATE_TOOLTIP": {
-      "translation": "Records created or updated since this date are sent. It only has effect if the date is older than the last successful synchronization; otherwise the last successful synchronization is used. If there was no successful synchronization yet, all the data is sent."
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_START_BUTTON": {
-      "translation": "Start synchronization"
-    },
-    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_SECTION_GENERAL": {
-      "translation": "General"
-    },
-    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_SECTION_ACCESS": {
-      "translation": "Access"
-    },
-    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_SECTION_CREDENTIALS": {
-      "translation": "Credentials"
-    },
-    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_COPY_CREDENTIAL_SUCCESS_MESSAGE": {
-      "translation": "Credential copied to clipboard."
-    },
-    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_TITLE": {
-      "translation": "What is this page for?"
-    },
-    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_DESCRIPTION": {
-      "translation": "Here you find the history of every synchronization of this instance: the data it sent to upstream servers and the data it received from other servers or from imported sync packages."
-    },
-    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_1_TITLE": {
-      "translation": "Each synchronization is logged"
-    },
-    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_1_DESCRIPTION": {
-      "translation": "A log is created when this instance sends data to an upstream server (the \"Server URL\" column is filled) or receives data from another server or an imported package (the \"Client ID\" column is filled)."
-    },
-    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_2_TITLE": {
-      "translation": "Check the status"
-    },
-    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_2_DESCRIPTION": {
-      "translation": "In progress, Success, Success with warnings or Failed. The start and completion dates show how long it took, and the information start date shows from when the sent data was taken."
-    },
-    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_3_TITLE": {
-      "translation": "Investigate problems"
-    },
-    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_3_DESCRIPTION": {
-      "translation": "When a synchronization fails or has warnings, click the eye icon on the row to see the error details."
-    },
-    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_4_TITLE": {
-      "translation": "Use the quick actions"
-    },
-    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_4_DESCRIPTION": {
-      "translation": "From the \"Quick actions\" menu you can set a backup to run before each synchronization, import or export a sync package (for instances that cannot reach each other) and delete old logs."
-    },
-    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_NOTE_1": {
-      "translation": "The last successful log of each server defines from when the next synchronization sends data. Deleting it doesn't change the data, but the next synchronization may send more records again."
-    },
-    "LNG_UPSTREAM_SERVER_FIELD_LABEL_DIRECTION": {
-      "translation": "Direction"
-    },
-    "LNG_SYNC_DIRECTION_SENT": {
-      "translation": "Sent"
-    },
-    "LNG_SYNC_DIRECTION_RECEIVED": {
-      "translation": "Received"
+    "LNG_PAGE_CREATE_CONTACT_NOTIFY_TEAM_DEFAULT_TITLE": {
+      "translation": "New contact registered"
     }
   }
 }

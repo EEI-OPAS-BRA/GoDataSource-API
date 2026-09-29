@@ -58,6 +58,9 @@
     },
     "complemento": {
       "type": "string"
+    },
+    "bairro": {
+      "type": "string"
     }
   },
   "validations": [],

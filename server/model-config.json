@@ -52,6 +52,14 @@
     "dataSource": "mongoDb",
     "public": true
   },
+  "teamNotification": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "teamNotificationOccurrence": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
   "auditLog": {
     "dataSource": "mongoDb",
     "public": true
@@ -157,6 +165,10 @@
     "public": true
   },
   "dataBackup": {
+    "dataSource": null,
+    "public": false
+  },
+  "notificationSettings": {
     "dataSource": null,
     "public": false
   },

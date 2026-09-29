@@ -18,6 +18,11 @@ const defaultSettings = {
     'dataRetentionInterval': 90,
     'location': `${__dirname}/../../../backups`
   },
+  'notificationSettings': {
+    'historyCount': 20,
+    'checkInterval': 5,
+    'checkIntervalUnit': 'm'
+  },
   'anonymizeFields': {
     'case': [
       'firstName',

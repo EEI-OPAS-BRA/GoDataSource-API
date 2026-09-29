@@ -1,0 +1,14 @@
+{
+  "id": "english_us",
+  "tokens": {
+    "LNG_TEAM_NOTIFICATION_RECURRENCE_UNIT_WEEKS": {
+      "translation": "Weeks"
+    },
+    "LNG_TEAM_NOTIFICATION_RECURRENCE_UNIT_MONTHS": {
+      "translation": "Months"
+    },
+    "LNG_TEAM_NOTIFICATION_RECURRENCE_UNIT_YEARS": {
+      "translation": "Years"
+    }
+  }
+}

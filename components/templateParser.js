@@ -57,6 +57,11 @@ function parseQuestions(questions, identifier, counters) {
         }
       });
     }
+
+    // check for additional questions attached directly to the question
+    if (question.additionalQuestions && Array.isArray(question.additionalQuestions) && question.additionalQuestions.length) {
+      parseQuestions(questions[qindex].additionalQuestions, questionIdentifier, counters);
+    }
   });
 }
 
@@ -143,6 +148,11 @@ function saveLanguageTokens(context, next) {
             getTokensFromQuestions(answers[aindex].additionalQuestions, originalValues[qindex].answers[aindex].additionalQuestions, languageId, tokens);
           }
         });
+      }
+
+      // check for additional questions attached directly to the question
+      if (question.additionalQuestions && Array.isArray(question.additionalQuestions) && question.additionalQuestions.length) {
+        getTokensFromQuestions(questions[qindex].additionalQuestions, originalValues[qindex].additionalQuestions, languageId, tokens);
       }
     });
   }
@@ -291,6 +301,11 @@ function beforeHook(context, next) {
                     }
                   });
                 }
+
+                // check for additional questions attached directly to the question
+                if (question.additionalQuestions && Array.isArray(question.additionalQuestions) && question.additionalQuestions.length) {
+                  parse(questions[qIndex].additionalQuestions, questionIdentifier);
+                }
               });
             })(contextParts.target[subTemplate], templateIdentifier);
 
@@ -433,6 +448,8 @@ function orderQuestions(questions) {
           orderQuestions(answer.additionalQuestions);
         });
       }
+      // order additional questions attached directly to the question
+      orderQuestions(question.additionalQuestions);
     });
   }
 }

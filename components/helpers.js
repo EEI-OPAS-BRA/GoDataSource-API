@@ -1198,6 +1198,14 @@ const getQuestionnaireDateProperties = (questionnaireDateProperties, questions) 
           }
         }
       }
+
+      // go through sub questions attached directly to the question
+      if (
+        question.additionalQuestions &&
+        question.additionalQuestions.length
+      ) {
+        getQuestionnaireDateProperties(questionnaireDateProperties, question.additionalQuestions);
+      }
     }
   }
 };
@@ -1796,6 +1804,11 @@ const convertQuestionStringDatesToDates = function (
                 }
               });
             }
+
+            // make sure we add sub-questions attached directly to the question as well
+            if (!_.isEmpty(question.additionalQuestions)) {
+              mapQuestions(question.additionalQuestions);
+            }
           });
         };
 
@@ -2261,6 +2274,11 @@ function extractVariablesAndAnswerOptions(template) {
             variables = variables.concat(extractVariablesAndAnswerOptions(answer.additionalQuestions));
           }
         });
+      }
+      // if there are additional questions attached directly to the question
+      if (Array.isArray(question.additionalQuestions)) {
+        // parse them recursively
+        variables = variables.concat(extractVariablesAndAnswerOptions(question.additionalQuestions));
       }
     });
   }

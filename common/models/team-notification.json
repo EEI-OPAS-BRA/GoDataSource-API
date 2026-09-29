@@ -1,0 +1,203 @@
+{
+  "name": "teamNotification",
+  "base": "extendedPersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "teamId": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "message": {
+      "type": "string",
+      "required": true
+    },
+    "severity": {
+      "type": "string",
+      "required": true,
+      "enum": [
+        "LNG_TEAM_NOTIFICATION_SEVERITY_GREEN",
+        "LNG_TEAM_NOTIFICATION_SEVERITY_YELLOW",
+        "LNG_TEAM_NOTIFICATION_SEVERITY_RED"
+      ],
+      "default": "LNG_TEAM_NOTIFICATION_SEVERITY_GREEN"
+    },
+    "recurring": {
+      "type": "boolean",
+      "default": false
+    },
+    "recurrenceInterval": {
+      "type": "number"
+    },
+    "recurrenceUnit": {
+      "type": "string",
+      "enum": [
+        "h",
+        "d",
+        "w",
+        "M",
+        "y"
+      ]
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "lastTriggeredAt": {
+      "type": "date"
+    }
+  },
+  "indexes": {
+    "teamId_index": {
+      "teamId": 1
+    }
+  },
+  "validations": [],
+  "relations": {
+    "team": {
+      "type": "belongsTo",
+      "model": "team",
+      "foreignKey": "teamId"
+    }
+  },
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "team_notification_list",
+      "permission": "ALLOW",
+      "property": "find"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "team_notification_list",
+      "permission": "ALLOW",
+      "property": "count"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "team_notification_view",
+      "permission": "ALLOW",
+      "property": "findById"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "team_notification_create",
+      "permission": "ALLOW",
+      "property": "create"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "team_notification_modify",
+      "permission": "ALLOW",
+      "property": "patchAttributes"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "team_notification_delete",
+      "permission": "ALLOW",
+      "property": "deleteById"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "myOccurrences"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "markOccurrenceRead"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "markAllOccurrencesRead"
+    }
+  ],
+  "methods": {
+    "myOccurrences": {
+      "accepts": [
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "result",
+          "type": {
+            "unreadCount": "number",
+            "history": [
+              "teamNotificationOccurrence"
+            ]
+          },
+          "description": "Unread notification occurrences count and latest notification occurrences history for the teams the current user belongs to",
+          "root": true,
+          "required": true
+        }
+      ],
+      "description": "Retrieve the unread notification occurrences count and the notification occurrences history for the teams the current user belongs to",
+      "http": {
+        "verb": "get",
+        "path": "/my-occurrences"
+      }
+    },
+    "markOccurrenceRead": {
+      "accepts": [
+        {
+          "arg": "occurrenceId",
+          "type": "string",
+          "required": true,
+          "description": "Team notification occurrence id"
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "teamNotificationOccurrence",
+          "type": "teamNotificationOccurrence",
+          "root": true,
+          "required": true
+        }
+      ],
+      "description": "Mark a team notification occurrence as read by the current user",
+      "http": {
+        "verb": "post",
+        "path": "/occurrences/:occurrenceId/mark-read"
+      }
+    },
+    "markAllOccurrencesRead": {
+      "accepts": [
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [],
+      "description": "Mark all team notification occurrences, for the teams the current user belongs to, as read by the current user",
+      "http": {
+        "verb": "post",
+        "path": "/mark-all-read"
+      }
+    }
+  }
+}

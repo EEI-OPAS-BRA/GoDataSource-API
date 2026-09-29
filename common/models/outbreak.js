@@ -1497,6 +1497,10 @@ module.exports = function (Outbreak) {
           });
         }
 
+        // filter additional questions attached directly to the question as well
+        // this will alter the array item
+        q.additionalQuestions = q.additionalQuestions ? filterInactive(q.additionalQuestions) : [];
+
         // array item should be in the filtered list if top level is not inactive
         return true;
       });
@@ -1540,7 +1544,8 @@ module.exports = function (Outbreak) {
           answerType: question.answerType,
           answers: question.answers,
           multiAnswer: question.multiAnswer,
-          answersDisplay: question.answersDisplay
+          answersDisplay: question.answersDisplay,
+          additionalQuestions: translate(question.additionalQuestions || [])
         };
 
         // do not try to translate answers that are free text
@@ -1688,6 +1693,11 @@ module.exports = function (Outbreak) {
             question.multiAnswerDate = multiAnswerDate;
           }
           mapStandardAnswerToQuestion(answers, qAnswer, question);
+        }
+
+        // question was answered, prepare its additional questions as well
+        if (question.additionalQuestions && question.additionalQuestions.length) {
+          question.additionalQuestions = Outbreak.helpers.prepareQuestionsForPrint(answers, question.additionalQuestions, multiAnswerDate);
         }
       }
     });
@@ -3929,6 +3939,12 @@ module.exports = function (Outbreak) {
                     // add child question
                     addQuestionToForm(childQuestion);
                   });
+                });
+
+                // add additional questions attached directly to the question
+                (question.additionalQuestions || []).forEach((childQuestion) => {
+                  // add child question
+                  addQuestionToForm(childQuestion);
                 });
               };
 

@@ -1135,6 +1135,22 @@ function exportFilteredModelsList(
               }
             });
           }
+
+          // attach child questions attached directly to the question, if we have any
+          if (
+            question.additionalQuestions &&
+            question.additionalQuestions.length > 0
+          ) {
+            question.additionalQuestions.forEach((childQuestion) => {
+              addQuestionData(
+                flatArray,
+                formattedQuestion.childQuestions,
+                childQuestion,
+                formattedQuestion.multiAnswer,
+                false
+              );
+            });
+          }
         };
 
         // format questionnaire
@@ -1192,6 +1208,14 @@ function exportFilteredModelsList(
                 initializeQuestionsWithAlertAnswers(questionsWithAlertAnswers, answer.additionalQuestions);
               }
             }
+          }
+
+          // go through sub questions attached directly to the question
+          if (
+            question.additionalQuestions &&
+            question.additionalQuestions.length
+          ) {
+            initializeQuestionsWithAlertAnswers(questionsWithAlertAnswers, question.additionalQuestions);
           }
         }
       }

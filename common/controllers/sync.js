@@ -977,6 +977,12 @@ module.exports = function (Sync) {
             },
             (err, fileName) => {
               if (err) {
+                // nothing changed since the last sync, so the upstream server is already up to date
+                if (err.code === 'NO-DATA') {
+                  app.logger.debug(`Sync ${syncLogEntry.id}: No data to sync.`);
+                  return resolve();
+                }
+
                 return reject(err);
               }
               app.logger.debug(`Sync ${syncLogEntry.id}: DB exported at ${fileName}.`);
@@ -985,6 +991,11 @@ module.exports = function (Sync) {
         });
       })
       .then(function (exportedDBFileName) {
+        // nothing to send
+        if (!exportedDBFileName) {
+          return;
+        }
+
         // 2: send DB to be synced on the upstream server
         return Sync.sendDBSnapshotForImport(upstreamServerEntry, exportedDBFileName, true, syncLogEntry);
       })

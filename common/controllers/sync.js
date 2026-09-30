@@ -823,6 +823,21 @@ module.exports = function (Sync) {
       }
     }
 
+    // outbreaks chosen by the user; when not sent, the ones configured for the upstream server are used
+    let requestedOutbreakIDs;
+    if (data.outbreakIDs !== undefined && data.outbreakIDs !== null) {
+      if (
+        !Array.isArray(data.outbreakIDs) ||
+        data.outbreakIDs.some((outbreakId) => typeof outbreakId !== 'string' || !outbreakId)
+      ) {
+        return callback(app.utils.apiError.getError('REQUEST_VALIDATION_ERROR', {
+          errorMessages: 'Property "outbreakIDs" must be a list of outbreak ids'
+        }));
+      }
+
+      requestedOutbreakIDs = _.uniq(data.outbreakIDs);
+    }
+
     // initialize flag to know if the callback function was already called
     // need to do this as we will call it and then continue doing some actions
     let callbackCalled = false;
@@ -901,21 +916,64 @@ module.exports = function (Sync) {
         return Sync.getAvailableOutbreaksIDs(upstreamServerEntry, syncLogEntry);
       })
       .then(function (outbreakIDs) {
+        // send only the chosen outbreaks, if the upstream server accepts them (no outbreaks means all of them)
+        const chosenOutbreakIDs = requestedOutbreakIDs !== undefined ?
+          requestedOutbreakIDs :
+          _.uniq(upstreamServerEntry.outbreakIDs || []);
+        if (chosenOutbreakIDs.length) {
+          const acceptedOutbreakIDs = outbreakIDs.length ?
+            chosenOutbreakIDs.filter((outbreakId) => outbreakIDs.includes(outbreakId)) :
+            chosenOutbreakIDs;
+          if (!acceptedOutbreakIDs.length) {
+            throw app.utils.apiError.getError('REQUEST_VALIDATION_ERROR', {
+              errorMessages: 'None of the chosen outbreaks is accepted by the upstream server'
+            });
+          }
+
+          outbreakIDs = acceptedOutbreakIDs;
+        }
+
         app.logger.debug(`Sync ${syncLogEntry.id}: Sync will be done for ${outbreakIDs.length ? ('the following outbreaks: ' + outbreakIDs.join(', ')) : 'all the outbreaks in the system'}`);
         // save retrieve outbreak IDs on the sync log entry
         syncLogEntry.outbreakIDs = outbreakIDs;
 
         // check if the outbreaks with the given IDs were ever successfully synced with the upstream server
         // we will only sync daca updated from the last sync
+        // a previous sync can be used only if it sent all the outbreaks that are sent now, otherwise what was changed in the others would never be sent
+        // (e.g. an outbreak was added to the ones synced with the server, or the previous sync sent only some outbreaks)
+        const sentAllOutbreaksConditions = [{
+          outbreakIDs: {
+            $exists: false
+          }
+        }, {
+          outbreakIDs: null
+        }, {
+          outbreakIDs: {
+            $size: 0
+          }
+        }];
         return app.models.syncLog
-          .findOne({
-            where: {
-              syncServerUrl: upstreamServerEntry.url,
-              status: 'LNG_SYNC_STATUS_SUCCESS'
+          .rawFind({
+            syncServerUrl: upstreamServerEntry.url,
+            status: 'LNG_SYNC_STATUS_SUCCESS',
+            $or: outbreakIDs.length ?
+              sentAllOutbreaksConditions.concat([{
+                outbreakIDs: {
+                  $all: outbreakIDs
+                }
+              }]) :
+              sentAllOutbreaksConditions
+          }, {
+            projection: {
+              actionStartDate: 1
             },
-            order: 'actionStartDate DESC'
+            sort: {
+              actionStartDate: -1
+            },
+            limit: 1
           })
-          .then(function (lastSyncLogEntry) {
+          .then(function (lastSyncLogEntries) {
+            const lastSyncLogEntry = lastSyncLogEntries[0];
             // determine the date from which we will sync the data
             // by default it is the start of the last successful sync (or all data if there wasn't any), but the user can ask for more data
             const fromDateResult = syncFromDate.determineFromDate({

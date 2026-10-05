@@ -23,6 +23,18 @@
     "syncClientId": {
       "type": "string",
       "description": "Client ID which is synced with the server. Present in the entries for Server instances"
+    },
+    "syncStep": {
+      "type": "string",
+      "description": "Step of a sync with an upstream server: CONNECT, CREDENTIALS, EXPORT, SEND, IMPORT or NO_DATA (nothing to send). When the sync fails, it is the step that failed"
+    },
+    "syncStepErrorCode": {
+      "type": "string",
+      "description": "Why the server couldn't be reached or didn't accept the credentials (e.g. CONNECTION_REFUSED, INVALID_CREDENTIALS)"
+    },
+    "syncStepErrorDetail": {
+      "type": "string",
+      "description": "Technical code of the connection error"
     }
   },
   "validations": [],

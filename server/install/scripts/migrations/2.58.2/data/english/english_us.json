@@ -405,6 +405,84 @@
     },
     "LNG_UPSTREAM_SERVER_FIELD_LABEL_OUTBREAKS_TO_SYNC_DESCRIPTION": {
       "translation": "Leave it empty to synchronize all the outbreaks. The scheduled synchronizations and the ones made on every change send only the chosen outbreaks. When an outbreak is added, the next synchronization sends all the data of the chosen outbreaks."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_TITLE": {
+      "translation": "Synchronizing with the server"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_STEP": {
+      "translation": "Step"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_STEP_CONNECT": {
+      "translation": "Connecting servers"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_STEP_CREDENTIALS": {
+      "translation": "Validating credentials"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_STEP_SYNC": {
+      "translation": "Synchronizing data"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_STEP_FINAL": {
+      "translation": "Final status"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_PHASE_CONNECT": {
+      "translation": "Establishing the connection with the server..."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_PHASE_CREDENTIALS": {
+      "translation": "Checking the client ID and secret..."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_PHASE_EXPORT": {
+      "translation": "Preparing the data to send..."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_PHASE_SEND": {
+      "translation": "Sending the data to the server..."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_PHASE_IMPORT": {
+      "translation": "The server is importing the data..."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_SUCCESS": {
+      "translation": "Success!"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_SUCCESS_MESSAGE": {
+      "translation": "The data was synchronized."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_WARNING": {
+      "translation": "Synchronized with warnings"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_WARNING_MESSAGE": {
+      "translation": "The data was synchronized, but some records had problems. See the details in Track synchronization."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_UP_TO_DATE": {
+      "translation": "Up to date"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_UP_TO_DATE_MESSAGE": {
+      "translation": "There was nothing new to send since the last synchronization."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_ERROR": {
+      "translation": "Synchronization failed"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_ERROR_CONNECT": {
+      "translation": "It wasn't possible to connect to the server \"{{name}}\". Check if it is online and if the URL is correct."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_ERROR_CREDENTIALS": {
+      "translation": "The server \"{{name}}\" didn't accept the credentials. Check the client ID and secret in the server settings."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_ERROR_SYNC": {
+      "translation": "An error occurred while synchronizing the data."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_LOG_TITLE": {
+      "translation": "Error details"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_LOG_HELP": {
+      "translation": "If the problem continues, contact the system administrator or the person responsible for the destination server."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_VIEW_ERROR_BUTTON": {
+      "translation": "View full log"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_CLOSE_BUTTON": {
+      "translation": "Close"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_BACKGROUND_BUTTON": {
+      "translation": "Continue in background"
     }
   }
 }

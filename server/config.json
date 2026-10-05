@@ -108,7 +108,14 @@
   "signoutUsersOnRestart": false,
   "cors": {
     "enabled": false,
-    "whitelist": []
+    "whitelist": [
+      "http://54.232.189.113:3000",
+      "https://54.232.189.113:3000",
+      "http://10.0.8.2:3000",
+      "https://10.0.8.2:3000",
+      "http://192.168.1.22:3000",
+      "https://192.168.1.22:3000"
+    ]
   },
   "enableConfigRewrite": true,
   "authToken": {

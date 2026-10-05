@@ -611,6 +611,15 @@ module.exports = function (Sync) {
       return client.sendDBSnapshotForImport(DBSnapshotFileName, asynchronous, upstreamServer.autoEncrypt ? 'true' : 'false')
         .then(function (syncLogId) {
           app.logger.debug(`Sync ${syncLogEntry.id}: Upstream server import: received upstream server sync log id: ${syncLogId}`);
+
+          // the package was received, now the upstream server is importing it
+          syncLogEntry.syncStep = 'IMPORT';
+          syncLogEntry
+            .save()
+            .catch((err) => {
+              app.logger.debug(`Sync ${syncLogEntry.id}: Error updating sync log entry step. ${err}`);
+            });
+
           // initialize container for server sync log entry status check connection error
           // will be updated only with connection errors
           let statusCheckConnectionError = null;

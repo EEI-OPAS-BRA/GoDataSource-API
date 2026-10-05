@@ -444,6 +444,84 @@
     },
     "LNG_UPSTREAM_SERVER_FIELD_LABEL_OUTBREAKS_TO_SYNC_DESCRIPTION": {
       "translation": "Deixe vazio para sincronizar todos os surtos. As sincronizações agendadas e as feitas a cada alteração enviam apenas os surtos escolhidos. Ao incluir um surto, a próxima sincronização envia todos os dados dos surtos escolhidos."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_TITLE": {
+      "translation": "Sincronizando com o servidor"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_STEP": {
+      "translation": "Etapa"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_STEP_CONNECT": {
+      "translation": "Conectando servidores"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_STEP_CREDENTIALS": {
+      "translation": "Validando credenciais"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_STEP_SYNC": {
+      "translation": "Sincronizando dados"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_STEP_FINAL": {
+      "translation": "Status final"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_PHASE_CONNECT": {
+      "translation": "Estabelecendo a conexão com o servidor..."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_PHASE_CREDENTIALS": {
+      "translation": "Verificando o ID e o segredo do cliente..."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_PHASE_EXPORT": {
+      "translation": "Preparando os dados para envio..."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_PHASE_SEND": {
+      "translation": "Enviando os dados para o servidor..."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_PHASE_IMPORT": {
+      "translation": "O servidor está importando os dados..."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_SUCCESS": {
+      "translation": "Sucesso!"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_SUCCESS_MESSAGE": {
+      "translation": "Os dados foram sincronizados."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_WARNING": {
+      "translation": "Sincronizado com avisos"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_WARNING_MESSAGE": {
+      "translation": "Os dados foram sincronizados, mas alguns registros tiveram problemas. Veja os detalhes em Acompanhar sincronização."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_UP_TO_DATE": {
+      "translation": "Tudo em dia"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_UP_TO_DATE_MESSAGE": {
+      "translation": "Não havia nada novo para enviar desde a última sincronização."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_ERROR": {
+      "translation": "Falha na sincronização"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_ERROR_CONNECT": {
+      "translation": "Não foi possível conectar ao servidor \"{{name}}\". Verifique se ele está online e se a URL está correta."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_ERROR_CREDENTIALS": {
+      "translation": "O servidor \"{{name}}\" não aceitou as credenciais. Verifique o ID e o segredo do cliente no cadastro do servidor."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_ERROR_SYNC": {
+      "translation": "Ocorreu um erro ao sincronizar os dados."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_LOG_TITLE": {
+      "translation": "Detalhes do erro"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_LOG_HELP": {
+      "translation": "Se o problema continuar, entre em contato com o administrador do sistema ou com o responsável pelo servidor de destino."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_VIEW_ERROR_BUTTON": {
+      "translation": "Ver log completo"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_CLOSE_BUTTON": {
+      "translation": "Fechar"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_BACKGROUND_BUTTON": {
+      "translation": "Continuar em segundo plano"
     }
   }
 }

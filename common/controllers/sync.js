@@ -851,6 +851,18 @@ module.exports = function (Sync) {
     // initialize variable for caching the system settings
     let systemSettings;
 
+    /**
+     * Save the step the sync reached, so it can be displayed while it is in progress
+     */
+    const setSyncStep = (step) => {
+      syncLogEntry.syncStep = step;
+      return syncLogEntry
+        .save(options)
+        .catch((err) => {
+          app.logger.debug(`Sync ${syncLogEntry.id}: Error updating sync log entry step. ${err}`);
+        });
+    };
+
     // check if the received upstream server URL matches one from the configured upstream servers
     app.models.systemSettings
       .findOne()
@@ -894,7 +906,8 @@ module.exports = function (Sync) {
         return app.models.syncLog.create({
           syncServerUrl: upstreamServerEntry.url,
           actionStartDate: localizationHelper.now().toDate(),
-          status: 'LNG_SYNC_STATUS_IN_PROGRESS'
+          status: 'LNG_SYNC_STATUS_IN_PROGRESS',
+          syncStep: 'CONNECT'
         }, options);
       })
       .then(function (syncLog) {
@@ -911,9 +924,42 @@ module.exports = function (Sync) {
 
         app.logger.debug(`Started sync ${syncLogEntry.id}`);
 
-        // continue sync
-        // get available outbreakIDs for the client
-        return Sync.getAvailableOutbreaksIDs(upstreamServerEntry, syncLogEntry);
+        // check if the server can be reached & if it accepts the credentials, so the user knows which step failed
+        // Note: the check only explains a failure; it never stops a sync that would work
+        return upstreamServerCheck
+          .check({
+            url: upstreamServerEntry.url,
+            clientId: _.get(upstreamServerEntry, 'credentials.clientId'),
+            clientSecret: _.get(upstreamServerEntry, 'credentials.clientSecret')
+          })
+          .catch(function (err) {
+            app.logger.debug(`Sync ${syncLogEntry.id}: Couldn't check the upstream server. ${err}`);
+            return null;
+          })
+          .then(function (checkResult) {
+            // the server was reached
+            const serverOffline = checkResult && !checkResult.server.online;
+            return (serverOffline ? Promise.resolve() : setSyncStep('CREDENTIALS'))
+              .then(function () {
+                // get available outbreakIDs for the client
+                return Sync.getAvailableOutbreaksIDs(upstreamServerEntry, syncLogEntry);
+              })
+              .catch(function (err) {
+                // explain why
+                const failedCheck = serverOffline ?
+                  checkResult.server : (
+                    checkResult && checkResult.credentials && !checkResult.credentials.valid ?
+                      checkResult.credentials :
+                      null
+                  );
+                if (failedCheck) {
+                  syncLogEntry.syncStepErrorCode = failedCheck.errorCode;
+                  syncLogEntry.syncStepErrorDetail = failedCheck.code;
+                }
+
+                throw err;
+              });
+          });
       })
       .then(function (outbreakIDs) {
         // send only the chosen outbreaks, if the upstream server accepts them (no outbreaks means all of them)
@@ -1023,7 +1069,7 @@ module.exports = function (Sync) {
         const password = getSyncEncryptPassword(null, upstreamServerEntry.credentials, upstreamServerEntry.autoEncrypt);
 
         app.logger.debug(`Sync ${syncLogEntry.id}: Exporting DB.`);
-        return new Promise(function (resolve, reject) {
+        return setSyncStep('EXPORT').then(() => new Promise(function (resolve, reject) {
           Sync.exportDatabase(
             filter,
             collections,
@@ -1038,6 +1084,7 @@ module.exports = function (Sync) {
                 // nothing changed since the last sync, so the upstream server is already up to date
                 if (err.code === 'NO-DATA') {
                   app.logger.debug(`Sync ${syncLogEntry.id}: No data to sync.`);
+                  syncLogEntry.syncStep = 'NO_DATA';
                   return resolve();
                 }
 
@@ -1046,7 +1093,7 @@ module.exports = function (Sync) {
               app.logger.debug(`Sync ${syncLogEntry.id}: DB exported at ${fileName}.`);
               return resolve(fileName);
             });
-        });
+        }));
       })
       .then(function (exportedDBFileName) {
         // nothing to send
@@ -1055,7 +1102,7 @@ module.exports = function (Sync) {
         }
 
         // 2: send DB to be synced on the upstream server
-        return Sync.sendDBSnapshotForImport(upstreamServerEntry, exportedDBFileName, true, syncLogEntry);
+        return setSyncStep('SEND').then(() => Sync.sendDBSnapshotForImport(upstreamServerEntry, exportedDBFileName, true, syncLogEntry));
       })
       .then(function () {
         // sync was successful

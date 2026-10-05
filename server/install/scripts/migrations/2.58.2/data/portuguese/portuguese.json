@@ -522,6 +522,9 @@
     },
     "LNG_SYNC_PROGRESS_DIALOG_BACKGROUND_BUTTON": {
       "translation": "Continuar em segundo plano"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_OUTBREAKS_ALL": {
+      "translation": "Todos os surtos (nenhum selecionado)"
     }
   }
 }

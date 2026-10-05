@@ -483,6 +483,9 @@
     },
     "LNG_SYNC_PROGRESS_DIALOG_BACKGROUND_BUTTON": {
       "translation": "Continue in background"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_OUTBREAKS_ALL": {
+      "translation": "All outbreaks (none selected)"
     }
   }
 }

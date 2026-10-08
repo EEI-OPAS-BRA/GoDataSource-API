@@ -92,7 +92,8 @@ const routines = {
       require('./scripts/migrateDatabaseCollections'),
       require('./scripts/defaultRolesAndSysAdmin'),
       require('./scripts/defaultSystemSettings'),
-      require('./scripts/migrateModelData')
+      require('./scripts/migrateModelData'),
+      require('./scripts/applyPortugueseTranslations')
     ].forEach(function (installScript) {
       runFunctions.push(installScript);
     });

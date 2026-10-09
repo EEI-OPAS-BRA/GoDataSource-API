@@ -6449,6 +6449,9 @@
       },
       "LNG_PAGE_CREATE_ENTITY_RELATIONSHIP_TITLE": {
         "translation": "Create relationship"
+      },
+      "LNG_PAGE_CREATE_ENTITY_RELATIONSHIP_ERROR_SOMETHING_WENT_WRONG": {
+        "translation": "Something went wrong..."
       }
     },
     "uiContactFields": {
@@ -6864,6 +6867,24 @@
       },
       "LNG_PAGE_LIST_CONTACTS_ACTION_IMPORT_CONTACTS_RELATIONSHIPS": {
         "translation": "Import contact relationships"
+      },
+      "LNG_PAGE_LIST_CONTACTS_ACTION_API_QUERY": {
+        "translation": "API query"
+      },
+      "LNG_PAGE_LIST_CONTACTS_API_QUERY_DIALOG_DESCRIPTION": {
+        "translation": "This endpoint returns the contacts of the outbreak with their relationships and the data of the related person (case, contact or event) already resolved, in a single call."
+      },
+      "LNG_PAGE_LIST_CONTACTS_API_QUERY_DIALOG_OPEN_DOCUMENTATION_HINT": {
+        "translation": "Click <b>{{button}}</b> to open the documentation (Swagger) already focused on this endpoint, in a new tab."
+      },
+      "LNG_PAGE_LIST_CONTACTS_API_QUERY_DIALOG_OUTBREAK_ID_HINT": {
+        "translation": "There you will need to enter the selected <b>outbreak id</b> in the <code>id</code> field of the form. Copy the value below before continuing:"
+      },
+      "LNG_PAGE_LIST_CONTACTS_API_QUERY_DIALOG_COPY_OUTBREAK_ID": {
+        "translation": "Copy outbreak id"
+      },
+      "LNG_PAGE_LIST_CONTACTS_API_QUERY_DIALOG_GO_TO_DOCUMENTATION_BUTTON": {
+        "translation": "Go to documentation"
       }
     },
     "uiCreateContactPage": {

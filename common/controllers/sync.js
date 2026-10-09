@@ -1048,7 +1048,10 @@ module.exports = function (Sync) {
         // export local DB
         // initialize filter and update it if needed
         let filter = {
-          where: {}
+          where: {
+            // the translations of the application belong to each instance
+            onlyDataLanguageTokens: true
+          }
         };
         // get data from date
         if (syncLogEntry.informationStartDate) {

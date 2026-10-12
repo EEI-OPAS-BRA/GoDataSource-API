@@ -1738,6 +1738,12 @@
     },
     {
       "principalType": "ROLE",
+      "principalId": "case_grouped_by_classification",
+      "permission": "ALLOW",
+      "property": "countCasesDemographics"
+    },
+    {
+      "principalType": "ROLE",
       "principalId": "case_list_onset_before_primary_case_report",
       "permission": "ALLOW",
       "property": "findSecondaryCasesWithDateOfOnsetBeforePrimaryCase"
@@ -6870,6 +6876,44 @@
       "http": {
         "verb": "get",
         "path": "/cases/hospitalized/count"
+      }
+    },
+        "prototype.countCasesDemographics": {
+      "accepts": [
+        {
+          "arg": "filter",
+          "type": "object",
+          "description": "Filter defining fields, where, include, order, offset, and limit - must be a JSON-encoded string ({\"something\":\"value\"}). Only filter.where is applied."
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "result",
+          "type": {
+            "total": "number",
+            "groups": [
+              {
+                "gender": "string",
+                "age": "number",
+                "year": "number",
+                "count": "number"
+              }
+            ]
+          },
+          "description": "Number of cases grouped by gender, age (completed years) and year of symptom onset. Null means not informed.",
+          "required": true,
+          "root": true
+        }
+      ],
+      "description": "Counts the number of cases grouped by gender, age and year of symptom onset",
+      "http": {
+        "verb": "get",
+        "path": "/cases/demographics/count"
       }
     },
     "prototype.countContactsPerRiskLevel": {

@@ -1472,4 +1472,172 @@ module.exports = function (Case) {
           });
       });
   };
+
+  /**
+   * Count cases grouped by gender, age (in completed years) and year of symptom onset
+   * Used by the dashboard "Case profile" dashlet (sex, age group, age pyramid and age boxplot tabs)
+   * The result is a small frequency table, the client computes percentages, age groups and statistics from it
+   * @param options Options from request
+   * @param outbreakId Outbreak id
+   * @param filter Loopback filter applied on case records (where)
+   * @returns {Promise<{total: number, groups: {gender: string|null, age: number|null, year: number|null, count: number}[]}>}
+   */
+  Case.countCasesDemographics = (
+    options,
+    outbreakId,
+    filter
+  ) => {
+    // initialization
+    filter = filter || {};
+    filter.where = filter.where || {};
+
+    // update filter for geographical restriction if needed
+    return Case
+      .addGeographicalRestrictions(
+        options.remotingContext,
+        filter.where,
+        Case.modelName
+      )
+      .then((updatedFilter) => {
+        // update casesQuery if needed
+        updatedFilter && (filter.where = updatedFilter);
+
+        // attach prefilters
+        filter.where.outbreakId = outbreakId;
+        filter.where.type = 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE';
+        if (!filter.deleted) {
+          filter.where.deleted = false;
+        }
+
+        // convert to mongo filter
+        const mongoFilter = app.utils.remote.convertLoopbackFilterToMongo(filter);
+
+        // valid age in completed years
+        // - age.years > 0 => age.years
+        // - age.years = 0 and age.months > 0 => 0 (less than one year old)
+        // - anything else (missing, invalid, 0 years and 0 months, more than 120 years) => null (unknown age)
+        const ageYears = {
+          $convert: {
+            input: '$age.years',
+            to: 'double',
+            onError: null,
+            onNull: null
+          }
+        };
+        const ageMonths = {
+          $convert: {
+            input: '$age.months',
+            to: 'double',
+            onError: null,
+            onNull: null
+          }
+        };
+
+        // construct aggregate filter
+        const aggregateFilters = [
+          {
+            $match: mongoFilter.where
+          }, {
+            $project: {
+              _id: 0,
+              gender: {
+                $cond: [
+                  {
+                    $eq: [
+                      { $ifNull: ['$gender', ''] },
+                      ''
+                    ]
+                  },
+                  null,
+                  '$gender'
+                ]
+              },
+              ageYears: ageYears,
+              ageMonths: ageMonths,
+              year: {
+                $cond: [
+                  {
+                    $eq: [
+                      { $type: '$dateOfOnset' },
+                      'date'
+                    ]
+                  },
+                  { $year: '$dateOfOnset' },
+                  null
+                ]
+              }
+            }
+          }, {
+            $project: {
+              gender: 1,
+              year: 1,
+              age: {
+                $switch: {
+                  branches: [
+                    {
+                      case: {
+                        $and: [
+                          { $gt: ['$ageYears', 0] },
+                          { $lte: ['$ageYears', 120] }
+                        ]
+                      },
+                      then: { $floor: '$ageYears' }
+                    }, {
+                      case: {
+                        $and: [
+                          { $eq: ['$ageYears', 0] },
+                          { $gt: ['$ageMonths', 0] }
+                        ]
+                      },
+                      then: 0
+                    }
+                  ],
+                  default: null
+                }
+              }
+            }
+          }, {
+            $group: {
+              _id: {
+                gender: '$gender',
+                age: '$age',
+                year: '$year'
+              },
+              count: {
+                $sum: 1
+              }
+            }
+          }
+        ];
+
+        // retrieve data
+        return app.dataSources.mongoDb.connector
+          .collection('person')
+          .aggregate(
+            aggregateFilters, {
+              allowDiskUse: true
+            }
+          )
+          .toArray();
+      })
+      .then((data) => {
+        // format response
+        const result = {
+          total: 0,
+          groups: []
+        };
+        (data || []).forEach((record) => {
+          result.total += record.count;
+          result.groups.push({
+            gender: record._id.gender === undefined ? null : record._id.gender,
+            age: record._id.age === undefined ? null : record._id.age,
+            year: record._id.year === undefined ? null : record._id.year,
+            count: record.count
+          });
+        });
+
+        // finished
+        return result;
+      });
+  };
 };

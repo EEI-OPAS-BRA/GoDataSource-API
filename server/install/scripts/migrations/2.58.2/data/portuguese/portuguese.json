@@ -525,6 +525,42 @@
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_OUTBREAKS_ALL": {
       "translation": "Todos os surtos (nenhum selecionado)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_TITLE": {
+      "translation": "Perfil dos casos"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_TITLE_DESCRIPTION": {
+      "translation": "Perfil demográfico dos casos (sexo e idade) segundo os filtros do painel. Casos classificados como \"Não é um caso\" não são incluídos."
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_TAB_SEX": {
+      "translation": "Sexo"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_TAB_AGE_GROUP": {
+      "translation": "Faixa etária"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_TAB_AGE_PYRAMID": {
+      "translation": "Pirâmide etária"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_TAB_AGE": {
+      "translation": "Idade"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_NOT_INFORMED_LABEL": {
+      "translation": "Não informado"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_TOTAL_LABEL": {
+      "translation": "Total"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_CASES_LABEL": {
+      "translation": "casos"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_PERCENTAGE_NOTE": {
+      "translation": "Percentuais calculados sobre o total de casos que atendem aos filtros do painel."
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_NO_DATA_LABEL": {
+      "translation": "Nenhum caso encontrado para os filtros selecionados"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_IN_PROGRESS_LABEL": {
+      "translation": "Em desenvolvimento"
     }
   }
 }

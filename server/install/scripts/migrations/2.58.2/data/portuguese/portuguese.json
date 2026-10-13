@@ -561,6 +561,138 @@
     },
     "LNG_PAGE_DASHBOARD_CASE_PROFILE_IN_PROGRESS_LABEL": {
       "translation": "Em desenvolvimento"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_AGE_GROUP_AXIS_LABEL": {
+      "translation": "Faixa etária (anos)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_CASES_AXIS_LABEL": {
+      "translation": "Número de casos"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_UNKNOWN_AGE_LABEL": {
+      "translation": "Idade não informada: {{count}} casos ({{percentage}}%)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_PYRAMID_EXCLUDED_LABEL": {
+      "translation": "Não incluídos na pirâmide: {{count}} casos ({{percentage}}%) sem idade, sem sexo ou com outra categoria de sexo"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_PYRAMID_UNAVAILABLE_LABEL": {
+      "translation": "A pirâmide etária requer as categorias de sexo Masculino e Feminino, que não estão disponíveis neste surto"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_N_VALID_LABEL": {
+      "translation": "n (idade válida)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_N_VALID_PERCENT_LABEL": {
+      "translation": "{{percentage}}% do total"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_MEAN_LABEL": {
+      "translation": "Média"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_CI_LABEL": {
+      "translation": "IC 95% da média"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_MEDIAN_LABEL": {
+      "translation": "Mediana"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_IQR_LABEL": {
+      "translation": "Q1 - Q3"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_YEARS_UNIT_LABEL": {
+      "translation": "anos"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_AGE_AXIS_LABEL": {
+      "translation": "Idade (anos)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_BOX_Q1_LABEL": {
+      "translation": "Q1 (25%)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_BOX_Q3_LABEL": {
+      "translation": "Q3 (75%)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_BOX_MEDIAN_LABEL": {
+      "translation": "Mediana (50%)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_BOX_MIN_LABEL": {
+      "translation": "Mínimo (sem outliers)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_BOX_MAX_LABEL": {
+      "translation": "Máximo (sem outliers)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_BOX_WHISKERS_LABEL": {
+      "translation": "Mínimo / máximo (sem outliers)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_BOX_OUTLIERS_LABEL": {
+      "translation": "Valores atípicos (outliers)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_NO_ONSET_LABEL": {
+      "translation": "{{count}} casos com idade válida mas sem data de início dos sintomas não aparecem no boxplot por ano"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_BOXPLOT_NOTE": {
+      "translation": "Boxplot da idade dos casos por ano de início dos sintomas. Os valores atípicos seguem a regra de Tukey (1,5 x IIQ). A média e o IC 95% são calculados apenas para registros com idade válida."
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_N_VALID_DESCRIPTION": {
+      "translation": "Número de casos com idade válida (de 0 a 120 anos). O percentual é calculado sobre o total de casos que atendem aos filtros do painel."
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_MEAN_DESCRIPTION": {
+      "translation": "Idade média dos casos com idade válida."
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_CI_DESCRIPTION": {
+      "translation": "Intervalo que contém a idade média verdadeira com 95% de confiança. Quanto mais estreito o intervalo, mais precisa é a estimativa da média."
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_MEDIAN_DESCRIPTION": {
+      "translation": "Idade que divide os casos ao meio: 50% dos casos têm idade menor e 50% têm idade maior."
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_IQR_DESCRIPTION": {
+      "translation": "Intervalo interquartil: os 50% de casos do meio da distribuição têm idade entre esses dois valores (primeiro quartil Q1 e terceiro quartil Q3)."
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_TOTAL_LABEL": {
+      "translation": "Total de casos"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_TOTAL_DESCRIPTION": {
+      "translation": "Casos com data de início dos sintomas no ano selecionado, notificados até a data de referência e que atendem aos filtros do painel. Casos classificados como \"Não é um caso\" não são incluídos."
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_CONFIRMED_LABEL": {
+      "translation": "Casos confirmados"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_CONFIRMED_DESCRIPTION": {
+      "translation": "Casos com classificação Confirmado. O percentual é calculado sobre o total de casos."
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_INVESTIGATION_LABEL": {
+      "translation": "Em investigação"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_INVESTIGATION_DESCRIPTION": {
+      "translation": "Casos ainda não confirmados (por exemplo, suspeitos, prováveis ou sem classificação). O percentual é calculado sobre o total de casos."
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_NEW_7_DAYS_LABEL": {
+      "translation": "Novos casos (últimos 7 dias)"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_NEW_7_DAYS_DESCRIPTION": {
+      "translation": "Casos do ano selecionado com data de notificação nos últimos 7 dias, incluindo a data de referência (para um ano anterior, a referência é 31 de dezembro)."
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_NEW_14_DAYS_LABEL": {
+      "translation": "Novos casos (últimos 14 dias)"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_NEW_14_DAYS_DESCRIPTION": {
+      "translation": "Casos do ano selecionado com data de notificação nos últimos 14 dias, incluindo a data de referência (para um ano anterior, a referência é 31 de dezembro)."
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_DEATHS_LABEL": {
+      "translation": "Óbitos"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_DEATHS_DESCRIPTION": {
+      "translation": "Casos confirmados com desfecho Óbito."
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_CFR_LABEL": {
+      "translation": "Letalidade"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_CFR_DESCRIPTION": {
+      "translation": "Óbitos entre os casos confirmados divididos pelo número de casos confirmados, multiplicado por 100."
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_PERCENT_OF_TOTAL_LABEL": {
+      "translation": "{{percentage}}% do total"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_YEAR_LABEL": {
+      "translation": "Ano (início dos sintomas)"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_ALL_YEARS_LABEL": {
+      "translation": "Todos os anos"
     }
   }
 }

@@ -522,6 +522,138 @@
     },
     "LNG_PAGE_DASHBOARD_CASE_PROFILE_IN_PROGRESS_LABEL": {
       "translation": "Under development"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_AGE_GROUP_AXIS_LABEL": {
+      "translation": "Age group (years)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_CASES_AXIS_LABEL": {
+      "translation": "Number of cases"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_UNKNOWN_AGE_LABEL": {
+      "translation": "Age not informed: {{count}} cases ({{percentage}}%)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_PYRAMID_EXCLUDED_LABEL": {
+      "translation": "Not included in the pyramid: {{count}} cases ({{percentage}}%) without age, without sex or with another sex category"
+    },
+      "LNG_PAGE_DASHBOARD_CASE_PROFILE_PYRAMID_UNAVAILABLE_LABEL": {
+      "translation": "The age pyramid requires the Male and Female sex categories, which are not available in this outbreak"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_N_VALID_LABEL": {
+      "translation": "n (valid age)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_N_VALID_PERCENT_LABEL": {
+      "translation": "{{percentage}}% of total"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_MEAN_LABEL": {
+      "translation": "Mean"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_CI_LABEL": {
+      "translation": "95% CI of the mean"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_MEDIAN_LABEL": {
+      "translation": "Median"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_IQR_LABEL": {
+      "translation": "Q1 - Q3"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_YEARS_UNIT_LABEL": {
+      "translation": "years"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_AGE_AXIS_LABEL": {
+      "translation": "Age (years)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_BOX_Q1_LABEL": {
+      "translation": "Q1 (25%)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_BOX_Q3_LABEL": {
+      "translation": "Q3 (75%)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_BOX_MEDIAN_LABEL": {
+      "translation": "Median (50%)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_BOX_MIN_LABEL": {
+      "translation": "Minimum (without outliers)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_BOX_MAX_LABEL": {
+      "translation": "Maximum (without outliers)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_BOX_WHISKERS_LABEL": {
+      "translation": "Minimum / maximum (without outliers)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_BOX_OUTLIERS_LABEL": {
+      "translation": "Outliers"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_NO_ONSET_LABEL": {
+      "translation": "{{count}} cases with valid age but without date of onset are not shown in the boxplot by year"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_BOXPLOT_NOTE": {
+      "translation": "Age boxplot of the cases by year of symptom onset. Outliers follow Tukey's rule (1.5 x IQR). The mean and its 95% CI are calculated only for records with valid age."
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_N_VALID_DESCRIPTION": {
+      "translation": "Number of cases with a valid age (from 0 to 120 years). The percentage is calculated over all cases matching the dashboard filters."
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_MEAN_DESCRIPTION": {
+      "translation": "Average age of the cases with valid age."
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_CI_DESCRIPTION": {
+      "translation": "Range that contains the true mean age with 95% confidence. The narrower the range, the more precise the estimate of the mean."
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_MEDIAN_DESCRIPTION": {
+      "translation": "Age that divides the cases in half: 50% of the cases are younger and 50% are older."
+    },
+    "LNG_PAGE_DASHBOARD_CASE_PROFILE_STAT_IQR_DESCRIPTION": {
+      "translation": "Interquartile range: the 50% of the cases in the middle of the distribution are between these two ages (first quartile Q1 and third quartile Q3)."
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_TOTAL_LABEL": {
+      "translation": "Total cases"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_TOTAL_DESCRIPTION": {
+      "translation": "Cases with date of symptom onset in the selected year, reported up to the reference date and matching the dashboard filters. Cases classified as \"Not a case\" are not included."
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_CONFIRMED_LABEL": {
+      "translation": "Confirmed cases"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_CONFIRMED_DESCRIPTION": {
+      "translation": "Cases classified as Confirmed. The percentage is calculated over the total cases."
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_INVESTIGATION_LABEL": {
+      "translation": "Under investigation"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_INVESTIGATION_DESCRIPTION": {
+      "translation": "Cases not confirmed yet (for example suspect, probable or without classification). The percentage is calculated over the total cases."
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_NEW_7_DAYS_LABEL": {
+      "translation": "New cases (last 7 days)"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_NEW_7_DAYS_DESCRIPTION": {
+      "translation": "Cases of the selected year with date of reporting in the last 7 days, including the reference date (for a past year, the reference is December 31)."
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_NEW_14_DAYS_LABEL": {
+      "translation": "New cases (last 14 days)"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_NEW_14_DAYS_DESCRIPTION": {
+      "translation": "Cases of the selected year with date of reporting in the last 14 days, including the reference date (for a past year, the reference is December 31)."
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_DEATHS_LABEL": {
+      "translation": "Deaths"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_DEATHS_DESCRIPTION": {
+      "translation": "Confirmed cases with outcome Deceased."
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_CFR_LABEL": {
+      "translation": "Case fatality rate"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_CFR_DESCRIPTION": {
+      "translation": "Deaths among confirmed cases divided by the number of confirmed cases, multiplied by 100."
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_PERCENT_OF_TOTAL_LABEL": {
+      "translation": "{{percentage}}% of total"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_YEAR_LABEL": {
+      "translation": "Year (date of symptom onset)"
+    },
+    "LNG_PAGE_DASHBOARD_OVERVIEW_ALL_YEARS_LABEL": {
+      "translation": "All years"
     }
   }
 }

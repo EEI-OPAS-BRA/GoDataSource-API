@@ -104,7 +104,13 @@ let syncExcludeList = [
   'helpItem',
   'device',
   'deviceHistory',
-  'migrationLog'
+  'migrationLog',
+  // each instance has its own languages, outbreak templates, saved import mappings / filters and calculated transmission chains
+  'language',
+  'template',
+  'importMapping',
+  'filterMapping',
+  'transmissionChain'
 ];
 let syncCollections = Object.keys(collectionsMap).filter((collection) => syncExcludeList.indexOf(collection) === -1);
 
@@ -374,6 +380,27 @@ function addLanguageTokenMongoFilter(collectionName, baseFilter, filter) {
     }
   }
 
+  // only the language tokens that hold data (sync with upstream servers)
+  if (_.get(filter, 'where.onlyDataLanguageTokens')) {
+    const dataLanguageTokensMongoFilter = {
+      token: {
+        $regex: dataLanguageTokenRegex.source
+      }
+    };
+
+    // update result filter
+    if (_.isEmpty(result)) {
+      result = dataLanguageTokensMongoFilter;
+    } else {
+      result = {
+        '$and': [
+          result,
+          dataLanguageTokensMongoFilter
+        ]
+      };
+    }
+  }
+
   // update filter only if languageTokenFilter is an array
   if (Array.isArray(languageTokenFilter)) {
     // Note: should be in sync with the subTemplates names from templateParser.js
@@ -426,6 +453,33 @@ function addLanguageTokenMongoFilter(collectionName, baseFilter, filter) {
 
   // finished
   return result;
+}
+
+/**
+ * Language tokens that hold data are still synced, otherwise the questionnaires & reference data would be displayed without their texts
+ * The other language tokens (the translations of the application) belong to each instance
+ * Note: must match the identifiers built by templateParser.js (outbreak questionnaires) & reference-data.js (reference data, including the outbreak ones)
+ */
+const dataLanguageTokenRegex = new RegExp(
+  'LNG_REFERENCE_DATA_|^LNG_OUTBREAK_.+_(' +
+  [
+    'caseInvestigationTemplate',
+    'contactInvestigationTemplate',
+    'eventInvestigationTemplate',
+    'caseFollowUpTemplate',
+    'contactFollowUpTemplate',
+    'labResultsTemplate'
+  ].map((subTemplate) => subTemplate.toUpperCase()).join('|') +
+  ')_'
+);
+
+/**
+ * Check if a language token holds data (questionnaire / reference data text)
+ * @param {string} token
+ * @returns {boolean}
+ */
+function isDataLanguageToken(token) {
+  return typeof token === 'string' && dataLanguageTokenRegex.test(token);
 }
 
 /**
@@ -1253,6 +1307,7 @@ module.exports = {
   collectionsMap: collectionsMap,
   collectionsFilterMap: collectionsFilterMap,
   collectionsImportFilterMap: collectionsImportFilterMap,
+  isDataLanguageToken: isDataLanguageToken,
   collectionsToSyncInSeries: collectionsToSyncInSeries,
   collectionsExcludeDeletedRecords: collectionsExcludeDeletedRecords,
   collectionsAlterDataMap: collectionsAlterDataMap,

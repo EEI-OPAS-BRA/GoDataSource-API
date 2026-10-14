@@ -37,12 +37,6 @@
     "LNG_INFO_BANNER_SYNCED_DATA_RELATIONSHIPS_DESCRIPTION": {
       "translation": "Exposures and contacts between people, and the clusters they belong to."
     },
-    "LNG_INFO_BANNER_SYNCED_DATA_TRANSMISSION_CHAINS": {
-      "translation": "Transmission chains"
-    },
-    "LNG_INFO_BANNER_SYNCED_DATA_TRANSMISSION_CHAINS_DESCRIPTION": {
-      "translation": "Saved transmission chain snapshots."
-    },
     "LNG_INFO_BANNER_SYNCED_DATA_FILES": {
       "translation": "Attached files"
     },
@@ -53,25 +47,13 @@
       "translation": "Reference data and locations"
     },
     "LNG_INFO_BANNER_SYNCED_DATA_REFERENCE_DATA_DESCRIPTION": {
-      "translation": "Options available in the lists and the location hierarchy."
-    },
-    "LNG_INFO_BANNER_SYNCED_DATA_LANGUAGES": {
-      "translation": "Languages and translations"
-    },
-    "LNG_INFO_BANNER_SYNCED_DATA_LANGUAGES_DESCRIPTION": {
-      "translation": "Languages and the texts of the system, questionnaires and lists."
+      "translation": "The list options, with their icons, and the locations hierarchy."
     },
     "LNG_INFO_BANNER_SYNCED_DATA_USERS": {
       "translation": "Users and teams"
     },
     "LNG_INFO_BANNER_SYNCED_DATA_USERS_DESCRIPTION": {
       "translation": "Users arrive without roles and with a random password; the other instance must set them before they can log in."
-    },
-    "LNG_INFO_BANNER_SYNCED_DATA_TEMPLATES": {
-      "translation": "Templates and settings for import and filters"
-    },
-    "LNG_INFO_BANNER_SYNCED_DATA_TEMPLATES_DESCRIPTION": {
-      "translation": "Outbreak templates, icons, import mappings and saved filters."
     },
     "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_TITLE": {
       "translation": "Not synchronized"
@@ -486,6 +468,186 @@
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_OUTBREAKS_ALL": {
       "translation": "All outbreaks (none selected)"
+    },
+    "LNG_LAYOUT_MENU_ITEM_SYNC_DOCUMENTATION_LABEL": {
+      "translation": "Documentation"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_INTRO_TITLE": {
+      "translation": "How data synchronization works"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_INTRO_DESCRIPTION": {
+      "translation": "Synchronization connects Go.Data installations. One instance sends its data (for example, a municipality) and another one receives and gathers it (for example, the national server). This way, the receiver has a consolidated view and nobody needs to enter anything twice."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FLOW_SENDER": {
+      "translation": "Sender"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FLOW_SENDER_EXAMPLE": {
+      "translation": "e.g. municipality"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FLOW_RECEIVER": {
+      "translation": "Receiver"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FLOW_RECEIVER_EXAMPLE": {
+      "translation": "e.g. national"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FLOW_DATA": {
+      "translation": "data"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_CALLOUT_TITLE": {
+      "translation": "Going to receive data? Start by generating the keys"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_CALLOUT_DESCRIPTION": {
+      "translation": "Before anything is sent, the instance that receives the data must create a client application in \"Receive data from servers\". It generates the client ID and secret, the keys the other instance uses to connect. Without these keys, no server can send data here."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_CALLOUT_BUTTON": {
+      "translation": "Generate keys in \"Receive data from servers\""
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEPS_TITLE": {
+      "translation": "Step by step setup"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_WHERE_RECEIVER": {
+      "translation": "On the receiving instance"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_WHERE_SENDER": {
+      "translation": "On the sending instance"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_WHERE_BOTH": {
+      "translation": "On both instances"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_1_TITLE": {
+      "translation": "Generate the access keys"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_1_DESCRIPTION": {
+      "translation": "In \"Receive data from servers\", create a client application for each instance that will send data. Use the generate button to create the client ID and secret and the copy button to send them to the person responsible for the other instance. Keep the application active."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_2_TITLE": {
+      "translation": "Register the destination server"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_2_DESCRIPTION": {
+      "translation": "In \"Send data to servers\", register the instance that will receive the data: enter its URL and paste the client ID and secret generated in step 1. Use the \"Check server\" and \"Test credentials\" buttons to confirm everything is right before saving."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_3_TITLE": {
+      "translation": "Choose when and what to synchronize"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_3_DESCRIPTION": {
+      "translation": "In the same form, set an interval for the automatic synchronization, enable \"Sync on every change\" or synchronize manually with the button in the list. In \"Outbreaks to synchronize\" you choose which outbreaks to send; empty sends all of them."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_4_TITLE": {
+      "translation": "Track the result"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_4_DESCRIPTION": {
+      "translation": "In \"Track synchronization\", each sending and receiving is logged with its direction, status and, when something goes wrong, the error details."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_GO_TO": {
+      "translation": "Go to"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_OPEN": {
+      "translation": "Open"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FEATURES_TITLE": {
+      "translation": "What each page does"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_SEND_TITLE": {
+      "translation": "Send data to servers"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_SEND_DESCRIPTION": {
+      "translation": "Used by the sending instance. It holds the servers the data goes to."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_1": {
+      "translation": "Server registration with URL, credentials and connection test."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_2": {
+      "translation": "Automatic synchronization by interval or on every change."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_3": {
+      "translation": "Manual synchronization: only what changed, since a date or all the data."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_4": {
+      "translation": "Progress window with each step: connection, credentials, sending and result."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_TITLE": {
+      "translation": "Receive data from servers"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_DESCRIPTION": {
+      "translation": "Used by the receiving instance. It holds the keys of who can send data here."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_1": {
+      "translation": "A client application for each instance that sends data."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_2": {
+      "translation": "Generation and copy of the client ID and secret."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_3": {
+      "translation": "Optional restriction of the outbreaks each client can send."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_4": {
+      "translation": "Access can be disabled at any time, without deleting the client."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_TITLE": {
+      "translation": "Track synchronization"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_DESCRIPTION": {
+      "translation": "History of everything this instance sent and received."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_ITEM_1": {
+      "translation": "Direction column showing if the data was sent or received."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_ITEM_2": {
+      "translation": "Status of each synchronization: in progress, success, with warnings or failed."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_ITEM_3": {
+      "translation": "Error details with the eye icon of the row."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_ITEM_4": {
+      "translation": "Quick actions: backup before synchronizing, sync packages and log cleanup."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_TITLE": {
+      "translation": "Frequently asked questions"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_DIRECTION_QUESTION": {
+      "translation": "Does the synchronization go both ways?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_DIRECTION_ANSWER": {
+      "translation": "No. The data only goes from the sending instance to the receiving one. If both need to send data to each other, each one must register the other as a destination server."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_WHAT_IS_SENT_QUESTION": {
+      "translation": "What is sent in each synchronization?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_WHAT_IS_SENT_ANSWER": {
+      "translation": "The first synchronization sends all the data. The next ones send only what was created or updated since the last successful synchronization. When there is nothing new, the synchronization ends as \"Up to date\"."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OUTBREAKS_QUESTION": {
+      "translation": "Can I send only some outbreaks?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OUTBREAKS_ANSWER": {
+      "translation": "Yes. Choose the outbreaks in \"Outbreaks to synchronize\", in the server settings, or in the manual synchronization window. When a new outbreak is added to the list, the next synchronization sends all the data of the chosen outbreaks."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OVERWRITE_QUESTION": {
+      "translation": "Can the synchronization delete or overwrite the receiver's data?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OVERWRITE_ANSWER": {
+      "translation": "A record is only updated when the received version is newer than the existing one. The receiver's own settings, such as roles, system settings and customized translations, are not changed."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_FAILED_QUESTION": {
+      "translation": "The synchronization failed. What should I do?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_FAILED_ANSWER": {
+      "translation": "The progress window shows the step that failed and why. The most common causes are the destination server being offline, a wrong URL or invalid or disabled credentials. The full details are in \"Track synchronization\". If the problem continues, contact the administrator of the destination server."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_DATA_TEXTS": {
+      "translation": "Texts of the questionnaires and lists"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_DATA_TEXTS_DESCRIPTION": {
+      "translation": "The questions and answers of the questionnaires and the names of the list options, so they are displayed correctly by the receiver."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_LANGUAGES": {
+      "translation": "Languages and system translations"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_TRANSMISSION_CHAINS": {
+      "translation": "Saved transmission chains (each instance calculates its own)"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_TEMPLATES": {
+      "translation": "Outbreak templates, import mappings and saved filters"
     }
   }
 }

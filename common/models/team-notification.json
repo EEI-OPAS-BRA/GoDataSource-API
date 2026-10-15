@@ -43,7 +43,8 @@
         "w",
         "M",
         "y"
-      ]
+      ],
+      "default": "h"
     },
     "active": {
       "type": "boolean",

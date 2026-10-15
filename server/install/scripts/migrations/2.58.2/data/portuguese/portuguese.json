@@ -1,0 +1,692 @@
+{
+  "id": "portuguese_pt",
+  "tokens": {
+    "LNG_INFO_BANNER_SYNCED_DATA_TITLE": {
+      "translation": "Quais dados são sincronizados?"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_INCLUDED_TITLE": {
+      "translation": "Sincronizados"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_OUTBREAKS": {
+      "translation": "Surtos"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_OUTBREAKS_DESCRIPTION": {
+      "translation": "Configurações dos surtos, incluindo os questionários."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_PERSONS": {
+      "translation": "Casos, contatos, contatos de contatos e eventos"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_PERSONS_DESCRIPTION": {
+      "translation": "Os registros e as respostas dos questionários."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_FOLLOW_UPS": {
+      "translation": "Acompanhamentos"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_FOLLOW_UPS_DESCRIPTION": {
+      "translation": "As visitas de acompanhamento dos contatos."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_LAB_RESULTS": {
+      "translation": "Resultados de laboratório"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_LAB_RESULTS_DESCRIPTION": {
+      "translation": "Amostras e resultados dos exames."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_RELATIONSHIPS": {
+      "translation": "Relacionamentos e clusters"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_RELATIONSHIPS_DESCRIPTION": {
+      "translation": "Exposições e contatos entre as pessoas, e os clusters aos quais pertencem."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_FILES": {
+      "translation": "Arquivos anexados"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_FILES_DESCRIPTION": {
+      "translation": "Arquivos anexados aos registros."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_REFERENCE_DATA": {
+      "translation": "Dados de referência e localidades"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_REFERENCE_DATA_DESCRIPTION": {
+      "translation": "As opções das listas, com os seus ícones, e a hierarquia de localidades."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_USERS": {
+      "translation": "Usuários e equipes"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_USERS_DESCRIPTION": {
+      "translation": "Os usuários chegam sem perfil e com senha aleatória; é preciso definir os dois na outra instância antes que possam entrar."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_TITLE": {
+      "translation": "Não sincronizados"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_ROLES": {
+      "translation": "Perfis de usuário"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_SYSTEM_SETTINGS": {
+      "translation": "Configurações do sistema"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_CLIENTS_AND_DEVICES": {
+      "translation": "Credenciais de clientes e dispositivos"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_AUDIT_LOG": {
+      "translation": "Log de auditoria"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_HELP": {
+      "translation": "Conteúdo de ajuda"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_NOTE_CHANGES_ONLY": {
+      "translation": "Por padrão, só é enviado o que foi criado, alterado ou excluído desde a última sincronização bem-sucedida."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_NOTE_OUTBREAKS": {
+      "translation": "Só são enviados os dados dos surtos permitidos para as credenciais do cliente."
+    },
+    "LNG_LAYOUT_MENU_ITEM_DATA_SYNC_LABEL": {
+      "translation": "Sincronização de dados"
+    },
+    "LNG_LAYOUT_MENU_ITEM_UPSTREAM_SERVERS_LABEL": {
+      "translation": "Enviar dados para Servidores"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TITLE": {
+      "translation": "Enviar dados para Servidores"
+    },
+    "LNG_LAYOUT_MENU_ITEM_CLIENT_APPLICATIONS_LABEL": {
+      "translation": "Receber dados de Servidores"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TITLE": {
+      "translation": "Receber dados de Servidores"
+    },
+    "LNG_APP_PAGE_SYSTEM_CLIENT_APPLICATIONS": {
+      "translation": "Receber dados de Servidores"
+    },
+    "LNG_LAYOUT_MENU_ITEM_SYNC_LABEL": {
+      "translation": "Acompanhar sincronização"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_TITLE": {
+      "translation": "Acompanhar sincronização"
+    },
+    "LNG_INFO_BANNER_ACTION_SHOW": {
+      "translation": "Ver como funciona"
+    },
+    "LNG_INFO_BANNER_ACTION_HIDE": {
+      "translation": "Ocultar"
+    },
+    "LNG_INFO_BANNER_STEPS_TITLE": {
+      "translation": "Como funciona"
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_LAST_SYNC_DATE": {
+      "translation": "Data da última sincronização"
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_LAST_SYNC_STATUS": {
+      "translation": "Status da última sincronização"
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_LAST_SYNC_LOGS": {
+      "translation": "Logs"
+    },
+    "LNG_UPSTREAM_SERVER_LAST_SYNC_NEVER": {
+      "translation": "Nunca sincronizado"
+    },
+    "LNG_UPSTREAM_SERVER_LAST_SYNC_NO_MESSAGES": {
+      "translation": "Sem erros ou avisos"
+    },
+    "LNG_UPSTREAM_SERVER_LAST_SYNC_VIEW_LOGS": {
+      "translation": "Ver logs"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_TITLE": {
+      "translation": "Para que serve esta tela?"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_DESCRIPTION": {
+      "translation": "Cadastre aqui as outras instâncias do Go.Data (servidores upstream, por exemplo um servidor central) para onde esta instância envia os seus dados e controle quando a sincronização acontece."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_1_TITLE": {
+      "translation": "Cadastre o servidor"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_1_DESCRIPTION": {
+      "translation": "Informe a URL da outra instância do Go.Data e o ID e o segredo do cliente gerados nela, na página \"Receber dados de Servidores\"."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_2_TITLE": {
+      "translation": "Escolha quando sincronizar"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_2_DESCRIPTION": {
+      "translation": "Inicie manualmente pelo botão de sincronizar (dá para enviar também dados mais antigos ou tudo), defina um intervalo (em horas) para a sincronização automática ou ative \"Sincronizar em cada alteração\" para enviar as mudanças assim que acontecem."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_3_TITLE": {
+      "translation": "Os dados são enviados"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_3_DESCRIPTION": {
+      "translation": "Esta instância exporta seus dados e os envia ao servidor upstream, que faz a importação. A primeira sincronização envia tudo; as seguintes enviam apenas o que mudou desde a última sincronização bem-sucedida."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_4_TITLE": {
+      "translation": "Acompanhe o resultado"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_4_DESCRIPTION": {
+      "translation": "O resultado (sucesso, sucesso com avisos ou falha) fica registrado na página \"Acompanhar sincronização\"."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_NOTE_1": {
+      "translation": "A sincronização é de mão única: os dados são enviados desta instância para o servidor upstream, e não o contrário."
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_TITLE": {
+      "translation": "Para que serve esta tela?"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_DESCRIPTION": {
+      "translation": "Aqui você cria as credenciais que permitem que outros sistemas se conectem a esta instância e enviem dados para ela: outra instância do Go.Data que envia seus dados para cá (cadastrando esta instância em \"Enviar dados para Servidores\") ou o aplicativo móvel."
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_1_TITLE": {
+      "translation": "Crie o aplicativo"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_1_DESCRIPTION": {
+      "translation": "Dê um nome a ele. O ID e o segredo do cliente podem ser gerados automaticamente."
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_2_TITLE": {
+      "translation": "Escolha os surtos"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_2_DESCRIPTION": {
+      "translation": "Limite a quais surtos o aplicativo tem acesso. Deixe vazio para permitir todos os surtos."
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_3_TITLE": {
+      "translation": "Compartilhe as credenciais"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_3_DESCRIPTION": {
+      "translation": "Use o ID e o segredo do cliente ao cadastrar esta instância em \"Enviar dados para Servidores\" na outra instância do Go.Data, ou baixe o arquivo de configuração (QR code) para configurar o aplicativo móvel."
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_4_TITLE": {
+      "translation": "Controle o acesso"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_4_DESCRIPTION": {
+      "translation": "As requisições só são aceitas enquanto o aplicativo estiver ativo e as credenciais forem válidas. Desative-o para bloquear o acesso sem excluí-lo."
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_NOTE_1": {
+      "translation": "Trate o segredo do cliente como uma senha: quem o possui pode se conectar a esta instância como esse aplicativo."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_SECTION_GENERAL": {
+      "translation": "Geral"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_SECTION_CONNECTION": {
+      "translation": "Conexão"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_SECTION_SYNCHRONIZATION": {
+      "translation": "Sincronização"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_BUTTON": {
+      "translation": "Testar servidor"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_SERVER_ONLINE_MESSAGE": {
+      "translation": "Servidor online ({{ms}} ms)."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_TEST_CREDENTIALS_BUTTON": {
+      "translation": "Testar credenciais"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_CREDENTIALS_ACCEPTED_ALL_OUTBREAKS": {
+      "translation": "Conexão estabelecida. As credenciais foram aceitas, com acesso a todos os surtos."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_CREDENTIALS_ACCEPTED_SOME_OUTBREAKS": {
+      "translation": "Conexão estabelecida. As credenciais foram aceitas, com acesso a {{count}} surto(s)."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_CONNECTION_REFUSED": {
+      "translation": "Conexão recusada. Confira o endereço e a porta e se a outra instância está em execução."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_HOST_NOT_FOUND": {
+      "translation": "Endereço não encontrado. Confira o nome do servidor."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_TIMEOUT": {
+      "translation": "O servidor não respondeu a tempo."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_CERTIFICATE": {
+      "translation": "Não foi possível estabelecer uma conexão segura: há um problema com o certificado SSL do servidor."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_NOT_GODATA": {
+      "translation": "O endereço respondeu, mas não parece ser um servidor Go.Data."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_INVALID_CREDENTIALS": {
+      "translation": "O servidor está online, mas as credenciais foram rejeitadas. Confira o ID e o segredo do cliente e se o aplicativo está ativo na outra instância."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_API_NOT_FOUND": {
+      "translation": "O servidor está online, mas a API não foi encontrada neste endereço. A URL deve terminar em /api."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_INVALID_URL": {
+      "translation": "URL inválida. Use um endereço completo, por exemplo http://localhost:3000/api."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_CONNECTION_FAILED": {
+      "translation": "Não foi possível conectar ao servidor."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_URL_DESCRIPTION": {
+      "translation": "Endereço da API da outra instância do Go.Data, a que vai receber os dados. Deve terminar em /api. Exemplo: http://localhost:3000/api"
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_TIMEOUT_DESCRIPTION": {
+      "translation": "Tempo limite, em milissegundos, de cada requisição feita a este servidor. Use 0 para não ter limite."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_SYNC_INTERVAL_DESCRIPTION": {
+      "translation": "Intervalo, em horas, entre as sincronizações automáticas. Use 0 para desativar a sincronização automática."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_SYNC_ENABLED_DESCRIPTION": {
+      "translation": "Quando desativado, o servidor é ignorado nas sincronizações manual, automática e a cada alteração."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_CREDENTIALS_CLIENT_ID_DESCRIPTION": {
+      "translation": "ID do cliente criado na página \"Receber dados de Servidores\" da outra instância do Go.Data."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_CREDENTIALS_CLIENT_SECRET_DESCRIPTION": {
+      "translation": "Segredo do cliente criado na página \"Receber dados de Servidores\" da outra instância do Go.Data."
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_URL_ALREADY_REGISTERED": {
+      "translation": "Já existe um servidor cadastrado com esta URL. Para alterá-lo, use o ícone de lápis na lista, ou use outro endereço."
+    },
+    "LNG_UPSTREAM_SERVER_LAST_SYNC_UP_TO_DATE": {
+      "translation": "Já atualizado"
+    },
+    "LNG_UPSTREAM_SERVER_LAST_SYNC_NO_NEW_DATA": {
+      "translation": "Nenhum dado novo para enviar"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_UP_TO_DATE_MESSAGE": {
+      "translation": "O servidor já está atualizado: não há dados novos para enviar."
+    },
+    "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_TITLE": {
+      "translation": "Modificar servidor upstream: {{name}}"
+    },
+    "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_ACTION_MODIFY_UPSTREAM_SERVER_SUCCESS_MESSAGE": {
+      "translation": "Servidor upstream atualizado"
+    },
+    "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_NOT_FOUND": {
+      "translation": "Servidor upstream não encontrado. Ele pode ter sido excluído."
+    },
+    "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_URL_CHANGED_NOTE": {
+      "translation": "A URL foi alterada. O histórico de sincronização é mantido por URL, então a próxima sincronização enviará todos os dados para este novo endereço."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_ACTION_MODIFY_SERVER": {
+      "translation": "Modificar servidor"
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_CONNECTION": {
+      "translation": "Conexão"
+    },
+    "LNG_UPSTREAM_SERVER_CONNECTION_CHECKING": {
+      "translation": "Verificando..."
+    },
+    "LNG_UPSTREAM_SERVER_CONNECTION_CHECKING_MESSAGE": {
+      "translation": "Verificando o servidor e as credenciais..."
+    },
+    "LNG_UPSTREAM_SERVER_CONNECTION_ONLINE": {
+      "translation": "Online"
+    },
+    "LNG_UPSTREAM_SERVER_CONNECTION_INVALID_CREDENTIALS": {
+      "translation": "Credenciais inválidas"
+    },
+    "LNG_UPSTREAM_SERVER_CONNECTION_API_NOT_FOUND": {
+      "translation": "API não encontrada"
+    },
+    "LNG_UPSTREAM_SERVER_CONNECTION_OFFLINE": {
+      "translation": "Offline"
+    },
+    "LNG_UPSTREAM_SERVER_CONNECTION_UNKNOWN": {
+      "translation": "Não verificado"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_MODE": {
+      "translation": "Dados a enviar"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_MODE_TOOLTIP": {
+      "translation": "Apenas o que mudou desde a última sincronização: a opção usual. Tudo o que mudou desde uma data: envia também dados mais antigos, por exemplo para preencher um servidor que foi recriado. Todos os dados: envia tudo."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_MODE_SINCE_LAST": {
+      "translation": "Apenas o que mudou desde a última sincronização"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_MODE_FROM_DATE": {
+      "translation": "Tudo o que mudou desde uma data"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_MODE_ALL": {
+      "translation": "Todos os dados"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_FROM_DATE": {
+      "translation": "Alterados desde"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_FROM_DATE_TOOLTIP": {
+      "translation": "Os registros criados ou alterados desde esta data são enviados. Só tem efeito se a data for anterior à última sincronização com sucesso; caso contrário, vale a última sincronização com sucesso. Se ainda não houve sincronização com sucesso, todos os dados são enviados."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_START_BUTTON": {
+      "translation": "Iniciar sincronização"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_SECTION_GENERAL": {
+      "translation": "Geral"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_SECTION_ACCESS": {
+      "translation": "Acesso"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_SECTION_CREDENTIALS": {
+      "translation": "Credenciais"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_COPY_CREDENTIAL_SUCCESS_MESSAGE": {
+      "translation": "Credencial copiada para a área de transferência."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_TITLE": {
+      "translation": "Para que serve esta tela?"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_DESCRIPTION": {
+      "translation": "Aqui fica o histórico de todas as sincronizações desta instância: os dados enviados para servidores upstream e os dados recebidos de outros servidores ou de pacotes de sincronização importados."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_1_TITLE": {
+      "translation": "Cada sincronização gera um registro"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_1_DESCRIPTION": {
+      "translation": "Um registro é criado quando esta instância envia dados para um servidor upstream (a coluna \"URL do servidor\" é preenchida) ou recebe dados de outro servidor ou de um pacote importado (a coluna \"ID do cliente\" é preenchida)."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_2_TITLE": {
+      "translation": "Confira o status"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_2_DESCRIPTION": {
+      "translation": "Em andamento, Sucesso, Sucesso com avisos ou Falha. As datas de início e de conclusão mostram quanto tempo levou, e a data de início das informações indica a partir de quando os dados enviados foram considerados."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_3_TITLE": {
+      "translation": "Investigue os problemas"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_3_DESCRIPTION": {
+      "translation": "Quando uma sincronização falha ou tem avisos, clique no ícone de olho da linha para ver os detalhes do erro."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_4_TITLE": {
+      "translation": "Use as ações rápidas"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_STEP_4_DESCRIPTION": {
+      "translation": "Pelo menu \"Ações rápidas\" é possível configurar um backup antes de cada sincronização, importar ou exportar um pacote de sincronização (para instâncias sem conexão entre si) e excluir registros antigos."
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_INFO_NOTE_1": {
+      "translation": "O último registro com sucesso de cada servidor define a partir de quando a próxima sincronização envia os dados. Excluí-lo não altera os dados, mas a próxima sincronização pode reenviar mais registros."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_DIRECTION": {
+      "translation": "Direção"
+    },
+    "LNG_SYNC_DIRECTION_SENT": {
+      "translation": "Enviado"
+    },
+    "LNG_SYNC_DIRECTION_RECEIVED": {
+      "translation": "Recebido"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_TITLE": {
+      "translation": "Sincronizar com o servidor"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_HINT_SINCE_LAST": {
+      "translation": "São enviados apenas os registros criados ou alterados desde a última sincronização com sucesso. É a opção usual e a mais rápida."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_HINT_FROM_DATE": {
+      "translation": "São enviados os registros criados ou alterados desde a data escolhida. Use para reenviar dados mais antigos, por exemplo para preencher um servidor que foi recriado."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_HINT_ALL": {
+      "translation": "Todos os dados são enviados. Pode demorar bastante; o servidor só atualiza os registros mais novos que os que ele já tem."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_HINT_FIRST_SYNC": {
+      "translation": "Ainda não houve sincronização com este servidor, então todos os dados serão enviados."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_OUTBREAKS": {
+      "translation": "Surtos"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_OUTBREAKS_TOOLTIP": {
+      "translation": "Vem preenchido com os surtos configurados no servidor. Deixe vazio para enviar todos os surtos."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_HINT_PARTIAL": {
+      "translation": "Os surtos escolhidos não incluem todos os configurados neste servidor. Esta sincronização não é usada para definir o que as próximas enviam, então elas continuam enviando o que mudou nos surtos que ficaram de fora."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_OUTBREAKS_TO_SYNC": {
+      "translation": "Surtos a sincronizar"
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_OUTBREAKS_TO_SYNC_ALL": {
+      "translation": "Todos os surtos"
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_OUTBREAKS_TO_SYNC_DESCRIPTION": {
+      "translation": "Deixe vazio para sincronizar todos os surtos. As sincronizações agendadas e as feitas a cada alteração enviam apenas os surtos escolhidos. Ao incluir um surto, a próxima sincronização envia todos os dados dos surtos escolhidos."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_TITLE": {
+      "translation": "Sincronizando com o servidor"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_STEP": {
+      "translation": "Etapa"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_STEP_CONNECT": {
+      "translation": "Conectando servidores"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_STEP_CREDENTIALS": {
+      "translation": "Validando credenciais"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_STEP_SYNC": {
+      "translation": "Sincronizando dados"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_STEP_FINAL": {
+      "translation": "Status final"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_PHASE_CONNECT": {
+      "translation": "Estabelecendo a conexão com o servidor..."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_PHASE_CREDENTIALS": {
+      "translation": "Verificando o ID e o segredo do cliente..."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_PHASE_EXPORT": {
+      "translation": "Preparando os dados para envio..."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_PHASE_SEND": {
+      "translation": "Enviando os dados para o servidor..."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_PHASE_IMPORT": {
+      "translation": "O servidor está importando os dados..."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_SUCCESS": {
+      "translation": "Sucesso!"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_SUCCESS_MESSAGE": {
+      "translation": "Os dados foram sincronizados."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_WARNING": {
+      "translation": "Sincronizado com avisos"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_WARNING_MESSAGE": {
+      "translation": "Os dados foram sincronizados, mas alguns registros tiveram problemas. Veja os detalhes em Acompanhar sincronização."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_UP_TO_DATE": {
+      "translation": "Tudo em dia"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_UP_TO_DATE_MESSAGE": {
+      "translation": "Não havia nada novo para enviar desde a última sincronização."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_ERROR": {
+      "translation": "Falha na sincronização"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_ERROR_CONNECT": {
+      "translation": "Não foi possível conectar ao servidor \"{{name}}\". Verifique se ele está online e se a URL está correta."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_ERROR_CREDENTIALS": {
+      "translation": "O servidor \"{{name}}\" não aceitou as credenciais. Verifique o ID e o segredo do cliente no cadastro do servidor."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_ERROR_SYNC": {
+      "translation": "Ocorreu um erro ao sincronizar os dados."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_LOG_TITLE": {
+      "translation": "Detalhes do erro"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_LOG_HELP": {
+      "translation": "Se o problema continuar, entre em contato com o administrador do sistema ou com o responsável pelo servidor de destino."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_VIEW_ERROR_BUTTON": {
+      "translation": "Ver log completo"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_CLOSE_BUTTON": {
+      "translation": "Fechar"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_BACKGROUND_BUTTON": {
+      "translation": "Continuar em segundo plano"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_OUTBREAKS_ALL": {
+      "translation": "Todos os surtos (nenhum selecionado)"
+    },
+    "LNG_LAYOUT_MENU_ITEM_SYNC_DOCUMENTATION_LABEL": {
+      "translation": "Documentação"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_INTRO_TITLE": {
+      "translation": "Como funciona a sincronização de dados"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_INTRO_DESCRIPTION": {
+      "translation": "A sincronização conecta instalações do Go.Data. Uma instância envia os seus dados (por exemplo, um município) e outra recebe e reúne esses dados (por exemplo, o servidor nacional). Assim, quem recebe tem uma visão consolidada sem que ninguém precise digitar nada duas vezes."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FLOW_SENDER": {
+      "translation": "Quem envia"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FLOW_SENDER_EXAMPLE": {
+      "translation": "ex.: município"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FLOW_RECEIVER": {
+      "translation": "Quem recebe"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FLOW_RECEIVER_EXAMPLE": {
+      "translation": "ex.: nacional"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FLOW_DATA": {
+      "translation": "dados"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_CALLOUT_TITLE": {
+      "translation": "Vai receber dados? Comece gerando as chaves"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_CALLOUT_DESCRIPTION": {
+      "translation": "Antes de qualquer envio, a instância que vai receber os dados precisa criar um aplicativo cliente em \"Receber dados de Servidores\". É ele que gera o ID e o segredo do cliente, as chaves que a outra instância usa para se conectar. Sem essas chaves, nenhum servidor consegue enviar dados para cá."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_CALLOUT_BUTTON": {
+      "translation": "Gerar chaves em \"Receber dados de Servidores\""
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEPS_TITLE": {
+      "translation": "Passo a passo para configurar"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_WHERE_RECEIVER": {
+      "translation": "Na instância que recebe"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_WHERE_SENDER": {
+      "translation": "Na instância que envia"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_WHERE_BOTH": {
+      "translation": "Nas duas instâncias"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_1_TITLE": {
+      "translation": "Gere as chaves de acesso"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_1_DESCRIPTION": {
+      "translation": "Em \"Receber dados de Servidores\", crie um aplicativo cliente para cada instância que vai enviar dados. Use o botão de gerar para criar o ID e o segredo do cliente e o botão de copiar para enviá-los ao responsável pela outra instância. Deixe o aplicativo ativo."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_2_TITLE": {
+      "translation": "Cadastre o servidor de destino"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_2_DESCRIPTION": {
+      "translation": "Em \"Enviar dados para Servidores\", cadastre a instância que vai receber: informe a URL dela e cole o ID e o segredo do cliente gerados no passo 1. Use os botões \"Testar servidor\" e \"Testar credenciais\" para confirmar que está tudo certo antes de salvar."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_3_TITLE": {
+      "translation": "Escolha quando e o que sincronizar"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_3_DESCRIPTION": {
+      "translation": "No mesmo cadastro, defina um intervalo para a sincronização automática, ative \"Sincronizar em cada alteração\" ou sincronize manualmente pelo botão da lista. Em \"Surtos a sincronizar\" você escolhe quais surtos enviar; vazio envia todos."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_4_TITLE": {
+      "translation": "Acompanhe o resultado"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_4_DESCRIPTION": {
+      "translation": "Em \"Acompanhar sincronização\", cada envio e cada recebimento fica registrado com a direção, o status e, em caso de problema, os detalhes do erro."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_GO_TO": {
+      "translation": "Ir para"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_OPEN": {
+      "translation": "Abrir"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FEATURES_TITLE": {
+      "translation": "O que cada tela faz"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_SEND_TITLE": {
+      "translation": "Enviar dados para Servidores"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_SEND_DESCRIPTION": {
+      "translation": "Usada pela instância que envia. Aqui ficam os servidores para onde os dados vão."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_1": {
+      "translation": "Cadastro do servidor com URL, credenciais e teste de conexão."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_2": {
+      "translation": "Sincronização automática por intervalo ou a cada alteração."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_3": {
+      "translation": "Sincronização manual: só o que mudou, desde uma data ou todos os dados."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_4": {
+      "translation": "Janela de progresso com cada etapa: conexão, credenciais, envio e resultado."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_TITLE": {
+      "translation": "Receber dados de Servidores"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_DESCRIPTION": {
+      "translation": "Usada pela instância que recebe. Aqui ficam as chaves de quem pode enviar dados para cá."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_1": {
+      "translation": "Criação de um aplicativo cliente para cada instância que envia."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_2": {
+      "translation": "Geração e cópia do ID e do segredo do cliente."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_3": {
+      "translation": "Restrição opcional dos surtos que cada cliente pode enviar."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_4": {
+      "translation": "Desativação do acesso a qualquer momento, sem excluir o cliente."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_TITLE": {
+      "translation": "Acompanhar sincronização"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_DESCRIPTION": {
+      "translation": "Histórico de tudo que esta instância enviou e recebeu."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_ITEM_1": {
+      "translation": "Coluna Direção indicando se os dados foram enviados ou recebidos."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_ITEM_2": {
+      "translation": "Status de cada sincronização: em andamento, sucesso, com avisos ou falha."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_ITEM_3": {
+      "translation": "Detalhes do erro pelo ícone de olho da linha."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_ITEM_4": {
+      "translation": "Ações rápidas: backup antes de sincronizar, pacotes de sincronização e limpeza de registros."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_TITLE": {
+      "translation": "Perguntas frequentes"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_DIRECTION_QUESTION": {
+      "translation": "A sincronização vai e volta?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_DIRECTION_ANSWER": {
+      "translation": "Não. Os dados vão apenas da instância que envia para a que recebe. Se as duas precisarem enviar dados uma para a outra, cada uma deve cadastrar a outra como servidor de destino."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_WHAT_IS_SENT_QUESTION": {
+      "translation": "O que é enviado em cada sincronização?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_WHAT_IS_SENT_ANSWER": {
+      "translation": "A primeira sincronização envia todos os dados. As seguintes enviam apenas o que foi criado ou alterado desde a última sincronização com sucesso. Quando não há nada novo, a sincronização termina como \"Tudo em dia\"."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OUTBREAKS_QUESTION": {
+      "translation": "Posso enviar só alguns surtos?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OUTBREAKS_ANSWER": {
+      "translation": "Sim. Escolha os surtos em \"Surtos a sincronizar\", no cadastro do servidor, ou na própria janela de sincronização manual. Ao incluir um surto novo na lista, a próxima sincronização envia todos os dados dos surtos escolhidos."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OVERWRITE_QUESTION": {
+      "translation": "A sincronização pode apagar ou sobrescrever dados de quem recebe?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OVERWRITE_ANSWER": {
+      "translation": "Um registro só é atualizado quando a versão recebida é mais recente do que a que já existe. Configurações próprias de quem recebe, como perfis, configurações do sistema e traduções personalizadas, não são alteradas."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_FAILED_QUESTION": {
+      "translation": "A sincronização falhou. O que fazer?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_FAILED_ANSWER": {
+      "translation": "A janela de progresso mostra em qual etapa falhou e o motivo. As causas mais comuns são o servidor de destino fora do ar, a URL errada ou credenciais inválidas ou desativadas. Os detalhes completos ficam em \"Acompanhar sincronização\". Se o problema continuar, fale com o administrador do servidor de destino."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_DATA_TEXTS": {
+      "translation": "Textos dos questionários e das listas"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_DATA_TEXTS_DESCRIPTION": {
+      "translation": "As perguntas e respostas dos questionários e os nomes das opções das listas, para que apareçam corretamente em quem recebe."
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_LANGUAGES": {
+      "translation": "Idiomas e traduções do sistema"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_TRANSMISSION_CHAINS": {
+      "translation": "Cadeias de transmissão salvas (cada instância calcula as suas)"
+    },
+    "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_TEMPLATES": {
+      "translation": "Modelos de surto, mapeamentos de importação e filtros salvos"
+    }
+  }
+}

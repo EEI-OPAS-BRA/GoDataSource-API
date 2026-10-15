@@ -205,10 +205,15 @@ module.exports = function (Sync) {
               }
 
               // filter files that match a collection name
+              // another Go.Data instance can send only the synced collections, otherwise it could overwrite data that belongs to this instance (e.g. migrationLog, roles, system settings)
               let collectionsFiles = filenames.filter((filename) => {
                 // split filename into 'collection name' and 'extension'
                 filename = filename.split('.');
-                return filename[0] && dbSync.collectionsMap.hasOwnProperty(filename[0]);
+                return filename[0] && (
+                  reqOptions.snapshotFromClient ?
+                    dbSync.syncCollections.includes(filename[0]) :
+                    dbSync.collectionsMap.hasOwnProperty(filename[0])
+                );
               });
 
               // sort collectionFiles by batch number
@@ -283,6 +288,16 @@ module.exports = function (Sync) {
                               dbSync.collectionsImportFilterMap[collectionName] &&
                               !dbSync.collectionsImportFilterMap[collectionName](collectionName, collectionRecord, outbreakIDs)) {
                               app.logger.debug(`Sync ${syncLogEntry.id}: Skipped syncing record (collection: ${collectionName}, id: ${collectionRecord.id}) as it's outbreak ID is not accepted`);
+                              return doneRecord();
+                            }
+
+                            // another Go.Data instance can't change the translations of the application, only the texts of its data (e.g. questionnaires)
+                            if (
+                              reqOptions.snapshotFromClient &&
+                              collectionName === 'languageToken' &&
+                              !dbSync.isDataLanguageToken(collectionRecord.token)
+                            ) {
+                              app.logger.debug(`Sync ${syncLogEntry.id}: Skipped syncing language token '${collectionRecord.token}' as it isn't the text of a questionnaire or reference data`);
                               return doneRecord();
                             }
 
@@ -606,6 +621,15 @@ module.exports = function (Sync) {
       return client.sendDBSnapshotForImport(DBSnapshotFileName, asynchronous, upstreamServer.autoEncrypt ? 'true' : 'false')
         .then(function (syncLogId) {
           app.logger.debug(`Sync ${syncLogEntry.id}: Upstream server import: received upstream server sync log id: ${syncLogId}`);
+
+          // the package was received, now the upstream server is importing it
+          syncLogEntry.syncStep = 'IMPORT';
+          syncLogEntry
+            .save()
+            .catch((err) => {
+              app.logger.debug(`Sync ${syncLogEntry.id}: Error updating sync log entry step. ${err}`);
+            });
+
           // initialize container for server sync log entry status check connection error
           // will be updated only with connection errors
           let statusCheckConnectionError = null;

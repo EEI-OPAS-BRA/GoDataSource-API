@@ -105,6 +105,57 @@ module.exports = function (Outbreak) {
   require('./outbreakPeople')(Outbreak);
   require('./outbreakCluster')(Outbreak);
 
+  const personRelations = [
+    {
+      modelName: 'case',
+      relation: 'cases'
+    }, {
+      modelName: 'contact',
+      relation: 'contacts'
+    }, {
+      modelName: 'contactOfContact',
+      relation: 'contactsOfContacts'
+    }, {
+      modelName: 'event',
+      relation: 'events'
+    }
+  ];
+
+  personRelations.forEach(function (personRelation) {
+    [
+      '__findById__',
+      '__updateById__',
+      '__destroyById__'
+    ].forEach(function (remoteMethod) {
+      Outbreak.beforeRemote(`prototype.${remoteMethod}${personRelation.relation}`, function (context, modelInstance, next) {
+        const PersonModel = app.models[personRelation.modelName];
+        PersonModel
+          .addGeographicalRestrictions(context, {
+            id: context.args.fk,
+            outbreakId: modelInstance.id
+          }, PersonModel.modelName)
+          .then(function (where) {
+            if (!where) {
+              return next();
+            }
+
+            return PersonModel
+              .count(where)
+              .then(function (count) {
+                if (count) {
+                  return next();
+                }
+
+                return next(app.utils.apiError.getError('ACCESS_DENIED', {
+                  accessErrors: 'User is not allowed to access this record'
+                }, 403));
+              });
+          })
+          .catch(next);
+      });
+    });
+  });
+
   /**
    * Allow changing follow-up status (only status property)
    */

@@ -1332,15 +1332,16 @@ module.exports = function (Relationship) {
   };
 
   /**
-   * Withhold the name of a person the logged in user is not allowed to read
-   * Note: only the name is removed. Everything else (visual ID, address, dates, classification and the
-   * relationship data itself) stays, so the record still shows up and still counts
+   * Withhold the name of a person the logged in user is not allowed to read and flag the person as masked
+   * Note: the visual ID, the dates, the classification and the relationship data itself stay, so the record
+   * still shows up and still counts
    * @param person Person record, either a model instance or a plain object
    * @return {*} The same person, for chaining
    */
   Relationship.maskPersonName = function (person) {
-    // event people carry their name under 'name', the other types under the name parts
-    ['firstName', 'middleName', 'lastName', 'name'].forEach((property) => {
+    // event people carry their name under 'name', the other types under the name parts;
+    // 'duplicateKeys' holds normalized name combinations
+    ['firstName', 'middleName', 'lastName', 'name', 'duplicateKeys'].forEach((property) => {
       if (person[property] !== undefined) {
         person[property] = null;
       }

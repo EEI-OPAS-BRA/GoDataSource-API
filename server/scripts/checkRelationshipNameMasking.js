@@ -404,6 +404,29 @@ const scenarios = [
 
       return Promise.resolve();
     }
+  },
+  {
+    name: 'masking also withholds the normalized name combinations used to find duplicates',
+    run: () => {
+      const restrictedCase = {
+        id: RESTRICTED_CASE_ID,
+        firstName: 'Fulana',
+        lastName: 'Silva',
+        visualId: 'CASE-0012',
+        duplicateKeys: {
+          name: ['fulanasilva', 'silvafulana']
+        }
+      };
+
+      Relationship.maskPersonName(restrictedCase);
+
+      assert.strictEqual(restrictedCase.firstName, null);
+      assert.strictEqual(restrictedCase.lastName, null);
+      assert.strictEqual(restrictedCase.duplicateKeys, null);
+      assert.strictEqual(restrictedCase.visualId, 'CASE-0012');
+
+      return Promise.resolve();
+    }
   }
 ];
 

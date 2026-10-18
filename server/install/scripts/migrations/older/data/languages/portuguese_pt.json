@@ -5034,6 +5034,12 @@
           "unauthenticated"
         ]
       },
+      "LNG_API_ERROR_CODE_ACCESS_DENIED": {
+        "translation": "Você não tem permissão para acessar este registro ou realizar esta ação.",
+        "modules": [
+          "unauthenticated"
+        ]
+      },
       "LNG_API_ERROR_CODE_ADDRESS_MULTIPLE_USUAL_PLACE_OF_RESIDENCE": {
         "translation": "Múltiplos endereços definidos como Lugar Habitual de Residência. Apenas um endereço deve ser definido como Endereço Atual.",
         "modules": [

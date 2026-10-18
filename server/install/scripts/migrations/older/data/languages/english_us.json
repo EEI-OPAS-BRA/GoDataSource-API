@@ -5034,6 +5034,12 @@
           "unauthenticated"
         ]
       },
+      "LNG_API_ERROR_CODE_ACCESS_DENIED": {
+        "translation": "You do not have permission to access this record or perform this action.",
+        "modules": [
+          "unauthenticated"
+        ]
+      },
       "LNG_API_ERROR_CODE_ADDRESS_MULTIPLE_USUAL_PLACE_OF_RESIDENCE": {
         "translation": "Multiple addresses have been set as Current Address. Only one address should be set as Current Address.",
         "modules": [

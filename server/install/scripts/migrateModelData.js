@@ -730,6 +730,9 @@ const migrationVersions = [{
       name: 'createUpdateLanguageTokens',
       buildNo: 1
     }, {
+      name: 'createUpdateSingleEnglishLanguageTokens',
+      buildNo: 1
+    }, {
       name: 'createUpdatePortugueseLanguageTokens',
       buildNo: 1
     }]

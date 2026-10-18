@@ -5047,7 +5047,7 @@
         ]
       },
       "LNG_API_ERROR_CODE_ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE": {
-        "translation": "Um dos endereços deve ser definido como Endereço Atual",
+        "translation": "É obrigatório informar um Endereço Atual",
         "modules": [
           "unauthenticated"
         ]
@@ -13100,7 +13100,7 @@
         "translation": "Falha ao importar o registro {{recordNo}} porque há vários endereços marcados como Endereço Actual"
       },
       "LNG_PAGE_IMPORT_DATA_ERROR_RECORD_ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE": {
-        "translation": "Falha ao importar registro {{recordNo}} porque o endereço deve estar marcado como Endereço Actual"
+        "translation": "Falha ao importar o registro {{recordNo}} porque é obrigatório informar um Endereço Atual"
       },
       "LNG_PAGE_IMPORT_DATA_ERROR_RECORD_ADDRESS_PREVIOUS_PLACE_OF_RESIDENCE_MUST_HAVE_DATE": {
         "translation": "Falha ao importar registro {{recordNo}} porque o endereço anterior deveria ter data"

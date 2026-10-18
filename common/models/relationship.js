@@ -334,8 +334,7 @@ module.exports = function (Relationship) {
               }
             }
           }).where;
-        // Note: people outside the user's geographic scope are fetched too (not filtered out
-        // here), so a chain keeps its real shape; they get masked below instead of dropped.
+        // people outside the user's geographic scope are fetched too and masked below, so a chain keeps its shape
         // use raw queries for related people
         return app.models.person
           .rawFind(
@@ -351,8 +350,6 @@ module.exports = function (Relationship) {
               peopleMap[person.id] = person;
             });
 
-            // withhold the name of people outside the user's geographic scope while keeping
-            // their relationships intact
             return app.models.relationship
               .resolveRestrictedPeopleMap(Object.keys(peopleMap), geographicalRestrictionsQuery)
               .then(function (restrictedPeopleMap) {
@@ -372,6 +369,12 @@ module.exports = function (Relationship) {
                 });
                 // add filterParent support
                 relationships = app.utils.remote.searchByRelationProperty.deepSearchByRelationProperty(relationships, filter);
+
+                // a restricted user only gets the chains that include at least one person they can read
+                if (geographicalRestrictionsQuery) {
+                  relationships = app.models.relationship.filterChainsWithVisiblePeople(relationships, restrictedPeopleMap);
+                }
+
                 if (countOnly) {
                   // count transmission chain - set activeChainStartDate - used for determining if a chain is active - to be specified endDate (by default today)
                   transmissionChain.count(relationships, followUpPeriod, {activeChainStartDate: endDate}, callback);
@@ -1329,6 +1332,48 @@ module.exports = function (Relationship) {
 
         return restrictedPeopleMap;
       });
+  };
+
+  /**
+   * Keep only the relationships of the chains that include at least one person the logged in user can read
+   * Note: people are grouped the same way the transmission chain worker groups them, by following relationships
+   * @param relationships Relationships with their loaded people
+   * @param restrictedPeopleMap Map of person ID to true for the people the user is not allowed to read
+   * @return {Array}
+   */
+  Relationship.filterChainsWithVisiblePeople = function (relationships, restrictedPeopleMap) {
+    const parentMap = {};
+    const findRoot = (personId) => {
+      while (parentMap[personId] !== personId) {
+        parentMap[personId] = parentMap[parentMap[personId]];
+        personId = parentMap[personId];
+      }
+      return personId;
+    };
+
+    relationships.forEach((relationship) => {
+      const peopleIds = (relationship.people || []).map((person) => person.id);
+      peopleIds.forEach((personId) => {
+        if (parentMap[personId] === undefined) {
+          parentMap[personId] = personId;
+        }
+      });
+
+      // the worker links two people only when both were loaded
+      if (peopleIds.length === 2) {
+        parentMap[findRoot(peopleIds[0])] = findRoot(peopleIds[1]);
+      }
+    });
+
+    const visibleRootsMap = {};
+    Object.keys(parentMap).forEach((personId) => {
+      if (!restrictedPeopleMap[personId]) {
+        visibleRootsMap[findRoot(personId)] = true;
+      }
+    });
+
+    return relationships.filter((relationship) => (relationship.people || [])
+      .some((person) => visibleRootsMap[findRoot(person.id)]));
   };
 
   /**

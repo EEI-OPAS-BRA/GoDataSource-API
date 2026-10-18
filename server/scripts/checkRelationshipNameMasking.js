@@ -427,6 +427,42 @@ const scenarios = [
 
       return Promise.resolve();
     }
+  },
+  {
+    name: 'a restricted user only gets the chains that include someone they can read',
+    run: () => {
+      const person = (id) => ({id: id});
+      const relationship = (id, first, second) => ({
+        id: id,
+        persons: [{id: first}, {id: second}],
+        people: [person(first), person(second)]
+      });
+
+      // chain A: visible case linked to an out-of-scope case, which links to another out-of-scope case
+      // chain B: only out-of-scope people
+      const relationships = [
+        relationship('a1', VISIBLE_CASE_ID, RESTRICTED_CASE_ID),
+        relationship('a2', RESTRICTED_CASE_ID, 'case-out-of-scope-2'),
+        relationship('b1', 'case-out-of-scope-3', RESTRICTED_EVENT_ID)
+      ];
+      const restrictedPeopleMap = {
+        [RESTRICTED_CASE_ID]: true,
+        'case-out-of-scope-2': true,
+        'case-out-of-scope-3': true,
+        [RESTRICTED_EVENT_ID]: true
+      };
+
+      const kept = Relationship.filterChainsWithVisiblePeople(relationships, restrictedPeopleMap);
+
+      assert.deepStrictEqual(kept.map((item) => item.id), ['a1', 'a2']);
+      assert.deepStrictEqual(
+        Relationship.filterChainsWithVisiblePeople(relationships, {}).map((item) => item.id),
+        ['a1', 'a2', 'b1'],
+        'nothing is dropped when every person is visible'
+      );
+
+      return Promise.resolve();
+    }
   }
 ];
 

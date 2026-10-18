@@ -132,7 +132,7 @@ module.exports = function (Outbreak) {
         PersonModel
           .addGeographicalRestrictions(context, {
             id: context.args.fk,
-            outbreakId: modelInstance.id
+            outbreakId: context.instance.id
           }, PersonModel.modelName)
           .then(function (where) {
             if (!where) {

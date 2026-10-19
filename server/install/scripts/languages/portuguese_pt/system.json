@@ -17315,7 +17315,7 @@
       "translation": "Sobrenome"
     },
     "LNG_USER_FIELD_LABEL_PRIMARY_TELEPHONE": {
-      "translation": "\r\r\r\r\r\r Telefone principal"
+      "translation": "Telefone principal"
     },
     "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM": {
       "translation": "Você está prestes a remover o acesso a um ou mais surtos. Esta ação revogará a permissão do usuário para os surtos desmarcados. Tem certeza de que deseja continuar?"

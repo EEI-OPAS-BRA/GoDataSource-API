@@ -123,6 +123,14 @@ function getPlaceholders(text) {
   return [...new Set((text.match(/{{[^{}]*}}/g) || []).map((placeholder) => placeholder.replace(/\s/g, '')))].sort();
 }
 
+/**
+ * Whether a text has control characters, such as carriage returns
+ */
+function hasControlCharacters(text) {
+  // eslint-disable-next-line no-control-regex
+  return /[\u0000-\u001f]/.test(text);
+}
+
 const english = getEnglishTokens();
 const portuguese = {};
 ['system.json', 'templates.json'].forEach((fileName) => {
@@ -138,6 +146,7 @@ const findings = {
   'empty while the english text is not': [],
   'equal to the english text and not allowlisted': [],
   'placeholders differ from the english ones': [],
+  'with control characters or edge whitespace the english text does not have': [],
   'unknown to the repository language data': []
 };
 Object.keys(english).sort().forEach((token) => {
@@ -158,6 +167,12 @@ Object.keys(english).sort().forEach((token) => {
     }
     if (getPlaceholders(text).join() !== getPlaceholders(english[token]).join()) {
       findings['placeholders differ from the english ones'].push(token);
+    }
+    if (
+      (hasControlCharacters(text) && !hasControlCharacters(english[token])) ||
+      (text !== text.trim() && english[token] === english[token].trim())
+    ) {
+      findings['with control characters or edge whitespace the english text does not have'].push(token);
     }
   }
 });

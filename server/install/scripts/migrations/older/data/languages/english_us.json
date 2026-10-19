@@ -5047,7 +5047,7 @@
         ]
       },
       "LNG_API_ERROR_CODE_ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE": {
-        "translation": "One of the addresses must be set as the Current Address",
+        "translation": "A Current Address is required",
         "modules": [
           "unauthenticated"
         ]
@@ -5619,6 +5619,12 @@
       },
       "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_CROSS_LOCATION_CREATION_DESCRIPTION": {
         "translation": "Allows creating cases in locations beyond the user's team responsibility area; the case address Location field lists all locations"
+      },
+      "LNG_OUTBREAK_FIELD_LABEL_PREVENT_ADDRESS_DELETION": {
+        "translation": "Prevent address deletion"
+      },
+      "LNG_OUTBREAK_FIELD_LABEL_PREVENT_ADDRESS_DELETION_DESCRIPTION": {
+        "translation": "When enabled, the delete button is hidden on the address blocks of cases, contacts and contacts of contacts"
       },
       "LNG_OUTBREAK_FIELD_LABEL_ALLOW_RESIDENCE_CHAIN_ACCESS": {
         "translation": "Allow team to view the full contact chain of a resident case"
@@ -10938,6 +10944,9 @@
           "unauthenticated"
         ]
       },
+      "LNG_FORM_VALIDATION_ERROR_AT_LEAST_ONE_ITEM_REQUIRED": {
+        "translation": "At least one item must be added"
+      },
       "LNG_FORM_VALIDATION_ERROR_GENERAL_ASYNC": {
         "translation": "Invalid data",
         "modules": [
@@ -13091,7 +13100,7 @@
         "translation": "Failed to import record {{recordNo}} because there are multiple addresses specified as Current Address"
       },
       "LNG_PAGE_IMPORT_DATA_ERROR_RECORD_ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE": {
-        "translation": "Failed to import record {{recordNo}} because address must be specified as a Current Address"
+        "translation": "Failed to import record {{recordNo}} because a Current Address is required"
       },
       "LNG_PAGE_IMPORT_DATA_ERROR_RECORD_ADDRESS_PREVIOUS_PLACE_OF_RESIDENCE_MUST_HAVE_DATE": {
         "translation": "Failed to import record {{recordNo}} because previous address should have date"

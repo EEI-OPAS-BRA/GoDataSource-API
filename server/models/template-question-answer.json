@@ -21,6 +21,16 @@
       "type": "boolean",
       "default": false
     },
+    "alertRuleCounts": {
+      "type": "boolean",
+      "default": false,
+      "description": "Answer counts for the question alert rule"
+    },
+    "alertRuleRequired": {
+      "type": "boolean",
+      "default": false,
+      "description": "Answer must be selected for the question alert rule to apply"
+    },
     "additionalQuestions": {
       "type": [
         "templateQuestion"

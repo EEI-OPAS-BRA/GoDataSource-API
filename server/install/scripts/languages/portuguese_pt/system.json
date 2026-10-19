@@ -184,6 +184,9 @@
     "LNG_ALERT_MESSAGE_CHECK_FOR_DUPLICATES_REQUST_FAIL": {
       "translation": "Algo deu errado com a solicitação do banco de dados"
     },
+    "LNG_API_ERROR_CODE_ACCESS_DENIED": {
+      "translation": "Você não tem permissão para acessar este registro ou realizar esta ação."
+    },
     "LNG_API_ERROR_CODE_ACTION_TEMPORARILY_BLOCKED": {
       "translation": "Esta ação foi bloqueada temporariamente"
     },
@@ -194,7 +197,7 @@
       "translation": "Vários endereços foram definidos como Endereço atual. Apenas um endereço deve ser definido como Endereço atual."
     },
     "LNG_API_ERROR_CODE_ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE": {
-      "translation": "Um dos endereços deve ser definido como Endereço Atual"
+      "translation": "É obrigatório informar um Endereço Atual"
     },
     "LNG_API_ERROR_CODE_ADDRESS_PREVIOUS_PLACE_OF_RESIDENCE_MUST_HAVE_DATE": {
       "translation": "Os endereços definidos como Endereço anterior devem ter uma data definida"
@@ -3457,6 +3460,9 @@
     "LNG_FORM_VALIDATION_ERROR_ALL_OR_NONE_REQUIRED_IF_FIELD_IS_SET": {
       "translation": "Obrigatório se {{field}} estiver definido"
     },
+    "LNG_FORM_VALIDATION_ERROR_AT_LEAST_ONE_ITEM_REQUIRED": {
+      "translation": "É necessário adicionar pelo menos um item"
+    },
     "LNG_FORM_VALIDATION_ERROR_AT_LEAST_ONE_REQUIRED": {
       "translation": "Pelo menos um campo deve ser preenchido"
     },
@@ -5655,6 +5661,12 @@
     },
     "LNG_OUTBREAK_FIELD_LABEL_OPTIONAL_CASE_CONTACT_ADDRESS_FIELDS_DESCRIPTION": {
       "translation": "Quando ativado, casos e contatos podem ser salvos sem que um endereço seja preenchido"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_PREVENT_ADDRESS_DELETION": {
+      "translation": "Impedir a exclusão de endereços"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_PREVENT_ADDRESS_DELETION_DESCRIPTION": {
+      "translation": "Quando ativado, o botão de excluir fica indisponível nos blocos de endereço de casos, contatos e contatos de contatos"
     },
     "LNG_OUTBREAK_FIELD_LABEL_REPORT": {
       "translation": "Relatórios"
@@ -7910,7 +7922,7 @@
       "translation": "Falha ao importar o registro {{recordNo}} porque há vários endereços marcados como Endereço atual"
     },
     "LNG_PAGE_IMPORT_DATA_ERROR_RECORD_ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE": {
-      "translation": "Falha ao importar o registro {{recordNo}} porque o endereço deve ser marcado como Endereço atual"
+      "translation": "Falha ao importar o registro {{recordNo}} porque é obrigatório informar um Endereço Atual"
     },
     "LNG_PAGE_IMPORT_DATA_ERROR_RECORD_ADDRESS_PREVIOUS_PLACE_OF_RESIDENCE_MUST_HAVE_DATE": {
       "translation": "Falha ao importar o registro {{recordNo}} porque o endereço anterior deve ter data"

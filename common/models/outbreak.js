@@ -1218,12 +1218,15 @@ module.exports = function (Outbreak) {
       };
     }
 
-    // start geographical restriction promise
-    let geographicalRestrictionsQueryCache;
-    app.models.person
-      .addGeographicalRestrictions(options.remotingContext)
-      .then(geographicalRestrictionsQuery => {
-        geographicalRestrictionsQueryCache = geographicalRestrictionsQuery;
+    // the people of the chains are masked by the same rule the transmission chain endpoints use
+    let chainRestrictionsQuery;
+    Promise
+      .all([
+        app.models.person.addGeographicalRestrictions(options.remotingContext),
+        app.models.person.addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
+      ])
+      .then(([geographicalRestrictionsQuery, mixedPersonTypesRestrictionsQuery]) => {
+        chainRestrictionsQuery = mixedPersonTypesRestrictionsQuery;
 
         // add geographical restrictions to case query
         if (geographicalRestrictionsQuery) {
@@ -1310,7 +1313,7 @@ module.exports = function (Outbreak) {
               countOnly,
               false,
               false,
-              geographicalRestrictionsQueryCache,
+              chainRestrictionsQuery,
               callback
             );
           });

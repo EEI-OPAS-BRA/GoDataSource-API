@@ -1536,8 +1536,9 @@ module.exports = function (Outbreak) {
         }
       })
       .then(function (personIds) {
-        // if there was a people filter
-        if (personIds) {
+        // only an explicit people filter narrows the relationships; a geographic restriction alone keeps them all,
+        // so chains stay whole and out-of-scope people are masked later
+        if (personIds && personFilter) {
           // include a relation if AT LEAST ONE of its people matches the filter passed,
           // so the matched people are shown together with their directly related people
           // (e.g. filtering a case by name also brings its related contacts)

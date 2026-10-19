@@ -25,6 +25,7 @@ function run(callback) {
   const tokens = Object.keys(translations);
 
   const foundTokens = new Set();
+  const userEditedTokens = [];
   let languageToken, updated = 0;
   MongoDBHelper
     .getMongoDBConnection()
@@ -43,7 +44,8 @@ function run(callback) {
           projection: {
             _id: 1,
             token: 1,
-            translation: 1
+            translation: 1,
+            updatedBy: 1
           }
         })
         .toArray();
@@ -56,6 +58,11 @@ function run(callback) {
         foundTokens.add(record.token);
         if (record.translation === translations[record.token]) {
           return;
+        }
+
+        // keep track of the texts a user changed, since they are about to be replaced
+        if (record.updatedBy !== 'system') {
+          userEditedTokens.push(record.token);
         }
 
         operations.push({
@@ -82,6 +89,9 @@ function run(callback) {
     })
     .then(() => {
       console.info(`Portuguese translations: ${tokens.length} checked, ${updated} updated, ${tokens.length - foundTokens.size} absent or deleted`);
+      if (userEditedTokens.length) {
+        console.info(`Portuguese translations: ${userEditedTokens.length} of the updated texts had been edited by a user: ${userEditedTokens.sort().join(', ')}`);
+      }
       callback();
     })
     .catch(callback);

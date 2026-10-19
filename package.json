@@ -12,6 +12,7 @@
     "posttest": "npm run lint && nsp check",
     "init-database": "node ./server/install/install.js init-database",
     "migrate-database": "node ./server/install/install.js migrate-database",
+    "setup-hooks": "bash ./ops/guard-instance-config.sh",
     "reset-admin-password": "node ./server/install/install.js reset-admin-password",
     "restore-backup": "node ./server/scripts/restoreBackup.js",
     "dump-help-data": "node ./server/install/install.js dump-help-data",

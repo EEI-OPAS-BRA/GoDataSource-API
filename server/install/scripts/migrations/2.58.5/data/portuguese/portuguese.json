@@ -1,0 +1,32 @@
+{
+  "id": "portuguese_pt",
+  "tokens": {
+    "LNG_COMMON_BUTTON_REMOVE_NOTIFICATION": {
+      "translation": "Remover notificação"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_OUTBREAK": {
+      "translation": "Surto"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_TARGET_TYPE": {
+      "translation": "Enviar para"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_TEAMS": {
+      "translation": "Equipes"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_LOCATIONS": {
+      "translation": "Localizações"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_LOCATIONS_DESCRIPTION": {
+      "translation": "Todas as equipes que atuam nas localizações selecionadas ou em qualquer sub-localização delas recebem a notificação"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_RECIPIENTS": {
+      "translation": "Destinatários"
+    },
+    "LNG_TEAM_NOTIFICATION_TARGET_TYPE_TEAM": {
+      "translation": "Equipes"
+    },
+    "LNG_TEAM_NOTIFICATION_TARGET_TYPE_LOCATION": {
+      "translation": "Localizações"
+    }
+  }
+}

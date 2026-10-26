@@ -734,6 +734,24 @@ const migrationVersions = [{
       buildNo: 2
     }]
   }]
+}, {
+  version: '2.58.5',
+  scripts: [{
+    fileName: 'languageToken.js',
+    actions: [{
+      name: 'createUpdateLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 1
+    }]
+  }, {
+    fileName: 'teamNotification.js',
+    actions: [{
+      name: 'migrateTeamIdToTeamIds',
+      buildNo: 1
+    }]
+  }]
 }];
 
 /**

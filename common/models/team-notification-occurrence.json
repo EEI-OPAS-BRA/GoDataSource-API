@@ -10,9 +10,18 @@
       "type": "string",
       "required": true
     },
+    "outbreakId": {
+      "type": "string"
+    },
+    "teamIds": {
+      "type": [
+        "string"
+      ],
+      "description": "Teams that receive this occurrence ( resolved when the occurrence was triggered )"
+    },
     "teamId": {
       "type": "string",
-      "required": true
+      "description": "Deprecated - single team used by legacy occurrences, replaced by teamIds"
     },
     "title": {
       "type": "string",
@@ -35,11 +44,21 @@
         "string"
       ],
       "default": []
+    },
+    "dismissedBy": {
+      "type": [
+        "string"
+      ],
+      "default": [],
+      "description": "Users that removed this occurrence from their notifications"
     }
   },
   "indexes": {
     "teamId_index": {
       "teamId": 1
+    },
+    "teamIds_index": {
+      "teamIds": 1
     },
     "triggeredAt_index": {
       "triggeredAt": 1
@@ -47,11 +66,6 @@
   },
   "validations": [],
   "relations": {
-    "team": {
-      "type": "belongsTo",
-      "model": "team",
-      "foreignKey": "teamId"
-    },
     "teamNotification": {
       "type": "belongsTo",
       "model": "teamNotification",

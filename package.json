@@ -97,6 +97,7 @@
   "license": "UNLICENSED",
   "description": "WHO's Go.Data API",
   "build": {
-    "platform": "-"
+    "platform": "-",
+    "build": "2026.10.0"
   }
 }

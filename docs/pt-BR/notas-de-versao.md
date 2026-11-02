@@ -67,14 +67,6 @@ completa para o português.
   por importação de planilha nesses termos são substituídas.
 - A tela de login e o menu lateral passam a exibir "build 2026.10.0" ao lado da versão.
 
-### Problemas conhecidos
-
-- Com a opção "Expandido por padrão" ligada em Documentos, editar um registro antigo que não tem documento cria um
-  bloco vazio. Para salvar, é preciso remover esse bloco.
-- Logradouro, Número, Complemento e Bairro ainda não aparecem como colunas nas listas nem na exportação.
-- Em surtos sem máscara de ID visual, a pessoa de fora do território do usuário aparece sem rótulo na cadeia de
-  transmissão.
-
 ### Instalação e compatibilidade
 
 - Base: Go.Data 2.51.0 da OMS.
@@ -82,12 +74,3 @@ completa para o português.
   executadas na atualização e não têm desfazer automático, por isso o backup é obrigatório.
 - Requisitos: Node.js 22 LTS e o MongoDB já utilizado pela instalação.
 - O passo a passo, com backup e retorno à versão anterior, está no [Guia de atualização](atualizacao.md).
-
-### Não incluído nesta versão
-
-Previstos para versões futuras:
-
-- Sincronização com o servidor nacional.
-- Notificações por equipe.
-- Subperguntas condicionais em questionários.
-- Colunas e exportação dos campos Logradouro, Número, Complemento e Bairro.

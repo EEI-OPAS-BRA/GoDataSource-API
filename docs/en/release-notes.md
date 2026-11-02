@@ -67,14 +67,6 @@ translation.
   customized through spreadsheet import are replaced.
 - The login page and the side menu show "build 2026.10.0" next to the version.
 
-### Known issues
-
-- With "Expanded by default" enabled for Documents, editing an older record that has no document adds an empty
-  block. The block must be removed before saving.
-- Street, Number, Complement and Neighborhood are not yet available as list columns or in exports.
-- In outbreaks without a visual ID mask, a person outside the user's area appears without a label in the
-  transmission chain.
-
 ### Installation and compatibility
 
 - Base: WHO Go.Data 2.51.0.
@@ -82,12 +74,3 @@ translation.
   undone automatically, so a backup is mandatory.
 - Requirements: Node.js 22 LTS and the MongoDB the installation already uses.
 - The step by step procedure, with backup and rollback, is in the [Upgrade guide](upgrade.md).
-
-### Not included in this release
-
-Planned for future releases:
-
-- Synchronization with the national server.
-- Team notifications.
-- Conditional sub-questions in questionnaires.
-- List columns and exports for Street, Number, Complement and Neighborhood.

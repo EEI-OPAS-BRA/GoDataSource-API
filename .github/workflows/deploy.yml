@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Target instance'
+        description: 'Target instance (prod is deployed from godata-ops with a version tag)'
         type: choice
-        options: [teste, opas]
+        options: [teste, homologacao]
         default: teste
 
 permissions:

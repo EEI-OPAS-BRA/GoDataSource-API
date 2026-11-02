@@ -3,7 +3,7 @@
 ```
 local/
 ├── docker-compose.yaml       # serviço "mongo"
-├── godatabckp/go-data/       # dump a ser restaurado
+├── godatabckp/go-data/       # dump a ser restaurado (local, fora do git)
 └── init/restore-dump.sh      # restore automático (docker-entrypoint-initdb.d)
 ```
 

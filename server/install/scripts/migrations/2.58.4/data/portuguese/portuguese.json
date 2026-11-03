@@ -1,0 +1,11 @@
+{
+  "id": "portuguese_pt",
+  "tokens": {
+    "LNG_API_ERROR_CODE_ACCESS_DENIED": {
+      "translation": "Você não tem permissão para acessar este registro ou realizar esta ação.",
+      "modules": [
+        "unauthenticated"
+      ]
+    }
+  }
+}

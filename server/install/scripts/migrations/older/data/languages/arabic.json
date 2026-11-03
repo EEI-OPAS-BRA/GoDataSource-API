@@ -6224,6 +6224,9 @@
       "LNG_PAGE_CREATE_CASE_ACTION_CREATE_CASE_SUCCESS_MESSAGE": {
         "translation": "حالة مخلوقة"
       },
+      "LNG_PAGE_CREATE_CASE_ACTION_CREATE_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "تم تسجيل الحالة بنجاح، لكن عنوانها يقع خارج منطقة فريقك."
+      },
       "LNG_PAGE_CREATE_CASE_DUPLICATES_DIALOG_CONFIRM_MSG": {
         "translation": "قد تكون هذه الحالة موجودة بالفعل في النظام (انظر التطابقات المحتملة أدناه). هل ما تزال تريد إنشاء حالة جديدة؟"
       },
@@ -6252,6 +6255,9 @@
     "uiModifyCasePage": {
       "LNG_PAGE_MODIFY_CASE_ACTION_MODIFY_CASE_SUCCESS_MESSAGE": {
         "translation": "حفظ الحالة"
+      },
+      "LNG_PAGE_MODIFY_CASE_ACTION_MODIFY_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "تم تحديث الحالة بنجاح، لكن عنوانها يقع خارج منطقة فريقك."
       },
       "LNG_PAGE_MODIFY_CASE_ACTION_SEE_LAB_RESULTS": {
         "translation": "النتائج المختبرية"
@@ -6843,6 +6849,9 @@
       "LNG_PAGE_CREATE_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_MESSAGE": {
         "translation": "إنشاء جهة اتصال"
       },
+      "LNG_PAGE_CREATE_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "تم تسجيل جهة الاتصال بنجاح، لكن عنوانها يقع خارج منطقة فريقك."
+      },
       "LNG_PAGE_CREATE_CONTACT_DUPLICATES_DIALOG_CONFIRM_MSG": {
         "translation": "قد تكون جهة الاتصال هذه موجودة بالفعل في النظام (انظر التطابقات المحتملة أدناه). هل ما تزال تريد إنشاء جهة اتصال جديدة؟"
       },
@@ -6886,6 +6895,9 @@
     "uiModifyContactPage": {
       "LNG_PAGE_MODIFY_CONTACT_ACTION_MODIFY_CONTACT_SUCCESS_MESSAGE": {
         "translation": "جهة الاتصال محفوظة"
+      },
+      "LNG_PAGE_MODIFY_CONTACT_ACTION_MODIFY_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "تم تحديث جهة الاتصال بنجاح، لكن عنوانها يقع خارج منطقة فريقك."
       },
       "LNG_PAGE_MODIFY_CONTACT_ACTION_VIEW_CHRONOLOGY": {
         "translation": "عرض التسلسل الزمني"
@@ -7553,6 +7565,9 @@
       },
       "LNG_PAGE_CREATE_EVENT_ACTION_CREATE_EVENT_SUCCESS_MESSAGE": {
         "translation": "خلق حدث"
+      },
+      "LNG_PAGE_CREATE_EVENT_ACTION_CREATE_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "تم تسجيل الحدث بنجاح، لكن عنوانه يقع خارج منطقة فريقك."
       },
       "LNG_PAGE_CREATE_EVENT_TAB_ADDRESS_TITLE": {
         "translation": "العنوان"
@@ -11735,6 +11750,9 @@
     "uiModifyEventPage": {
       "LNG_PAGE_MODIFY_EVENT_ACTION_MODIFY_EVENT_SUCCESS_MESSAGE": {
         "translation": "تم حفظ الحدث"
+      },
+      "LNG_PAGE_MODIFY_EVENT_ACTION_MODIFY_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "تم تحديث الحدث بنجاح، لكن عنوانه يقع خارج منطقة فريقك."
       },
       "LNG_PAGE_MODIFY_EVENT_TAB_ADDRESS_TITLE": {
         "translation": "العنوان"
@@ -17466,6 +17484,9 @@
       "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_BUTTON": {
         "translation": "Create contact of contact"
       },
+      "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "تم تسجيل جهة اتصال جهة الاتصال بنجاح، لكن عنوانها يقع خارج منطقة فريقك."
+      },
       "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Contact of contact created"
       },
@@ -17503,6 +17524,9 @@
     "uiModifyContactOfContactPage": {
       "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_MODIFY_CONTACT_OF_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Contact of contact saved"
+      },
+      "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_MODIFY_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "تم تحديث جهة اتصال جهة الاتصال بنجاح، لكن عنوانها يقع خارج منطقة فريقك."
       },
       "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_VIEW_CHRONOLOGY": {
         "translation": "View chronology"

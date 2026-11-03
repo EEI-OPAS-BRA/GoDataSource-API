@@ -291,6 +291,16 @@ module.exports = function (Sync) {
                               return doneRecord();
                             }
 
+                            // another Go.Data instance can't change the translations of the application, only the texts of its data (e.g. questionnaires)
+                            if (
+                              reqOptions.snapshotFromClient &&
+                              collectionName === 'languageToken' &&
+                              !dbSync.isDataLanguageToken(collectionRecord.token)
+                            ) {
+                              app.logger.debug(`Sync ${syncLogEntry.id}: Skipped syncing language token '${collectionRecord.token}' as it isn't the text of a questionnaire or reference data`);
+                              return doneRecord();
+                            }
+
                             // differentiate between different types of person
                             let syncModel = model;
                             if (model.modelName === app.models.person.modelName) {

@@ -1,0 +1,20 @@
+{
+  "id": "portuguese_pt",
+  "tokens": {
+    "LNG_FORM_VALIDATION_ERROR_AT_LEAST_ONE_ITEM_REQUIRED": {
+      "translation": "É necessário adicionar pelo menos um item"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_PREVENT_ADDRESS_DELETION": {
+      "translation": "Impedir a exclusão de endereços"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_PREVENT_ADDRESS_DELETION_DESCRIPTION": {
+      "translation": "Quando ativado, o botão de excluir fica indisponível nos blocos de endereço de casos, contatos e contatos de contatos"
+    },
+    "LNG_API_ERROR_CODE_ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE": {
+      "translation": "É obrigatório informar um Endereço Atual"
+    },
+    "LNG_PAGE_IMPORT_DATA_ERROR_RECORD_ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE": {
+      "translation": "Falha ao importar o registro {{recordNo}} porque é obrigatório informar um Endereço Atual"
+    }
+  }
+}

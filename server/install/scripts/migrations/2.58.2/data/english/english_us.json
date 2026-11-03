@@ -654,6 +654,300 @@
     },
     "LNG_PAGE_DASHBOARD_OVERVIEW_ALL_YEARS_LABEL": {
       "translation": "All years"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_TITLE": {
+      "translation": "Case evolution over time"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_TITLE_DESCRIPTION": {
+      "translation": "Evolution of the number of cases over time, by classification, by outcome and by reporting period. Each tab can be grouped by day, epidemiological week or month."
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_CLASSIFICATION_TAB": {
+      "translation": "By classification"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_OUTCOME_TAB": {
+      "translation": "By outcome"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_REPORTING_TAB": {
+      "translation": "By reporting period"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_YEAR_LABEL": {
+      "translation": "Year"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_WEEK_SHORT_LABEL": {
+      "translation": "EW"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_AXIS_WEEK": {
+      "translation": "Epidemiological week"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_AXIS_MONTH": {
+      "translation": "Month"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_AXIS_DAY": {
+      "translation": "Date"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_AXIS_BASE_ONSET": {
+      "translation": "of symptom onset"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_AXIS_BASE_OUTCOME": {
+      "translation": "of outcome"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_AXIS_BASE_REPORTING": {
+      "translation": "of reporting"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_CUMULATIVE_TAB": {
+      "translation": "Cumulative cases"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_CUMULATIVE_GROUP_BY_LABEL": {
+      "translation": "Group by"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_CUMULATIVE_DATE_BASE_LABEL": {
+      "translation": "Time base"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_CUMULATIVE_DATE_BASE_ONSET": {
+      "translation": "Date of symptom onset"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_CUMULATIVE_DATE_BASE_REPORTING": {
+      "translation": "Date of reporting"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_CUMULATIVE_Y_LABEL": {
+      "translation": "Cumulative number of cases"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_CUMULATIVE_TOTAL_LABEL": {
+      "translation": "Cumulative total"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_CUMULATIVE_TOTAL_DESCRIPTION": {
+      "translation": "Number of cases (discarded cases excluded) whose selected date falls in the selected year, up to the reference date of the dashboard."
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_CUMULATIVE_LAST_PERIOD_LABEL": {
+      "translation": "New cases in the last period"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_CUMULATIVE_LAST_PERIOD_DESCRIPTION": {
+      "translation": "Cases added to the curve in the most recent week, month or day displayed. The current period may still be incomplete."
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_CUMULATIVE_GROWTH_LABEL": {
+      "translation": "Growth rate (last period)"
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_CUMULATIVE_GROWTH_DESCRIPTION": {
+      "translation": "New cases in the last period divided by the cumulative total before it, multiplied by 100. Shows how much the curve grew in the most recent period."
+    },
+    "LNG_PAGE_DASHBOARD_EPI_CURVE_TABS_CUMULATIVE_NOTE": {
+      "translation": "* Cumulative curve based on the selected time base. Discarded cases are not included. Values may change as records are updated."
+    },
+    "LNG_PAGE_DASHBOARD_CASE_BY_GEOGRAPHIC_LOCATION_BAR_DESCRIPTION": {
+      "translation": "Top 10 locations (at the outbreak's reporting geographical level) ranked by number of cases. The percentage is each location's share of the total cases with a known location; it is not an incidence rate."
+    },
+    "LNG_PAGE_DASHBOARD_CASE_BY_GEOGRAPHIC_LOCATION_BAR_LOCATION_HEADER": {
+      "translation": "Location"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_BY_GEOGRAPHIC_LOCATION_BAR_CASES_HEADER": {
+      "translation": "Cases"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_BY_GEOGRAPHIC_LOCATION_BAR_PERCENT_HEADER": {
+      "translation": "% of total"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_BY_GEOGRAPHIC_LOCATION_BAR_OTHERS_LABEL": {
+      "translation": "Others ({{count}} locations)"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_BY_GEOGRAPHIC_LOCATION_BAR_SHOW_ALL_BUTTON": {
+      "translation": "View all ({{count}})"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_BY_GEOGRAPHIC_LOCATION_BAR_SHOW_TOP_BUTTON": {
+      "translation": "Show top 10"
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_TITLE": {
+      "translation": "Data quality and timeliness"
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_TITLE_DESCRIPTION": {
+      "translation": "Assesses the completeness of the main information and the timeliness between investigation and follow-up steps."
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_YEAR_LABEL": {
+      "translation": "Year (date of reporting)"
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_TAB": {
+      "translation": "Completeness"
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_INFO": {
+      "translation": "Proportion of records with the information filled in. The denominator only considers the records for which the information applies (discarded cases are not included)."
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_VARIABLE": {
+      "translation": "Variable"
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_FILLED_APPLICABLE": {
+      "translation": "Filled / Applicable"
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_PERCENTAGE": {
+      "translation": "Completeness"
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_ONSET": {
+      "translation": "Date of symptom onset"
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_ONSET_DESCRIPTION": {
+      "translation": "Cases with the date of symptom onset filled in / total cases."
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_CLASSIFICATION": {
+      "translation": "Classification"
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_CLASSIFICATION_DESCRIPTION": {
+      "translation": "Cases with the classification filled in / total cases."
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_GENDER": {
+      "translation": "Sex"
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_GENDER_DESCRIPTION": {
+      "translation": "Cases with sex filled in / total cases."
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_AGE": {
+      "translation": "Age"
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_AGE_DESCRIPTION": {
+      "translation": "Cases with age (years or months) or date of birth filled in / total cases."
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_LOCATION": {
+      "translation": "Location"
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_LOCATION_DESCRIPTION": {
+      "translation": "Cases with a usual place of residence address with location filled in / total cases."
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_OUTCOME": {
+      "translation": "Outcome"
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_OUTCOME_DESCRIPTION": {
+      "translation": "Cases with the outcome filled in / total cases."
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_LAB": {
+      "translation": "Laboratory information*"
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_LAB_DESCRIPTION": {
+      "translation": "Lab results of cases with the result filled in / lab results registered for cases. Each test counts once."
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_LINK": {
+      "translation": "Case–contact link**"
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_LINK_DESCRIPTION": {
+      "translation": "Contacts with at least one relationship registered with a case / total contacts."
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_LEGEND": {
+      "translation": "Bars: green ≥ 80% · yellow 50–79% · red < 50%"
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_NOTE_LAB": {
+      "translation": "* Applies only to lab results registered for cases (sample collected or test performed)."
+    },
+    "LNG_PAGE_DASHBOARD_DATA_QUALITY_COMPLETENESS_NOTE_LINK": {
+      "translation": "** Contacts with at least one relationship registered with a case / total contacts."
+    },    
+    "LNG_PAGE_DASHBOARD_CASES_KPI_TITLE": {
+      "translation": "Case and detection indicators"
+    },
+    "LNG_PAGE_DASHBOARD_CONTACTS_KPI_TITLE": {
+      "translation": "Contact and follow-up indicators"
+    },
+    "LNG_PAGE_DASHBOARD_CHAINS_OF_TRANSMISSION_KPI_TITLE": {
+      "translation": "Transmission indicators"
+    },
+    "LNG_PAGE_DASHBOARD_KPI_CASES_DECEASED_TITLE": {
+      "translation": "Deaths among cases"
+    },
+    "LNG_PAGE_DASHBOARD_KPI_CASES_LESS_CONTACTS_TITLE_AFTER_VALUE": {
+      "translation": "identified contacts"
+    },
+    "LNG_PAGE_DASHBOARD_KPI_CASES_NEW_PREVIOUS_DAYS_CONTACTS_BEFORE_VALUE": {
+      "translation": "Cases detected among known contacts in the last"
+    },
+    "LNG_PAGE_DASHBOARD_KPI_CASES_NEW_PREVIOUS_DAYS_CONTACTS_AFTER_VALUE": {
+      "translation": "days"
+    },
+    "LNG_PAGE_DASHBOARD_KPI_INDEPENDENT_TRANSMISSION_CHAINS": {
+      "translation": "Independent transmission chains"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_HOSPITALIZATION_TOTAL_LABEL": {
+      "translation": "Total cases: {{total}}"
+    },
+    "LNG_PAGE_DASHBOARD_CASE_HOSPITALIZATION_NOTE": {
+      "translation": "Percentages are calculated over the total number of cases. A case may be counted in more than one category (e.g. hospitalized and isolated)."
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_FOLLOW_UP_TABS_TITLE": {
+      "translation": "Contact follow-up"
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_FOLLOW_UP_TABS_TITLE_DESCRIPTION": {
+      "translation": "Shows the daily follow-up status of contacts and the cases according to their previous contact status."
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_FOLLOW_UP_TABS_FOLLOW_UP_TAB": {
+      "translation": "Daily follow-up of contacts"
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_FOLLOW_UP_TABS_CONTACT_STATUS_TAB": {
+      "translation": "Cases by contact status"
+    },
+        "LNG_PAGE_DASHBOARD_CONTACT_PROFILE_TITLE": {
+      "translation": "Contact profile"
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_PROFILE_TITLE_DESCRIPTION": {
+      "translation": "Demographic profile of contacts (sex and age) according to the dashboard date and location filters. The classification filter does not apply to contacts."
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_PROFILE_CONTACTS_LABEL": {
+      "translation": "contacts"
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_PROFILE_PERCENTAGE_NOTE": {
+      "translation": "Percentages calculated over the total number of contacts matching the dashboard filters."
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_PROFILE_NO_DATA_LABEL": {
+      "translation": "No contacts found for the selected filters"
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_PROFILE_CONTACTS_AXIS_LABEL": {
+      "translation": "Number of contacts"
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_PROFILE_UNKNOWN_AGE_LABEL": {
+      "translation": "Age not informed: {{count}} contacts ({{percentage}}%)"
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_PROFILE_PYRAMID_EXCLUDED_LABEL": {
+      "translation": "Not included in the pyramid: {{count}} contacts ({{percentage}}%) without age, without sex or with another sex category"
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_PROFILE_NO_REPORTING_DATE_LABEL": {
+      "translation": "{{count}} contacts with valid age but without date of reporting are not shown in the boxplot per year"
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_PROFILE_BOXPLOT_NOTE": {
+      "translation": "Boxplot of contacts' age by year of reporting. Outliers follow Tukey's rule (1.5 x IQR). Mean and 95% CI are calculated only for records with valid age."
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_PROFILE_STAT_N_VALID_DESCRIPTION": {
+      "translation": "Number of contacts with valid age (0 to 120 years). The percentage is calculated over the total number of contacts matching the dashboard filters."
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_PROFILE_STAT_MEAN_DESCRIPTION": {
+      "translation": "Mean age of contacts with valid age."
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_PROFILE_STAT_MEDIAN_DESCRIPTION": {
+      "translation": "Age that splits the contacts in half: 50% of contacts are younger and 50% are older."
+    },
+    "LNG_PAGE_DASHBOARD_CONTACT_PROFILE_STAT_IQR_DESCRIPTION": {
+      "translation": "Interquartile range: the middle 50% of contacts have an age between these two values (first quartile Q1 and third quartile Q3)."
+    }, 
+    "LNG_PAGE_DASHBOARD_TRANSMISSION_CHAINS_TITLE": {
+      "translation": "Chains of transmission"
+    },
+    "LNG_PAGE_DASHBOARD_TRANSMISSION_CHAINS_TITLE_DESCRIPTION": {
+      "translation": "Number and size of independent chains of transmission according to the dashboard filters. Click a bar to see the chains of that size."
+    },
+    "LNG_PAGE_DASHBOARD_TRANSMISSION_CHAINS_COUNT_LABEL": {
+      "translation": "Identified chains"
+    },
+    "LNG_PAGE_DASHBOARD_TRANSMISSION_CHAINS_ACTIVE_LABEL": {
+      "translation": "Active chains"
+    },
+    "LNG_PAGE_DASHBOARD_TRANSMISSION_CHAINS_ACTIVE_PERCENT_LABEL": {
+      "translation": "{{percentage}}% of total"
+    },
+    "LNG_PAGE_DASHBOARD_TRANSMISSION_CHAINS_LARGEST_LABEL": {
+      "translation": "Largest chain"
+    },
+    "LNG_PAGE_DASHBOARD_TRANSMISSION_CHAINS_MEAN_LABEL": {
+      "translation": "Mean size"
+    },
+    "LNG_PAGE_DASHBOARD_TRANSMISSION_CHAINS_MEDIAN_LABEL": {
+      "translation": "Median size"
+    },
+    "LNG_PAGE_DASHBOARD_TRANSMISSION_CHAINS_RECORDS_UNIT_LABEL": {
+      "translation": "records"
+    },
+    "LNG_PAGE_DASHBOARD_TRANSMISSION_CHAINS_NOTE": {
+      "translation": "The size of a chain is the number of records it contains. Click a bar to see the corresponding chains."
     }
   }
 }

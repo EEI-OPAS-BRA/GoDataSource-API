@@ -1,0 +1,30 @@
+{
+  "name": "paginationMeta",
+  "base": "Model",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "total": {
+      "type": "number",
+      "description": "Total number of records that match the filter, ignoring skip/limit"
+    },
+    "skip": {
+      "type": "number",
+      "description": "The 'skip' value that was applied (0 if none was sent)"
+    },
+    "limit": {
+      "type": "number",
+      "description": "The 'limit' value that was actually applied (may be lower than requested, if it exceeded the max allowed)"
+    },
+    "count": {
+      "type": "number",
+      "description": "Number of records included in this response (contacts.length)"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

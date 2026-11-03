@@ -2477,6 +2477,9 @@ function exportFilteredModelsList(
         useDbColumns: !!options.useDbColumns,
         dontTranslateValues: !!options.dontTranslateValues,
 
+        // include time along with the exported dates ?
+        includeTimestamp: !options.dontIncludeTimestamp,
+
         // dictionary
         dictionaryMap: {},
 
@@ -4576,7 +4579,10 @@ function exportFilteredModelsList(
                                       answer.value &&
                                       !sheetHandler.dontTranslateValues
                                     ) {
-                                      answer.value = localizationHelper.toMoment(answer.value).format();
+                                      answer.value = localizationHelper.formatDisplayDate(
+                                        answer.value,
+                                        sheetHandler.includeTimestamp
+                                      );
                                     }
                                   }
 
@@ -4599,7 +4605,10 @@ function exportFilteredModelsList(
                                       answer.date &&
                                       !sheetHandler.dontTranslateValues
                                     ) {
-                                      answer.date = localizationHelper.toMoment(answer.date).format();
+                                      answer.date = localizationHelper.formatDisplayDate(
+                                        answer.date,
+                                        sheetHandler.includeTimestamp
+                                      );
                                     }
 
                                     // replace property with translation !?
@@ -4968,7 +4977,10 @@ function exportFilteredModelsList(
                                         (
                                           sheetHandler.dontTranslateValues ?
                                             localizationHelper.toMoment(childValue).toISOString() :
-                                            localizationHelper.toMoment(childValue).format()
+                                            localizationHelper.formatDisplayDate(
+                                              childValue,
+                                              sheetHandler.includeTimestamp
+                                            )
                                         ) :
                                         childValue;
 
@@ -6047,7 +6059,10 @@ function exportFilteredModelsList(
                     // format date as string
                     cellValue = sheetHandler.dontTranslateValues ?
                       localizationHelper.toMoment(cellValue).toISOString() :
-                      localizationHelper.toMoment(cellValue).format();
+                      localizationHelper.formatDisplayDate(
+                        cellValue,
+                        sheetHandler.includeTimestamp
+                      );
 
                     // remove new lines since these might break files like csv and others
                   } else if (

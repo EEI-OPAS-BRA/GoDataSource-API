@@ -1,0 +1,11 @@
+{
+  "id": "portuguese_pt",
+  "tokens": {
+    "LNG_COMMON_LABEL_EXPORT_DONT_INCLUDE_TIMESTAMP": {
+      "translation": "Não incluir hora nos campos de data"
+    },
+    "LNG_COMMON_LABEL_EXPORT_DONT_INCLUDE_TIMESTAMP_DESCRIPTION": {
+      "translation": "Exporta apenas a data. Sem marcar, as datas são exportadas com hora"
+    }
+  }
+}

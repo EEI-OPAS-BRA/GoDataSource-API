@@ -1,4 +1,8 @@
 {
+  "ROLE_PRIVILEGE_ESCALATION": {
+    "defaultStatusCode": 403,
+    "messagePattern": "Cannot assign role(s) with permissions that exceed your own: <%= roleIds %>"
+  },
   "MODEL_IN_USE": {
     "defaultStatusCode": 422,
     "messagePattern": "Model `<%= model %>` id `<%= id %>` is in use."
@@ -290,6 +294,10 @@
   "ADDRESS_PREVIOUS_PLACE_OF_RESIDENCE_MUST_HAVE_DATE": {
     "defaultStatusCode": 422,
     "messagePattern": "Addresses set as Previous Current address must have a date set"
+  },
+  "ADDRESS_MULTIPLE_NOTIFICATION": {
+    "defaultStatusCode": 422,
+    "messagePattern": "Multiple addresses set as Notification address. Only one address should be set as Notification address"
   },
   "READ_DEVICE_INFORMATION_FAILURE": {
     "defaultStatusCode": 422,

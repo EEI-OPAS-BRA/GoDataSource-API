@@ -2892,6 +2892,12 @@
       "LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_DESCRIPTION": {
         "translation": "Especifique a natureza deste endereço, local de residência, local de trabalho etc."
       },
+      "LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_NOTIFICATION": {
+        "translation": "Notificação",
+        "modules": [
+          "referenceData"
+        ]
+      },
       "LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_OTHER": {
         "translation": "Outros",
         "modules": [
@@ -4533,6 +4539,12 @@
       },
       "LNG_COMMON_LABEL_EXPORT_USE_DB_COLUMNS_NO_TRANSLATED_VALUES_DESCRIPTION": {
         "translation": "Receive values the same way they are in database (useful for scripts)"
+      },
+      "LNG_COMMON_LABEL_EXPORT_DONT_INCLUDE_TIMESTAMP": {
+        "translation": "Não incluir hora nos campos de data"
+      },
+      "LNG_COMMON_LABEL_EXPORT_DONT_INCLUDE_TIMESTAMP_DESCRIPTION": {
+        "translation": "Exporta apenas a data. Sem marcar, as datas são exportadas com hora"
       }
     },
     "uiGeneralActions": {
@@ -5022,6 +5034,12 @@
           "unauthenticated"
         ]
       },
+      "LNG_API_ERROR_CODE_ACCESS_DENIED": {
+        "translation": "Você não tem permissão para acessar este registro ou realizar esta ação.",
+        "modules": [
+          "unauthenticated"
+        ]
+      },
       "LNG_API_ERROR_CODE_ADDRESS_MULTIPLE_USUAL_PLACE_OF_RESIDENCE": {
         "translation": "Múltiplos endereços definidos como Lugar Habitual de Residência. Apenas um endereço deve ser definido como Endereço Atual.",
         "modules": [
@@ -5029,7 +5047,7 @@
         ]
       },
       "LNG_API_ERROR_CODE_ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE": {
-        "translation": "Um dos endereços deve ser definido como Endereço Atual",
+        "translation": "É obrigatório informar um Endereço Atual",
         "modules": [
           "unauthenticated"
         ]
@@ -5589,6 +5607,30 @@
       },
       "LNG_OUTBREAK_FIELD_LABEL_APPLY_GEOGRAPHIC_RESTRICTIONS_DESCRIPTION": {
         "translation": ""
+      },
+      "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CROSS_LOCATION_CREATION": {
+        "translation": "Permitir criação de contatos em outras localidades"
+      },
+      "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CROSS_LOCATION_CREATION_DESCRIPTION": {
+        "translation": "Permite criar contatos em localidades fora da área de responsabilidade da equipe do usuário, tanto na criação única quanto na criação em massa; o campo Localização do endereço do contato passa a listar todas as localidades"
+      },
+      "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_CROSS_LOCATION_CREATION": {
+        "translation": "Permitir criação de casos em outras localidades"
+      },
+      "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_CROSS_LOCATION_CREATION_DESCRIPTION": {
+        "translation": "Permite criar casos em localidades fora da área de responsabilidade da equipe do usuário; o campo Localização do endereço do caso passa a listar todas as localidades"
+      },
+      "LNG_OUTBREAK_FIELD_LABEL_PREVENT_ADDRESS_DELETION": {
+        "translation": "Impedir a exclusão de endereços"
+      },
+      "LNG_OUTBREAK_FIELD_LABEL_PREVENT_ADDRESS_DELETION_DESCRIPTION": {
+        "translation": "Quando ativado, o botão de excluir fica indisponível nos blocos de endereço de casos, contatos e contatos de contatos"
+      },
+      "LNG_OUTBREAK_FIELD_LABEL_ALLOW_RESIDENCE_CHAIN_ACCESS": {
+        "translation": "Permitir que a equipe veja toda a cadeia de contatos de um caso residente"
+      },
+      "LNG_OUTBREAK_FIELD_LABEL_ALLOW_RESIDENCE_CHAIN_ACCESS_DESCRIPTION": {
+        "translation": "Quando ativado, a equipe responsável pela localização de residência de um caso pode ver todos os contatos diretos desse caso em qualquer localização (não apenas os do seu território). Só tem efeito quando as restrições geográficas se aplicam. Não afeta as equipes da localização de notificação."
       },
       "LNG_OUTBREAK_FIELD_LABEL_IS_CONTACT_OF_CONTACT_ACTIVE": {
         "translation": "Allow registration of contacts of contacts?"
@@ -10902,6 +10944,9 @@
           "unauthenticated"
         ]
       },
+      "LNG_FORM_VALIDATION_ERROR_AT_LEAST_ONE_ITEM_REQUIRED": {
+        "translation": "É necessário adicionar pelo menos um item"
+      },
       "LNG_FORM_VALIDATION_ERROR_GENERAL_ASYNC": {
         "translation": "Data inválida",
         "modules": [
@@ -11395,6 +11440,24 @@
       "LNG_USER_FIELD_LABEL_AVAILABLE_OUTBREAKS": {
         "translation": "Surtos disponíveis "
       },
+      "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM_TITLE": {
+        "translation": "Remover acesso ao surto"
+      },
+      "LNG_USER_FIELD_LABEL_REMOVE_OUTBREAK_CONFIRM": {
+        "translation": "Você está prestes a remover o acesso a um ou mais surtos. Esta ação revogará a permissão do utilizador para os surtos desmarcados. Tem a certeza de que deseja continuar?"
+      },
+      "LNG_COMMON_LABEL_EXPANDED_BY_DEFAULT": {
+        "translation": "Expandido por padrão"
+      },
+      "LNG_ADDRESS_FIELD_LABEL_LOGRADOURO": {
+        "translation": "Logradouro"
+      },
+      "LNG_ADDRESS_FIELD_LABEL_NUMERO": {
+        "translation": "Número"
+      },
+      "LNG_ADDRESS_FIELD_LABEL_COMPLEMENTO": {
+        "translation": "Complemento"
+      },
       "LNG_USER_FIELD_LABEL_AVAILABLE_OUTBREAKS_DESCRIPTION": {
         "translation": ""
       },
@@ -11454,6 +11517,12 @@
       },
       "LNG_USER_FIELD_LABEL_DONT_CACHE_FILTERS_DESCRIPTION": {
         "translation": "When true, the system won't cache filter. So every time you come to a list page it will display the list without the previous filters that were applied last time when you accessed the page"
+      },
+      "LNG_USER_FIELD_LABEL_VIEW_MULTIPLE_LOCATIONS": {
+        "translation": "Visualiza múltiplas localidades"
+      },
+      "LNG_USER_FIELD_LABEL_VIEW_MULTIPLE_LOCATIONS_DESCRIPTION": {
+        "translation": "Permite ao utilizador visualizar múltiplas localidades simultaneamente"
       }
     },
     "uiListUsersPage": {
@@ -13031,7 +13100,7 @@
         "translation": "Falha ao importar o registro {{recordNo}} porque há vários endereços marcados como Endereço Actual"
       },
       "LNG_PAGE_IMPORT_DATA_ERROR_RECORD_ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE": {
-        "translation": "Falha ao importar registro {{recordNo}} porque o endereço deve estar marcado como Endereço Actual"
+        "translation": "Falha ao importar o registro {{recordNo}} porque é obrigatório informar um Endereço Atual"
       },
       "LNG_PAGE_IMPORT_DATA_ERROR_RECORD_ADDRESS_PREVIOUS_PLACE_OF_RESIDENCE_MUST_HAVE_DATE": {
         "translation": "Falha ao importar registro {{recordNo}} porque o endereço anterior deveria ter data"

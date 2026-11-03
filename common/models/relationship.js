@@ -334,12 +334,7 @@ module.exports = function (Relationship) {
               }
             }
           }).where;
-        geographicalRestrictionsQuery && (personQuery = {
-          and: [
-            personQuery,
-            geographicalRestrictionsQuery
-          ]
-        });
+        // people outside the user's geographic scope are fetched too and masked below, so a chain keeps its shape
         // use raw queries for related people
         return app.models.person
           .rawFind(
@@ -354,33 +349,48 @@ module.exports = function (Relationship) {
             people.forEach(function (person) {
               peopleMap[person.id] = person;
             });
-            // add people to relations
-            relationships.forEach(function (relationship) {
-              // add people information to the relationship
-              relationship.people = [];
-              Array.isArray(relationship.persons) && relationship.persons.forEach(function (person) {
-                if (peopleMap[person.id]) {
-                  relationship.people.push(peopleMap[person.id]);
+
+            return app.models.relationship
+              .resolveRestrictedPeopleMap(Object.keys(peopleMap), geographicalRestrictionsQuery)
+              .then(function (restrictedPeopleMap) {
+                Object.keys(restrictedPeopleMap).forEach(function (personId) {
+                  app.models.relationship.maskPersonName(peopleMap[personId]);
+                });
+
+                // add people to relations
+                relationships.forEach(function (relationship) {
+                  // add people information to the relationship
+                  relationship.people = [];
+                  Array.isArray(relationship.persons) && relationship.persons.forEach(function (person) {
+                    if (peopleMap[person.id]) {
+                      relationship.people.push(peopleMap[person.id]);
+                    }
+                  });
+                });
+                // add filterParent support
+                relationships = app.utils.remote.searchByRelationProperty.deepSearchByRelationProperty(relationships, filter);
+
+                // a restricted user only gets the chains that include at least one person they can read
+                if (geographicalRestrictionsQuery) {
+                  relationships = app.models.relationship.filterChainsWithVisiblePeople(relationships, restrictedPeopleMap);
+                }
+
+                if (countOnly) {
+                  // count transmission chain - set activeChainStartDate - used for determining if a chain is active - to be specified endDate (by default today)
+                  transmissionChain.count(relationships, followUpPeriod, {activeChainStartDate: endDate}, callback);
+                } else {
+                  // build transmission chain - set activeChainStartDate - used for determining if a chain is active - to be specified endDate (by default today)
+                  transmissionChain.build(
+                    relationships,
+                    followUpPeriod,
+                    {
+                      activeChainStartDate: endDate,
+                      countContacts: countContacts,
+                      noContactChains: noContactChains
+                    },
+                    callback);
                 }
               });
-            });
-            // add filterParent support
-            relationships = app.utils.remote.searchByRelationProperty.deepSearchByRelationProperty(relationships, filter);
-            if (countOnly) {
-              // count transmission chain - set activeChainStartDate - used for determining if a chain is active - to be specified endDate (by default today)
-              transmissionChain.count(relationships, followUpPeriod, {activeChainStartDate: endDate}, callback);
-            } else {
-              // build transmission chain - set activeChainStartDate - used for determining if a chain is active - to be specified endDate (by default today)
-              transmissionChain.build(
-                relationships,
-                followUpPeriod,
-                {
-                  activeChainStartDate: endDate,
-                  countContacts: countContacts,
-                  noContactChains: noContactChains
-                },
-                callback);
-            }
           });
       })
       .catch(callback);
@@ -1082,8 +1092,9 @@ module.exports = function (Relationship) {
    * @param [filter]
    * @param [findContacts]
    * @param [onlyCount]
+   * @param options
    */
-  Relationship.findOrCountPersonRelationshipExposuresOrContacts = function (outbreakId, personId, filter = {}, findContacts = true, onlyCount = false) {
+  Relationship.findOrCountPersonRelationshipExposuresOrContacts = function (outbreakId, personId, filter = {}, findContacts = true, onlyCount = false, options) {
     // get relationship query
     const _relationshipQuery = _.get(filter, 'where.relationship');
 
@@ -1191,6 +1202,35 @@ module.exports = function (Relationship) {
           return app.models.person
             .find(peopleFilter)
             .then(function (people) {
+              // a person the user is not allowed to read still belongs in the list and in the count, only its
+              // name is withheld, so the visible set is resolved instead of being cut out of the query
+              // Note: the count needs no name, so it does not pay for this query
+              if (onlyCount) {
+                return {
+                  people: people,
+                  restrictedPeopleMap: {}
+                };
+              }
+
+              return app.models.person
+                .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
+                .then((geographicalRestrictionsQuery) => {
+                  return Relationship.resolveRestrictedPeopleMap(
+                    people.map((person) => person.id),
+                    geographicalRestrictionsQuery
+                  );
+                })
+                .then((restrictedPeopleMap) => {
+                  return {
+                    people: people,
+                    restrictedPeopleMap: restrictedPeopleMap
+                  };
+                });
+            })
+            .then(function (peopleAndRestrictions) {
+              const people = peopleAndRestrictions.people;
+              const restrictedPeopleMap = peopleAndRestrictions.restrictedPeopleMap;
+
               // build result
               let result = [];
               // go through all the people
@@ -1200,6 +1240,10 @@ module.exports = function (Relationship) {
                   personRelationshipMap[person.id].forEach(function (relationship) {
                     // clone person record
                     const record = JSON.parse(JSON.stringify(person));
+                    // withhold the name of the people the user is not allowed to read
+                    if (restrictedPeopleMap[person.id]) {
+                      Relationship.maskPersonName(record);
+                    }
                     // attach relationship info
                     record.relationship = relationship;
                     // add record to the result
@@ -1228,14 +1272,140 @@ module.exports = function (Relationship) {
   };
 
   /**
+   * Filter a list of related person IDs down to the ones the logged in user is allowed to read
+   * Note: the restriction query is resolved by the caller and passed in, so a request that reads several
+   * relationship sets resolves it only once
+   * @param personIds
+   * @param geographicalRestrictionsQuery Result of Person.addGeographicalRestrictionsForMixedPersonTypes
+   * @return {Promise<Array>}
+   */
+  Relationship.filterVisibleRelatedPersonIds = function (personIds, geographicalRestrictionsQuery) {
+    // user is not restricted, or there is nothing to filter
+    if (!geographicalRestrictionsQuery || !personIds.length) {
+      return Promise.resolve(personIds);
+    }
+
+    return app.models.person
+      .rawFind({
+        and: [
+          {
+            id: {
+              inq: personIds
+            }
+          },
+          geographicalRestrictionsQuery
+        ]
+      }, {
+        projection: {_id: 1}
+      })
+      .then((people) => people.map((person) => person.id));
+  };
+
+  /**
+   * Resolve which of the given people the logged in user is NOT allowed to read
+   * Note: the restriction query is resolved by the caller and passed in, so a request that reads several
+   * relationship sets resolves it only once
+   * @param personIds
+   * @param geographicalRestrictionsQuery Result of Person.addGeographicalRestrictionsForMixedPersonTypes
+   * @return {Promise<Object>} Map of restricted person ID to true
+   */
+  Relationship.resolveRestrictedPeopleMap = function (personIds, geographicalRestrictionsQuery) {
+    // user is not restricted, or there is nobody to check
+    if (!geographicalRestrictionsQuery || !personIds.length) {
+      return Promise.resolve({});
+    }
+
+    return Relationship
+      .filterVisibleRelatedPersonIds(personIds, geographicalRestrictionsQuery)
+      .then((visiblePersonIds) => {
+        const visiblePeopleMap = {};
+        visiblePersonIds.forEach((visiblePersonId) => {
+          visiblePeopleMap[visiblePersonId] = true;
+        });
+
+        const restrictedPeopleMap = {};
+        personIds.forEach((personId) => {
+          if (!visiblePeopleMap[personId]) {
+            restrictedPeopleMap[personId] = true;
+          }
+        });
+
+        return restrictedPeopleMap;
+      });
+  };
+
+  /**
+   * Keep only the relationships of the chains that include at least one person the logged in user can read
+   * Note: people are grouped the same way the transmission chain worker groups them, by following relationships
+   * @param relationships Relationships with their loaded people
+   * @param restrictedPeopleMap Map of person ID to true for the people the user is not allowed to read
+   * @return {Array}
+   */
+  Relationship.filterChainsWithVisiblePeople = function (relationships, restrictedPeopleMap) {
+    const parentMap = {};
+    const findRoot = (personId) => {
+      while (parentMap[personId] !== personId) {
+        parentMap[personId] = parentMap[parentMap[personId]];
+        personId = parentMap[personId];
+      }
+      return personId;
+    };
+
+    relationships.forEach((relationship) => {
+      const peopleIds = (relationship.people || []).map((person) => person.id);
+      peopleIds.forEach((personId) => {
+        if (parentMap[personId] === undefined) {
+          parentMap[personId] = personId;
+        }
+      });
+
+      // the worker links two people only when both were loaded
+      if (peopleIds.length === 2) {
+        parentMap[findRoot(peopleIds[0])] = findRoot(peopleIds[1]);
+      }
+    });
+
+    const visibleRootsMap = {};
+    Object.keys(parentMap).forEach((personId) => {
+      if (!restrictedPeopleMap[personId]) {
+        visibleRootsMap[findRoot(personId)] = true;
+      }
+    });
+
+    return relationships.filter((relationship) => (relationship.people || [])
+      .some((person) => visibleRootsMap[findRoot(person.id)]));
+  };
+
+  /**
+   * Withhold the name of a person the logged in user is not allowed to read and flag the person as masked
+   * Note: the visual ID, the dates, the classification and the relationship data itself stay, so the record
+   * still shows up and still counts
+   * @param person Person record, either a model instance or a plain object
+   * @return {*} The same person, for chaining
+   */
+  Relationship.maskPersonName = function (person) {
+    // event people carry their name under 'name', the other types under the name parts;
+    // 'duplicateKeys' holds normalized name combinations
+    ['firstName', 'middleName', 'lastName', 'name', 'duplicateKeys'].forEach((property) => {
+      if (person[property] !== undefined) {
+        person[property] = null;
+      }
+    });
+    person.masked = true;
+
+    return person;
+  };
+
+  /**
    * Find relationship exposures for a person
    * @param outbreakId
    * @param personId
    * @param filter
+   * @param options
    * @return {*}
    */
-  Relationship.findPersonRelationshipExposures = function (outbreakId, personId, filter) {
-    return Relationship.findOrCountPersonRelationshipExposuresOrContacts(outbreakId, personId, filter, false);
+  Relationship.findPersonRelationshipExposures = function (outbreakId, personId, filter, options) {
+    return Relationship.findOrCountPersonRelationshipExposuresOrContacts(outbreakId, personId, filter, false, false, options);
   };
 
   /**
@@ -1243,10 +1413,11 @@ module.exports = function (Relationship) {
    * @param outbreakId
    * @param personId
    * @param filter
+   * @param options
    * @return {*}
    */
-  Relationship.countPersonRelationshipExposures = function (outbreakId, personId, filter) {
-    return Relationship.findOrCountPersonRelationshipExposuresOrContacts(outbreakId, personId, filter, false, true);
+  Relationship.countPersonRelationshipExposures = function (outbreakId, personId, filter, options) {
+    return Relationship.findOrCountPersonRelationshipExposuresOrContacts(outbreakId, personId, filter, false, true, options);
   };
 
   /**
@@ -1254,10 +1425,11 @@ module.exports = function (Relationship) {
    * @param outbreakId
    * @param personId
    * @param filter
+   * @param options
    * @return {*}
    */
-  Relationship.findPersonRelationshipContacts = function (outbreakId, personId, filter) {
-    return Relationship.findOrCountPersonRelationshipExposuresOrContacts(outbreakId, personId, filter);
+  Relationship.findPersonRelationshipContacts = function (outbreakId, personId, filter, options) {
+    return Relationship.findOrCountPersonRelationshipExposuresOrContacts(outbreakId, personId, filter, true, false, options);
   };
 
   /**
@@ -1265,10 +1437,11 @@ module.exports = function (Relationship) {
    * @param outbreakId
    * @param personId
    * @param filter
+   * @param options
    * @return {*}
    */
-  Relationship.countPersonRelationshipContacts = function (outbreakId, personId, filter) {
-    return Relationship.findOrCountPersonRelationshipExposuresOrContacts(outbreakId, personId, filter, true, true);
+  Relationship.countPersonRelationshipContacts = function (outbreakId, personId, filter, options) {
+    return Relationship.findOrCountPersonRelationshipExposuresOrContacts(outbreakId, personId, filter, true, true, options);
   };
 
   /**

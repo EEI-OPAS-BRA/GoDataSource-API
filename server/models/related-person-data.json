@@ -1,0 +1,42 @@
+{
+  "name": "relatedPersonData",
+  "base": "Model",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Id of the related person (case/contact/event/contact of contact)"
+    },
+    "type": {
+      "type": "string",
+      "description": "Person type (LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_...)"
+    },
+    "visualId": {
+      "type": "string",
+      "description": "Visual (human readable) id of the related person"
+    },
+    "name": {
+      "type": "string",
+      "description": "Event name (only populated when type is event)"
+    },
+    "firstName": {
+      "type": "string",
+      "description": "First name (only populated when type is case/contact/contact of contact)"
+    },
+    "middleName": {
+      "type": "string",
+      "description": "Middle name (only populated when type is case/contact/contact of contact)"
+    },
+    "lastName": {
+      "type": "string",
+      "description": "Last name (only populated when type is case/contact/contact of contact)"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

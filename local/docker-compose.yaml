@@ -1,0 +1,15 @@
+services:
+
+  mongo:
+    image: mongo:7.0.26
+    container_name: godata-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+      - ./godatabckp:/dump:ro
+      - ./init/restore-dump.sh:/docker-entrypoint-initdb.d/restore-dump.sh:ro
+
+volumes:
+  mongo-data:

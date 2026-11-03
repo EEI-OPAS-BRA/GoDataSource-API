@@ -49,6 +49,15 @@
     },
     "emailAddress": {
       "type": "string"
+    },
+    "logradouro": {
+      "type": "string"
+    },
+    "numero": {
+      "type": "string"
+    },
+    "complemento": {
+      "type": "string"
     }
   },
   "validations": [],

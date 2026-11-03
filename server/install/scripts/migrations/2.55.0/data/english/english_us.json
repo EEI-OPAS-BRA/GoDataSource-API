@@ -1,0 +1,11 @@
+{
+  "id": "english_us",
+  "tokens": {
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_RESIDENCE_CHAIN_ACCESS": {
+      "translation": "Allow team to view the full contact chain of a resident case"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_RESIDENCE_CHAIN_ACCESS_DESCRIPTION": {
+      "translation": "When enabled, a team responsible for a case's residence location can view all direct contacts of that case in any location (not only those within its own territory). Only effective when geographic restrictions apply. Does not affect notification-location teams."
+    }
+  }
+}

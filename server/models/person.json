@@ -213,6 +213,10 @@
       "description": "Location ID for the usual place of residence address.",
       "type": "string"
     },
+    "notificationLocationId": {
+      "description": "Location ID for the Notification address (grants cross-location access when the outbreak allows it).",
+      "type": "string"
+    },
     "duplicateKeys": {
       "type": {
         "name": {
@@ -327,6 +331,12 @@
     },
     "usualPlaceOfResidenceLocationId_index": {
       "usualPlaceOfResidenceLocationId": 1
+    },
+    "outbreak_deleted_type_notificationLocation_index": {
+      "outbreakId": 1,
+      "deleted": 1,
+      "type": 1,
+      "notificationLocationId": 1
     },
     "duplicateKey_name_index": {
       "duplicateKeys.name": 1

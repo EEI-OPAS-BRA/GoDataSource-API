@@ -37,6 +37,8 @@
     "port": 3000
   },
   "timezone": "UTC",
+  "dateDisplayFormat": "YYYY-MM-DD",
+  "dateTimeDisplayFormat": "YYYY-MM-DD HH:mm",
   "passwordReset": {
     "ttl": 900,
     "path": "/auth/reset-password",

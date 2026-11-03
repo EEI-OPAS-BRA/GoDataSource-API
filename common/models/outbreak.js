@@ -132,12 +132,58 @@ module.exports = function (Outbreak) {
   };
 
   /**
+   * Withhold the name of the people the logged in user is not allowed to read
+   * Note: a relationship carries no name of its own, but the caller may ask for the people behind it
+   * (include=people), and the name of a person the user may not read must not come along. The people
+   * themselves stay in the response, so the relationship data around them stays readable and the counters
+   * keep matching the lists
+   * @param relationships One relationship or a list of them
+   * @param options
+   * @return {Promise<*>}
+   */
+  Outbreak.helpers.maskRestrictedRelationshipPeopleNames = function (relationships, options) {
+    // collect the people the caller asked for, across every relationship
+    const people = [];
+    (Array.isArray(relationships) ? relationships : [relationships]).forEach(function (relationship) {
+      Array.isArray(relationship.people) && relationship.people.forEach(function (person) {
+        people.push(person);
+      });
+    });
+
+    // the caller did not ask for the people, so there is no name to withhold
+    if (!people.length) {
+      return Promise.resolve(relationships);
+    }
+
+    return app.models.person
+      .addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
+      .then(function (geographicalRestrictionsQuery) {
+        return app.models.relationship.resolveRestrictedPeopleMap(
+          people.map(function (person) {
+            return person.id;
+          }),
+          geographicalRestrictionsQuery
+        );
+      })
+      .then(function (restrictedPeopleMap) {
+        people.forEach(function (person) {
+          if (restrictedPeopleMap[person.id]) {
+            app.models.relationship.maskPersonName(person);
+          }
+        });
+
+        return relationships;
+      });
+  };
+
+  /**
    * Find relations for a person
    * @param personId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.helpers.findPersonRelationships = function (personId, filter, callback) {
+  Outbreak.helpers.findPersonRelationships = function (personId, filter, options, callback) {
     const _filter = app.utils.remote
       .mergeFilters({
         where: {
@@ -147,6 +193,9 @@ module.exports = function (Outbreak) {
 
     app.models.relationship
       .find(_filter)
+      .then(function (relationships) {
+        return Outbreak.helpers.maskRestrictedRelationshipPeopleNames(relationships, options);
+      })
       .then(function (relationships) {
         callback(null, relationships);
       })
@@ -352,9 +401,10 @@ module.exports = function (Outbreak) {
    * @param relationshipId
    * @param type
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.helpers.getPersonRelationship = function (personId, relationshipId, type, filter, callback) {
+  Outbreak.helpers.getPersonRelationship = function (personId, relationshipId, type, filter, options, callback) {
     const _filter = app.utils.remote
       .mergeFilters({
         where: {
@@ -375,6 +425,9 @@ module.exports = function (Outbreak) {
           });
         }
 
+        return Outbreak.helpers.maskRestrictedRelationshipPeopleNames(relationship, options);
+      })
+      .then(function (relationship) {
         // retrieve person information
         app.models.relationship.retrieveUserSupportedRelations(
           {
@@ -548,9 +601,10 @@ module.exports = function (Outbreak) {
    * Count relations for a person
    * @param personId
    * @param where
+   * @param options
    * @param callback
    */
-  Outbreak.helpers.countPersonRelationships = function (personId, where, callback) {
+  Outbreak.helpers.countPersonRelationships = function (personId, where, options, callback) {
     const _filter = app.utils.remote.mergeFilters(
       {
         where: {
@@ -571,9 +625,10 @@ module.exports = function (Outbreak) {
    * Count filtered relations for a person
    * @param personId
    * @param filter
+   * @param options
    * @param callback
    */
-  Outbreak.helpers.filteredCountPersonRelationships = function (personId, filter, callback) {
+  Outbreak.helpers.filteredCountPersonRelationships = function (personId, filter, options, callback) {
     const _filter = app.utils.remote.mergeFilters(
       {
         where: {
@@ -1163,12 +1218,15 @@ module.exports = function (Outbreak) {
       };
     }
 
-    // start geographical restriction promise
-    let geographicalRestrictionsQueryCache;
-    app.models.person
-      .addGeographicalRestrictions(options.remotingContext)
-      .then(geographicalRestrictionsQuery => {
-        geographicalRestrictionsQueryCache = geographicalRestrictionsQuery;
+    // the people of the chains are masked by the same rule the transmission chain endpoints use
+    let chainRestrictionsQuery;
+    Promise
+      .all([
+        app.models.person.addGeographicalRestrictions(options.remotingContext),
+        app.models.person.addGeographicalRestrictionsForMixedPersonTypes(options.remotingContext)
+      ])
+      .then(([geographicalRestrictionsQuery, mixedPersonTypesRestrictionsQuery]) => {
+        chainRestrictionsQuery = mixedPersonTypesRestrictionsQuery;
 
         // add geographical restrictions to case query
         if (geographicalRestrictionsQuery) {
@@ -1255,7 +1313,7 @@ module.exports = function (Outbreak) {
               countOnly,
               false,
               false,
-              geographicalRestrictionsQueryCache,
+              chainRestrictionsQuery,
               callback
             );
           });

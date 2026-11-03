@@ -1,0 +1,22 @@
+{
+  "name": "relationshipWithRelatedPersonData",
+  "base": "relationship",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "relatedPersonId": {
+      "type": "string",
+      "description": "Id of the person (case/contact/event/contact of contact) on the other end of this relationship"
+    },
+    "relatedPersonData": {
+      "type": "relatedPersonData",
+      "description": "Basic data of the related person on the other end of this relationship, already resolved so the caller doesn't need a separate call"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

@@ -185,15 +185,26 @@ module.exports = function (Person) {
    * @param personInstance
    * @return {*}
    */
-  function validatePersonAddresses(personInstance) {
+  function validatePersonAddresses(personInstance, requireCurrentAddress) {
     // keep validation error
     let error;
+    // a person without addresses has no usual place of residence
+    if (
+      requireCurrentAddress &&
+      (!Array.isArray(personInstance.addresses) || !personInstance.addresses.length)
+    ) {
+      return app.utils.apiError.getError('ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE', {
+        addresses: []
+      });
+    }
     // if the person has addresses defined
     if (Array.isArray(personInstance.addresses) && personInstance.addresses.length) {
       // keep a list of current (usual place of residence) addresses
       const currentAddresses = [];
       // keep a list of previous (previous usual place of residence) addresses
       const previousAddressesWithoutDate = [];
+      // keep a list of notification addresses
+      const notificationAddresses = [];
       // go through the addresses
       personInstance.addresses.forEach(function (address) {
         // store usual place of residence
@@ -202,6 +213,9 @@ module.exports = function (Person) {
           // store previous addresses without dates
         } else if (address.typeId === 'LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_PREVIOUS_USUAL_PLACE_OF_RESIDENCE' && !address.date) {
           previousAddressesWithoutDate.push(address);
+          // store notification addresses
+        } else if (address.typeId === 'LNG_REFERENCE_DATA_CATEGORY_ADDRESS_TYPE_NOTIFICATION') {
+          notificationAddresses.push(address);
         }
       });
       // check if there is a current address set
@@ -220,6 +234,12 @@ module.exports = function (Person) {
         error = app.utils.apiError.getError('ADDRESS_PREVIOUS_PLACE_OF_RESIDENCE_MUST_HAVE_DATE', {
           addresses: personInstance.addresses,
           previousUsualPlaceOfResidence: previousAddressesWithoutDate
+        });
+        // check if there are multiple notification addresses set
+      } else if (notificationAddresses.length > 1) {
+        error = app.utils.apiError.getError('ADDRESS_MULTIPLE_NOTIFICATION', {
+          addresses: personInstance.addresses,
+          notification: notificationAddresses
         });
       }
     }
@@ -294,6 +314,8 @@ module.exports = function (Person) {
 
       // set usualPlaceOfResidenceLocationId as null by default
       personInstance.usualPlaceOfResidenceLocationId = null;
+      // set notificationLocationId as null by default
+      personInstance.notificationLocationId = null;
     } else {
       // existing instance, we're interested only in what is modified
       personInstance = context.data;
@@ -320,12 +342,16 @@ module.exports = function (Person) {
       ) {
         // set usualPlaceOfResidenceLocationId
         personInstance.usualPlaceOfResidenceLocationId = null;
+        // events do not use the Notification address type; keep notificationLocationId consistent
+        personInstance.notificationLocationId = null;
         return;
       }
       // address was updated, is usual place of residence and locationId was set
       else {
         // set usualPlaceOfResidenceLocationId
         personInstance.usualPlaceOfResidenceLocationId = personInstance.address.locationId;
+        // events do not use the Notification address type; keep notificationLocationId consistent
+        personInstance.notificationLocationId = null;
         return;
       }
     }
@@ -335,6 +361,8 @@ module.exports = function (Person) {
       // addresses were removed
       // set usualPlaceOfResidenceLocationId
       personInstance.usualPlaceOfResidenceLocationId = null;
+      // set notificationLocationId
+      personInstance.notificationLocationId = null;
       return;
     }
 
@@ -345,6 +373,15 @@ module.exports = function (Person) {
     // get locationId from usual place of residence address and set usualPlaceOfResidenceLocationId
     personInstance.usualPlaceOfResidenceLocationId = usualPlaceOfResidenceAddress && usualPlaceOfResidenceAddress.locationId ?
       usualPlaceOfResidenceAddress.locationId :
+      null;
+
+    // loop through addresses and get notificationLocationId
+    // get notification address
+    let notificationAddress = personInstance.addresses.find(address => address.typeId === addressConstants.notificationType);
+
+    // get locationId from notification address and set notificationLocationId
+    personInstance.notificationLocationId = notificationAddress && notificationAddress.locationId ?
+      notificationAddress.locationId :
       null;
   }
 
@@ -379,18 +416,6 @@ module.exports = function (Person) {
     ) {
       // set a flag on context to trigger relationship updated due to significant changes in case classification (from/to discarded case)
       context.options.triggerRelationshipUpdates = true;
-    }
-
-    // validate addresses
-    // if the record is not being deleted or this is not a system triggered update
-    if (!data.source.all.deleted && !data.source.all.systemTriggeredUpdate) {
-      // validate person addresses
-      const addressValidationError = validatePersonAddresses(data.source.all);
-      // if there is an address validation error
-      if (addressValidationError) {
-        // stop with error
-        return next(addressValidationError);
-      }
     }
 
     // set duplicate easy find index keys
@@ -434,6 +459,56 @@ module.exports = function (Person) {
     // make sure we update data in order so we don't break anything
     Promise
       .resolve()
+      .then(() => {
+        // validate addresses
+        // if the record is being deleted or this is a system triggered update there is nothing to validate
+        if (data.source.all.deleted || data.source.all.systemTriggeredUpdate) {
+          return;
+        }
+
+        // the usual place of residence requirement is enforced on create and whenever the request
+        // changes the addresses, so records saved before this rule can still be edited;
+        // sync keeps replicating records as they are on the source server
+        const requireCurrentAddress = [
+          app.models.case.modelName,
+          app.models.contact.modelName,
+          app.models.contactOfContact.modelName
+        ].indexOf(context.Model.modelName) > -1 &&
+          !(context.options && context.options._sync) &&
+          (
+            context.isNewInstance ||
+            (data.source.updated && data.source.updated.addresses !== undefined)
+          );
+
+        // validate person addresses
+        const addressValidationError = validatePersonAddresses(data.source.all, requireCurrentAddress);
+        if (!addressValidationError) {
+          return;
+        }
+
+        // the "missing current address" requirement can be relaxed per outbreak configuration
+        // (allow registering cases/contacts without a current address); every other address
+        // validation error is always enforced
+        if (
+          addressValidationError.code !== 'ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE' ||
+          !data.source.all.outbreakId
+        ) {
+          throw addressValidationError;
+        }
+
+        // check the outbreak configuration before enforcing the current address requirement
+        return app.models.outbreak
+          .findById(data.source.all.outbreakId)
+          .then((outbreak) => {
+            // outbreak allows optional case/contact address fields -> skip the current address requirement
+            if (outbreak && outbreak.optionalCaseContactAddressFields) {
+              return;
+            }
+
+            // otherwise enforce the current address requirement
+            throw addressValidationError;
+          });
+      })
       .then(() => {
         // if there are no dates then there is no point in continuing
         const modelNewData = data.source.all;
@@ -1546,13 +1621,50 @@ module.exports = function (Person) {
   };
 
   /**
+   * Build the clauses that place a person inside the locations a user is responsible for.
+   * A person is anchored by the location of its usual place of residence address. When that address is
+   * missing, the notification address anchors it instead, so a record registered with only a Notification
+   * address stays with the notifying team instead of becoming visible to every team. A person carrying
+   * neither address has no anchor at all and stays visible to everybody, so it is not lost.
+   * Note: this is the anchor of the record, not a visibility widening, so it does not depend on the outbreak toggles.
+   * Note: "no location" is expressed as inq [null] and not as null, because the mongo connector turns a plain
+   * null into a $type check that misses records saved before the property existed, while $in [null] matches both.
+   * @param {string[]} userAllowedLocationsIds
+   * @returns {Object[]} clauses meant to be OR-ed together
+   */
+  Person.getBaseLocationClauses = (userAllowedLocationsIds) => {
+    const noLocation = {
+      inq: [null]
+    };
+
+    return [
+      {
+        usualPlaceOfResidenceLocationId: {
+          inq: userAllowedLocationsIds
+        }
+      },
+      {
+        usualPlaceOfResidenceLocationId: noLocation,
+        notificationLocationId: {
+          inq: userAllowedLocationsIds
+        }
+      },
+      {
+        usualPlaceOfResidenceLocationId: noLocation,
+        notificationLocationId: noLocation
+      }
+    ];
+  };
+
+  /**
    * Add geographical restriction in where prop of the filter for logged in user
    * Note: The updated where filter is returned by the Promise; If there filter doesn't need to be updated nothing will be returned
    * @param context Remoting context from which to get logged in user and outbreak
    * @param where Where filter from which to start
+   * @param modelName Optional model name (e.g. Case/Contact); when set and the outbreak allows notification location access, the filter is widened accordingly. Omitting it preserves the original behavior.
    * @returns {Promise<unknown>|Promise<T>|Promise<void>}
    */
-  Person.addGeographicalRestrictions = (context, where) => {
+  Person.addGeographicalRestrictions = (context, where, modelName) => {
     // for sync, logged user model and outbreak model are added in custom properties
     let loggedInUser = context.req.authData.userModelInstance ?
       context.req.authData.userModelInstance :
@@ -1571,6 +1683,18 @@ module.exports = function (Person) {
       return Promise.resolve();
     }
 
+    // helper: merge the locations query with the incoming where
+    const finalize = (locationsQuery) => Promise.resolve(
+      where && Object.keys(where).length ?
+        {
+          and: [
+            locationsQuery,
+            where
+          ]
+        } :
+        locationsQuery
+    );
+
     // get user allowed locations
     return app.models.user.cache
       .getUserLocationsIds(loggedInUser.id)
@@ -1580,25 +1704,212 @@ module.exports = function (Person) {
           return Promise.resolve();
         }
 
-        // get query for allowed locations
-        const allowedLocationsQuery = {
-          // get models for the calculated locations and the ones that don't have a usual place of residence location set
-          usualPlaceOfResidenceLocationId: {
-            inq: userAllowedLocationsIds.concat([null])
-          }
+        // base restriction
+        const baseLocationClauses = Person.getBaseLocationClauses(userAllowedLocationsIds);
+        const baseLocationsQuery = {
+          or: baseLocationClauses
         };
 
-        // update where to only query for allowed locations
-        return Promise.resolve(
-          where && Object.keys(where).length ?
-            {
-              and: [
-                allowedLocationsQuery,
-                where
-              ]
-            } :
-            allowedLocationsQuery
-        );
+        // notification-location access governs CASE visibility for the notifying team
+        const notificationCaseEnabled = outbreak && outbreak.allowNotificationLocationAccess === true;
+        // residence-chain access governs CONTACT visibility for the residence (owner) team
+        const residenceChainEnabled = outbreak && outbreak.allowResidenceChainAccess === true;
+
+        // CASE: notifying team also sees the case it notified (residence elsewhere)
+        if (notificationCaseEnabled && modelName === app.models.case.modelName) {
+          return finalize({
+            or: baseLocationClauses.concat([
+              {
+                notificationLocationId: {
+                  inq: userAllowedLocationsIds
+                }
+              }
+            ])
+          });
+        }
+
+        // CONTACT: residence (owner) team also sees ALL direct contacts of cases it owns by residence
+        if (residenceChainEnabled && modelName === app.models.contact.modelName) {
+          return Person.getResidentCaseContactIds(outbreak.id, userAllowedLocationsIds)
+            .then(contactIds => finalize(
+              contactIds.length ?
+                {
+                  or: baseLocationClauses.concat([
+                    {
+                      id: {
+                        inq: contactIds
+                      }
+                    }
+                  ])
+                } :
+                baseLocationsQuery
+            ));
+        }
+
+        // default: unchanged behavior
+        return finalize(baseLocationsQuery);
+      });
+  };
+
+  /**
+   * Add geographical restriction in where prop of the filter for logged in user, for a set of people of MIXED
+   * types (case / contact / event / contact of contact) queried in one go.
+   * Note: The updated where filter is returned by the Promise; If there filter doesn't need to be updated nothing will be returned
+   * @param context Remoting context from which to get logged in user and outbreak
+   * @param where Where filter from which to start
+   * @returns {Promise<unknown>|Promise<T>|Promise<void>}
+   */
+  Person.addGeographicalRestrictionsForMixedPersonTypes = (context, where) => {
+    // for sync, logged user model and outbreak model are added in custom properties
+    let loggedInUser = context.req.authData.userModelInstance ?
+      context.req.authData.userModelInstance :
+      context.req.authData.user;
+    let outbreak = context.outbreakModelInstance ?
+      context.outbreakModelInstance :
+      context.instance;
+
+    // apply geographic restrictions ?
+    // for mobile sync, the contact createdBy user will be used
+    if (
+      loggedInUser === undefined ||
+      !app.models.user.helpers.applyGeographicRestrictions(loggedInUser, outbreak)
+    ) {
+      // no need to apply geographic restrictions
+      return Promise.resolve();
+    }
+
+    // helper: merge the locations query with the incoming where
+    const finalize = (locationsQuery) => Promise.resolve(
+      where && Object.keys(where).length ?
+        {
+          and: [
+            locationsQuery,
+            where
+          ]
+        } :
+        locationsQuery
+    );
+
+    // get user allowed locations
+    return app.models.user.cache
+      .getUserLocationsIds(loggedInUser.id)
+      .then(userAllowedLocationsIds => {
+        if (!userAllowedLocationsIds.length) {
+          // need to get data from all locations
+          return Promise.resolve();
+        }
+
+        // base restriction
+        const baseLocationClauses = Person.getBaseLocationClauses(userAllowedLocationsIds);
+        const baseLocationsQuery = {
+          or: baseLocationClauses
+        };
+
+        // notification-location access governs CASE visibility for the notifying team
+        const notificationCaseEnabled = outbreak && outbreak.allowNotificationLocationAccess === true;
+        // residence-chain access governs CONTACT visibility for the residence (owner) team
+        const residenceChainEnabled = outbreak && outbreak.allowResidenceChainAccess === true;
+
+        // no widening configured, the query is the one the per model restriction builds
+        if (
+          !notificationCaseEnabled &&
+          !residenceChainEnabled
+        ) {
+          return finalize(baseLocationsQuery);
+        }
+
+        // each reveal is scoped to the person type it applies to, so a mixed type query stays correct
+        const orQueries = baseLocationClauses.slice();
+
+        // CASE: notifying team also sees the case it notified (residence elsewhere)
+        if (notificationCaseEnabled) {
+          orQueries.push({
+            type: 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE',
+            notificationLocationId: {
+              inq: userAllowedLocationsIds
+            }
+          });
+        }
+
+        // CONTACT: residence (owner) team also sees ALL direct contacts of cases it owns by residence
+        // resolved once per call, since it costs 3 queries
+        return (
+          residenceChainEnabled ?
+            Person.getResidentCaseContactIds(outbreak.id, userAllowedLocationsIds) :
+            Promise.resolve([])
+        )
+          .then(contactIds => {
+            if (contactIds.length) {
+              orQueries.push({
+                type: 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT',
+                id: {
+                  inq: contactIds
+                }
+              });
+            }
+
+            return finalize(
+              orQueries.length > baseLocationClauses.length ?
+                {
+                  or: orQueries
+                } :
+                baseLocationsQuery
+            );
+          });
+      });
+  };
+
+  /**
+   * Resolve the contact IDs visible to a user through the residence-chain feature: a user who OWNS a
+   * case by residence (the case's usual place of residence is one of the user's team locations) may
+   * see ALL direct contacts of that case, regardless of where each contact resides. Direct contacts
+   * only (no recursive chain). The notifying team gets no special contact reveal here.
+   * @param {string} outbreakId
+   * @param {string[]} userAllowedLocationsIds
+   * @returns {Promise<string[]>} contact IDs
+   */
+  Person.getResidentCaseContactIds = (outbreakId, userAllowedLocationsIds) => {
+    // 1. cases the user owns by residence
+    return app.models.case
+      .rawFind({
+        outbreakId: outbreakId,
+        usualPlaceOfResidenceLocationId: {inq: userAllowedLocationsIds}
+      }, {
+        projection: {_id: 1}
+      })
+      .then(cases => {
+        if (!cases.length) {
+          return [];
+        }
+        const caseIdsMap = {};
+        cases.forEach(caseRecord => {
+          caseIdsMap[caseRecord.id] = true;
+        });
+
+        // 2. relationships case<->contact for these cases -> all direct contacts
+        return app.models.relationship
+          .rawFind({
+            outbreakId: outbreakId,
+            'persons.id': {inq: Object.keys(caseIdsMap)}
+          }, {
+            projection: {_id: 1, persons: 1}
+          })
+          .then(relationships => {
+            const contactIdsMap = {};
+            relationships.forEach(relationship => {
+              const casePerson = relationship.persons.find(
+                person => person.type === 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE' &&
+                  caseIdsMap[person.id]
+              );
+              const contactPerson = relationship.persons.find(
+                person => person.type === 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT'
+              );
+              if (casePerson && contactPerson) {
+                contactIdsMap[contactPerson.id] = true;
+              }
+            });
+            return Object.keys(contactIdsMap);
+          });
       });
   };
 

@@ -1,0 +1,36 @@
+name: Deploy
+
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target instance'
+        type: choice
+        options: [teste, opas]
+        default: teste
+
+permissions:
+  contents: read
+
+# Never cancel a running deploy: aborting midway leaves the instance undefined.
+concurrency:
+  group: deploy-${{ github.event_name == 'push' && 'teste' || inputs.environment }}
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      # The deploy runs in godata-ops, which is private. A self-hosted runner
+      # writes the machine name and the workspace path into its job log, and
+      # the logs of this repository are readable by anyone.
+      - name: Trigger the deploy pipeline
+        env:
+          GH_TOKEN: ${{ secrets.OPS_DISPATCH_TOKEN }}
+          INSTANCE: ${{ github.event_name == 'push' && 'teste' || inputs.environment }}
+        run: |
+          jq -n --arg instance "$INSTANCE" \
+            '{event_type: "deploy", client_payload: {component: "api", instance: $instance}}' |
+            gh api --method POST repos/EEI-OPAS-BRA/godata-ops/dispatches --input -

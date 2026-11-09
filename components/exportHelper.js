@@ -4914,10 +4914,17 @@ function exportFilteredModelsList(
 
                                       // check if we should exclude it
                                       if (
-                                        dataFilter &&
-                                        dataFilter.projection &&
-                                        !dataFilter.projection[path] &&
-                                        !sheetHandler.columns.labels[path]
+                                        !sheetHandler.columns.labels[path] && (
+                                          (
+                                            dataFilter &&
+                                            dataFilter.projection &&
+                                            !dataFilter.projection[path]
+                                          ) || (
+                                            modelOptions.filterNestedPropertiesByFieldsGroup &&
+                                            fieldsGroupList &&
+                                            fieldsGroupList.length > 0
+                                          )
+                                        )
                                       ) {
                                         // jump to next property
                                         continue;

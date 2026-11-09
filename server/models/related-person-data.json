@@ -33,6 +33,22 @@
     "lastName": {
       "type": "string",
       "description": "Last name (only populated when type is case/contact/contact of contact)"
+    },
+    "classification": {
+      "type": "string",
+      "description": "Classification (only populated when the related person is a case)"
+    },
+    "dateOfReporting": {
+      "type": "date",
+      "description": "Date the related person was reported"
+    },
+    "dateOfOnset": {
+      "type": "date",
+      "description": "Date of onset (only populated when the related person is a case)"
+    },
+    "followUpTeamId": {
+      "type": "string",
+      "description": "Id of the follow-up team assigned to the related person"
     }
   },
   "validations": [],

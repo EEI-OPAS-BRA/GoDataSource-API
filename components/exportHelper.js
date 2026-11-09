@@ -4851,7 +4851,7 @@ function exportFilteredModelsList(
                         !sheetHandler.process.exportIsNonFlat ?
                           undefined :
                           (function (localPropertyName) {
-                            return (value, translatePipe) => {
+                            return (value, translatePipe, record) => {
                               // for non flat file types we might need to translate / format value
                               // - array condition must be before object since array ...is an object too...
                               if (
@@ -4865,6 +4865,16 @@ function exportFilteredModelsList(
                                   prefix,
                                   childValue
                                 ) => {
+                                  if (
+                                    !sheetHandler.dontTranslateValues &&
+                                    sheetHandler.replacements[prefix]
+                                  ) {
+                                    childValue = _.get(
+                                      record,
+                                      sheetHandler.replacements[prefix].value
+                                    );
+                                  }
+
                                   // no value ?
                                   if (!childValue) {
                                     return childValue;

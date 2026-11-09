@@ -500,6 +500,9 @@ module.exports = function (Outbreak) {
             exportFieldsOrder: app.models.relationship.exportFieldsOrder,
             locationFields: app.models.relationship.locationFields,
 
+            // the person objects are selected as a whole by each fields group, so keep only the group's own properties
+            filterNestedPropertiesByFieldsGroup: true,
+
             // fields that we need to bring from db, but we don't want to include in the export
             projection: [
               'persons'
@@ -554,7 +557,11 @@ module.exports = function (Outbreak) {
                 'middleName',
                 'gender',
                 'dob',
-                'age'
+                'age',
+                'classification',
+                'dateOfReporting',
+                'dateOfOnset',
+                'followUpTeamId'
               ],
               key: '_id',
               keyValue: `(relationship) => {
@@ -577,7 +584,28 @@ module.exports = function (Outbreak) {
 
                 // attach properties
                 relationship.sourcePerson.source = true;
-              }`
+              }`,
+              relations: {
+                sourceFollowUpTeam: {
+                  type: exportHelper.RELATION_TYPE.HAS_ONE,
+                  collection: 'team',
+                  project: [
+                    '_id',
+                    'name'
+                  ],
+                  key: '_id',
+                  keyValue: `(relationship) => {
+                    return relationship && relationship.sourcePerson && relationship.sourcePerson.followUpTeamId ?
+                      relationship.sourcePerson.followUpTeamId :
+                      undefined;
+                  }`,
+                  replace: {
+                    'sourcePerson.followUpTeamId': {
+                      value: 'sourceFollowUpTeam.name'
+                    }
+                  }
+                }
+              }
             },
             targetPerson: {
               type: exportHelper.RELATION_TYPE.HAS_ONE,
@@ -592,7 +620,11 @@ module.exports = function (Outbreak) {
                 'middleName',
                 'gender',
                 'dob',
-                'age'
+                'age',
+                'classification',
+                'dateOfReporting',
+                'dateOfOnset',
+                'followUpTeamId'
               ],
               key: '_id',
               keyValue: `(relationship) => {
@@ -615,7 +647,28 @@ module.exports = function (Outbreak) {
 
                 // attach properties
                 relationship.targetPerson.target = true;
-              }`
+              }`,
+              relations: {
+                targetFollowUpTeam: {
+                  type: exportHelper.RELATION_TYPE.HAS_ONE,
+                  collection: 'team',
+                  project: [
+                    '_id',
+                    'name'
+                  ],
+                  key: '_id',
+                  keyValue: `(relationship) => {
+                    return relationship && relationship.targetPerson && relationship.targetPerson.followUpTeamId ?
+                      relationship.targetPerson.followUpTeamId :
+                      undefined;
+                  }`,
+                  replace: {
+                    'targetPerson.followUpTeamId': {
+                      value: 'targetFollowUpTeam.name'
+                    }
+                  }
+                }
+              }
             }
           });
       })

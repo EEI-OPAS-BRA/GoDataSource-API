@@ -18,6 +18,10 @@
       "type": "string",
       "description": "Visual (human readable) id of the related person"
     },
+    "masked": {
+      "type": "boolean",
+      "description": "True when the logged in user is not allowed to read this person, in which case the name comes empty"
+    },
     "name": {
       "type": "string",
       "description": "Event name (only populated when type is event)"

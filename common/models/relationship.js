@@ -1376,6 +1376,10 @@ module.exports = function (Relationship) {
       .some((person) => visibleRootsMap[findRoot(person.id)]));
   };
 
+  // event people carry their name under 'name', the other types under the name parts;
+  // 'duplicateKeys' holds normalized name combinations
+  const MASKED_PERSON_PROPERTIES = ['firstName', 'middleName', 'lastName', 'name', 'duplicateKeys'];
+
   /**
    * Withhold the name of a person the logged in user is not allowed to read and flag the person as masked
    * Note: the visual ID, the dates, the classification and the relationship data itself stay, so the record
@@ -1384,9 +1388,7 @@ module.exports = function (Relationship) {
    * @return {*} The same person, for chaining
    */
   Relationship.maskPersonName = function (person) {
-    // event people carry their name under 'name', the other types under the name parts;
-    // 'duplicateKeys' holds normalized name combinations
-    ['firstName', 'middleName', 'lastName', 'name', 'duplicateKeys'].forEach((property) => {
+    MASKED_PERSON_PROPERTIES.forEach((property) => {
       if (person[property] !== undefined) {
         person[property] = null;
       }
@@ -1394,6 +1396,23 @@ module.exports = function (Relationship) {
     person.masked = true;
 
     return person;
+  };
+
+  /**
+   * Build the export relation setting that withholds the name of the people the logged in user is not allowed to read
+   * @param context Remoting context
+   * @return {Promise<Object|undefined>} Nothing when the user is not restricted
+   */
+  Relationship.getExportPersonNameWithholding = function (context) {
+    return app.models.person
+      .addGeographicalRestrictionsForMixedPersonTypes(context)
+      .then((geographicalRestrictionsQuery) => geographicalRestrictionsQuery ?
+        {
+          visibleWhen: geographicalRestrictionsQuery,
+          properties: MASKED_PERSON_PROPERTIES
+        } :
+        undefined
+      );
   };
 
   /**

@@ -1418,12 +1418,19 @@ module.exports = function (Outbreak) {
     }
 
     // prefilter
-    app.models.contact
-      .addGeographicalRestrictions(
-        options.remotingContext,
-        filter.where,
-        app.models.contact.modelName
-      )
+    let withholdPersonName;
+    app.models.relationship
+      .getExportPersonNameWithholding(options.remotingContext)
+      .then((withhold) => {
+        withholdPersonName = withhold;
+
+        return app.models.contact
+          .addGeographicalRestrictions(
+            options.remotingContext,
+            filter.where,
+            app.models.contact.modelName
+          );
+      })
       .then((updatedFilter) => {
         // update casesQuery if needed
         updatedFilter && (filter.where = updatedFilter);
@@ -1589,6 +1596,7 @@ module.exports = function (Outbreak) {
                 relatedPersonData: {
                   type: exportHelper.RELATION_TYPE.HAS_ONE,
                   collection: 'person',
+                  withhold: withholdPersonName,
                   project: [
                     '_id',
                     // event

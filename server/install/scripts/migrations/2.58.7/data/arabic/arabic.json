@@ -1,0 +1,29 @@
+{
+  "id": "arabic",
+  "tokens": {
+    "LNG_PAGE_CREATE_CASE_ACTION_CREATE_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "تم تسجيل الحالة بنجاح، لكن عنوانها يقع خارج منطقة فريقك."
+    },
+    "LNG_PAGE_CREATE_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "تم تسجيل جهة الاتصال بنجاح، لكن عنوانها يقع خارج منطقة فريقك."
+    },
+    "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "تم تسجيل جهة اتصال جهة الاتصال بنجاح، لكن عنوانها يقع خارج منطقة فريقك."
+    },
+    "LNG_PAGE_CREATE_EVENT_ACTION_CREATE_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "تم تسجيل الحدث بنجاح، لكن عنوانه يقع خارج منطقة فريقك."
+    },
+    "LNG_PAGE_MODIFY_CASE_ACTION_MODIFY_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "تم تحديث الحالة بنجاح، لكن عنوانها يقع خارج منطقة فريقك."
+    },
+    "LNG_PAGE_MODIFY_CONTACT_ACTION_MODIFY_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "تم تحديث جهة الاتصال بنجاح، لكن عنوانها يقع خارج منطقة فريقك."
+    },
+    "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_MODIFY_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "تم تحديث جهة اتصال جهة الاتصال بنجاح، لكن عنوانها يقع خارج منطقة فريقك."
+    },
+    "LNG_PAGE_MODIFY_EVENT_ACTION_MODIFY_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "تم تحديث الحدث بنجاح، لكن عنوانه يقع خارج منطقة فريقك."
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "id": "spanish_es",
+  "tokens": {
+    "LNG_PAGE_CREATE_CASE_ACTION_CREATE_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Caso registrado con éxito, pero su dirección está fuera del área de su equipo."
+    },
+    "LNG_PAGE_CREATE_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Contacto registrado con éxito, pero su dirección está fuera del área de su equipo."
+    },
+    "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Contacto de contacto registrado con éxito, pero su dirección está fuera del área de su equipo."
+    },
+    "LNG_PAGE_CREATE_EVENT_ACTION_CREATE_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Evento registrado con éxito, pero su dirección está fuera del área de su equipo."
+    },
+    "LNG_PAGE_MODIFY_CASE_ACTION_MODIFY_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Caso actualizado con éxito, pero su dirección está fuera del área de su equipo."
+    },
+    "LNG_PAGE_MODIFY_CONTACT_ACTION_MODIFY_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Contacto actualizado con éxito, pero su dirección está fuera del área de su equipo."
+    },
+    "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_MODIFY_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Contacto de contacto actualizado con éxito, pero su dirección está fuera del área de su equipo."
+    },
+    "LNG_PAGE_MODIFY_EVENT_ACTION_MODIFY_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Evento actualizado con éxito, pero su dirección está fuera del área de su equipo."
+    }
+  }
+}

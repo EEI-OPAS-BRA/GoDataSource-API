@@ -6,12 +6,12 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Target instance'
+        description: 'Target instance (prod is deployed from godata-ops with a version tag)'
         type: choice
-        options: [teste, opas]
+        options: [teste, homologacao]
         default: teste
       promote:
-        description: 'Merge dev into homologacao before deploying (opas only)'
+        description: 'Merge dev into homologacao before deploying (homologacao only)'
         type: boolean
         default: false
 
@@ -25,7 +25,7 @@ concurrency:
 
 jobs:
   promote:
-    if: github.event_name == 'workflow_dispatch' && inputs.promote && inputs.environment == 'opas'
+    if: github.event_name == 'workflow_dispatch' && inputs.promote && inputs.environment == 'homologacao'
     runs-on: ubuntu-latest
     permissions:
       contents: write

@@ -34,6 +34,10 @@ module.exports = function (Relationship) {
       'age': 'LNG_ENTITY_FIELD_LABEL_AGE',
       'age.years': 'LNG_ENTITY_FIELD_LABEL_AGE_YEARS',
       'age.months': 'LNG_ENTITY_FIELD_LABEL_AGE_MONTHS',
+      'classification': 'LNG_CASE_FIELD_LABEL_CLASSIFICATION',
+      'dateOfReporting': 'LNG_CASE_FIELD_LABEL_DATE_OF_REPORTING',
+      'dateOfOnset': 'LNG_CASE_FIELD_LABEL_DATE_OF_ONSET',
+      'followUpTeamId': 'LNG_CONTACT_FIELD_LABEL_FOLLOW_UP_TEAM_ID',
     };
 
     // append source export fields
@@ -129,6 +133,7 @@ module.exports = function (Relationship) {
         'sourcePerson.age',
         'sourcePerson.age.years',
         'sourcePerson.age.months',
+        'sourcePerson.dateOfReporting',
         'sourcePerson.source',
         'targetPerson',
         'targetPerson.id',
@@ -143,11 +148,14 @@ module.exports = function (Relationship) {
         'targetPerson.age',
         'targetPerson.age.years',
         'targetPerson.age.months',
+        'targetPerson.dateOfReporting',
         'targetPerson.target'
       ]
     },
     'LNG_COMMON_LABEL_EXPORT_GROUP_EPIDEMIOLOGICAL_DATA': {
       properties: [
+        'sourcePerson',
+        'targetPerson',
         'dateOfFirstContact',
         'contactDate',
         'contactDateEstimated',
@@ -158,7 +166,13 @@ module.exports = function (Relationship) {
         'socialRelationshipTypeId',
         'socialRelationshipDetail',
         'clusterId',
-        'comment'
+        'comment',
+        'sourcePerson.classification',
+        'sourcePerson.dateOfOnset',
+        'sourcePerson.followUpTeamId',
+        'targetPerson.classification',
+        'targetPerson.dateOfOnset',
+        'targetPerson.followUpTeamId'
       ]
     }
   };
@@ -1376,6 +1390,10 @@ module.exports = function (Relationship) {
       .some((person) => visibleRootsMap[findRoot(person.id)]));
   };
 
+  // event people carry their name under 'name', the other types under the name parts;
+  // 'duplicateKeys' holds normalized name combinations
+  const MASKED_PERSON_PROPERTIES = ['firstName', 'middleName', 'lastName', 'name', 'duplicateKeys'];
+
   /**
    * Withhold the name of a person the logged in user is not allowed to read and flag the person as masked
    * Note: the visual ID, the dates, the classification and the relationship data itself stay, so the record
@@ -1384,9 +1402,7 @@ module.exports = function (Relationship) {
    * @return {*} The same person, for chaining
    */
   Relationship.maskPersonName = function (person) {
-    // event people carry their name under 'name', the other types under the name parts;
-    // 'duplicateKeys' holds normalized name combinations
-    ['firstName', 'middleName', 'lastName', 'name', 'duplicateKeys'].forEach((property) => {
+    MASKED_PERSON_PROPERTIES.forEach((property) => {
       if (person[property] !== undefined) {
         person[property] = null;
       }
@@ -1394,6 +1410,23 @@ module.exports = function (Relationship) {
     person.masked = true;
 
     return person;
+  };
+
+  /**
+   * Build the export relation setting that withholds the name of the people the logged in user is not allowed to read
+   * @param context Remoting context
+   * @return {Promise<Object|undefined>} Nothing when the user is not restricted
+   */
+  Relationship.getExportPersonNameWithholding = function (context) {
+    return app.models.person
+      .addGeographicalRestrictionsForMixedPersonTypes(context)
+      .then((geographicalRestrictionsQuery) => geographicalRestrictionsQuery ?
+        {
+          visibleWhen: geographicalRestrictionsQuery,
+          properties: MASKED_PERSON_PROPERTIES
+        } :
+        undefined
+      );
   };
 
   /**

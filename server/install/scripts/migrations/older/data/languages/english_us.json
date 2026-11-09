@@ -6266,6 +6266,9 @@
       "LNG_PAGE_CREATE_CASE_ACTION_CREATE_CASE_SUCCESS_MESSAGE": {
         "translation": "Case created"
       },
+      "LNG_PAGE_CREATE_CASE_ACTION_CREATE_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Case created successfully, but its address is outside your team's area."
+      },
       "LNG_PAGE_CREATE_CASE_DUPLICATES_DIALOG_CONFIRM_MSG": {
         "translation": "This case might already be in the system (see possible matches below). Do you still want to create a new case?"
       },
@@ -6294,6 +6297,9 @@
     "uiModifyCasePage": {
       "LNG_PAGE_MODIFY_CASE_ACTION_MODIFY_CASE_SUCCESS_MESSAGE": {
         "translation": "Case saved"
+      },
+      "LNG_PAGE_MODIFY_CASE_ACTION_MODIFY_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Case updated successfully, but its address is outside your team's area."
       },
       "LNG_PAGE_MODIFY_CASE_ACTION_SEE_LAB_RESULTS": {
         "translation": "Lab results"
@@ -6906,6 +6912,9 @@
       "LNG_PAGE_CREATE_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Contact created"
       },
+      "LNG_PAGE_CREATE_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Contact created successfully, but its address is outside your team's area."
+      },
       "LNG_PAGE_CREATE_CONTACT_DUPLICATES_DIALOG_CONFIRM_MSG": {
         "translation": "This contact might already be in the system (see possible matches below). Do you still want to create a new contact?"
       },
@@ -6949,6 +6958,9 @@
     "uiModifyContactPage": {
       "LNG_PAGE_MODIFY_CONTACT_ACTION_MODIFY_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Contact saved"
+      },
+      "LNG_PAGE_MODIFY_CONTACT_ACTION_MODIFY_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Contact updated successfully, but its address is outside your team's area."
       },
       "LNG_PAGE_MODIFY_CONTACT_ACTION_VIEW_CHRONOLOGY": {
         "translation": "View chronology"
@@ -7616,6 +7628,9 @@
       },
       "LNG_PAGE_CREATE_EVENT_ACTION_CREATE_EVENT_SUCCESS_MESSAGE": {
         "translation": "Event created"
+      },
+      "LNG_PAGE_CREATE_EVENT_ACTION_CREATE_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Event created successfully, but its address is outside your team's area."
       },
       "LNG_PAGE_CREATE_EVENT_TAB_ADDRESS_TITLE": {
         "translation": "Address"
@@ -11807,6 +11822,9 @@
     "uiModifyEventPage": {
       "LNG_PAGE_MODIFY_EVENT_ACTION_MODIFY_EVENT_SUCCESS_MESSAGE": {
         "translation": "Event saved"
+      },
+      "LNG_PAGE_MODIFY_EVENT_ACTION_MODIFY_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Event updated successfully, but its address is outside your team's area."
       },
       "LNG_PAGE_MODIFY_EVENT_TAB_ADDRESS_TITLE": {
         "translation": "Address"
@@ -17539,6 +17557,9 @@
       "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_BUTTON": {
         "translation": "Create contact of contact"
       },
+      "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Contact of contact created successfully, but its address is outside your team's area."
+      },
       "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Contact of contact created"
       },
@@ -17576,6 +17597,9 @@
     "uiModifyContactOfContactPage": {
       "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_MODIFY_CONTACT_OF_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Contact of contact saved"
+      },
+      "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_MODIFY_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Contact of contact updated successfully, but its address is outside your team's area."
       },
       "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_VIEW_CHRONOLOGY": {
         "translation": "View chronology"

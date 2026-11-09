@@ -186,6 +186,11 @@ module.exports = function (Outbreak) {
                 }
               })
               .then(function (relatedPeople) {
+                return Outbreak.helpers
+                  .maskRestrictedRelationshipPeopleNames({people: relatedPeople}, options)
+                  .then(() => relatedPeople);
+              })
+              .then(function (relatedPeople) {
                 const relatedPeopleMap = {};
                 relatedPeople.forEach((person) => {
                   relatedPeopleMap[person.id] = person.toJSON();

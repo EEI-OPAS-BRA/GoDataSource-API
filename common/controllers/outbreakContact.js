@@ -182,7 +182,11 @@ module.exports = function (Outbreak) {
                   name: true,
                   firstName: true,
                   middleName: true,
-                  lastName: true
+                  lastName: true,
+                  classification: true,
+                  dateOfReporting: true,
+                  dateOfOnset: true,
+                  followUpTeamId: true
                 }
               })
               .then(function (relatedPeople) {

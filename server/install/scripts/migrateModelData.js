@@ -711,6 +711,18 @@ const migrationVersions = [{
     }]
   }]
 }, {
+  version: '2.58.3',
+  scripts: [{
+    fileName: 'languageToken.js',
+    actions: [{
+      name: 'createUpdateLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 1
+    }]
+  }]
+}, {
   version: '2.58.4',
   scripts: [{
     fileName: 'languageToken.js',
@@ -755,6 +767,36 @@ const migrationVersions = [{
       buildNo: 1
     }, {
       name: 'createUpdateTranslatedLanguageTokens',
+      buildNo: 1
+    }]
+  }]
+}, {
+  version: '2.58.8',
+  scripts: [{
+    fileName: 'languageToken.js',
+    actions: [{
+      name: 'createUpdateLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 1
+    }]
+  }]
+}, {
+  version: '2.58.9',
+  scripts: [{
+    fileName: 'languageToken.js',
+    actions: [{
+      name: 'createUpdateLanguageTokens',
+      buildNo: 1
+    }, {
+      name: 'createUpdatePortugueseLanguageTokens',
+      buildNo: 1
+    }]
+  }, {
+    fileName: 'teamNotification.js',
+    actions: [{
+      name: 'migrateTeamIdToTeamIds',
       buildNo: 1
     }]
   }]

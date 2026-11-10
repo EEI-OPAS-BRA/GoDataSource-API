@@ -1,0 +1,32 @@
+{
+  "id": "english_us",
+  "tokens": {
+    "LNG_COMMON_BUTTON_REMOVE_NOTIFICATION": {
+      "translation": "Remove notification"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_OUTBREAK": {
+      "translation": "Outbreak"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_TARGET_TYPE": {
+      "translation": "Send to"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_TEAMS": {
+      "translation": "Teams"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_LOCATIONS": {
+      "translation": "Locations"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_LOCATIONS_DESCRIPTION": {
+      "translation": "All teams working in the selected locations or in any of their sub-locations receive the notification"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_RECIPIENTS": {
+      "translation": "Recipients"
+    },
+    "LNG_TEAM_NOTIFICATION_TARGET_TYPE_TEAM": {
+      "translation": "Teams"
+    },
+    "LNG_TEAM_NOTIFICATION_TARGET_TYPE_LOCATION": {
+      "translation": "Locations"
+    }
+  }
+}

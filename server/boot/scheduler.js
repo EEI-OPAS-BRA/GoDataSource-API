@@ -656,7 +656,6 @@ module.exports = function (app) {
             })
             .then(function (teamNotifications) {
               // determine which notifications are individually due and fire them
-              const now = localizationHelper.now();
               const dueNotifications = teamNotifications.filter(function (teamNotification) {
                 if (!teamNotification.recurrenceInterval || !teamNotification.recurrenceUnit) {
                   return false;
@@ -674,24 +673,9 @@ module.exports = function (app) {
                 );
               });
 
+              // resolve recipients & create occurrences ( location based notifications pick up teams added in the meantime )
               return Promise.all(dueNotifications.map(function (teamNotification) {
-                const triggeredAt = now.toDate();
-
-                return app.models.teamNotificationOccurrence
-                  .create({
-                    teamNotificationId: teamNotification.id,
-                    teamId: teamNotification.teamId,
-                    title: teamNotification.title,
-                    message: teamNotification.message,
-                    severity: teamNotification.severity,
-                    triggeredAt: triggeredAt,
-                    readBy: []
-                  })
-                  .then(function () {
-                    return teamNotification.updateAttributes({
-                      lastTriggeredAt: triggeredAt
-                    });
-                  });
+                return app.models.teamNotification.triggerOccurrence(teamNotification);
               }));
             });
         })

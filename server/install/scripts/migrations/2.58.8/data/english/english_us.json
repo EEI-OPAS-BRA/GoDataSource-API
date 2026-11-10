@@ -1,0 +1,68 @@
+{
+  "id": "english_us",
+  "tokens": {
+    "LNG_COMMON_BUTTON_MARK_AS_READ": {
+      "translation": "Mark as read"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ANSWER_LIMITS": {
+      "translation": "Answer limits"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MIN_VALUE": {
+      "translation": "Minimum value"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MAX_VALUE": {
+      "translation": "Maximum value"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MIN_LENGTH": {
+      "translation": "Minimum characters"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MAX_LENGTH": {
+      "translation": "Maximum characters"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MIN_DATE": {
+      "translation": "Minimum date"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MAX_DATE": {
+      "translation": "Maximum date"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_DISALLOW_FUTURE_DATES": {
+      "translation": "Don't allow future dates"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MIN_SELECTIONS": {
+      "translation": "Minimum selected options"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MAX_SELECTIONS": {
+      "translation": "Maximum selected options"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ALERT_RULE": {
+      "translation": "Alert rule"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ALERT_RULE_ENABLED": {
+      "translation": "Enable alert rule"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ALERT_RULE_ENABLED_DESCRIPTION": {
+      "translation": "Display an alert when all required answers are selected and the number of selected answers that count reaches the minimum"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ALERT_RULE_MIN_ANSWERS": {
+      "translation": "Minimum number of answers"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ALERT_RULE_MESSAGE": {
+      "translation": "Alert message"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_ANSWER_FIELD_LABEL_ALERT_RULE_COUNTS": {
+      "translation": "Counts for the alert"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_ANSWER_FIELD_LABEL_ALERT_RULE_COUNTS_DESCRIPTION": {
+      "translation": "This answer counts towards the minimum number of answers of the question alert rule"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_ANSWER_FIELD_LABEL_ALERT_RULE_REQUIRED": {
+      "translation": "Required for the alert"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_ANSWER_FIELD_LABEL_ALERT_RULE_REQUIRED_DESCRIPTION": {
+      "translation": "The alert is displayed only if this answer is selected (it also counts towards the minimum)"
+    },
+    "LNG_QUESTIONNAIRE_ALERT_RULE_DEFAULT_MESSAGE": {
+      "translation": "Attention: the selected answers indicate a high chance of confirmation"
+    }
+  }
+}

@@ -6,9 +6,34 @@
     "validateUpsert": true
   },
   "properties": {
+    "outbreakId": {
+      "type": "string",
+      "description": "Outbreak the notification belongs to ( required for new notifications; legacy notifications don't have one )"
+    },
+    "targetType": {
+      "type": "string",
+      "enum": [
+        "team",
+        "location"
+      ],
+      "default": "team",
+      "description": "How recipients are selected: specific teams or all teams working in the selected locations ( including sub-locations )"
+    },
+    "teamIds": {
+      "type": [
+        "string"
+      ],
+      "description": "Recipient teams ( targetType = team )"
+    },
+    "locationIds": {
+      "type": [
+        "string"
+      ],
+      "description": "Recipient locations ( targetType = location ); teams working in these locations or their sub-locations receive the notification"
+    },
     "teamId": {
       "type": "string",
-      "required": true
+      "description": "Deprecated - single recipient team used by legacy notifications, replaced by teamIds"
     },
     "title": {
       "type": "string",
@@ -57,14 +82,20 @@
   "indexes": {
     "teamId_index": {
       "teamId": 1
+    },
+    "teamIds_index": {
+      "teamIds": 1
+    },
+    "outbreakId_index": {
+      "outbreakId": 1
     }
   },
   "validations": [],
   "relations": {
-    "team": {
+    "outbreak": {
       "type": "belongsTo",
-      "model": "team",
-      "foreignKey": "teamId"
+      "model": "outbreak",
+      "foreignKey": "outbreakId"
     }
   },
   "acls": [
@@ -126,6 +157,12 @@
       "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "markAllOccurrencesRead"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "dismissOccurrence"
     }
   ],
   "methods": {
@@ -183,6 +220,27 @@
       "http": {
         "verb": "post",
         "path": "/occurrences/:occurrenceId/mark-read"
+      }
+    },
+    "dismissOccurrence": {
+      "accepts": [
+        {
+          "arg": "occurrenceId",
+          "type": "string",
+          "required": true,
+          "description": "Team notification occurrence id"
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [],
+      "description": "Remove a team notification occurrence from the current user notifications",
+      "http": {
+        "verb": "post",
+        "path": "/occurrences/:occurrenceId/dismiss"
       }
     },
     "markAllOccurrencesRead": {

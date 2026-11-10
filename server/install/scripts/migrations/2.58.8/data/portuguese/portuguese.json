@@ -1,0 +1,68 @@
+{
+  "id": "portuguese_pt",
+  "tokens": {
+    "LNG_COMMON_BUTTON_MARK_AS_READ": {
+      "translation": "Marcar como lida"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ANSWER_LIMITS": {
+      "translation": "Limites da resposta"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MIN_VALUE": {
+      "translation": "Valor mínimo"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MAX_VALUE": {
+      "translation": "Valor máximo"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MIN_LENGTH": {
+      "translation": "Mínimo de caracteres"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MAX_LENGTH": {
+      "translation": "Máximo de caracteres"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MIN_DATE": {
+      "translation": "Data mínima"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MAX_DATE": {
+      "translation": "Data máxima"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_DISALLOW_FUTURE_DATES": {
+      "translation": "Não permitir datas futuras"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MIN_SELECTIONS": {
+      "translation": "Mínimo de opções marcadas"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MAX_SELECTIONS": {
+      "translation": "Máximo de opções marcadas"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ALERT_RULE": {
+      "translation": "Regra de alerta"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ALERT_RULE_ENABLED": {
+      "translation": "Ativar regra de alerta"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ALERT_RULE_ENABLED_DESCRIPTION": {
+      "translation": "Exibe um alerta quando todas as respostas obrigatórias forem marcadas e a quantidade de respostas que contam atingir o mínimo"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ALERT_RULE_MIN_ANSWERS": {
+      "translation": "Quantidade mínima de respostas"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ALERT_RULE_MESSAGE": {
+      "translation": "Mensagem do alerta"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_ANSWER_FIELD_LABEL_ALERT_RULE_COUNTS": {
+      "translation": "Conta para o alerta"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_ANSWER_FIELD_LABEL_ALERT_RULE_COUNTS_DESCRIPTION": {
+      "translation": "Esta resposta conta para a quantidade mínima da regra de alerta da pergunta"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_ANSWER_FIELD_LABEL_ALERT_RULE_REQUIRED": {
+      "translation": "Obrigatória para o alerta"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_ANSWER_FIELD_LABEL_ALERT_RULE_REQUIRED_DESCRIPTION": {
+      "translation": "O alerta só é exibido se esta resposta estiver marcada (ela também conta para o mínimo)"
+    },
+    "LNG_QUESTIONNAIRE_ALERT_RULE_DEFAULT_MESSAGE": {
+      "translation": "Atenção: as respostas marcadas indicam grandes chances de confirmação"
+    }
+  }
+}

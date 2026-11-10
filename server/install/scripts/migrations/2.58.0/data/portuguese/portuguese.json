@@ -5,7 +5,7 @@
       "translation": "Marcar tudo como lido"
     },
     "LNG_LAYOUT_MENU_ITEM_TEAM_NOTIFICATIONS_LABEL": {
-      "translation": "Notificações da equipa"
+      "translation": "Notificações da equipe"
     },
     "LNG_LAYOUT_MENU_ITEM_TEAM_NOTIFICATIONS_NO_DATA_LABEL": {
       "translation": "Não existem notificações"
@@ -14,10 +14,10 @@
       "translation": "Configurações de notificações"
     },
     "LNG_DIALOG_CONFIRM_DELETE_TEAM_NOTIFICATION": {
-      "translation": "Tem a certeza que pretende eliminar a notificação \"{{name}}\"?"
+      "translation": "Tem certeza que deseja excluir a notificação \"{{name}}\"?"
     },
     "LNG_TEAM_NOTIFICATION_FIELD_LABEL_TEAM": {
-      "translation": "Equipa"
+      "translation": "Equipe"
     },
     "LNG_TEAM_NOTIFICATION_FIELD_LABEL_TITLE": {
       "translation": "Título"
@@ -59,7 +59,7 @@
       "translation": "Dias"
     },
     "LNG_PAGE_LIST_TEAM_NOTIFICATIONS_TITLE": {
-      "translation": "Notificações da equipa"
+      "translation": "Notificações da equipe"
     },
     "LNG_PAGE_LIST_TEAM_NOTIFICATIONS_ACTION_MODIFY": {
       "translation": "Modificar notificação"
@@ -71,19 +71,19 @@
       "translation": "Notificação atualizada com sucesso"
     },
     "LNG_PAGE_LIST_TEAM_NOTIFICATIONS_ACTION_DELETE": {
-      "translation": "Eliminar notificação"
+      "translation": "Excluir notificação"
     },
     "LNG_PAGE_LIST_TEAM_NOTIFICATIONS_ACTION_DELETE_SUCCESS_MESSAGE": {
-      "translation": "Notificação eliminada com sucesso"
+      "translation": "Notificação excluída com sucesso"
     },
     "LNG_PAGE_CREATE_TEAM_NOTIFICATION_TITLE": {
-      "translation": "Criar notificação de equipa"
+      "translation": "Criar notificação de equipe"
     },
     "LNG_PAGE_CREATE_TEAM_NOTIFICATION_ACTION_CREATE_TEAM_NOTIFICATION_SUCCESS_MESSAGE": {
       "translation": "Notificação criada com sucesso"
     },
     "LNG_PAGE_MODIFY_TEAM_NOTIFICATION_TITLE": {
-      "translation": "Modificar notificação de equipa"
+      "translation": "Modificar notificação de equipe"
     },
     "LNG_PAGE_MODIFY_TEAM_NOTIFICATION_ACTION_MODIFY_TEAM_NOTIFICATION_SUCCESS_MESSAGE": {
       "translation": "Notificação modificada com sucesso"
@@ -104,13 +104,13 @@
       "translation": "Configuração atual"
     },
     "LNG_PAGE_NOTIFICATION_SETTINGS_DIALOG_SUCCESS_MESSAGE": {
-      "translation": "Configurações guardadas com sucesso"
+      "translation": "Configurações salvas com sucesso"
     },
     "LNG_NOTIFICATION_SETTINGS_FIELD_LABEL_HISTORY_COUNT": {
       "translation": "Número de notificações no histórico"
     },
     "LNG_NOTIFICATION_SETTINGS_FIELD_LABEL_HISTORY_COUNT_DESCRIPTION": {
-      "translation": "Número máximo de notificações apresentadas no histórico de cada utilizador"
+      "translation": "Número máximo de notificações exibidas no histórico de cada usuário"
     },
     "LNG_NOTIFICATION_SETTINGS_FIELD_LABEL_CHECK_INTERVAL": {
       "translation": "Intervalo de verificação"
@@ -131,55 +131,55 @@
       "translation": "Dias"
     },
     "LNG_PAGE_CREATE_OUTBREAK_LABEL_NOTIFY_TEAM": {
-      "translation": "Notificar equipa"
+      "translation": "Notificar equipe"
     },
     "LNG_PAGE_CREATE_OUTBREAK_LABEL_NOTIFY_TEAM_DESCRIPTION": {
-      "translation": "Envia uma notificação à equipa selecionada assim que o surto for criado"
+      "translation": "Envia uma notificação à equipe selecionada assim que o surto for criado"
     },
     "LNG_PAGE_CREATE_OUTBREAK_LABEL_NOTIFY_TEAM_ID": {
-      "translation": "Equipa a notificar"
+      "translation": "Equipe a notificar"
     },
     "LNG_PAGE_CREATE_OUTBREAK_LABEL_NOTIFY_TEAM_ID_DESCRIPTION": {
-      "translation": "Equipa que irá receber a notificação"
+      "translation": "Equipe que irá receber a notificação"
     },
     "LNG_PAGE_CREATE_OUTBREAK_NOTIFY_TEAM_DEFAULT_TITLE": {
-      "translation": "Novo surto registado"
+      "translation": "Novo surto registrado"
     },
     "LNG_PAGE_CREATE_CASE_TAB_NOTIFY_TEAM": {
-      "translation": "Notificar equipa"
+      "translation": "Notificar equipe"
     },
     "LNG_PAGE_CREATE_CASE_LABEL_NOTIFY_TEAM": {
-      "translation": "Notificar equipa"
+      "translation": "Notificar equipe"
     },
     "LNG_PAGE_CREATE_CASE_LABEL_NOTIFY_TEAM_DESCRIPTION": {
-      "translation": "Envia uma notificação à equipa selecionada assim que o caso for criado"
+      "translation": "Envia uma notificação à equipe selecionada assim que o caso for criado"
     },
     "LNG_PAGE_CREATE_CASE_LABEL_NOTIFY_TEAM_ID": {
-      "translation": "Equipa a notificar"
+      "translation": "Equipe a notificar"
     },
     "LNG_PAGE_CREATE_CASE_LABEL_NOTIFY_TEAM_ID_DESCRIPTION": {
-      "translation": "Equipa que irá receber a notificação"
+      "translation": "Equipe que irá receber a notificação"
     },
     "LNG_PAGE_CREATE_CASE_NOTIFY_TEAM_DEFAULT_TITLE": {
-      "translation": "Novo caso registado"
+      "translation": "Novo caso registrado"
     },
     "LNG_PAGE_CREATE_CONTACT_TAB_NOTIFY_TEAM": {
-      "translation": "Notificar equipa"
+      "translation": "Notificar equipe"
     },
     "LNG_PAGE_CREATE_CONTACT_LABEL_NOTIFY_TEAM": {
-      "translation": "Notificar equipa"
+      "translation": "Notificar equipe"
     },
     "LNG_PAGE_CREATE_CONTACT_LABEL_NOTIFY_TEAM_DESCRIPTION": {
-      "translation": "Envia uma notificação à equipa selecionada assim que o contacto for criado"
+      "translation": "Envia uma notificação à equipe selecionada assim que o contato for criado"
     },
     "LNG_PAGE_CREATE_CONTACT_LABEL_NOTIFY_TEAM_ID": {
-      "translation": "Equipa a notificar"
+      "translation": "Equipe a notificar"
     },
     "LNG_PAGE_CREATE_CONTACT_LABEL_NOTIFY_TEAM_ID_DESCRIPTION": {
-      "translation": "Equipa que irá receber a notificação"
+      "translation": "Equipe que irá receber a notificação"
     },
     "LNG_PAGE_CREATE_CONTACT_NOTIFY_TEAM_DEFAULT_TITLE": {
-      "translation": "Novo contacto registado"
+      "translation": "Novo contato registrado"
     }
   }
 }

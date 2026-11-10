@@ -1144,6 +1144,9 @@
     "LNG_COMMON_BUTTON_MARK_ALL_AS_READ": {
       "translation": "Marcar tudo como lido"
     },
+    "LNG_COMMON_BUTTON_MARK_AS_READ": {
+      "translation": "Marcar como lida"
+    },
     "LNG_COMMON_BUTTON_MERGE": {
       "translation": "Mesclar"
     },
@@ -1158,6 +1161,9 @@
     },
     "LNG_COMMON_BUTTON_REFRESH_LIST": {
       "translation": "Atualizar"
+    },
+    "LNG_COMMON_BUTTON_REMOVE_NOTIFICATION": {
+      "translation": "Remover notificação"
     },
     "LNG_COMMON_BUTTON_RESET_FILTERS": {
       "translation": "Redefinir filtros"
@@ -5343,6 +5349,18 @@
     },
     "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_CROSS_LOCATION_CREATION_DESCRIPTION": {
       "translation": "Permite criar casos em locais fora da área de responsabilidade da equipe do usuário; o campo Local do endereço do caso passa a listar todos os locais"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_NOTIFY_TEAM": {
+      "translation": "Permitir notificar equipe ao cadastrar casos"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_NOTIFY_TEAM_DESCRIPTION": {
+      "translation": "Exibe, no cadastro de casos deste surto, a opção de notificar uma equipe assim que o caso for criado"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CONTACT_NOTIFY_TEAM": {
+      "translation": "Permitir notificar equipe ao cadastrar contatos"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CONTACT_NOTIFY_TEAM_DESCRIPTION": {
+      "translation": "Exibe, no cadastro de contatos deste surto, a opção de notificar uma equipe assim que o contato for criado"
     },
     "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CROSS_LOCATION_CREATION": {
       "translation": "Permitir criação de contatos em outros locais"
@@ -11731,6 +11749,9 @@
     "LNG_PROGRESS_OPTION_LABEL_IN_PROGRESS": {
       "translation": "Em andamento"
     },
+    "LNG_QUESTIONNAIRE_ALERT_RULE_DEFAULT_MESSAGE": {
+      "translation": "Atenção: as respostas marcadas indicam grandes chances de confirmação"
+    },
     "LNG_QUESTIONNAIRE_BUTTON_ADD_MULTI_ANSWER": {
       "translation": "Adicionar resposta"
     },
@@ -11857,6 +11878,18 @@
     "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_ANSWER_FIELD_LABEL_ALERT": {
       "translation": "Alerta?"
     },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_ANSWER_FIELD_LABEL_ALERT_RULE_COUNTS": {
+      "translation": "Conta para o alerta"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_ANSWER_FIELD_LABEL_ALERT_RULE_COUNTS_DESCRIPTION": {
+      "translation": "Esta resposta conta para a quantidade mínima da regra de alerta da pergunta"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_ANSWER_FIELD_LABEL_ALERT_RULE_REQUIRED": {
+      "translation": "Obrigatória para o alerta"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_ANSWER_FIELD_LABEL_ALERT_RULE_REQUIRED_DESCRIPTION": {
+      "translation": "O alerta só é exibido se esta resposta estiver marcada (ela também conta para o mínimo)"
+    },
     "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_ANSWER_FIELD_LABEL_DETAILS": {
       "translation": "Você vai adicionar uma nova resposta a: <div class=\"gd-form-edit-questionnaire-v2-details-label\">{{details}}</div>"
     },
@@ -11896,8 +11929,26 @@
     "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_ALERT_REQUIRED": {
       "translation": "Obrigatório"
     },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ALERT_RULE": {
+      "translation": "Regra de alerta"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ALERT_RULE_ENABLED": {
+      "translation": "Ativar regra de alerta"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ALERT_RULE_ENABLED_DESCRIPTION": {
+      "translation": "Exibe um alerta quando todas as respostas obrigatórias forem marcadas e a quantidade de respostas que contam atingir o mínimo"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ALERT_RULE_MESSAGE": {
+      "translation": "Mensagem do alerta"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ALERT_RULE_MIN_ANSWERS": {
+      "translation": "Quantidade mínima de respostas"
+    },
     "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ANSWERS_DISPLAY": {
       "translation": "Exibição das respostas"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ANSWER_LIMITS": {
+      "translation": "Limites da resposta"
     },
     "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_ANSWER_TYPE": {
       "translation": "Tipo de resposta"
@@ -11911,8 +11962,35 @@
     "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_DETAILS": {
       "translation": "Você vai adicionar uma nova pergunta a: <div class=\"gd-form-edit-questionnaire-v2-details-label\">{{details}}</div>"
     },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_DISALLOW_FUTURE_DATES": {
+      "translation": "Não permitir datas futuras"
+    },
     "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_INACTIVE": {
       "translation": "Inativa?"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MAX_DATE": {
+      "translation": "Data máxima"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MAX_LENGTH": {
+      "translation": "Máximo de caracteres"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MAX_SELECTIONS": {
+      "translation": "Máximo de opções marcadas"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MAX_VALUE": {
+      "translation": "Valor máximo"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MIN_DATE": {
+      "translation": "Data mínima"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MIN_LENGTH": {
+      "translation": "Mínimo de caracteres"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MIN_SELECTIONS": {
+      "translation": "Mínimo de opções marcadas"
+    },
+    "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MIN_VALUE": {
+      "translation": "Valor mínimo"
     },
     "LNG_QUESTIONNAIRE_TEMPLATE_QUESTION_FIELD_LABEL_MULTI_ANSWER": {
       "translation": "Múltiplas respostas"
@@ -17023,8 +17101,20 @@
     "LNG_TEAM_NOTIFICATION_FIELD_LABEL_CREATED_AT": {
       "translation": "Criada em"
     },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_LOCATIONS": {
+      "translation": "Localizações"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_LOCATIONS_DESCRIPTION": {
+      "translation": "Todas as equipes que atuam nas localizações selecionadas ou em qualquer sub-localização delas recebem a notificação"
+    },
     "LNG_TEAM_NOTIFICATION_FIELD_LABEL_MESSAGE": {
       "translation": "Mensagem"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_OUTBREAK": {
+      "translation": "Surto"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_RECIPIENTS": {
+      "translation": "Destinatários"
     },
     "LNG_TEAM_NOTIFICATION_FIELD_LABEL_RECURRENCE_INTERVAL": {
       "translation": "Intervalo de recorrência"
@@ -17038,8 +17128,14 @@
     "LNG_TEAM_NOTIFICATION_FIELD_LABEL_SEVERITY": {
       "translation": "Severidade"
     },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_TARGET_TYPE": {
+      "translation": "Enviar para"
+    },
     "LNG_TEAM_NOTIFICATION_FIELD_LABEL_TEAM": {
       "translation": "Equipe"
+    },
+    "LNG_TEAM_NOTIFICATION_FIELD_LABEL_TEAMS": {
+      "translation": "Equipes"
     },
     "LNG_TEAM_NOTIFICATION_FIELD_LABEL_TITLE": {
       "translation": "Título"
@@ -17067,6 +17163,12 @@
     },
     "LNG_TEAM_NOTIFICATION_SEVERITY_YELLOW": {
       "translation": "Amarelo"
+    },
+    "LNG_TEAM_NOTIFICATION_TARGET_TYPE_LOCATION": {
+      "translation": "Localizações"
+    },
+    "LNG_TEAM_NOTIFICATION_TARGET_TYPE_TEAM": {
+      "translation": "Equipes"
     },
     "LNG_TEMPLATE_QUESTION_ANSWER_BADGE": {
       "translation": "R"

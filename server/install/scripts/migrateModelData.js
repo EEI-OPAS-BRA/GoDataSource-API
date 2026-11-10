@@ -723,19 +723,19 @@ const migrationVersions = [{
     }]
   }]
 }, {
-  version: '2.58.4',
+  version: '2.58.8',
   scripts: [{
     fileName: 'languageToken.js',
     actions: [{
       name: 'createUpdateLanguageTokens',
-      buildNo: 2
+      buildNo: 1
     }, {
       name: 'createUpdatePortugueseLanguageTokens',
-      buildNo: 2
+      buildNo: 1
     }]
   }]
 }, {
-  version: '2.58.5',
+  version: '2.58.9',
   scripts: [{
     fileName: 'languageToken.js',
     actions: [{

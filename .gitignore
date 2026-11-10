@@ -19,3 +19,13 @@ node_modules
 npm-debug.log
 build
 server/boot/scheduler.json
+.env
+server/storage/files/*
+!server/storage/files/.gitkeep
+!server/storage/files/README.md
+server/storage/icons/*
+!server/storage/icons/.gitkeep
+!server/storage/icons/README.md
+
+local/godatabckp/
+*.bson

@@ -24,3 +24,6 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Check pt-br translations
+        run: npm run check-pt-translations

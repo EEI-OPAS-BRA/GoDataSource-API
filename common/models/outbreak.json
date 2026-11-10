@@ -257,6 +257,11 @@
       "type": "boolean",
       "default": false
     },
+    "preventAddressDeletion": {
+      "description": "Flag specifying if the address delete button is hidden when creating/modifying cases, contacts and contacts of contacts. Default: false",
+      "type": "boolean",
+      "default": false
+    },
     "allowedRefDataItems": {
       "type": "allowedRefData"
     },
@@ -7848,7 +7853,7 @@
           "type": [
             "contactWithRelationships"
           ],
-          "description": "List of contacts that match the search criteria (at most 'meta.limit' of them). Each contact includes all its regular fields plus a 'relationships' array; each relationship includes all its regular fields plus 'relatedPersonId' and 'relatedPersonData' (id, type, visualId and name of the case/contact/event on the other end of the relationship, already resolved).",
+          "description": "List of contacts that match the search criteria (at most 'meta.limit' of them). Each contact includes all its regular fields plus a 'relationships' array; each relationship includes all its regular fields plus 'relatedPersonId' and 'relatedPersonData' (id, type, visualId, name, classification, dateOfReporting, dateOfOnset and followUpTeamId of the case/contact/event on the other end of the relationship, already resolved).",
           "required": true
         },
         {

@@ -68,6 +68,56 @@
         "templateQuestion"
       ],
       "description": "Sub-questions displayed once this question has been answered (used for answer types that don't have selectable answer options, e.g. free text, numeric, date/time, file upload)"
+    },
+    "minValue": {
+      "type": "number",
+      "description": "Numeric answers - minimum allowed value"
+    },
+    "maxValue": {
+      "type": "number",
+      "description": "Numeric answers - maximum allowed value"
+    },
+    "minLength": {
+      "type": "number",
+      "description": "Free text answers - minimum number of characters"
+    },
+    "maxLength": {
+      "type": "number",
+      "description": "Free text answers - maximum number of characters"
+    },
+    "minDate": {
+      "type": "date",
+      "description": "Date answers - earliest allowed date"
+    },
+    "maxDate": {
+      "type": "date",
+      "description": "Date answers - latest allowed date"
+    },
+    "disallowFutureDates": {
+      "type": "boolean",
+      "default": false,
+      "description": "Date answers - don't allow dates after today"
+    },
+    "minSelections": {
+      "type": "number",
+      "description": "Multiple answers - minimum number of selected options"
+    },
+    "maxSelections": {
+      "type": "number",
+      "description": "Multiple answers - maximum number of selected options"
+    },
+    "alertRuleEnabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Multiple answers - display an alert when the alert rule is satisfied"
+    },
+    "alertRuleMinAnswers": {
+      "type": "number",
+      "description": "Multiple answers - minimum number of selected answers that count for the alert rule"
+    },
+    "alertRuleMessage": {
+      "type": "string",
+      "description": "Multiple answers - message displayed when the alert rule is satisfied"
     }
   },
   "validations": [],

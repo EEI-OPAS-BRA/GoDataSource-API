@@ -1,0 +1,17 @@
+{
+  "id": "english_us",
+  "tokens": {
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_NOTIFY_TEAM": {
+      "translation": "Allow notify team when creating cases"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_NOTIFY_TEAM_DESCRIPTION": {
+      "translation": "Shows the 'notify team' option on the case creation form for this outbreak, triggered as soon as the case is created"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CONTACT_NOTIFY_TEAM": {
+      "translation": "Allow notify team when creating contacts"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CONTACT_NOTIFY_TEAM_DESCRIPTION": {
+      "translation": "Shows the 'notify team' option on the contact creation form for this outbreak, triggered as soon as the contact is created"
+    }
+  }
+}

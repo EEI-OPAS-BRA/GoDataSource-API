@@ -1823,6 +1823,28 @@ module.exports = function (Outbreak) {
       .catch(callback);
   };
 
+    /**
+   * Count contacts grouped by gender, age and year of reporting (dashboard - contact profile)
+   * @param filter
+   * @param options
+   * @param callback
+   */
+  Outbreak.prototype.countContactsDemographics = function (filter, options, callback) {
+    app.models.contact
+      .countContactsDemographics(
+        options,
+        this.id,
+        filter
+      )
+      .then((result) => {
+        callback(
+          null,
+          result
+        );
+      })
+      .catch(callback);
+  };
+
   /**
    * Export range list of contacts and follow ups
    * Grouped by case/place

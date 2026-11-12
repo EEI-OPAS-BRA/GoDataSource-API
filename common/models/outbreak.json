@@ -1495,6 +1495,12 @@
     },
     {
       "principalType": "ROLE",
+      "principalId": "contact_grouped_by_risk",
+      "permission": "ALLOW",
+      "property": "countContactsDemographics"
+    },
+    {
+      "principalType": "ROLE",
       "principalId": "follow_up_export_range",
       "permission": "ALLOW",
       "property": "exportRangeListOfContacts"
@@ -1750,6 +1756,12 @@
       "principalId": "case_list",
       "permission": "ALLOW",
       "property": "countCasesHospitalized"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "case_grouped_by_classification",
+      "permission": "ALLOW",
+      "property": "countCasesDemographics"
     },
     {
       "principalType": "ROLE",
@@ -6887,6 +6899,44 @@
         "path": "/cases/hospitalized/count"
       }
     },
+        "prototype.countCasesDemographics": {
+      "accepts": [
+        {
+          "arg": "filter",
+          "type": "object",
+          "description": "Filter defining fields, where, include, order, offset, and limit - must be a JSON-encoded string ({\"something\":\"value\"}). Only filter.where is applied."
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "result",
+          "type": {
+            "total": "number",
+            "groups": [
+              {
+                "gender": "string",
+                "age": "number",
+                "year": "number",
+                "count": "number"
+              }
+            ]
+          },
+          "description": "Number of cases grouped by gender, age (completed years) and year of symptom onset. Null means not informed.",
+          "required": true,
+          "root": true
+        }
+      ],
+      "description": "Counts the number of cases grouped by gender, age and year of symptom onset",
+      "http": {
+        "verb": "get",
+        "path": "/cases/demographics/count"
+      }
+    },
     "prototype.countContactsPerRiskLevel": {
       "accepts": [
         {
@@ -6924,6 +6974,44 @@
       "http": {
         "verb": "get",
         "path": "/contacts/per-risk-level/count"
+      }
+    },
+        "prototype.countContactsDemographics": {
+      "accepts": [
+        {
+          "arg": "filter",
+          "type": "object",
+          "description": "Filter defining fields, where, include, order, offset, and limit - must be a JSON-encoded string ({\"something\":\"value\"}). Only filter.where is applied."
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "result",
+          "type": {
+            "total": "number",
+            "groups": [
+              {
+                "gender": "string",
+                "age": "number",
+                "year": "number",
+                "count": "number"
+              }
+            ]
+          },
+          "description": "Number of contacts grouped by gender, age (completed years) and year of reporting. Null means not informed.",
+          "required": true,
+          "root": true
+        }
+      ],
+      "description": "Counts the number of contacts grouped by gender, age and year of reporting",
+      "http": {
+        "verb": "get",
+        "path": "/contacts/demographics/count"
       }
     },
     "prototype.countCasesStratifiedByClassificationOverTime": {

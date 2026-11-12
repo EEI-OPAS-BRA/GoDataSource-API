@@ -182,8 +182,17 @@ module.exports = function (Outbreak) {
                   name: true,
                   firstName: true,
                   middleName: true,
-                  lastName: true
+                  lastName: true,
+                  classification: true,
+                  dateOfReporting: true,
+                  dateOfOnset: true,
+                  followUpTeamId: true
                 }
+              })
+              .then(function (relatedPeople) {
+                return Outbreak.helpers
+                  .maskRestrictedRelationshipPeopleNames({people: relatedPeople}, options)
+                  .then(() => relatedPeople);
               })
               .then(function (relatedPeople) {
                 const relatedPeopleMap = {};
@@ -1418,12 +1427,19 @@ module.exports = function (Outbreak) {
     }
 
     // prefilter
-    app.models.contact
-      .addGeographicalRestrictions(
-        options.remotingContext,
-        filter.where,
-        app.models.contact.modelName
-      )
+    let withholdPersonName;
+    app.models.relationship
+      .getExportPersonNameWithholding(options.remotingContext)
+      .then((withhold) => {
+        withholdPersonName = withhold;
+
+        return app.models.contact
+          .addGeographicalRestrictions(
+            options.remotingContext,
+            filter.where,
+            app.models.contact.modelName
+          );
+      })
       .then((updatedFilter) => {
         // update casesQuery if needed
         updatedFilter && (filter.where = updatedFilter);
@@ -1589,6 +1605,7 @@ module.exports = function (Outbreak) {
                 relatedPersonData: {
                   type: exportHelper.RELATION_TYPE.HAS_ONE,
                   collection: 'person',
+                  withhold: withholdPersonName,
                   project: [
                     '_id',
                     // event

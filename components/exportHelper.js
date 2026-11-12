@@ -282,6 +282,23 @@ function exportFilteredModelsList(
             );
           }
 
+          // withhold is optional and only applies to records attached by key
+          if (relationData.withhold) {
+            if (
+              relationData.type !== RELATION_TYPE.HAS_ONE ||
+              !_.isObject(relationData.withhold.visibleWhen) ||
+              !Array.isArray(relationData.withhold.properties)
+            ) {
+              throwError(
+                relationName,
+                'invalid withhold'
+              );
+            }
+
+            // transform to mongo query
+            relationData.withhold.visibleWhen = convertLoopbackQueryToMongo(relationData.withhold.visibleWhen);
+          }
+
           // validate accordingly to its type
           switch (relationData.type) {
             case RELATION_TYPE.HAS_ONE:
@@ -4851,7 +4868,7 @@ function exportFilteredModelsList(
                         !sheetHandler.process.exportIsNonFlat ?
                           undefined :
                           (function (localPropertyName) {
-                            return (value, translatePipe) => {
+                            return (value, translatePipe, record) => {
                               // for non flat file types we might need to translate / format value
                               // - array condition must be before object since array ...is an object too...
                               if (
@@ -4865,6 +4882,16 @@ function exportFilteredModelsList(
                                   prefix,
                                   childValue
                                 ) => {
+                                  if (
+                                    !sheetHandler.dontTranslateValues &&
+                                    sheetHandler.replacements[prefix]
+                                  ) {
+                                    childValue = _.get(
+                                      record,
+                                      sheetHandler.replacements[prefix].value
+                                    );
+                                  }
+
                                   // no value ?
                                   if (!childValue) {
                                     return childValue;
@@ -4904,10 +4931,17 @@ function exportFilteredModelsList(
 
                                       // check if we should exclude it
                                       if (
-                                        dataFilter &&
-                                        dataFilter.projection &&
-                                        !dataFilter.projection[path] &&
-                                        !sheetHandler.columns.labels[path]
+                                        !sheetHandler.columns.labels[path] && (
+                                          (
+                                            dataFilter &&
+                                            dataFilter.projection &&
+                                            !dataFilter.projection[path]
+                                          ) || (
+                                            modelOptions.filterNestedPropertiesByFieldsGroup &&
+                                            fieldsGroupList &&
+                                            fieldsGroupList.length > 0
+                                          )
+                                        )
                                       ) {
                                         // jump to next property
                                         continue;
@@ -5556,11 +5590,59 @@ function exportFilteredModelsList(
               return getOneHandlerGetNextRelation();
             };
 
+            // clear the properties of the related records the user is not allowed to read
+            const withholdRelationsProperties = () => {
+              return Promise.all(
+                Object.keys(relationsResults)
+                  .filter((relationName) => sheetHandler.relationsMap[relationName].data.withhold)
+                  .map((relationName) => {
+                    const relationData = sheetHandler.relationsMap[relationName].data;
+                    const records = relationsResults[relationName];
+
+                    return sheetHandler.dbConnection
+                      .collection(relationData.collection)
+                      .find({
+                        $and: [
+                          {
+                            _id: {
+                              $in: Object.keys(records).map((keyValue) => records[keyValue].id)
+                            }
+                          },
+                          relationData.withhold.visibleWhen
+                        ]
+                      }, {
+                        projection: {
+                          _id: 1
+                        }
+                      })
+                      .toArray()
+                      .then((visibleRecords) => {
+                        const visibleIds = new Set(visibleRecords.map((record) => record._id));
+                        Object.keys(records).forEach((keyValue) => {
+                          if (visibleIds.has(records[keyValue].id)) {
+                            return;
+                          }
+
+                          // the same record may be shared with another relation of this request
+                          records[keyValue] = Object.assign({}, records[keyValue]);
+                          relationData.withhold.properties.forEach((property) => {
+                            if (records[keyValue][property] !== undefined) {
+                              records[keyValue][property] = null;
+                            }
+                          });
+                        });
+                      });
+                  })
+              );
+            };
+
             // api request - we will do them synchronously so we use...less memory
             const getNextRelationData = () => {
               // finished ?
               if (dbRequests.length < 1) {
-                return resolve(relationsResults);
+                return withholdRelationsProperties()
+                  .then(() => resolve(relationsResults))
+                  .catch(reject);
               }
 
               // retrieve next request

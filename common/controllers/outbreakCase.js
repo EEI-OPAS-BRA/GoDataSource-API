@@ -291,6 +291,28 @@ module.exports = function (Outbreak) {
       .catch(callback);
   };
 
+    /**
+   * Count cases grouped by gender, age and year of symptom onset (dashboard - case profile)
+   * @param filter
+   * @param options
+   * @param callback
+   */
+  Outbreak.prototype.countCasesDemographics = function (filter, options, callback) {
+    app.models.case
+      .countCasesDemographics(
+        options,
+        this.id,
+        filter
+      )
+      .then((result) => {
+        callback(
+          null,
+          result
+        );
+      })
+      .catch(callback);
+  };
+
   /**
    * Attach before remote (GET outbreaks/{id}/cases/export) hooks
    */

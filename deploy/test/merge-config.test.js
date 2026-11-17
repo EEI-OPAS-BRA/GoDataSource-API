@@ -203,3 +203,65 @@ test('CLI ignores stale temp files in the server dir', () => {
   assert.equal(res.status, 0, res.stderr);
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(root, 'server', 'config.json'), 'utf8')), {});
 });
+
+test('CLI never echoes the content of a malformed file', () => {
+  const root = setup({ 'defaults/config.json': '{}', 'defaults/datasources.json': '{}' });
+  const file = path.join(root, 'overrides', 'datasources.json');
+  fs.writeFileSync(file, '{\n  "email": {"transports": [{"auth": {"pass": s3cret-Smtp-Value}}]}\n}\n');
+  const res = runCli(root);
+  assert.equal(res.status, 2);
+  assert.ok(res.stderr.includes(file), res.stderr);
+  assert.match(res.stderr, /line 2 column 46/);
+  assert.ok(!res.stderr.includes('s3cret'), res.stderr);
+});
+
+test('CLI reports line and column for a missing comma', () => {
+  const root = setup({ 'defaults/config.json': '{}', 'defaults/datasources.json': '{}' });
+  const file = path.join(root, 'overrides', 'config.json');
+  fs.writeFileSync(file, '{\n  "passwordReset": {"from": "a@b.c"}\n  "timezone": "America/Sao_Paulo"\n}\n');
+  const res = runCli(root);
+  assert.equal(res.status, 2);
+  assert.match(res.stderr, /line 3 column 3/);
+  assert.ok(!res.stderr.includes('America'), res.stderr);
+});
+
+test('CLI derives an escaped url without --mongo-env when the url is empty', () => {
+  const root = setup({
+    'defaults/config.json': '{}',
+    'defaults/datasources.json': JSON.stringify({ mongoDb: {
+      host: '127.0.0.1', port: 27017, url: '', database: 'go-data', user: 'root', password: '', authSource: 'admin'
+    } }),
+    'overrides/datasources.json': '{"mongoDb":{"password":"p@ss:w/rd%#1"}}'
+  });
+  const res = runCli(root);
+  assert.equal(res.status, 0, res.stderr);
+  const ds = JSON.parse(fs.readFileSync(path.join(root, 'server', 'datasources.json'), 'utf8'));
+  assert.equal(ds.mongoDb.url, 'mongodb://root:p%40ss%3Aw%2Frd%25%231@127.0.0.1:27017/go-data?authSource=admin');
+  assert.equal(ds.mongoDb.password, 'p@ss:w/rd%#1');
+});
+
+test('CLI keeps a url set in the files without --mongo-env', () => {
+  const url = 'mongodb://u:p@h:1/db?replicaSet=r';
+  const root = setup({
+    'defaults/config.json': '{}',
+    'defaults/datasources.json': JSON.stringify({ mongoDb: { host: 'h', user: 'u', password: 'p', url } })
+  });
+  assert.equal(runCli(root).status, 0);
+  assert.equal(JSON.parse(fs.readFileSync(path.join(root, 'server', 'datasources.json'), 'utf8')).mongoDb.url, url);
+});
+
+test('CLI with --docker forces the listen host and port', () => {
+  const files = {
+    'defaults/config.json': '{"host":"0.0.0.0","port":3000,"public":{"port":3000}}',
+    'defaults/datasources.json': '{}',
+    'overrides/config.json': '{"host":"127.0.0.1","port":3010}'
+  };
+  const docker = setup(files);
+  assert.equal(runCli(docker, ['--docker']).status, 0);
+  const cfg = JSON.parse(fs.readFileSync(path.join(docker, 'server', 'config.json'), 'utf8'));
+  assert.deepEqual([cfg.host, cfg.port, cfg.public.port], ['0.0.0.0', 3000, 3000]);
+  const plain = setup(files);
+  assert.equal(runCli(plain).status, 0);
+  const kept = JSON.parse(fs.readFileSync(path.join(plain, 'server', 'config.json'), 'utf8'));
+  assert.deepEqual([kept.host, kept.port], ['127.0.0.1', 3010]);
+});

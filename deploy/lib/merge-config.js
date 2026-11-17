@@ -27,14 +27,19 @@ function deepMerge(base, override) {
 
 function applyMongoEnv(datasources, env) {
   const result = structuredClone(datasources);
-  result.mongoDb = Object.assign({}, result.mongoDb, {
+  const mongo = {
     host: env.GODATA_MONGO_HOST || 'mongo',
     port: Number(env.GODATA_MONGO_PORT || 27017),
     database: env.GODATA_DB || 'go-data',
     user: env.GODATA_MONGO_USER || 'godata',
     password: env.GODATA_MONGO_PASSWORD,
     authSource: env.GODATA_MONGO_AUTH_SOURCE || 'admin'
-  });
+  };
+  // The LoopBack connector builds its URL from user and password without escaping them; the other app
+  // components read the raw fields, so both are kept.
+  mongo.url = `mongodb://${encodeURIComponent(mongo.user)}:${encodeURIComponent(mongo.password)}@` +
+    `${mongo.host}:${mongo.port}/${encodeURIComponent(mongo.database)}?authSource=${encodeURIComponent(mongo.authSource)}`;
+  result.mongoDb = Object.assign({}, result.mongoDb, mongo);
   return result;
 }
 

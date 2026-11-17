@@ -44,6 +44,19 @@ function hasUsers(conn) {
   return withDb(conn, async db => (await db.collection('user').findOne({}, { projection: { _id: 1 } })) !== null);
 }
 
+// init-database drops every collection, so it may only run on a database without any document.
+function dbEmpty(conn) {
+  return withDb(conn, async db => {
+    const collections = await db.listCollections({}, { nameOnly: true }).toArray();
+    for (const { name } of collections) {
+      if (!name.startsWith('system.') && await db.collection(name).findOne({}, { projection: { _id: 1 } })) {
+        return false;
+      }
+    }
+    return true;
+  });
+}
+
 function migrationInProgress(conn) {
   return withDb(conn, async db =>
     (await db.collection('migrationLog').findOne({ status: 'Started' }, { projection: { _id: 1 } })) !== null);
@@ -65,7 +78,7 @@ function setBackupLocation({ location, ...conn }) {
   });
 }
 
-const USAGE = 'usage: db-state.js <has-users|migration-in-progress|set-backup-location <path>> [--uri <uri>] [--db <name>]\n' +
+const USAGE = 'usage: db-state.js <has-users|db-empty|migration-in-progress|set-backup-location <path>> [--uri <uri>] [--db <name>]\n' +
   '       db-state.js print-uri --datasources <file>';
 
 function parseArgs(argv) {
@@ -93,7 +106,7 @@ async function main(argv, env) {
     return 0;
   }
 
-  if (!['has-users', 'migration-in-progress', 'set-backup-location'].includes(command) ||
+  if (!['has-users', 'db-empty', 'migration-in-progress', 'set-backup-location'].includes(command) ||
     (command === 'set-backup-location' && !arg)) {
     throw new Error(USAGE);
   }
@@ -104,6 +117,8 @@ async function main(argv, env) {
 
   if (command === 'has-users') {
     console.log(await hasUsers(conn) ? 'yes' : 'no');
+  } else if (command === 'db-empty') {
+    console.log(await dbEmpty(conn) ? 'yes' : 'no');
   } else if (command === 'migration-in-progress') {
     console.log(await migrationInProgress(conn) ? 'yes' : 'no');
   } else {
@@ -123,4 +138,4 @@ if (require.main === module) {
   );
 }
 
-module.exports = { hasUsers, migrationInProgress, setBackupLocation, buildUri, buildUriFromDatasources };
+module.exports = { hasUsers, dbEmpty, migrationInProgress, setBackupLocation, buildUri, buildUriFromDatasources };

@@ -10,6 +10,7 @@ const { MongoClient } = require('mongodb');
 
 const {
   hasUsers,
+  dbEmpty,
   migrationInProgress,
   setBackupLocation,
   buildUri,
@@ -20,11 +21,11 @@ const baseUri = process.env.GODATA_TEST_MONGO_URI;
 const skip = baseUri ? false : 'GODATA_TEST_MONGO_URI is not set';
 const dbName = `godata_sim_test_${crypto.randomBytes(4).toString('hex')}`;
 
-async function withDb(fn) {
+async function withDb(fn, name = dbName) {
   const client = new MongoClient(baseUri);
   await client.connect();
   try {
-    return await fn(client.db(dbName));
+    return await fn(client.db(name));
   } finally {
     await client.close();
   }
@@ -33,7 +34,17 @@ async function withDb(fn) {
 after(async () => {
   if (baseUri) {
     await withDb(db => db.dropDatabase());
+    await withDb(db => db.dropDatabase(), `${dbName}_empty`);
   }
+});
+
+test('dbEmpty is true until any collection has a document', { skip }, async () => {
+  const conn = { uri: baseUri, dbName: `${dbName}_empty` };
+  assert.strictEqual(await dbEmpty(conn), true);
+  await withDb(db => db.createCollection('location'), conn.dbName);
+  assert.strictEqual(await dbEmpty(conn), true);
+  await withDb(db => db.collection('location').insertOne({ name: 'x' }), conn.dbName);
+  assert.strictEqual(await dbEmpty(conn), false);
 });
 
 test('hasUsers is false on an empty db and true after one insert in user', { skip }, async () => {

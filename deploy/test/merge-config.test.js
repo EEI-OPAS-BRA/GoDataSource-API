@@ -184,3 +184,13 @@ test('CLI leaves no temp file after a failed write', () => {
   assert.notEqual(res.status, 0);
   assert.deepEqual(fs.readdirSync(path.join(root, 'server')).filter((f) => f.endsWith('.tmp')), []);
 });
+
+test('CLI ignores stale temp files in the server dir', () => {
+  const root = setup({ 'defaults/config.json': '{}', 'defaults/datasources.json': '{}' });
+  for (const name of ['config.json', 'datasources.json']) {
+    fs.writeFileSync(path.join(root, 'server', `${name}.1.stale.tmp`), 'junk');
+  }
+  const res = runCli(root);
+  assert.equal(res.status, 0, res.stderr);
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(root, 'server', 'config.json'), 'utf8')), {});
+});

@@ -1,5 +1,6 @@
 'use strict';
 
+const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -55,7 +56,7 @@ function readJsonObject(file) {
 }
 
 function writeJsonAtomic(file, data, mode = 0o600) {
-  const tmp = `${file}.${process.pid}.tmp`;
+  const tmp = `${file}.${process.pid}.${crypto.randomBytes(6).toString('hex')}.tmp`;
   const fd = fs.openSync(tmp, 'wx', mode);
   try {
     try {

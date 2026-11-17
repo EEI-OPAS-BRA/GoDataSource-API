@@ -74,6 +74,15 @@ test('applyMongoEnv sets every key and defaults', () => {
   assert.equal(result.mongoDb.password, 'p@ss:w/rd%#');
   assert.equal(result.mongoDb.authSource, 'admin');
   assert.equal(result.mongoDb.name, 'mongoDb');
+  assert.equal(result.mongoDb.url, 'mongodb://godata:p%40ss%3Aw%2Frd%25%23@mongo:27017/go-data?authSource=admin');
+});
+
+test('applyMongoEnv replaces a url from the files', () => {
+  const result = applyMongoEnv(
+    { mongoDb: { url: 'mongodb://old:old@127.0.0.1:27017/old' } },
+    { GODATA_MONGO_PASSWORD: 'x', GODATA_MONGO_HOST: 'db', GODATA_DB: 'godata-teste', GODATA_MONGO_USER: 'u@1' }
+  );
+  assert.equal(result.mongoDb.url, 'mongodb://u%401:x@db:27017/godata-teste?authSource=admin');
 });
 
 test('applyMongoEnv converts a custom port to a number', () => {

@@ -1,0 +1,16 @@
+{
+  "email": {
+    "transports": [
+      {
+        "type": "SMTP",
+        "host": "smtp.saude.uf.gov.br",
+        "secure": true,
+        "port": 465,
+        "auth": {
+          "user": "nao-responda@saude.uf.gov.br",
+          "pass": "troque-esta-senha"
+        }
+      }
+    ]
+  }
+}

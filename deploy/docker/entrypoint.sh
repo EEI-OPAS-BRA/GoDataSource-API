@@ -9,6 +9,7 @@ readonly STATE_DIR="$APP_DIR/state"
 readonly MARKER="$STATE_DIR/migration-failed"
 readonly SENTINEL="$STATE_DIR/db-command-running"
 readonly RUN_LOG="$STATE_DIR/last-run.log"
+readonly SCHEDULER_STATE="$STATE_DIR/scheduler.json"
 readonly RUNTIME_CONFIG="$APP_DIR/client/dist/assets/runtime-config.json"
 readonly MONGO_WAIT_ATTEMPTS=30
 
@@ -188,6 +189,12 @@ esac
 # 5. Backup location
 db_state set-backup-location "$BACKUP_DIR" || exit 1
 log "backup location: $REPLY"
+
+# server/boot/scheduler.json links here; the scheduler skips every routine while the file is missing.
+if [[ ! -e "$SCHEDULER_STATE" ]]; then
+  echo '{}' > "$SCHEDULER_STATE"
+  log "scheduler state: created $SCHEDULER_STATE"
+fi
 
 # 6. Start the application
 log "starting Go.Data ${GODATA_VERSION:-unknown}"

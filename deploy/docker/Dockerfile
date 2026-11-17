@@ -29,7 +29,14 @@ COPY . .
 COPY deploy/docker/entrypoint.sh /usr/local/bin/godata-entrypoint
 
 # Code stays root-owned; node gets only the paths the application and the entrypoint write at runtime.
+# The scheduler keeps its routine state next to its code; the link moves it to the persistent state folder.
 RUN set -eu; \
+  for f in server/config.json server/datasources.json; do \
+    if [ -e "$f" ]; then \
+      echo "ignore file not applied: $f is in the image; build with BuildKit and -f deploy/docker/Dockerfile" >&2; \
+      exit 1; \
+    fi; \
+  done; \
   for f in client/dist/index.html client/dist/assets/runtime-config.json \
     deploy/defaults/config.json deploy/defaults/datasources.json \
     deploy/lib/merge-config.js deploy/lib/db-state.js deploy/lib/install-guard.js; do \
@@ -37,7 +44,8 @@ RUN set -eu; \
   done; \
   chmod 0755 /usr/local/bin/godata-entrypoint; \
   mkdir -p server/storage/files server/storage/icons backups state config logs; \
-  chown node:node server server/boot logs \
+  ln -sfn /opt/godata/state/scheduler.json server/boot/scheduler.json; \
+  chown node:node server logs \
     client/dist/assets client/dist/assets/runtime-config.json \
     server/storage server/storage/files server/storage/icons backups state
 

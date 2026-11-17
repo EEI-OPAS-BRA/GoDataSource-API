@@ -131,3 +131,20 @@ test('CLI print-uri reads a datasources file', () => {
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test('CLI print-uri never echoes a malformed datasources file', () => {
+  const { spawnSync } = require('node:child_process');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dbstate-'));
+  try {
+    const file = path.join(dir, 'datasources.json');
+    fs.writeFileSync(file, '{\n  "mongoDb": {"user": "u", "password": s3cret-Mongo-Value}\n}\n');
+    const res = spawnSync(process.execPath, [path.join(__dirname, '../lib/db-state.js'), 'print-uri', '--datasources', file],
+      { encoding: 'utf8' });
+    assert.notStrictEqual(res.status, 0);
+    assert.ok(res.stderr.includes(file), res.stderr);
+    assert.match(res.stderr, /line 2 column 40/);
+    assert.ok(!res.stderr.includes('s3cret'), res.stderr);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});

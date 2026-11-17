@@ -1,7 +1,7 @@
 'use strict';
 
-const fs = require('node:fs');
 const { MongoClient } = require('mongodb');
+const { readJsonObject } = require('./merge-config');
 
 const SERVER_SELECTION_TIMEOUT_MS = 10000;
 
@@ -102,7 +102,7 @@ async function main(argv, env) {
     if (!opts.datasources) {
       throw new Error(USAGE);
     }
-    console.log(buildUriFromDatasources(JSON.parse(fs.readFileSync(opts.datasources, 'utf8'))));
+    console.log(buildUriFromDatasources(readJsonObject(opts.datasources)));
     return 0;
   }
 

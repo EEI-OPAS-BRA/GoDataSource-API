@@ -1,0 +1,173 @@
+{
+  "id": "english_us",
+  "tokens": {
+    "LNG_LAYOUT_MENU_ITEM_WHATSAPP_MESSAGES_LABEL": {
+      "translation": "WhatsApp messages"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_TITLE": {
+      "translation": "WhatsApp messages"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_ACTION_MODIFY": {
+      "translation": "Modify message"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_ACTION_ENABLE_DISABLE": {
+      "translation": "Enable / disable"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_ACTION_DELETE": {
+      "translation": "Delete message"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_ACTION_DELETE_SUCCESS_MESSAGE": {
+      "translation": "Message deleted successfully"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_ACTION_TOGGLE_ENABLED_SUCCESS_MESSAGE": {
+      "translation": "Message updated successfully"
+    },
+    "LNG_DIALOG_CONFIRM_DELETE_WHATSAPP_MESSAGE": {
+      "translation": "Are you sure you want to delete the message \"{{name}}\"?"
+    },
+    "LNG_PAGE_CREATE_WHATSAPP_MESSAGE_TITLE": {
+      "translation": "Create WhatsApp message"
+    },
+    "LNG_PAGE_MODIFY_WHATSAPP_MESSAGE_TITLE": {
+      "translation": "Modify WhatsApp message"
+    },
+    "LNG_PAGE_CREATE_WHATSAPP_MESSAGE_ACTION_CREATE_SUCCESS_MESSAGE": {
+      "translation": "Message created successfully"
+    },
+    "LNG_PAGE_MODIFY_WHATSAPP_MESSAGE_ACTION_MODIFY_SUCCESS_MESSAGE": {
+      "translation": "Message modified successfully"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_OUTBREAK": {
+      "translation": "Outbreak"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_TITLE": {
+      "translation": "Title"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_MESSAGE": {
+      "translation": "Message"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_MESSAGE_DESCRIPTION": {
+      "translation": "The message can include the record data: <b>{nome}</b> first name, <b>{sobrenome}</b> last name, <b>{nome_completo}</b> full name, <b>{id}</b> case / contact ID and <b>{surto}</b> outbreak name"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_APPLIES_TO": {
+      "translation": "Available for"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_ACTIVE": {
+      "translation": "Active"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_CREATED_AT": {
+      "translation": "Created at"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_CREATED_BY": {
+      "translation": "Created by"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_UPDATED_AT": {
+      "translation": "Updated at"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_UPDATED_BY": {
+      "translation": "Updated by"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_DELETED": {
+      "translation": "Deleted"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_DELETED_AT": {
+      "translation": "Deleted at"
+    },
+    "LNG_WHATSAPP_MESSAGE_APPLIES_TO_ALL": {
+      "translation": "Cases and contacts"
+    },
+    "LNG_WHATSAPP_MESSAGE_APPLIES_TO_CASE": {
+      "translation": "Cases"
+    },
+    "LNG_WHATSAPP_MESSAGE_APPLIES_TO_CONTACT": {
+      "translation": "Contacts"
+    },
+    "LNG_PAGE_LIST_CASES_ACTION_SEND_WHATSAPP_MESSAGE": {
+      "translation": "Send WhatsApp message"
+    },
+    "LNG_PAGE_LIST_CONTACTS_ACTION_SEND_WHATSAPP_MESSAGE": {
+      "translation": "Send WhatsApp message"
+    },
+    "LNG_WHATSAPP_CHAT_TITLE": {
+      "translation": "WhatsApp message"
+    },
+    "LNG_WHATSAPP_CHAT_LABEL_PHONE": {
+      "translation": "Phone"
+    },
+    "LNG_WHATSAPP_CHAT_LABEL_PHONE_PLACEHOLDER": {
+      "translation": "Country code + area code + number"
+    },
+    "LNG_WHATSAPP_CHAT_LABEL_TEMPLATE": {
+      "translation": "Message"
+    },
+    "LNG_WHATSAPP_CHAT_LABEL_MESSAGE_PLACEHOLDER": {
+      "translation": "Type a message"
+    },
+    "LNG_WHATSAPP_CHAT_BUTTON_SEND": {
+      "translation": "Open in WhatsApp"
+    },
+    "LNG_WHATSAPP_CHAT_BUTTON_MINIMIZE": {
+      "translation": "Minimize"
+    },
+    "LNG_WHATSAPP_CHAT_BUTTON_RESTORE": {
+      "translation": "Restore"
+    },
+    "LNG_WHATSAPP_CHAT_NO_PHONE": {
+      "translation": "This record has no phone number saved. Type the number to send the message."
+    },
+    "LNG_WHATSAPP_CHAT_INVALID_PHONE": {
+      "translation": "The saved phone number is not valid for WhatsApp. Check the number."
+    },
+    "LNG_WHATSAPP_CHAT_NO_MESSAGE": {
+      "translation": "No active WhatsApp message configured for this outbreak. Type the message to send."
+    },
+    "LNG_WHATSAPP_CHAT_HINT": {
+      "translation": "The conversation opens in WhatsApp Web, in a small window on the side of the screen, in the account logged in this browser, with the message ready to send."
+    },
+    "LNG_WHATSAPP_CHAT_POPUP_BLOCKED": {
+      "translation": "The browser blocked the WhatsApp Web window. Allow pop-ups for Go.Data and try again."
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_GROUP_WHATSAPP_MESSAGE": {
+      "translation": "WhatsApp messages"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_GROUP_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Configure the outbreak WhatsApp messages and send them to cases and contacts"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_LIST_WHATSAPP_MESSAGE": {
+      "translation": "List WhatsApp messages"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_LIST_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Allows the user to list the WhatsApp messages configured for the outbreaks"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_VIEW_WHATSAPP_MESSAGE": {
+      "translation": "View WhatsApp message"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_VIEW_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Allows the user to view a WhatsApp message"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_CREATE_WHATSAPP_MESSAGE": {
+      "translation": "Create WhatsApp message"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_CREATE_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Allows the user to create WhatsApp messages for the outbreaks"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_MODIFY_WHATSAPP_MESSAGE": {
+      "translation": "Modify WhatsApp message"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_MODIFY_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Allows the user to modify, enable and disable WhatsApp messages"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_DELETE_WHATSAPP_MESSAGE": {
+      "translation": "Delete WhatsApp message"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_DELETE_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Allows the user to delete WhatsApp messages"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_SEND_WHATSAPP_MESSAGE": {
+      "translation": "Send WhatsApp message"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_SEND_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Allows the user to open the WhatsApp chat from the cases and contacts lists, with the message configured for the outbreak"
+    }
+  }
+}

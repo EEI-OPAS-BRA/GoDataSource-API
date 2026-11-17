@@ -21,6 +21,7 @@
     "newName": "Outbreaks and templates administrator",
     "description": "This role has access to configuration of the Go.Data for specific outbreaks and outbreak templates.",
     "permissionIds": [
+      "whatsapp_message_all",
       "outbreak_all",
       "outbreak_template_all",
 
@@ -33,6 +34,7 @@
     "migrateDate": "2020-02-17T00:02:00.000Z",
     "description": "",
     "permissionIds": [
+      "whatsapp_message_send",
       "case_all",
       "cluster_all",
       "contact_all",
@@ -63,6 +65,7 @@
     "newName": "Data exporter",
     "description": "",
     "permissionIds": [
+      "whatsapp_message_send",
       "case_export",
       "case_export_classification_per_location_report",
       "case_export_dossier",
@@ -128,6 +131,7 @@
     "migrateDate": "2020-02-17T00:02:00.000Z",
     "description": "",
     "permissionIds": [
+      "whatsapp_message_all",
       "case_count_case_contacts",
       "case_create_contact",
       "case_list_relationship_contacts",
@@ -179,6 +183,7 @@
     "migrateDate": "2020-02-17T00:02:00.000Z",
     "description": "",
     "permissionIds": [
+      "whatsapp_message_send",
       "case_count_case_contacts",
       "case_create_contact",
       "case_list_relationship_contacts",

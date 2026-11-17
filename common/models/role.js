@@ -1209,6 +1209,55 @@ module.exports = function (Role) {
       ]
     },
 
+    // WhatsApp messages
+    {
+      groupAllId: 'whatsapp_message_all',
+      groupLabel: 'LNG_ROLE_AVAILABLE_PERMISSIONS_GROUP_WHATSAPP_MESSAGE',
+      groupDescription: 'LNG_ROLE_AVAILABLE_PERMISSIONS_GROUP_WHATSAPP_MESSAGE_DESCRIPTION',
+      permissions: [
+        {
+          id: 'whatsapp_message_list',
+          label: 'LNG_ROLE_AVAILABLE_PERMISSIONS_LIST_WHATSAPP_MESSAGE',
+          description: 'LNG_ROLE_AVAILABLE_PERMISSIONS_LIST_WHATSAPP_MESSAGE_DESCRIPTION',
+          requires: []
+        },
+        {
+          id: 'whatsapp_message_view',
+          label: 'LNG_ROLE_AVAILABLE_PERMISSIONS_VIEW_WHATSAPP_MESSAGE',
+          description: 'LNG_ROLE_AVAILABLE_PERMISSIONS_VIEW_WHATSAPP_MESSAGE_DESCRIPTION',
+          requires: []
+        },
+        {
+          id: 'whatsapp_message_create',
+          label: 'LNG_ROLE_AVAILABLE_PERMISSIONS_CREATE_WHATSAPP_MESSAGE',
+          description: 'LNG_ROLE_AVAILABLE_PERMISSIONS_CREATE_WHATSAPP_MESSAGE_DESCRIPTION',
+          requires: []
+        },
+        {
+          id: 'whatsapp_message_modify',
+          label: 'LNG_ROLE_AVAILABLE_PERMISSIONS_MODIFY_WHATSAPP_MESSAGE',
+          description: 'LNG_ROLE_AVAILABLE_PERMISSIONS_MODIFY_WHATSAPP_MESSAGE_DESCRIPTION',
+          requires: [
+            'whatsapp_message_view'
+          ]
+        },
+        {
+          id: 'whatsapp_message_delete',
+          label: 'LNG_ROLE_AVAILABLE_PERMISSIONS_DELETE_WHATSAPP_MESSAGE',
+          description: 'LNG_ROLE_AVAILABLE_PERMISSIONS_DELETE_WHATSAPP_MESSAGE_DESCRIPTION',
+          requires: [
+            'whatsapp_message_view'
+          ]
+        },
+        {
+          id: 'whatsapp_message_send',
+          label: 'LNG_ROLE_AVAILABLE_PERMISSIONS_SEND_WHATSAPP_MESSAGE',
+          description: 'LNG_ROLE_AVAILABLE_PERMISSIONS_SEND_WHATSAPP_MESSAGE_DESCRIPTION',
+          requires: []
+        }
+      ]
+    },
+
     // Cluster
     {
       groupAllId: 'cluster_all',

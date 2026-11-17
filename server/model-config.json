@@ -60,6 +60,10 @@
     "dataSource": "mongoDb",
     "public": true
   },
+  "whatsappMessage": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
   "auditLog": {
     "dataSource": "mongoDb",
     "public": true

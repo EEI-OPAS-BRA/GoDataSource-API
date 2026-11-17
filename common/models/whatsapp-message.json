@@ -1,0 +1,102 @@
+{
+  "name": "whatsappMessage",
+  "base": "extendedPersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "outbreakId": {
+      "type": "string",
+      "required": true,
+      "description": "Outbreak the message belongs to"
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "description": "Name used to identify the message ( not sent )"
+    },
+    "message": {
+      "type": "string",
+      "required": true,
+      "description": "Message text sent through WhatsApp; supports the placeholders {nome}, {sobrenome}, {nome_completo}, {id} and {surto}"
+    },
+    "appliesTo": {
+      "type": "string",
+      "enum": [
+        "all",
+        "case",
+        "contact"
+      ],
+      "default": "all",
+      "description": "Records the message is offered for: cases, contacts or both"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "indexes": {
+    "outbreakId_index": {
+      "outbreakId": 1
+    }
+  },
+  "validations": [],
+  "relations": {
+    "outbreak": {
+      "type": "belongsTo",
+      "model": "outbreak",
+      "foreignKey": "outbreakId"
+    }
+  },
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "whatsapp_message_list",
+      "permission": "ALLOW",
+      "property": "find"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "whatsapp_message_list",
+      "permission": "ALLOW",
+      "property": "count"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "whatsapp_message_send",
+      "permission": "ALLOW",
+      "property": "find"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "whatsapp_message_view",
+      "permission": "ALLOW",
+      "property": "findById"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "whatsapp_message_create",
+      "permission": "ALLOW",
+      "property": "create"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "whatsapp_message_modify",
+      "permission": "ALLOW",
+      "property": "patchAttributes"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "whatsapp_message_delete",
+      "permission": "ALLOW",
+      "property": "deleteById"
+    }
+  ],
+  "methods": {}
+}

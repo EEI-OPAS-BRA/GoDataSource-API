@@ -2710,6 +2710,9 @@
     "LNG_DIALOG_CONFIRM_DELETE_VACCINE": {
       "translation": "Tem certeza de que deseja excluir esta vacina?"
     },
+    "LNG_DIALOG_CONFIRM_DELETE_WHATSAPP_MESSAGE": {
+      "translation": "Tem certeza que deseja excluir a mensagem \"{{name}}\"?"
+    },
     "LNG_DIALOG_CONFIRM_DUPLICATE_QUESTION": {
       "translation": "Tem certeza de que deseja duplicar esta pergunta?"
     },
@@ -4873,6 +4876,9 @@
     "LNG_LAYOUT_MENU_ITEM_VERSION_LABEL": {
       "translation": "Versão"
     },
+    "LNG_LAYOUT_MENU_ITEM_WHATSAPP_MESSAGES_LABEL": {
+      "translation": "Mensagens de WhatsApp"
+    },
     "LNG_LAYOUT_MENU_SYSTEM_ADMINISTRATION_LABEL": {
       "translation": "ADMINISTRAÇÃO DO SISTEMA"
     },
@@ -6793,6 +6799,12 @@
     "LNG_PAGE_CREATE_USER_TITLE": {
       "translation": "Criar usuário"
     },
+    "LNG_PAGE_CREATE_WHATSAPP_MESSAGE_ACTION_CREATE_SUCCESS_MESSAGE": {
+      "translation": "Mensagem criada com sucesso"
+    },
+    "LNG_PAGE_CREATE_WHATSAPP_MESSAGE_TITLE": {
+      "translation": "Criar mensagem de WhatsApp"
+    },
     "LNG_PAGE_DASHBOARD_CASES_BY_CLASSIFICATION_LOCATION_REPORT_LABEL": {
       "translation": "Casos por classificação e local"
     },
@@ -8308,6 +8320,9 @@
     "LNG_PAGE_LIST_CASES_ACTION_SEE_RECORDS_NOT_DUPLICATES": {
       "translation": "Ver registros marcados como não duplicados"
     },
+    "LNG_PAGE_LIST_CASES_ACTION_SEND_WHATSAPP_MESSAGE": {
+      "translation": "Enviar mensagem pelo WhatsApp"
+    },
     "LNG_PAGE_LIST_CASES_ACTION_SHOW_GROUP_BY_CLASSIFICATION_PILLS": {
       "translation": "Mostrar casos agrupados por contagem de classificação"
     },
@@ -8544,6 +8559,9 @@
     },
     "LNG_PAGE_LIST_CONTACTS_ACTION_SEE_RECORDS_NOT_DUPLICATES": {
       "translation": "Ver registros marcados como não duplicados"
+    },
+    "LNG_PAGE_LIST_CONTACTS_ACTION_SEND_WHATSAPP_MESSAGE": {
+      "translation": "Enviar mensagem pelo WhatsApp"
     },
     "LNG_PAGE_LIST_CONTACTS_ACTION_SHOW_GROUP_BY_RISK_PILLS": {
       "translation": "Mostrar contatos agrupados por contagem de riscos"
@@ -10234,6 +10252,24 @@
     "LNG_PAGE_LIST_USER_ROLES_TITLE": {
       "translation": "Papéis"
     },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_ACTION_DELETE": {
+      "translation": "Excluir mensagem"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_ACTION_DELETE_SUCCESS_MESSAGE": {
+      "translation": "Mensagem excluída com sucesso"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_ACTION_ENABLE_DISABLE": {
+      "translation": "Ativar / desativar"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_ACTION_MODIFY": {
+      "translation": "Modificar mensagem"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_ACTION_TOGGLE_ENABLED_SUCCESS_MESSAGE": {
+      "translation": "Mensagem atualizada com sucesso"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_TITLE": {
+      "translation": "Mensagens de WhatsApp"
+    },
     "LNG_PAGE_LOGIN_ACTION_LOGIN_2FA_CODE_REQUIRED": {
       "translation": "O código foi enviado para o seguinte e-mail: '{{email}}'"
     },
@@ -10965,6 +11001,12 @@
     },
     "LNG_PAGE_MODIFY_USER_TITLE": {
       "translation": "Modificar {{name}}"
+    },
+    "LNG_PAGE_MODIFY_WHATSAPP_MESSAGE_ACTION_MODIFY_SUCCESS_MESSAGE": {
+      "translation": "Mensagem modificada com sucesso"
+    },
+    "LNG_PAGE_MODIFY_WHATSAPP_MESSAGE_TITLE": {
+      "translation": "Modificar mensagem de WhatsApp"
     },
     "LNG_PAGE_MY_PROFILE_TITLE": {
       "translation": "Meu perfil"
@@ -14206,6 +14248,12 @@
     "LNG_ROLE_AVAILABLE_PERMISSIONS_CREATE_USER_ROLE_DESCRIPTION": {
       "translation": "Permite criar papéis de usuário"
     },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_CREATE_WHATSAPP_MESSAGE": {
+      "translation": "Criar mensagem de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_CREATE_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Permite criar mensagens de WhatsApp para os surtos"
+    },
     "LNG_ROLE_AVAILABLE_PERMISSIONS_DELETE_BACKUP": {
       "translation": "Backup - excluir"
     },
@@ -14427,6 +14475,12 @@
     },
     "LNG_ROLE_AVAILABLE_PERMISSIONS_DELETE_USER_ROLE_DESCRIPTION": {
       "translation": "Permite excluir informações de papéis de usuário"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_DELETE_WHATSAPP_MESSAGE": {
+      "translation": "Excluir mensagem de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_DELETE_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Permite excluir mensagens de WhatsApp"
     },
     "LNG_ROLE_AVAILABLE_PERMISSIONS_DISABLE_CLIENT_APPLICATION": {
       "translation": "Aplicativo cliente - desativar"
@@ -15010,6 +15064,12 @@
     "LNG_ROLE_AVAILABLE_PERMISSIONS_GROUP_USER_ROLE_DESCRIPTION": {
       "translation": "Permissões de papel de usuário"
     },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_GROUP_WHATSAPP_MESSAGE": {
+      "translation": "Mensagens de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_GROUP_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Configurar as mensagens de WhatsApp dos surtos e enviá-las para casos e contatos"
+    },
     "LNG_ROLE_AVAILABLE_PERMISSIONS_IMPORT_CASE": {
       "translation": "Caso - importar"
     },
@@ -15451,6 +15511,12 @@
     "LNG_ROLE_AVAILABLE_PERMISSIONS_LIST_USER_WORKLOAD_DESCRIPTION": {
       "translation": "Permite listar informações de carga de trabalho dos usuários"
     },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_LIST_WHATSAPP_MESSAGE": {
+      "translation": "Listar mensagens de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_LIST_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Permite listar as mensagens de WhatsApp configuradas para os surtos"
+    },
     "LNG_ROLE_AVAILABLE_PERMISSIONS_MAKE_OUTBREAK_ACTIVE": {
       "translation": "Surto - tornar ativo"
     },
@@ -15790,6 +15856,12 @@
     "LNG_ROLE_AVAILABLE_PERMISSIONS_MODIFY_USER_ROLE_DESCRIPTION": {
       "translation": "Permite modificar papéis de usuário"
     },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_MODIFY_WHATSAPP_MESSAGE": {
+      "translation": "Modificar mensagem de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_MODIFY_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Permite modificar, ativar e desativar mensagens de WhatsApp"
+    },
     "LNG_ROLE_AVAILABLE_PERMISSIONS_NOT_AUTHORIZED_MESSAGE": {
       "translation": "Você não tem autorização para acessar esta página"
     },
@@ -15918,6 +15990,12 @@
     },
     "LNG_ROLE_AVAILABLE_PERMISSIONS_SEE_OUTBREAK_INCONSISTENCIES_DESCRIPTION": {
       "translation": "Permite ver as inconsistências do surto"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_SEND_WHATSAPP_MESSAGE": {
+      "translation": "Enviar mensagem de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_SEND_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Permite abrir o chat de WhatsApp nas listas de casos e contatos, com a mensagem configurada para o surto"
     },
     "LNG_ROLE_AVAILABLE_PERMISSIONS_SHARE_CASE_RELATIONSHIP": {
       "translation": "Caso - compartilhar relacionamentos"
@@ -16494,6 +16572,12 @@
     },
     "LNG_ROLE_AVAILABLE_PERMISSIONS_VIEW_USER_ROLE_DESCRIPTION": {
       "translation": "Permite ver as informações completas do papel de usuário"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_VIEW_WHATSAPP_MESSAGE": {
+      "translation": "Ver mensagem de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_VIEW_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Permite ver uma mensagem de WhatsApp"
     },
     "LNG_ROLE_AVAILABLE_PERMISSIONS_WIPE_DEVICE": {
       "translation": "Dispositivo - limpar"
@@ -17532,6 +17616,90 @@
     },
     "LNG_USER_ROLE_FIELD_LABEL_USERS": {
       "translation": "Usuários"
+    },
+    "LNG_WHATSAPP_CHAT_BUTTON_MINIMIZE": {
+      "translation": "Minimizar"
+    },
+    "LNG_WHATSAPP_CHAT_BUTTON_RESTORE": {
+      "translation": "Restaurar"
+    },
+    "LNG_WHATSAPP_CHAT_BUTTON_SEND": {
+      "translation": "Abrir no WhatsApp"
+    },
+    "LNG_WHATSAPP_CHAT_HINT": {
+      "translation": "A conversa abre no WhatsApp Web, numa janela pequena ao lado da tela, na conta conectada neste navegador, com a mensagem pronta para enviar."
+    },
+    "LNG_WHATSAPP_CHAT_INVALID_PHONE": {
+      "translation": "O telefone salvo não é válido para o WhatsApp. Confira o número."
+    },
+    "LNG_WHATSAPP_CHAT_LABEL_MESSAGE_PLACEHOLDER": {
+      "translation": "Digite uma mensagem"
+    },
+    "LNG_WHATSAPP_CHAT_LABEL_PHONE": {
+      "translation": "Telefone"
+    },
+    "LNG_WHATSAPP_CHAT_LABEL_PHONE_PLACEHOLDER": {
+      "translation": "DDI + DDD + número"
+    },
+    "LNG_WHATSAPP_CHAT_LABEL_TEMPLATE": {
+      "translation": "Mensagem"
+    },
+    "LNG_WHATSAPP_CHAT_NO_MESSAGE": {
+      "translation": "Nenhuma mensagem de WhatsApp ativa configurada para este surto. Digite a mensagem a enviar."
+    },
+    "LNG_WHATSAPP_CHAT_NO_PHONE": {
+      "translation": "Este registro não tem telefone salvo. Digite o número para enviar a mensagem."
+    },
+    "LNG_WHATSAPP_CHAT_POPUP_BLOCKED": {
+      "translation": "O navegador bloqueou a janela do WhatsApp Web. Permita pop-ups para o Go.Data e tente novamente."
+    },
+    "LNG_WHATSAPP_CHAT_TITLE": {
+      "translation": "Mensagem de WhatsApp"
+    },
+    "LNG_WHATSAPP_MESSAGE_APPLIES_TO_ALL": {
+      "translation": "Casos e contatos"
+    },
+    "LNG_WHATSAPP_MESSAGE_APPLIES_TO_CASE": {
+      "translation": "Casos"
+    },
+    "LNG_WHATSAPP_MESSAGE_APPLIES_TO_CONTACT": {
+      "translation": "Contatos"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_ACTIVE": {
+      "translation": "Ativa"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_APPLIES_TO": {
+      "translation": "Disponível para"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_CREATED_AT": {
+      "translation": "Criada em"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_CREATED_BY": {
+      "translation": "Criada por"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_DELETED": {
+      "translation": "Excluída"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_DELETED_AT": {
+      "translation": "Excluída em"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_MESSAGE": {
+      "translation": "Mensagem"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_MESSAGE_DESCRIPTION": {
+      "translation": "A mensagem pode incluir os dados do registro: <b>{nome}</b> primeiro nome, <b>{sobrenome}</b> sobrenome, <b>{nome_completo}</b> nome completo, <b>{id}</b> ID do caso / contato e <b>{surto}</b> nome do surto"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_OUTBREAK": {
+      "translation": "Surto"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_TITLE": {
+      "translation": "Título"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_UPDATED_AT": {
+      "translation": "Atualizada em"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_UPDATED_BY": {
+      "translation": "Atualizada por"
     },
     "LNG_WORLD_MAP_MOVEMENT_FIT_MARKER_BOUNDS_BUTTON": {
       "translation": "Ver todos os endereços"

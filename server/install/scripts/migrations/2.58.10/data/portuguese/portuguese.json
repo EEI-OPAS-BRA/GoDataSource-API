@@ -1,0 +1,173 @@
+{
+  "id": "portuguese_pt",
+  "tokens": {
+    "LNG_LAYOUT_MENU_ITEM_WHATSAPP_MESSAGES_LABEL": {
+      "translation": "Mensagens de WhatsApp"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_TITLE": {
+      "translation": "Mensagens de WhatsApp"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_ACTION_MODIFY": {
+      "translation": "Modificar mensagem"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_ACTION_ENABLE_DISABLE": {
+      "translation": "Ativar / desativar"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_ACTION_DELETE": {
+      "translation": "Excluir mensagem"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_ACTION_DELETE_SUCCESS_MESSAGE": {
+      "translation": "Mensagem excluída com sucesso"
+    },
+    "LNG_PAGE_LIST_WHATSAPP_MESSAGES_ACTION_TOGGLE_ENABLED_SUCCESS_MESSAGE": {
+      "translation": "Mensagem atualizada com sucesso"
+    },
+    "LNG_DIALOG_CONFIRM_DELETE_WHATSAPP_MESSAGE": {
+      "translation": "Tem certeza que deseja excluir a mensagem \"{{name}}\"?"
+    },
+    "LNG_PAGE_CREATE_WHATSAPP_MESSAGE_TITLE": {
+      "translation": "Criar mensagem de WhatsApp"
+    },
+    "LNG_PAGE_MODIFY_WHATSAPP_MESSAGE_TITLE": {
+      "translation": "Modificar mensagem de WhatsApp"
+    },
+    "LNG_PAGE_CREATE_WHATSAPP_MESSAGE_ACTION_CREATE_SUCCESS_MESSAGE": {
+      "translation": "Mensagem criada com sucesso"
+    },
+    "LNG_PAGE_MODIFY_WHATSAPP_MESSAGE_ACTION_MODIFY_SUCCESS_MESSAGE": {
+      "translation": "Mensagem modificada com sucesso"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_OUTBREAK": {
+      "translation": "Surto"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_TITLE": {
+      "translation": "Título"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_MESSAGE": {
+      "translation": "Mensagem"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_MESSAGE_DESCRIPTION": {
+      "translation": "A mensagem pode incluir os dados do registro: <b>{nome}</b> primeiro nome, <b>{sobrenome}</b> sobrenome, <b>{nome_completo}</b> nome completo, <b>{id}</b> ID do caso / contato e <b>{surto}</b> nome do surto"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_APPLIES_TO": {
+      "translation": "Disponível para"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_ACTIVE": {
+      "translation": "Ativa"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_CREATED_AT": {
+      "translation": "Criada em"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_CREATED_BY": {
+      "translation": "Criada por"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_UPDATED_AT": {
+      "translation": "Atualizada em"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_UPDATED_BY": {
+      "translation": "Atualizada por"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_DELETED": {
+      "translation": "Excluída"
+    },
+    "LNG_WHATSAPP_MESSAGE_FIELD_LABEL_DELETED_AT": {
+      "translation": "Excluída em"
+    },
+    "LNG_WHATSAPP_MESSAGE_APPLIES_TO_ALL": {
+      "translation": "Casos e contatos"
+    },
+    "LNG_WHATSAPP_MESSAGE_APPLIES_TO_CASE": {
+      "translation": "Casos"
+    },
+    "LNG_WHATSAPP_MESSAGE_APPLIES_TO_CONTACT": {
+      "translation": "Contatos"
+    },
+    "LNG_PAGE_LIST_CASES_ACTION_SEND_WHATSAPP_MESSAGE": {
+      "translation": "Enviar mensagem pelo WhatsApp"
+    },
+    "LNG_PAGE_LIST_CONTACTS_ACTION_SEND_WHATSAPP_MESSAGE": {
+      "translation": "Enviar mensagem pelo WhatsApp"
+    },
+    "LNG_WHATSAPP_CHAT_TITLE": {
+      "translation": "Mensagem de WhatsApp"
+    },
+    "LNG_WHATSAPP_CHAT_LABEL_PHONE": {
+      "translation": "Telefone"
+    },
+    "LNG_WHATSAPP_CHAT_LABEL_PHONE_PLACEHOLDER": {
+      "translation": "DDI + DDD + número"
+    },
+    "LNG_WHATSAPP_CHAT_LABEL_TEMPLATE": {
+      "translation": "Mensagem"
+    },
+    "LNG_WHATSAPP_CHAT_LABEL_MESSAGE_PLACEHOLDER": {
+      "translation": "Digite uma mensagem"
+    },
+    "LNG_WHATSAPP_CHAT_BUTTON_SEND": {
+      "translation": "Abrir no WhatsApp"
+    },
+    "LNG_WHATSAPP_CHAT_BUTTON_MINIMIZE": {
+      "translation": "Minimizar"
+    },
+    "LNG_WHATSAPP_CHAT_BUTTON_RESTORE": {
+      "translation": "Restaurar"
+    },
+    "LNG_WHATSAPP_CHAT_NO_PHONE": {
+      "translation": "Este registro não tem telefone salvo. Digite o número para enviar a mensagem."
+    },
+    "LNG_WHATSAPP_CHAT_INVALID_PHONE": {
+      "translation": "O telefone salvo não é válido para o WhatsApp. Confira o número."
+    },
+    "LNG_WHATSAPP_CHAT_NO_MESSAGE": {
+      "translation": "Nenhuma mensagem de WhatsApp ativa configurada para este surto. Digite a mensagem a enviar."
+    },
+    "LNG_WHATSAPP_CHAT_HINT": {
+      "translation": "A conversa abre no WhatsApp Web, numa janela pequena ao lado da tela, na conta conectada neste navegador, com a mensagem pronta para enviar."
+    },
+    "LNG_WHATSAPP_CHAT_POPUP_BLOCKED": {
+      "translation": "O navegador bloqueou a janela do WhatsApp Web. Permita pop-ups para o Go.Data e tente novamente."
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_GROUP_WHATSAPP_MESSAGE": {
+      "translation": "Mensagens de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_GROUP_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Configurar as mensagens de WhatsApp dos surtos e enviá-las para casos e contatos"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_LIST_WHATSAPP_MESSAGE": {
+      "translation": "Listar mensagens de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_LIST_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Permite listar as mensagens de WhatsApp configuradas para os surtos"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_VIEW_WHATSAPP_MESSAGE": {
+      "translation": "Ver mensagem de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_VIEW_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Permite ver uma mensagem de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_CREATE_WHATSAPP_MESSAGE": {
+      "translation": "Criar mensagem de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_CREATE_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Permite criar mensagens de WhatsApp para os surtos"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_MODIFY_WHATSAPP_MESSAGE": {
+      "translation": "Modificar mensagem de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_MODIFY_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Permite modificar, ativar e desativar mensagens de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_DELETE_WHATSAPP_MESSAGE": {
+      "translation": "Excluir mensagem de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_DELETE_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Permite excluir mensagens de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_SEND_WHATSAPP_MESSAGE": {
+      "translation": "Enviar mensagem de WhatsApp"
+    },
+    "LNG_ROLE_AVAILABLE_PERMISSIONS_SEND_WHATSAPP_MESSAGE_DESCRIPTION": {
+      "translation": "Permite abrir o chat de WhatsApp nas listas de casos e contatos, com a mensagem configurada para o surto"
+    }
+  }
+}

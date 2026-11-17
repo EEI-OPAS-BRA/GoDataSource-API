@@ -46,21 +46,40 @@ function readJson(file) {
   }
 }
 
-function writeJsonAtomic(file, data) {
+function readJsonObject(file) {
+  const data = readJson(file);
+  if (!isPlainObject(data)) {
+    throw new InvalidJsonError(`invalid JSON in ${file}: top-level value must be an object`);
+  }
+  return data;
+}
+
+function writeJsonAtomic(file, data, mode = 0o600) {
   const tmp = `${file}.${process.pid}.tmp`;
-  fs.writeFileSync(tmp, `${JSON.stringify(data, null, 2)}\n`);
-  fs.renameSync(tmp, file);
+  const fd = fs.openSync(tmp, 'wx', mode);
+  try {
+    try {
+      fs.writeFileSync(fd, `${JSON.stringify(data, null, 2)}\n`);
+      fs.fsyncSync(fd);
+    } finally {
+      fs.closeSync(fd);
+    }
+    fs.renameSync(tmp, file);
+  } catch (err) {
+    fs.rmSync(tmp, { force: true });
+    throw err;
+  }
 }
 
 function syncRuntimeApiKey(apiKey, runtimeConfigPath) {
   let current = {};
   if (fs.existsSync(runtimeConfigPath)) {
-    current = readJson(runtimeConfigPath);
+    current = readJsonObject(runtimeConfigPath);
     if (current.apiKey === apiKey) {
       return false;
     }
   }
-  writeJsonAtomic(runtimeConfigPath, Object.assign({}, current, { apiKey }));
+  writeJsonAtomic(runtimeConfigPath, Object.assign({}, current, { apiKey }), 0o644);
   return true;
 }
 
@@ -96,10 +115,10 @@ function main(argv, env) {
       console.error(`missing defaults file ${defaultsFile}`);
       return 1;
     }
-    merged[name] = readJson(defaultsFile);
+    merged[name] = readJsonObject(defaultsFile);
     const overrideFile = path.join(opts.overrides, name);
     if (fs.existsSync(overrideFile)) {
-      merged[name] = deepMerge(merged[name], readJson(overrideFile));
+      merged[name] = deepMerge(merged[name], readJsonObject(overrideFile));
     }
   }
 

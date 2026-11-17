@@ -30,12 +30,16 @@ services:
       retries: 6
       start_period: 60s
     stop_grace_period: 60s
+    security_opt:
+      - no-new-privileges:true
     logging: *logging
 
   godata:
     image: ghcr.io/eei-opas-bra/godata:${GODATA_VERSION:?set GODATA_VERSION in .env}
     restart: unless-stopped
     init: true
+    security_opt:
+      - no-new-privileges:true
     depends_on:
       mongo:
         condition: service_healthy

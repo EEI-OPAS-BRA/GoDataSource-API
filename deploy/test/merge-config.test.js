@@ -135,10 +135,10 @@ test('CLI syncs the runtime apiKey only when set', () => {
   const runtime = path.join(root, 'runtime-config.json');
   const first = runCli(root, ['--runtime-config', runtime]);
   assert.equal(first.status, 0, first.stderr);
-  assert.match(first.stdout, /changed/);
+  assert.match(first.stdout, /^runtime config: changed$/m);
   assert.equal(JSON.parse(fs.readFileSync(runtime, 'utf8')).apiKey, 'k1');
   const second = runCli(root, ['--runtime-config', runtime]);
-  assert.match(second.stdout, /unchanged/);
+  assert.match(second.stdout, /^runtime config: unchanged$/m);
 });
 
 test('CLI leaves the runtime config alone without an apiKey', () => {
@@ -156,4 +156,31 @@ test('syncRuntimeApiKey keeps other keys', () => {
   assert.equal(syncRuntimeApiKey('k', runtime), true);
   assert.deepEqual(JSON.parse(fs.readFileSync(runtime, 'utf8')), { other: 1, apiKey: 'k' });
   assert.equal(syncRuntimeApiKey('k', runtime), false);
+});
+
+for (const [label, content] of [['null', 'null'], ['array', '[]']]) {
+  test(`CLI exits 2 for a ${label} override`, () => {
+    const root = setup({ 'defaults/config.json': '{"port":3000}', 'defaults/datasources.json': '{}' });
+    const file = path.join(root, 'overrides', 'config.json');
+    fs.writeFileSync(file, content);
+    const res = runCli(root);
+    assert.equal(res.status, 2);
+    assert.ok(res.stderr.includes(file));
+  });
+}
+
+test('CLI writes config files owner-only', () => {
+  const root = setup({ 'defaults/config.json': '{}', 'defaults/datasources.json': '{}' });
+  assert.equal(runCli(root).status, 0);
+  for (const name of ['config.json', 'datasources.json']) {
+    assert.equal(fs.statSync(path.join(root, 'server', name)).mode & 0o777, 0o600);
+  }
+});
+
+test('CLI leaves no temp file after a failed write', () => {
+  const root = setup({ 'defaults/config.json': '{}', 'defaults/datasources.json': '{}' });
+  fs.mkdirSync(path.join(root, 'server', 'datasources.json'));
+  const res = runCli(root);
+  assert.notEqual(res.status, 0);
+  assert.deepEqual(fs.readdirSync(path.join(root, 'server')).filter((f) => f.endsWith('.tmp')), []);
 });

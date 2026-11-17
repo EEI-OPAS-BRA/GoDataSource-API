@@ -1,0 +1,13 @@
+{
+  "public": {
+    "host": "godata.saude.uf.gov.br",
+    "protocol": "https",
+    "port": ""
+  },
+  "timezone": "America/Sao_Paulo",
+  "dateDisplayFormat": "DD/MM/YYYY",
+  "dateTimeDisplayFormat": "DD/MM/YYYY HH:mm",
+  "passwordReset": {
+    "from": "nao-responda@saude.uf.gov.br"
+  }
+}

@@ -18,3 +18,6 @@ server/boot/scheduler.json
 config
 data
 dumps
+deploy/docker/config
+deploy/docker/data
+deploy/docker/dumps

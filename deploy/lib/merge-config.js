@@ -255,4 +255,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { deepMerge, applyMongoEnv, withMongoUrl, syncRuntimeApiKey, syntaxErrorOffset };
+module.exports = { deepMerge, applyMongoEnv, withMongoUrl, syncRuntimeApiKey, syntaxErrorOffset, readJsonObject };

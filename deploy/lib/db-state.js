@@ -23,10 +23,11 @@ function buildUriFromDatasources(datasources) {
   if (cfg.url) {
     return cfg.url;
   }
-  const credentials = cfg.user ?
-    `${encodeURIComponent(cfg.user)}:${encodeURIComponent(cfg.password || '')}@` :
-    '';
-  const query = cfg.user && cfg.authSource ? `?authSource=${encodeURIComponent(cfg.authSource)}` : '';
+  // Credentials only with both user and password, as the LoopBack connector: the WHO default is user root with an
+  // empty password, which means no authentication
+  const auth = Boolean(cfg.user && cfg.password);
+  const credentials = auth ? `${encodeURIComponent(cfg.user)}:${encodeURIComponent(cfg.password)}@` : '';
+  const query = auth && cfg.authSource ? `?authSource=${encodeURIComponent(cfg.authSource)}` : '';
   return `mongodb://${credentials}${cfg.host || '127.0.0.1'}:${cfg.port || 27017}/${query}`;
 }
 

@@ -115,6 +115,13 @@ test('print-uri without a user has no credentials', () => {
   );
 });
 
+test('print-uri with the default user and an empty password has no credentials, as the LoopBack connector', () => {
+  assert.strictEqual(
+    buildUriFromDatasources({ mongoDb: { host: 'h', port: 27017, database: 'd', user: 'root', password: '', authSource: 'admin' } }),
+    'mongodb://h:27017/'
+  );
+});
+
 test('print-uri prefers a non-empty url as is', () => {
   const url = 'mongodb://u:p@x:1/db?replicaSet=r';
   assert.strictEqual(buildUriFromDatasources({ mongoDb: { url, host: 'h' } }), url);

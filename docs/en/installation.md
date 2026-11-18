@@ -929,7 +929,7 @@ Expected result:
 cd "$GODATA_DIR"
 docker compose ps
 curl -fsS "http://127.0.0.1:$GODATA_PORT/api/system-settings/version" -H "api-key: $(curl -fsS "http://127.0.0.1:$GODATA_PORT/assets/runtime-config.json" | sed -n 's/.*"apiKey": *"\([^"]*\)".*/\1/p')" | cut -c 1-80
-docker compose top godata
+ps -o uid=,args= -C node
 docker compose port mongo 27017 || true
 crontab -l
 ```
@@ -938,8 +938,8 @@ Expected result:
 
 - The `mongo` and `godata` containers as `Up` and `(healthy)`.
 - A line that starts with `{"platform":"-","version":"2.51.0","build":"2026.10.0"`.
-- The processes of the `godata` container with UID 1000 (the `node` user of the container), never with `root`. The
-  server may show UID 1000 with the name of the first user created on Ubuntu.
+- The `node` processes of the `godata` container with UID `1000` (the `node` user of the container), never with UID
+  `0` (`root`).
 - No published port for MongoDB: the last command before the crontab prints an error or nothing.
 - The daily dump line in the crontab.
 

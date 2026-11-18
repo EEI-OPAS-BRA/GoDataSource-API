@@ -46,6 +46,7 @@ services:
     ports:
       - "${GODATA_BIND:-0.0.0.0}:${GODATA_PORT:-3000}:3000"
     environment:
+      GODATA_VERSION: ${GODATA_VERSION}
       GODATA_MONGO_HOST: mongo
       GODATA_MONGO_PORT: "27017"
       GODATA_DB: ${GODATA_DB:-go-data}

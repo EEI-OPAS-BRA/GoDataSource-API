@@ -38,6 +38,13 @@ for dir in "$STORAGE_DIR" "$BACKUP_DIR" "$STATE_DIR"; do
 done
 mkdir -p "$STORAGE_DIR/files" "$STORAGE_DIR/icons"
 
+# server/boot/scheduler.json links here. It must exist before any node code runs: loopback-boot stats every
+# file in server/boot, and the scheduler skips all its routines while the file is missing.
+if [[ ! -e "$SCHEDULER_STATE" ]]; then
+  echo '{}' > "$SCHEDULER_STATE"
+  log "scheduler state: created $SCHEDULER_STATE"
+fi
+
 err_file="$(mktemp)"
 trap 'rm -f "$err_file"' EXIT
 
@@ -189,12 +196,6 @@ esac
 # 5. Backup location
 db_state set-backup-location "$BACKUP_DIR" || exit 1
 log "backup location: $REPLY"
-
-# server/boot/scheduler.json links here; the scheduler skips every routine while the file is missing.
-if [[ ! -e "$SCHEDULER_STATE" ]]; then
-  echo '{}' > "$SCHEDULER_STATE"
-  log "scheduler state: created $SCHEDULER_STATE"
-fi
 
 # 6. Start the application
 log "starting Go.Data ${GODATA_VERSION:-unknown}"

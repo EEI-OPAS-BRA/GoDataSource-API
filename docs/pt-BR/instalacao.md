@@ -923,7 +923,7 @@ Resultado esperado:
 cd "$GODATA_DIR"
 docker compose ps
 curl -fsS "http://127.0.0.1:$GODATA_PORT/api/system-settings/version" -H "api-key: $(curl -fsS "http://127.0.0.1:$GODATA_PORT/assets/runtime-config.json" | sed -n 's/.*"apiKey": *"\([^"]*\)".*/\1/p')" | cut -c 1-80
-docker compose top godata
+ps -o uid=,args= -C node
 docker compose port mongo 27017 || true
 crontab -l
 ```
@@ -932,8 +932,8 @@ Resultado esperado:
 
 - Os contêineres `mongo` e `godata` como `Up` e `(healthy)`.
 - Uma linha que começa com `{"platform":"-","version":"2.51.0","build":"2026.10.0"`.
-- Os processos do contêiner `godata` com o UID 1000 (o usuário `node` do contêiner), nunca com `root`. O servidor pode
-  mostrar o UID 1000 com o nome do primeiro usuário criado no Ubuntu.
+- Os processos `node` do contêiner `godata` com o UID `1000` (o usuário `node` do contêiner), nunca com o UID `0`
+  (`root`).
 - Nenhuma porta publicada para o MongoDB: o último comando antes do crontab mostra um erro ou nada.
 - A linha do dump diário no crontab.
 

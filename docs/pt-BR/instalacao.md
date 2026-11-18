@@ -59,6 +59,8 @@ export GODATA_PORT=3000
 export GODATA_PM2=godata
 ```
 
+Resultado esperado: nenhuma saída.
+
 - `GODATA_VERSION`: versão a instalar, sem o `v` inicial, conforme a página de versões do repositório da API.
 - `GODATA_DIR`: pasta da instalação. Ela ainda não existe ou está vazia.
 - `GODATA_DB`: nome do banco no MongoDB.
@@ -410,6 +412,8 @@ export GODATA_DIR=/opt/godata
 export GODATA_DB=go-data
 export GODATA_PORT=3000
 ```
+
+Resultado esperado: nenhuma saída.
 
 - `GODATA_VERSION`: versão a instalar, sem o `v` inicial, conforme a página de versões do repositório da API.
 - `GODATA_DIR`: pasta da instalação. Ela ainda não existe ou está vazia.

@@ -53,8 +53,9 @@ export GODATA_PM2=godata
   `docker-compose.yml` e `.env`.
 - `GODATA_PM2`: nome do processo no pm2 (`pm2 list`). O Docker não usa esta variável.
 
-Execute os passos com o usuário que opera o Go.Data, sem `sudo`. Os comandos que precisam de `sudo` já o trazem. Num
-servidor com duas instalações, execute os passos uma vez para cada uma, com os valores dela.
+Execute os passos com o usuário que opera o Go.Data, sem `sudo`. No Docker, esse usuário precisa usar o `docker` sem
+`sudo` (grupo `docker`). Num servidor com duas instalações, execute os passos uma vez para cada uma, com os valores
+dela.
 
 ## 2. Endereço público, fuso horário e datas
 
@@ -71,48 +72,23 @@ remetente dos e-mails do sistema.
 - `dateDisplayFormat` e `dateTimeDisplayFormat` são os formatos de data e de data e hora na interface.
 - `session.secret` recebe um valor aleatório, usado pelo captcha (passo 5).
 
-O bloco grava o arquivo inteiro. Se `config/config.json` já tiver outras chaves (por exemplo `apiKey`), acrescente-as
-ao bloco antes de executar. Para mudar um valor depois, edite o arquivo e aplique de novo (passo 4).
+Os blocos dos passos 2, 3, 5, 6 e 7 gravam só as chaves do passo e mantêm as outras chaves do arquivo. Eles podem ser
+executados de novo para mudar um valor. Cada execução deste passo sorteia um novo `session.secret`, o que só invalida
+os captchas abertos naquele momento.
 
 ### 2.1. No pm2
 
-```bash
-mkdir -p "$GODATA_DIR/config"
-touch "$GODATA_DIR/config/config.json"
-chmod 600 "$GODATA_DIR/config/config.json"
-cat > "$GODATA_DIR/config/config.json" <<EOF
-{
-  "public": {
-    "protocol": "https",
-    "host": "godata.exemplo.gov.br",
-    "port": ""
-  },
-  "enableConfigRewrite": false,
-  "timezone": "America/Sao_Paulo",
-  "dateDisplayFormat": "DD/MM/YYYY",
-  "dateTimeDisplayFormat": "DD/MM/YYYY HH:mm",
-  "passwordReset": {
-    "from": "nao-responda@exemplo.gov.br"
-  },
-  "session": {
-    "secret": "$(openssl rand -hex 32)"
-  }
-}
-EOF
-```
-
-Resultado esperado: nenhuma saída. Só o dono lê o arquivo. A mudança vale depois do passo 4.
-
-### 2.2. No Docker
-
-O contêiner lê o arquivo com o usuário `node` (uid e gid 1000). O bloco dá leitura ao grupo 1000 e a mais ninguém.
+O bloco usa o `node` do servidor e cria o arquivo com leitura só para o dono.
 
 ```bash
 mkdir -p "$GODATA_DIR/config"
-touch "$GODATA_DIR/config/config.json"
-sudo chgrp 1000 "$GODATA_DIR/config/config.json"
-chmod 640 "$GODATA_DIR/config/config.json"
-cat > "$GODATA_DIR/config/config.json" <<EOF
+node -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o600 });
+' "$GODATA_DIR/config/config.json" <<EOF
 {
   "public": {
     "protocol": "https",
@@ -134,6 +110,45 @@ EOF
 ```
 
 Resultado esperado: nenhuma saída. A mudança vale depois do passo 4.
+
+### 2.2. No Docker
+
+O servidor não precisa de Node.js: o bloco roda o `node` da imagem do Go.Data num contêiner temporário, com o seu
+usuário e o grupo 1000, que é o grupo do usuário `node` do contêiner. Um arquivo novo fica legível só para o seu
+usuário e para o contêiner (permissão `640`, grupo 1000).
+
+```bash
+mkdir -p "$GODATA_DIR/config"
+cd "$GODATA_DIR"
+docker compose run --rm --no-deps -T -u "$(id -u):1000" -v "$GODATA_DIR/config:/config" --entrypoint node godata -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o640 });
+' /config/config.json <<EOF
+{
+  "public": {
+    "protocol": "https",
+    "host": "godata.exemplo.gov.br",
+    "port": ""
+  },
+  "enableConfigRewrite": false,
+  "timezone": "America/Sao_Paulo",
+  "dateDisplayFormat": "DD/MM/YYYY",
+  "dateTimeDisplayFormat": "DD/MM/YYYY HH:mm",
+  "passwordReset": {
+    "from": "nao-responda@exemplo.gov.br"
+  },
+  "session": {
+    "secret": "$(openssl rand -hex 32)"
+  }
+}
+EOF
+```
+
+Resultado esperado: as linhas do `docker compose` sobre o contêiner temporário e nenhum erro. A mudança vale depois do
+passo 4.
 
 ## 3. Servidor de e-mail
 
@@ -145,47 +160,20 @@ etapas. Troque `smtp.exemplo.gov.br`, `usuario-smtp` e `senha-smtp` pelos dados 
 - Se o servidor de e-mail não pede autenticação, retire o bloco `auth` e a vírgula antes dele.
 - `transports` é uma lista: ela substitui por inteiro o servidor de e-mail padrão.
 
-### 3.1. No pm2
+O bloco grava a chave `email` em `config/datasources.json` e mantém o resto do arquivo. No pm2, o arquivo também
+guarda a conexão com o MongoDB, criada na instalação. No Docker, ele só precisa da chave `email`: a conexão com o
+MongoDB vem do `.env`.
 
-No pm2, `config/datasources.json` também guarda a conexão com o MongoDB, criada na instalação. O bloco grava só a
-chave `email` e mantém o resto do arquivo.
+### 3.1. No pm2
 
 ```bash
 node -e '
 const fs = require("fs");
 const file = process.argv[1];
 const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
-data.email = JSON.parse(fs.readFileSync(0, "utf8"));
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
 fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o600 });
 ' "$GODATA_DIR/config/datasources.json" <<'EOF'
-{
-  "transports": [
-    {
-      "type": "SMTP",
-      "host": "smtp.exemplo.gov.br",
-      "port": 465,
-      "secure": true,
-      "auth": {
-        "user": "usuario-smtp",
-        "pass": "senha-smtp"
-      }
-    }
-  ]
-}
-EOF
-```
-
-Resultado esperado: nenhuma saída. A mudança vale depois do passo 4.
-
-### 3.2. No Docker
-
-No Docker, o arquivo só precisa da chave `email`: a conexão com o MongoDB vem do `.env`.
-
-```bash
-touch "$GODATA_DIR/config/datasources.json"
-sudo chgrp 1000 "$GODATA_DIR/config/datasources.json"
-chmod 640 "$GODATA_DIR/config/datasources.json"
-cat > "$GODATA_DIR/config/datasources.json" <<'EOF'
 {
   "email": {
     "transports": [
@@ -206,6 +194,39 @@ EOF
 ```
 
 Resultado esperado: nenhuma saída. A mudança vale depois do passo 4.
+
+### 3.2. No Docker
+
+```bash
+cd "$GODATA_DIR"
+docker compose run --rm --no-deps -T -u "$(id -u):1000" -v "$GODATA_DIR/config:/config" --entrypoint node godata -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o640 });
+' /config/datasources.json <<'EOF'
+{
+  "email": {
+    "transports": [
+      {
+        "type": "SMTP",
+        "host": "smtp.exemplo.gov.br",
+        "port": 465,
+        "secure": true,
+        "auth": {
+          "user": "usuario-smtp",
+          "pass": "senha-smtp"
+        }
+      }
+    ]
+  }
+}
+EOF
+```
+
+Resultado esperado: as linhas do `docker compose` sobre o contêiner temporário e nenhum erro. A mudança vale depois do
+passo 4.
 
 ## 4. Aplique a configuração
 
@@ -239,17 +260,32 @@ docker compose exec -T -u node godata node -p 'require("/opt/godata/server/confi
 Resultado esperado: o log mostra a linha `configuration: server/config.json and server/datasources.json built from
 the image defaults and /opt/godata/config` e o último comando mostra o endereço público. Se um arquivo de `config/`
 tiver erro de sintaxe, o log mostra, por exemplo, `error: configuration failed: invalid JSON in
-/opt/godata/config/config.json at line 4 column 5` e o contêiner reinicia sem parar até a correção. Nessa mensagem,
-`/opt/godata/config` é a pasta `config/` da instalação vista de dentro do contêiner. Corrija o arquivo e execute o
-bloco de novo.
+/opt/godata/config/config.json at line 4 column 5` e o contêiner reinicia em ciclo até o arquivo ser corrigido. Nessa
+mensagem, `/opt/godata/config` é a pasta `config/` da instalação vista de dentro do contêiner. Corrija o arquivo e
+execute o bloco de novo.
 
 ## 5. Captcha (opcional)
 
-O captcha aparece na tela de login, em **Esqueceu a senha** e nas perguntas de segurança. Ele vem desligado. Para
-ligá-lo, acrescente a chave `captcha` a `config/config.json`, separada das outras chaves por vírgula, e aplique (passo
-4):
+O captcha aparece na tela de login, em **Esqueceu a senha** e nas perguntas de segurança. Ele vem desligado. O bloco
+grava a chave `captcha` em `config/config.json` e liga o captcha nas três telas. Para ligar só em algumas, troque
+`true` por `false` nas outras antes de executar. Para desligar, execute o bloco com as três em `false`. Em seguida,
+aplique (passo 4).
 
-```json
+O captcha guarda o texto esperado numa sessão, assinada com `session.secret`. O passo 2 já grava um valor aleatório
+nessa chave. Com `session.secret` vazio, cada processo da API sorteia um segredo próprio ao iniciar. Como a API roda
+vários processos (um por núcleo do processador), um processo não reconhece a sessão criada por outro e o captcha deixa
+de ser conferido em parte dos acessos.
+
+### 5.1. No pm2
+
+```bash
+node -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o600 });
+' "$GODATA_DIR/config/config.json" <<'EOF'
 {
   "captcha": {
     "login": true,
@@ -257,12 +293,34 @@ ligá-lo, acrescente a chave `captcha` a `config/config.json`, separada das outr
     "resetPasswordQuestions": true
   }
 }
+EOF
 ```
 
-O captcha guarda o texto esperado numa sessão, assinada com `session.secret`. O passo 2 já grava um valor aleatório
-nessa chave. Com `session.secret` vazio, cada processo da API sorteia um segredo próprio ao iniciar. Como a API roda
-vários processos (um por núcleo do processador), um processo não reconhece a sessão criada por outro e o captcha deixa
-de ser conferido em parte dos acessos.
+Resultado esperado: nenhuma saída. Aplique como no passo 4.1.
+
+### 5.2. No Docker
+
+```bash
+cd "$GODATA_DIR"
+docker compose run --rm --no-deps -T -u "$(id -u):1000" -v "$GODATA_DIR/config:/config" --entrypoint node godata -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o640 });
+' /config/config.json <<'EOF'
+{
+  "captcha": {
+    "login": true,
+    "forgotPassword": true,
+    "resetPasswordQuestions": true
+  }
+}
+EOF
+```
+
+Resultado esperado: as linhas do `docker compose` sobre o contêiner temporário e nenhum erro. Aplique como no passo
+4.2.
 
 ## 6. Chave da API (opcional)
 
@@ -271,20 +329,31 @@ envia a chave ao pedir a versão, o fuso horário e os formatos de data. Com cha
 a interface não abre corretamente. O arquivo é público: qualquer navegador pode lê-lo, então a chave não protege nada.
 Ela também entra no QR code de configuração do aplicativo móvel, que não é usado no Brasil.
 
-Os dois lados vêm com o valor `your_api_key_here` e podem ficar assim. Para usar outra chave, acrescente-a a
-`config/config.json`, separada das outras chaves por vírgula:
-
-```json
-{
-  "apiKey": "chave-da-instalacao"
-}
-```
+Os dois arquivos trazem o valor padrão `your_api_key_here`, que pode ser mantido. Para trocar a chave, o primeiro
+bloco grava em `config/config.json` um valor aleatório. O valor em si não importa: ele só precisa ser igual nos dois
+arquivos, e o segundo bloco cuida disso.
 
 ### 6.1. No pm2
 
-No pm2, o comando de aplicar recebe também `--runtime-config`, que grava a mesma chave em
+```bash
+node -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o600 });
+' "$GODATA_DIR/config/config.json" <<EOF
+{
+  "apiKey": "$(openssl rand -hex 16)"
+}
+EOF
+```
+
+Resultado esperado: nenhuma saída.
+
+O comando de aplicar recebe também `--runtime-config`, que grava a mesma chave em
 `atual/client/dist/assets/runtime-config.json`. Cada atualização traz um `runtime-config.json` novo, com a chave
-padrão: execute este bloco de novo depois de cada atualização.
+padrão: depois de cada atualização, execute de novo só este segundo bloco.
 
 ```bash
 node "$GODATA_DIR/atual/deploy/lib/merge-config.js" --defaults "$GODATA_DIR/atual/deploy/defaults" --overrides "$GODATA_DIR/config" --server-dir "$GODATA_DIR/atual/server" --runtime-config "$GODATA_DIR/atual/client/dist/assets/runtime-config.json"
@@ -296,8 +365,25 @@ recarregar a página no navegador, a tela de login mostra a versão do sistema.
 
 ### 6.2. No Docker
 
-No Docker, o contêiner copia a chave para `runtime-config.json` a cada início, inclusive depois das atualizações.
-Aplique como no passo 4.2.
+```bash
+cd "$GODATA_DIR"
+docker compose run --rm --no-deps -T -u "$(id -u):1000" -v "$GODATA_DIR/config:/config" --entrypoint node godata -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o640 });
+' /config/config.json <<EOF
+{
+  "apiKey": "$(openssl rand -hex 16)"
+}
+EOF
+```
+
+Resultado esperado: as linhas do `docker compose` sobre o contêiner temporário e nenhum erro.
+
+O contêiner copia a chave para `runtime-config.json` a cada início, inclusive depois das atualizações. Basta
+reiniciá-lo:
 
 ```bash
 cd "$GODATA_DIR"
@@ -314,20 +400,56 @@ seguintes. Depois de recarregar a página no navegador, a tela de login mostra a
 Com `cors.enabled` em `false`, o padrão, a API aceita chamadas de navegador vindas de qualquer site. Com `true`, ela
 aceita só as chamadas vindas do endereço público (`public`, passo 2), das origens listadas em `whitelist` e as
 chamadas sem origem, feitas por outros servidores. O endereço público precisa estar correto: com `true` e um `public`
-errado, a própria interface deixa de funcionar. Para ligar, acrescente a chave `cors` a `config/config.json` e
-aplique (passo 4):
+errado, a própria interface deixa de funcionar.
 
-```json
+O bloco grava a chave `cors` em `config/config.json`. Para aceitar outras origens, escreva-as na lista antes de
+executar, cada uma com o protocolo e sem barra no fim, por exemplo `"whitelist": ["https://painel.exemplo.gov.br"]`.
+A lista substitui a padrão por inteiro. Para desligar, execute o bloco com `"enabled": false`. Em seguida, aplique
+(passo 4).
+
+### 7.1. No pm2
+
+```bash
+node -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o600 });
+' "$GODATA_DIR/config/config.json" <<'EOF'
 {
   "cors": {
     "enabled": true,
     "whitelist": []
   }
 }
+EOF
 ```
 
-Cada item de `whitelist` é um endereço completo, com protocolo e sem barra no fim, por exemplo
-`"https://painel.exemplo.gov.br"`. A lista substitui a padrão por inteiro.
+Resultado esperado: nenhuma saída. Aplique como no passo 4.1.
+
+### 7.2. No Docker
+
+```bash
+cd "$GODATA_DIR"
+docker compose run --rm --no-deps -T -u "$(id -u):1000" -v "$GODATA_DIR/config:/config" --entrypoint node godata -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o640 });
+' /config/config.json <<'EOF'
+{
+  "cors": {
+    "enabled": true,
+    "whitelist": []
+  }
+}
+EOF
+```
+
+Resultado esperado: as linhas do `docker compose` sobre o contêiner temporário e nenhum erro. Aplique como no passo
+4.2.
 
 ## Conexão com o MongoDB
 

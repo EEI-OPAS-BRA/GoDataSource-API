@@ -118,19 +118,19 @@ running, the reason is `another backup is running`.
 
 ## 4. Schedule the daily dump
 
-The block puts the script in the user's crontab, every day at 2:30 server time, with the output in
+The block registers the script in the user's crontab, every day at 2:30 server time, with the output in
 `dumps/backup.log`. It replaces the previous line of this installation, if any, and keeps the other crontab lines.
 For another time, change `30 2` (minute and hour) in the block before running it.
 
 ### 4.1. On pm2
 
-Cron does not load nvm. The block writes into the line the `PATH` with the folder of the Node.js in use. After
-changing the Node.js version, run the block again.
+Cron does not load nvm. The block writes into the line a `PATH` with the folders of the `node` and `mongodump` in
+use. After changing the Node.js version, run the block again.
 
 ```bash
 command -v node
 command -v mongodump
-GODATA_CRON="30 2 * * * PATH=$(dirname "$(command -v node)"):/usr/local/bin:/usr/bin:/bin $GODATA_DIR/atual/deploy/scripts/godata-backup.sh $GODATA_DIR >> $GODATA_DIR/dumps/backup.log 2>&1"
+GODATA_CRON="30 2 * * * PATH=$(dirname "$(command -v node)"):$(dirname "$(command -v mongodump)"):/usr/bin:/bin $GODATA_DIR/atual/deploy/scripts/godata-backup.sh $GODATA_DIR >> $GODATA_DIR/dumps/backup.log 2>&1"
 (crontab -l 2>/dev/null | grep -vF " $GODATA_DIR/dumps/backup.log" || true; echo "$GODATA_CRON") | crontab -
 crontab -l
 ```
@@ -138,7 +138,7 @@ crontab -l
 Expected result: the paths of `node` and `mongodump`, and the crontab with a line such as this one:
 
 ```text
-30 2 * * * PATH=/home/usuario/.nvm/versions/node/v22.12.0/bin:/usr/local/bin:/usr/bin:/bin /opt/godata/atual/deploy/scripts/godata-backup.sh /opt/godata >> /opt/godata/dumps/backup.log 2>&1
+30 2 * * * PATH=/home/usuario/.nvm/versions/node/v22.12.0/bin:/usr/bin:/usr/bin:/bin /opt/godata/atual/deploy/scripts/godata-backup.sh /opt/godata >> /opt/godata/dumps/backup.log 2>&1
 ```
 
 ### 4.2. On Docker
@@ -167,6 +167,11 @@ folder of another server mounted on this one (network share) or another server o
 `/caminho/do/backup` with the destination. Over SSH, use `usuario@servidor:/caminho/do/backup`, with an SSH key
 without a passphrase for cron. Use one destination per installation.
 
+The destination must have restricted access and, preferably, an encrypted disk. The dumps and the system backups hold
+health data, and the configuration archive holds the MongoDB and mail passwords; on Docker, it includes `.env`, with
+the password of the MongoDB `root` user. On a network share, `rsync -a` may not keep the `0600` permissions of the
+files: check the permissions at the destination.
+
 The block copies once and schedules the daily copy at 4:30, after the dump. The copy deletes nothing at the
 destination: delete old files there according to the local policy.
 
@@ -184,7 +189,9 @@ folders, and the crontab shows the copy line in addition to the dump line.
 
 ### 5.2. On Docker
 
-On Docker, the copy runs as `root`, which can read the container folders.
+On Docker, the copy runs as `root`, which can read the container folders. Since it is in the `root` crontab, a copy
+over SSH uses the SSH key and the `known_hosts` of `root` (`/root/.ssh`): create the key and accept the destination
+server as `root`, with `sudo`.
 
 ```bash
 sudo rsync -a --exclude='*.partial' "$GODATA_DIR/dumps" "$GODATA_DIR/data/storage" "$GODATA_DIR/data/backups" /caminho/do/backup/
@@ -199,12 +206,19 @@ folders, and the `root` crontab shows the copy line.
 ## 6. Restore the database from a dump
 
 A restore replaces the database with the content of the dump: everything recorded after it is lost. The system is
-offline from the second block of this step until step 8. Use a dump of the version in use. To go back to the previous
+stopped from the third block of this step until step 8. Use a dump of the version in use. To go back to the previous
 version after an upgrade, follow the [upgrade manual](upgrade.md).
 
-The first block shows the dump that will be restored: the most recent one in `dumps/`. To restore another one, for
-example one brought back from the destination of step 5, run `export GODATA_DUMP=` followed by the full path of the
-file and repeat the first block.
+- The first block shows the dump that will be restored: the most recent one in `dumps/`. To restore another one, run
+  `export GODATA_DUMP=` followed by the full path of the file and repeat the first block. Keep a dump brought back
+  from the destination of step 5 outside `dumps/`, because the automatic cleanup deletes files older than 14 days
+  from there.
+- The second block makes a safety dump of the current state, with the system still running, and keeps it in
+  `dumps/antes-da-restauracao/`, outside the automatic cleanup. Keep that dump until the restore is checked in step 8.
+  If the restore goes wrong, restore that dump with this same step. If the safety dump fails, the block prints
+  `safety dump failed` and moves nothing: fix the cause before going on.
+- The third block stops the system and restores. If the chosen file does not exist, it prints `no dump file found`
+  and does not stop the system.
 
 ### 6.1. On pm2
 
@@ -215,20 +229,39 @@ ls -l "${GODATA_DUMP:-$(ls -1 "$GODATA_DIR"/dumps/*.archive.gz | tail -n 1)}"
 Expected result: the dump file, with its date and size.
 
 ```bash
+if "$GODATA_DIR/atual/deploy/scripts/godata-backup.sh" "$GODATA_DIR"; then
+  mkdir -p "$GODATA_DIR/dumps/antes-da-restauracao"
+  mv "$(ls -1 "$GODATA_DIR"/dumps/*.archive.gz | tail -n 1)" "$(ls -1 "$GODATA_DIR"/dumps/config-*.tar.gz | tail -n 1)" "$GODATA_DIR/dumps/antes-da-restauracao/"
+  ls -l "$GODATA_DIR/dumps/antes-da-restauracao"
+else
+  echo "safety dump failed: the current state is not saved" >&2
+  false
+fi
+```
+
+Expected result: the `backup ok` line of the safety dump and, in `dumps/antes-da-restauracao/`, the dump and the
+configuration archive with the current date and time.
+
+```bash
 GODATA_DUMP="${GODATA_DUMP:-$(ls -1 "$GODATA_DIR"/dumps/*.archive.gz | tail -n 1)}"
-GODATA_DB="$(node -p 'require(process.argv[1]).mongoDb.database' "$GODATA_DIR/atual/server/datasources.json")"
-pm2 stop "$GODATA_PM2"
-GODATA_MONGO_CFG="$(mktemp)"
-printf "uri: '%s'\n" "$(node "$GODATA_DIR/atual/deploy/lib/db-state.js" print-uri --datasources "$GODATA_DIR/atual/server/datasources.json" | sed "s/'/''/g")" > "$GODATA_MONGO_CFG"
-mongorestore --config "$GODATA_MONGO_CFG" --nsInclude="$GODATA_DB.*" --archive="$GODATA_DUMP" --gzip --drop
-rm -f "$GODATA_MONGO_CFG"
+if [ -f "$GODATA_DUMP" ]; then
+  GODATA_DB="$(node -p 'require(process.argv[1]).mongoDb.database' "$GODATA_DIR/atual/server/datasources.json")"
+  pm2 stop "$GODATA_PM2"
+  GODATA_MONGO_CFG="$(mktemp)"
+  printf "uri: '%s'\n" "$(node "$GODATA_DIR/atual/deploy/lib/db-state.js" print-uri --datasources "$GODATA_DIR/atual/server/datasources.json" | sed "s/'/''/g")" > "$GODATA_MONGO_CFG"
+  mongorestore --config "$GODATA_MONGO_CFG" --nsInclude="$GODATA_DB.*" --archive="$GODATA_DUMP" --gzip --drop
+  rm -f "$GODATA_MONGO_CFG"
+else
+  echo "no dump file found: '$GODATA_DUMP'" >&2
+  false
+fi
 ```
 
 Expected result: the process stopped in pm2 and, at the end, a line such as `125000 document(s) restored
 successfully. 0 document(s) failed to restore.` The warning `The --db and --collection flags are deprecated for this
 use-case` may also show and does not affect the restore. The MongoDB connection goes into a temporary file that only
 the owner can read, deleted at the end. If `mongorestore` shows an error, do not start the system: fix the cause and
-run the block again. Then follow step 8.
+run the third block again. Then follow step 8.
 
 ### 6.2. On Docker
 
@@ -242,33 +275,58 @@ ls -l "${GODATA_DUMP:-$(ls -1 "$GODATA_DIR"/dumps/*.archive.gz | tail -n 1)}"
 Expected result: the dump file, with its date and size.
 
 ```bash
+if "$GODATA_DIR/deploy/scripts/godata-backup.sh" "$GODATA_DIR"; then
+  mkdir -p "$GODATA_DIR/dumps/antes-da-restauracao"
+  mv "$(ls -1 "$GODATA_DIR"/dumps/*.archive.gz | tail -n 1)" "$(ls -1 "$GODATA_DIR"/dumps/config-*.tar.gz | tail -n 1)" "$GODATA_DIR/dumps/antes-da-restauracao/"
+  ls -l "$GODATA_DIR/dumps/antes-da-restauracao"
+else
+  echo "safety dump failed: the current state is not saved" >&2
+  false
+fi
+```
+
+Expected result: the `backup ok` line of the safety dump and, in `dumps/antes-da-restauracao/`, the dump and the
+configuration archive with the current date and time.
+
+```bash
 cd "$GODATA_DIR"
 GODATA_DUMP="${GODATA_DUMP:-$(ls -1 "$GODATA_DIR"/dumps/*.archive.gz | tail -n 1)}"
-docker compose stop godata
-docker compose exec -T mongo sh -c "$(cat <<'EOF'
+if [ -f "$GODATA_DUMP" ]; then
+  docker compose stop godata
+  docker compose exec -T mongo sh -c "$(cat <<'EOF'
 umask 077
 d="$(mktemp -d)"
 trap 'rm -rf "$d"' EXIT
 printf "password: '%s'\n" "$(printf '%s' "$MONGO_INITDB_ROOT_PASSWORD" | sed "s/'/''/g")" > "$d/mongorestore.yml"
 mongorestore --config "$d/mongorestore.yml" --username "$MONGO_INITDB_ROOT_USERNAME" --authenticationDatabase admin --nsInclude="$GODATA_DB.*" --archive --gzip --drop
 EOF
-)" < "$GODATA_DUMP"
+  )" < "$GODATA_DUMP"
+else
+  echo "no dump file found: '$GODATA_DUMP'" >&2
+  false
+fi
 ```
 
 Expected result: the `godata` container stopped and, at the end, a line such as `125000 document(s) restored
 successfully. 0 document(s) failed to restore.` If `mongorestore` shows an error, do not start the system: fix the
-cause and run the block again. Then follow step 8.
+cause and run the third block again. Then follow step 8.
 
 ## 7. Restore a system backup from its file
 
 Use this step when the user interface does not open, or to restore a system backup brought from somewhere else. The
 file must be in the system backups folder: `backups/` on pm2, `data/backups/` on Docker. A restore takes all the data
-back to the moment of the backup and removes what was recorded after it. The system is offline from the second block
+back to the moment of the backup and removes what was recorded after it. The system is stopped from the third block
 of this step until step 8.
 
-The first block shows the backup that will be restored: the most recent one in the folder (the names start with
-`snapshot_` and the date). To restore another one, run `export GODATA_SNAPSHOT=` followed by the file name, without
-the folder, and repeat the first block.
+- The first block shows the backup that will be restored: the most recent one in the folder (the names start with
+  `snapshot_` and the date). To restore another one, run `export GODATA_SNAPSHOT=` followed by the file name, without
+  the folder, and repeat the first block.
+- The second block makes a safety dump of the current database, with the system still running, and keeps it in
+  `dumps/antes-da-restauracao/`, outside the automatic cleanup. Keep that dump until the restore is checked in step 8.
+  If the restore goes wrong, restore that dump with step 6. If the safety dump fails, the block prints
+  `safety dump failed` and moves nothing: fix the cause before going on.
+- The third block stops the system and restores. If the chosen file does not exist, it prints `no backup file found`
+  and does not stop the system.
 
 In the restore output, warnings such as `DeprecationWarning` and `MaxListenersExceededWarning` show with `"level":
 "error"` and are expected.
@@ -282,14 +340,33 @@ ls -l "$GODATA_DIR/backups/${GODATA_SNAPSHOT:-$(ls -1 "$GODATA_DIR/backups" | gr
 Expected result: the backup file, with its date and size.
 
 ```bash
+if "$GODATA_DIR/atual/deploy/scripts/godata-backup.sh" "$GODATA_DIR"; then
+  mkdir -p "$GODATA_DIR/dumps/antes-da-restauracao"
+  mv "$(ls -1 "$GODATA_DIR"/dumps/*.archive.gz | tail -n 1)" "$(ls -1 "$GODATA_DIR"/dumps/config-*.tar.gz | tail -n 1)" "$GODATA_DIR/dumps/antes-da-restauracao/"
+  ls -l "$GODATA_DIR/dumps/antes-da-restauracao"
+else
+  echo "safety dump failed: the current state is not saved" >&2
+  false
+fi
+```
+
+Expected result: the `backup ok` line of the safety dump and, in `dumps/antes-da-restauracao/`, the dump and the
+configuration archive with the current date and time.
+
+```bash
 GODATA_SNAPSHOT="${GODATA_SNAPSHOT:-$(ls -1 "$GODATA_DIR/backups" | grep '^snapshot_.*\.zip$' | tail -n 1)}"
-pm2 stop "$GODATA_PM2"
-cd "$GODATA_DIR/atual"
-npm run restore-backup -- --file="$GODATA_DIR/backups/$GODATA_SNAPSHOT"
+if [ -f "$GODATA_DIR/backups/$GODATA_SNAPSHOT" ]; then
+  pm2 stop "$GODATA_PM2"
+  cd "$GODATA_DIR/atual"
+  npm run restore-backup -- --file="$GODATA_DIR/backups/$GODATA_SNAPSHOT"
+else
+  echo "no backup file found: '$GODATA_SNAPSHOT'" >&2
+  false
+fi
 ```
 
 Expected result: the process stopped in pm2 and, at the end, the line `Successfully restored backup:` followed by the
-path of the file. If `Failed to restore backup` shows, do not start the system: fix the cause and run the block
+path of the file. If `Failed to restore backup` shows, do not start the system: fix the cause and run the third block
 again. Then follow step 8.
 
 ### 7.2. On Docker
@@ -304,15 +381,34 @@ sudo ls -l "$GODATA_DIR/data/backups/${GODATA_SNAPSHOT:-$(sudo ls -1 "$GODATA_DI
 Expected result: the backup file, with its date and size.
 
 ```bash
+if "$GODATA_DIR/deploy/scripts/godata-backup.sh" "$GODATA_DIR"; then
+  mkdir -p "$GODATA_DIR/dumps/antes-da-restauracao"
+  mv "$(ls -1 "$GODATA_DIR"/dumps/*.archive.gz | tail -n 1)" "$(ls -1 "$GODATA_DIR"/dumps/config-*.tar.gz | tail -n 1)" "$GODATA_DIR/dumps/antes-da-restauracao/"
+  ls -l "$GODATA_DIR/dumps/antes-da-restauracao"
+else
+  echo "safety dump failed: the current state is not saved" >&2
+  false
+fi
+```
+
+Expected result: the `backup ok` line of the safety dump and, in `dumps/antes-da-restauracao/`, the dump and the
+configuration archive with the current date and time.
+
+```bash
 cd "$GODATA_DIR"
 GODATA_SNAPSHOT="${GODATA_SNAPSHOT:-$(sudo ls -1 "$GODATA_DIR/data/backups" | grep '^snapshot_.*\.zip$' | tail -n 1)}"
-docker compose stop godata
-docker compose run --rm -T godata npm run restore-backup -- --file="/opt/godata/backups/$GODATA_SNAPSHOT"
+if sudo test -f "$GODATA_DIR/data/backups/$GODATA_SNAPSHOT"; then
+  docker compose stop godata
+  docker compose run --rm -T godata npm run restore-backup -- --file="/opt/godata/backups/$GODATA_SNAPSHOT"
+else
+  echo "no backup file found: '$GODATA_SNAPSHOT'" >&2
+  false
+fi
 ```
 
 Expected result: the `godata` container stopped and, at the end, the line `Successfully restored backup:` followed by
 the path of the file inside the container. If `Failed to restore backup` shows, do not start the system: fix the
-cause and run the block again. Then follow step 8.
+cause and run the third block again. Then follow step 8.
 
 ## 8. Start the system and check
 
@@ -321,6 +417,7 @@ After starting the system, check in the browser:
 - An administrator logs in and the case and contact lists show the data as of the backup date.
 - In **System configuration > Backups > Quick actions > Automatic backup settings**, the **Location** is the backups
   folder of the installation. A restore brings back the system settings stored in the backup.
+- Once everything is checked, delete the `dumps/antes-da-restauracao/` folder.
 
 ### 8.1. On pm2
 

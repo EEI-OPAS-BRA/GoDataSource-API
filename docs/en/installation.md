@@ -602,8 +602,8 @@ docker compose logs godata | grep godata-entrypoint
 
 Expected result: both containers as `Healthy` and, in the log, the lines `database is empty`,
 `running init-database`, `init-database finished`, `backup location:` with `/opt/godata/backups` and
-`starting Go.Data 2026.10.0`. The
-containers have the `restart: unless-stopped` policy: they come back on their own after a restart of the server.
+`starting Go.Data 2026.10.0`. The containers have the `restart: unless-stopped` policy: they come back on their own
+after a restart of the server.
 
 ### B10. Schedule the daily dump
 

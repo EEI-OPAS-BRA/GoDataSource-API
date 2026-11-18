@@ -320,7 +320,7 @@ Resultado esperado: o primeiro comando não mostra nada e o segundo mostra a por
 
 ### A10. Inicialize o banco de dados
 
-O `init-database` cria as tabelas, o usuário administrador do Go.Data e os dados de referência. Ele apaga tudo o que
+O `init-database` cria as coleções, o usuário administrador do Go.Data e os dados de referência. Ele apaga tudo o que
 houver no banco, por isso o bloco só o executa num banco vazio.
 
 ```bash
@@ -599,8 +599,8 @@ docker compose logs godata | grep godata-entrypoint
 
 Resultado esperado: os dois contêineres como `Healthy` e, no log, as linhas `database is empty`,
 `running init-database`, `init-database finished`, `backup location:` com `/opt/godata/backups` e
-`starting Go.Data 2026.10.0`. Os
-contêineres têm a política `restart: unless-stopped`: voltam sozinhos depois de um reinício do servidor.
+`starting Go.Data 2026.10.0`. Os contêineres têm a política `restart: unless-stopped`: voltam sozinhos depois de um
+reinício do servidor.
 
 ### B10. Agende o dump diário
 

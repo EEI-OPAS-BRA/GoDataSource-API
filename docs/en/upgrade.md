@@ -57,6 +57,9 @@ For the first two, the upgrade also moves the installation to the folder layout 
   the previous Node.js; on Docker, the previous image. Keep them for a few days of use of the new version.
 - Run every step as the user who operates Go.Data, without `sudo`, in the same terminal. The commands that need
   `sudo` already have it. On Docker, this user must be able to use `docker` without `sudo` (`docker` group).
+- Open that terminal in a `tmux` session (`sudo apt-get install -y tmux`, then `tmux new -s godata`). If the SSH
+  connection drops, the session keeps running with its commands and variables: log in again and return to it with
+  `tmux attach -t godata`.
 
 When moving from a 2.x version to 2026.10.0:
 
@@ -131,7 +134,9 @@ cat "$(ls -1 "$GODATA_BACKUP"/counts-2*.txt | tail -n 1)"
 ```
 
 Expected result: the totals of cases, contacts and events that are not deleted (`person`, by type) and the total of
-relationships (`relationship`). The `punycode` `DeprecationWarning` may appear and does not affect the count.
+relationships (`relationship`), above zero on an installation in use. The `punycode` `DeprecationWarning` may appear
+and does not affect the count. If the `person` list is empty, the connection points to another database: check
+`database` in `config/datasources.json` (step 1.5) and do not go on.
 
 ### C3. Counts on Docker
 
@@ -145,7 +150,8 @@ cat "$(ls -1 "$GODATA_BACKUP"/counts-2*.txt | tail -n 1)"
 ```
 
 Expected result: the totals of cases, contacts and events that are not deleted (`person`, by type) and the total of
-relationships (`relationship`).
+relationships (`relationship`), above zero on an installation in use. If the `person` list is empty, the count read
+another database: check `GODATA_DB` in `.env` and do not go on.
 
 ### C4. Compare with the first count
 
@@ -153,8 +159,9 @@ relationships (`relationship`).
 diff "$(ls -1 "$GODATA_BACKUP"/counts-2*.txt | head -n 1)" "$(ls -1 "$GODATA_BACKUP"/counts-2*.txt | tail -n 1)" && echo "counts: equal to the first count"
 ```
 
-Expected result: `counts: equal to the first count`. If differences appear, do not release the system to the users:
-check what changed and, if needed, go back to the previous version.
+Expected result: `counts: equal to the first count`. The comparison only holds with totals above zero (steps C2 and
+C3): two empty counts of a wrong database are equal too. If differences appear, do not release the system to the
+users: check what changed and, if needed, go back to the previous version.
 
 ## Backup
 
@@ -172,15 +179,21 @@ owner can read, deleted at the end. It also keeps the configuration of the previ
 cd "$GODATA_DIR/versions/$GODATA_NEW_VERSION"
 GODATA_MONGO_CFG="$(mktemp)"
 printf "uri: '%s'\n" "$(node deploy/lib/db-state.js print-uri --datasources server/datasources.json | sed "s/'/''/g")" > "$GODATA_MONGO_CFG"
-mongodump --config "$GODATA_MONGO_CFG" --db "$(node -p 'require("./server/datasources.json").mongoDb.database')" --archive="$GODATA_BACKUP/$(node -p 'require("./server/datasources.json").mongoDb.database').archive.gz" --gzip
-rm -f "$GODATA_MONGO_CFG"
-tar -czf "$GODATA_BACKUP/config-antes.tar.gz" -C "$GODATA_OLD_API" server/config.json server/datasources.json -C "$GODATA_DIR" config
-chmod 600 "$GODATA_BACKUP"/*.archive.gz "$GODATA_BACKUP/config-antes.tar.gz"
-ls -lh "$GODATA_BACKUP"
+if mongodump --config "$GODATA_MONGO_CFG" --db "$(node -p 'require("./server/datasources.json").mongoDb.database')" --archive="$GODATA_BACKUP/$(node -p 'require("./server/datasources.json").mongoDb.database').archive.gz" --gzip && tar -czf "$GODATA_BACKUP/config-antes.tar.gz" -C "$GODATA_OLD_API" server/config.json server/datasources.json -C "$GODATA_DIR" config; then
+  rm -f "$GODATA_MONGO_CFG"
+  chmod 600 "$GODATA_BACKUP"/*.archive.gz "$GODATA_BACKUP/config-antes.tar.gz"
+  ls -lh "$GODATA_BACKUP"
+else
+  rm -f "$GODATA_MONGO_CFG"
+  echo "dump failed: do not go on with the update" >&2
+  false
+fi
 ```
 
 Expected result: `done dumping` lines from `mongodump` and, in `GODATA_BACKUP`, the database file (`go-data.archive.gz`,
-for example) and `config-antes.tar.gz`, both larger than zero and with mode `-rw-------`.
+for example) and `config-antes.tar.gz`, both larger than zero and with mode `-rw-------`. If `dump failed` appears, do
+not go on to step 1.7: start the process again with `pm2 start godata` (replace `godata` with the process name) and
+solve the cause.
 
 ### D2. Dump on Docker
 
@@ -265,15 +278,19 @@ name `atual` for the link to the version in use.
 
 ### 1.2. Create the folders
 
+The block also installs `rsync`, which step 1.7 uses, if the server does not have it yet.
+
 ```bash
+sudo apt-get install -y rsync
 [ -d "$GODATA_DIR" ] || sudo install -d -o "$USER" -g "$USER" -m 750 "$GODATA_DIR"
 mkdir -p "$GODATA_DIR/versions" "$GODATA_DIR/storage/files" "$GODATA_DIR/storage/icons" "$GODATA_DIR/backups"
 install -d -m 700 "$GODATA_DIR/config" "$GODATA_DIR/dumps"
 ls -l "$GODATA_DIR"
 ```
 
-Expected result: the `backups`, `config`, `dumps`, `storage` and `versions` folders, owned by your user, besides what
-the folder already held. On an installation that already follows the installation manual, nothing changes.
+Expected result: `rsync is already the newest version` or the package installed, and the `backups`, `config`,
+`dumps`, `storage` and `versions` folders, owned by your user, besides what the folder already held. On an
+installation that already follows the installation manual, the folders do not change.
 
 Then run step C1 (counts script).
 
@@ -388,12 +405,14 @@ fs.writeFileSync(configDir + "/config.json", JSON.stringify(config, null, 2) + "
 fs.writeFileSync(configDir + "/datasources.json", JSON.stringify(sources, null, 2) + "\n", { mode: 0o600 });
 console.log("config.json: " + (Object.keys(config).join(", ") || "none"));
 console.log("datasources.json: mongoDb (" + Object.keys(mongoDb).join(", ") + ")" + (sources.email ? ", email" : ""));
+console.log("database: " + (mongoDb.database || "go-data (default)"));
 console.log("review: " + (review.join(", ") || "none"));
 ' "$GODATA_OLD_API/server" "$GODATA_DIR/config" "$GODATA_DIR/versions/$GODATA_NEW_VERSION/deploy/defaults"
 ```
 
-Expected result: three lines, for example `config.json: port, public, enableConfigRewrite, timezone`,
-`datasources.json: mongoDb (host, port, database, authSource), email` and `review: none`. The `review` line lists the
+Expected result: four lines, for example `config.json: port, public, enableConfigRewrite, timezone`,
+`datasources.json: mongoDb (host, port, database, authSource), email`, `database: go-data` and `review: none`. The
+database shown must be the one of the old installation: the counts of step C2 read it. The `review` line lists the
 other keys where the old configuration differs from the default of the new version. For each one, decide whether it
 is a choice of the installation or an old default: a choice of the installation goes into `config/config.json` as in
 the blocks of the [configuration manual](configuration.md); an old default stays out. Both files hold passwords: only
@@ -423,7 +442,8 @@ pm2 list
 ```
 
 Expected result: the process as `stopped` in `pm2 list`. The `In-memory PM2 is out-of-date` warning of step 1.3 may
-appear again.
+appear again. If `pm2 list` shows other processes besides Go.Data and `pm2-logrotate`, for example another Go.Data
+installation, read step 1.9 before going on: it restarts them.
 
 Then run steps C2 (counts on pm2) and D1 (dump on pm2).
 
@@ -467,6 +487,9 @@ cd "$GODATA_DIR/atual"
 npm run migrate-database
 ```
 
+Run this step inside the `tmux` session opened in **Before you start** (`sudo apt-get install -y tmux` and
+`tmux new -s godata`): an SSH drop in the middle of the migration would interrupt it.
+
 Expected result: the command ends without error, with a line that starts with `Portuguese translations:`. Warnings
 such as `DeprecationWarning` and `MaxListenersExceededWarning` appear with `"level":"error"` and are expected. The
 migration may take several minutes, and longer on installations older than 2.50. If it fails or is interrupted, do
@@ -477,7 +500,12 @@ not run it again: follow **Go back to the previous version** or **Recover from a
 pm2 stores the real folder of the version as the process folder, not the `atual` link. That is why the old process is
 deleted and a new one is created from `atual`. The saved pm2 list is updated right after deleting the process:
 otherwise `pm2 update`, which restarts pm2 with the version installed in step 1.3, would also restore the old process.
-The other pm2 processes, if any, are restored.
+
+`pm2 update` restarts every pm2 process on the server: they are down for a few seconds and come back with the new pm2
+and with Node.js 22, the default since step 1.3 (`nvm alias default 22`). If the server has other applications in
+pm2, for example another Go.Data installation, agree the window with their users too, check that an older Go.Data
+version works with Node.js 22 (or upgrade it with this same manual) and, after this step, check in `pm2 list` that they
+came back as `online`.
 
 ```bash
 cd "$GODATA_DIR/atual"
@@ -735,7 +763,9 @@ pm2 list
 ```
 
 Expected result: the version of the previous Node.js and the process as `online` in `pm2 list`. If the previous
-process was started in another way, use the command recorded in `pm2-antes.txt`, in `GODATA_BACKUP`.
+process was started in another way, use the command recorded in `pm2-antes.txt`, in `GODATA_BACKUP`. As in step 1.9,
+`pm2 update` restarts every pm2 process on the server, which come back with the previous pm2 and Node.js: check in
+`pm2 list` that the other applications came back as `online`.
 
 Then run step A12 of the [installation manual](installation.md) again, which recreates the pm2 service with the
 previous Node.js. The daily dump keeps using Node.js 22, which stays installed. Finally, take the counts (step C2) and
@@ -764,17 +794,24 @@ if there is one: with the database restored from the pre-upgrade dump, its cause
 
 ```bash
 cd "$GODATA_DIR"
-sed -i "s/^GODATA_VERSION=.*/$(cat "$GODATA_BACKUP/versao-antes.txt")/" .env
-grep '^GODATA_VERSION=' .env
-sudo rm -f data/state/migration-failed data/state/db-command-running
-docker compose up -d --wait --wait-timeout 900
-docker compose images godata
-docker compose logs godata | grep godata-entrypoint
+if grep -qx 'GODATA_VERSION=[0-9A-Za-z][0-9A-Za-z._-]*' "$GODATA_BACKUP/versao-antes.txt" 2> /dev/null; then
+  sed -i "s/^GODATA_VERSION=.*/$(cat "$GODATA_BACKUP/versao-antes.txt")/" .env
+  grep '^GODATA_VERSION=' .env
+  sudo rm -f data/state/migration-failed data/state/db-command-running
+  docker compose up -d --wait --wait-timeout 900
+  docker compose images godata
+  docker compose logs godata | grep godata-entrypoint
+else
+  echo "stop: no previous version in $GODATA_BACKUP/versao-antes.txt, write GODATA_VERSION=<previous version> in it and run this block again" >&2
+  false
+fi
 ```
 
 Expected result: the previous version in `.env` and in the `TAG` column, the containers as `Healthy` and, in the log,
-`database has users`, `migrate-database finished` and `starting Go.Data` followed by the previous version. Finally,
-take the counts (step C3) and compare them with the first one (step C4).
+`database has users`, `migrate-database finished` and `starting Go.Data` followed by the previous version. If `stop:`
+appears, the file of step 3.3 is empty or missing and nothing changed: write in it the line `GODATA_VERSION=` followed
+by the previous version, which is in the `.env` of the `config-<date>.tar.gz` archive in `GODATA_BACKUP`, and run the
+block again. Finally, take the counts (step C3) and compare them with the first one (step C4).
 
 ## Recover from a failed migration
 
@@ -819,12 +856,13 @@ earlier run: the reason is only in the `reason:` line.
 ### R2. Go back to the pre-upgrade dump
 
 Follow **Go back to the previous version** for your case. On Docker, step V3.3 deletes the marker after the restore.
-To try the new version again after fixing the cause, restore the dump (steps V3.1 and V3.2), delete the marker (step
-R3) and start with step 3.4.
+To try the new version again after fixing the cause, restore the dump (steps V3.1 and V3.2) and delete the marker
+(step R3), which starts the container and migrates the database.
 
 ### R3. Delete the marker on Docker
 
-Only after restoring the dump or fixing the cause. The container runs the migration again at the next start.
+Only after restoring the dump or fixing the cause. The container runs the migration again at the next start. Without
+a restore, the migration starts again on a database that may be half migrated: read step R4 first.
 
 ```bash
 cd "$GODATA_DIR"
@@ -863,20 +901,36 @@ Docker, run step R3.
 ### R5. Interrupted first installation on Docker
 
 If the first start (step B9 of the [installation manual](installation.md)) was interrupted, the database holds part
-of the collections and no users, and the container refuses `init-database`. On a new installation, with no data
-recorded, drop the database and start again. Never do this on an installation with data.
+of the collections and no users, and the container refuses `init-database`. This step drops the database and starts
+again, only on a new installation that never had data. The block first takes a dump with the backup script and counts
+the persons (cases, contacts and events), the outbreaks and the users in the database: if there is any, it stops
+without dropping anything. An incomplete restore also leaves the database without users; in that case, restore the
+dump again with step 6.2 of the [backup manual](backup.md).
 
 ```bash
 cd "$GODATA_DIR"
 docker compose stop godata
-docker compose exec -T mongo sh -c 'mongosh --quiet --nodb --eval "db = new Mongo(\"mongodb://127.0.0.1:27017\").getDB(\"admin\"); db.auth(process.env.MONGO_INITDB_ROOT_USERNAME, process.env.MONGO_INITDB_ROOT_PASSWORD); printjson(db.getSiblingDB(process.env.GODATA_DB).dropDatabase())"'
-sudo rm -f data/state/migration-failed data/state/db-command-running
-docker compose up -d --wait --wait-timeout 900
-docker compose logs godata | grep godata-entrypoint
+if "$GODATA_DIR/deploy/scripts/godata-backup.sh" "$GODATA_DIR"; then
+  GODATA_RECORDS="$(docker compose exec -T mongo sh -c 'mongosh --quiet --nodb --eval "db = new Mongo(\"mongodb://127.0.0.1:27017\").getDB(\"admin\"); db.auth(process.env.MONGO_INITDB_ROOT_USERNAME, process.env.MONGO_INITDB_ROOT_PASSWORD); const d = db.getSiblingDB(process.env.GODATA_DB); print(d.person.countDocuments({}) + d.outbreak.countDocuments({}) + d.user.countDocuments({}))"')"
+  if [ "$GODATA_RECORDS" = 0 ]; then
+    docker compose exec -T mongo sh -c 'mongosh --quiet --nodb --eval "db = new Mongo(\"mongodb://127.0.0.1:27017\").getDB(\"admin\"); db.auth(process.env.MONGO_INITDB_ROOT_USERNAME, process.env.MONGO_INITDB_ROOT_PASSWORD); printjson(db.getSiblingDB(process.env.GODATA_DB).dropDatabase())"'
+    sudo rm -f data/state/migration-failed data/state/db-command-running
+    docker compose up -d --wait --wait-timeout 900
+    docker compose logs godata | grep godata-entrypoint
+  else
+    echo "stop: the database has $GODATA_RECORDS persons, outbreaks or users, it is not an interrupted first installation" >&2
+    false
+  fi
+else
+  echo "dump failed: nothing was dropped" >&2
+  false
+fi
 ```
 
-Expected result: the output shows `ok: 1` and `dropped: 'go-data'`, the containers as `Healthy` and, in the log,
-`database is empty`, `running init-database` and `init-database finished`.
+Expected result: the `backup ok` line of the dump, which stays in `dumps/`, the output with `ok: 1` and
+`dropped: 'go-data'`, the containers as `Healthy` and, in the log, `database is empty`, `running init-database` and
+`init-database finished`. If `stop:` appears, the database has data and nothing was dropped: follow
+**Go back to the previous version** or restore the right dump with step 6.2 of the backup manual.
 
 ## MongoDB 7.0 patch upgrade
 

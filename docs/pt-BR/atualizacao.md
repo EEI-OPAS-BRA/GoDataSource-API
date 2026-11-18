@@ -177,11 +177,12 @@ printf "uri: '%s'\n" "$(node deploy/lib/db-state.js print-uri --datasources serv
 mongodump --config "$GODATA_MONGO_CFG" --db "$(node -p 'require("./server/datasources.json").mongoDb.database')" --archive="$GODATA_BACKUP/$(node -p 'require("./server/datasources.json").mongoDb.database').archive.gz" --gzip
 rm -f "$GODATA_MONGO_CFG"
 tar -czf "$GODATA_BACKUP/config-antes.tar.gz" -C "$GODATA_OLD_API" server/config.json server/datasources.json -C "$GODATA_DIR" config
+chmod 600 "$GODATA_BACKUP"/*.archive.gz "$GODATA_BACKUP/config-antes.tar.gz"
 ls -lh "$GODATA_BACKUP"
 ```
 
 Resultado esperado: linhas `done dumping` do `mongodump` e, em `GODATA_BACKUP`, o arquivo do banco
-(`go-data.archive.gz`, por exemplo) e `config-antes.tar.gz`, com tamanho maior que zero.
+(`go-data.archive.gz`, por exemplo) e `config-antes.tar.gz`, com tamanho maior que zero e permissão `-rw-------`.
 
 ### D2. Dump no Docker
 

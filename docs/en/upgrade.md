@@ -50,11 +50,12 @@ For the first two, the upgrade also moves the installation to the folder layout 
 ## Before you start
 
 - Read the [release notes](release-notes.md) of the new version.
-- Plan a maintenance window and warn the users. The system is down from step 1.6 (case 1) or 3.3 (case 3) until the
-  **Final check**.
+- Plan a maintenance window and warn the users. The system is down from step 1.6 (case 1), 2.6, 2.12 or 2.17
+  (case 2) or 3.3 (case 3) until the **Final check**.
 - Check the free disk space: at least twice the size of the database, plus 3 GB.
 - The previous installation stays untouched until the check is done: on pm2, the folder of the previous version and
-  the previous Node.js; on Docker, the previous image. Keep them for a few days of use of the new version.
+  the previous Node.js; on Docker, the previous image; in case 2, the old pm2 process, stopped, and the old MongoDB.
+  Keep them for a few days of use of the new version.
 - Run every step as the user who operates Go.Data, without `sudo`, in the same terminal. The commands that need
   `sudo` already have it. On Docker, this user must be able to use `docker` without `sudo` (`docker` group).
 - Open that terminal in a `tmux` session (`sudo apt-get install -y tmux`, then `tmux new -s godata`). If the SSH
@@ -86,11 +87,11 @@ Expected result: no output.
 - `GODATA_DIR`: installation folder. On pm2, the one that holds or will hold `atual`, `config/` and `versions/`. On
   Docker, the one that holds `docker-compose.yml` and `.env`.
 - `GODATA_NEW_VERSION`: the new version, without the leading `v`, as on the releases page of the API repository.
-- `GODATA_PM2`: pm2 only. Name of the Go.Data process in pm2 (`pm2 list`).
-- `GODATA_OLD_API`: pm2 only. The API folder in use, the one that holds `server/config.json`. It is the `exec cwd`
-  value of `pm2 describe godata` (replace `godata` with the process name). Examples: `/opt/godata/2026.10.0/api`
-  (upgrade guide of version 2026.10.0), `/godata/v2.49.0/go-data/build` (WHO installer) and
-  `/opt/godata/versions/2026.10.0` (installation manual). Step 1.1 checks this value.
+- `GODATA_PM2`: pm2 and case 2 only. Name of the Go.Data process in pm2 (`pm2 list`).
+- `GODATA_OLD_API`: pm2 and case 2 only. The API folder in use, the one that holds `server/config.json`. It is the
+  `exec cwd` value of `pm2 describe godata` (replace `godata` with the process name). Examples:
+  `/opt/godata/2026.10.0/api` (upgrade guide of version 2026.10.0), `/godata/v2.49.0/go-data/build` (WHO installer)
+  and `/opt/godata/versions/2026.10.0` (installation manual). Steps 1.1 and 2.1 check this value.
 - `GODATA_BACKUP`: folder that keeps the counts, the pre-upgrade dump and what the way back needs.
 
 Do not export `GODATA_VERSION`, `GODATA_PORT` or `GODATA_DB` in this terminal: on Docker, `docker compose` would use
@@ -555,8 +556,642 @@ Then follow **Final check**.
 
 ## Case 2: pm2 to Docker
 
-This case, for servers with Ubuntu 20.04 or older, Windows or MongoDB below 7.0, will be published in a later version
-of this manual.
+The installation moves to path B of the [installation manual](installation.md): MongoDB 7.0 and Go.Data in
+containers, in a new folder. The database comes from a dump of the old MongoDB, restored in the `mongo` container. The
+attachments, the system backups and the installation's own values come from the old API folder. The Go.Data
+container migrates the database at its first start.
+
+The old installation does not change: the Go.Data process in pm2 is only stopped, never deleted before the check, and
+the old MongoDB is only read by the dump. Until the check is done, going back means stopping Docker and starting the
+old process again (**Go back to the previous version**).
+
+The case has three variants:
+
+- **On the same server**: Ubuntu 22.04 or 24.04, with pm2 and a MongoDB below 7.0 on the server itself.
+- **To a new server**: the old server runs Ubuntu 20.04 or older. The new server runs Ubuntu 22.04 or 24.04 and
+  receives the files of the old server.
+- **Old server on Windows**: like the previous one, with the old server part in PowerShell.
+
+In the **Variables** block, in this case:
+
+- `GODATA_DIR` is the new folder of the Docker installation, which does not exist yet or is empty. The default is
+  `/opt/godata`. If `/opt/godata` already exists and is not empty, for example on an installation made with the
+  upgrade guide of version 2026.10.0 (with `/opt/godata/atual` and `/opt/godata/2026.10.0`), use `/opt/godata-docker`.
+  The blocks of this manual and of the other manuals use `GODATA_DIR`; the paths inside the containers, such as
+  `/opt/godata/backups`, do not change.
+- `GODATA_OLD_API` is the old API folder, and `GODATA_PM2` the name of the old process in pm2.
+- `GODATA_BACKUP` sits inside the new folder and keeps the dump of the old database and the counts.
+
+### On the same server
+
+#### 2.1. Check the server and the installation
+
+The block checks the CPU, the Ubuntu version, the API folder in use, `mongodump` and the new folder. It changes
+nothing on the server.
+
+```bash
+GODATA_OLD_CWD="$(pm2 jlist | node -e 'const p = JSON.parse(require("fs").readFileSync(0, "utf8")).find(x => x.name === process.argv[1]); console.log(p ? p.pm2_env.pm_cwd : "")' "$GODATA_PM2")"
+GODATA_DUMP_VERSION="$(mongodump --version 2> /dev/null | head -n 1 || true)"
+if ! grep -m1 -wo avx /proc/cpuinfo; then
+  echo "stop: this CPU has no AVX instructions, MongoDB 7.0 does not run on it" >&2
+  false
+elif ! grep -qxE 'VERSION_ID="(22|24)\.04"' /etc/os-release; then
+  echo "stop: Docker needs Ubuntu 22.04 or 24.04, this server runs $(. /etc/os-release && echo "$PRETTY_NAME"), move to a new server" >&2
+  false
+elif [ "$GODATA_OLD_CWD" != "$GODATA_OLD_API" ]; then
+  echo "stop: the pm2 process $GODATA_PM2 runs from '$GODATA_OLD_CWD', set GODATA_OLD_API to that folder" >&2
+  false
+elif [ ! -f "$GODATA_OLD_API/server/config.json" ] || [ ! -f "$GODATA_OLD_API/server/datasources.json" ]; then
+  echo "stop: no server/config.json or server/datasources.json in $GODATA_OLD_API" >&2
+  false
+elif [ "${GODATA_DUMP_VERSION#mongodump version: 100.}" = "$GODATA_DUMP_VERSION" ]; then
+  echo "stop: mongodump is not from the MongoDB Database Tools 100, found: '$GODATA_DUMP_VERSION'" >&2
+  false
+elif sudo test -e "$GODATA_DIR" && [ -n "$(sudo ls -A "$GODATA_DIR")" ]; then
+  echo "stop: $GODATA_DIR already exists and is not empty, use another folder in GODATA_DIR, for example /opt/godata-docker" >&2
+  false
+else
+  echo "ok: $GODATA_DUMP_VERSION, move from $GODATA_OLD_API to Docker in $GODATA_DIR"
+fi
+```
+
+Expected result: `avx` and a line that starts with `ok:`, with the `mongodump` version (`mongodump version: 100.`
+followed by the number). If a line that starts with `stop:` appears, do not go on:
+
+- On Ubuntu 20.04 or older, follow **To a new server**.
+- If the process runs from another folder, set `GODATA_OLD_API` to the folder shown.
+- If `mongodump` is not from the 100 series, see step 2.11.
+- If the new folder already exists and is not empty, set `GODATA_DIR` to `/opt/godata-docker` (or another empty
+  folder). This manual does not install over a folder with files.
+
+After the fix, run the **Variables** block and this block again.
+
+#### 2.2. Install Docker
+
+Follow the two blocks of step B3 of the [installation manual](installation.md), in the same terminal. They install
+Docker Engine and the Compose plugin from Docker's official repository and add your user to the `docker` group. The
+old Go.Data keeps running.
+
+The `docker` group only applies to a new session: close the `tmux` session with `exit`, log out of the server, log in
+again, open another `tmux` session (`tmux new -s godata`) and run the **Variables** block again.
+
+#### 2.3. Create the installation folder
+
+The first block creates the new folder with the folders of path B of the installation manual (the table of step B4
+describes each one), downloads the release package, checks its checksum and copies the Docker files from the package.
+
+```bash
+docker info --format '{{.ServerVersion}}'
+sudo install -d -o "$USER" -g "$USER" -m 750 "$GODATA_DIR"
+mkdir -p "$GODATA_DIR/versions" "$GODATA_DIR/config" "$GODATA_DIR/data/mongo" "$GODATA_DIR/data/storage" "$GODATA_DIR/data/backups" "$GODATA_DIR/data/state" "$GODATA_DIR/dumps"
+cd "$GODATA_DIR/versions"
+curl -fLO "https://github.com/EEI-OPAS-BRA/GoDataSource-API/releases/download/v$GODATA_NEW_VERSION/godata-$GODATA_NEW_VERSION.tar.gz"
+curl -fLO "https://github.com/EEI-OPAS-BRA/GoDataSource-API/releases/download/v$GODATA_NEW_VERSION/godata-$GODATA_NEW_VERSION.tar.gz.sha256"
+sha256sum -c "godata-$GODATA_NEW_VERSION.tar.gz.sha256"
+tar -xzf "godata-$GODATA_NEW_VERSION.tar.gz" -C "$GODATA_DIR" --strip-components=3 "godata-$GODATA_NEW_VERSION/deploy/docker/docker-compose.yml" "godata-$GODATA_NEW_VERSION/deploy/docker/.env.example" "godata-$GODATA_NEW_VERSION/deploy/docker/mongo-init"
+tar -xzf "godata-$GODATA_NEW_VERSION.tar.gz" -C "$GODATA_DIR" --strip-components=1 "godata-$GODATA_NEW_VERSION/deploy/scripts/godata-backup.sh"
+ls -l "$GODATA_DIR/docker-compose.yml" "$GODATA_DIR/mongo-init" "$GODATA_DIR/deploy/scripts"
+```
+
+Expected result: the Docker version, `godata-2026.10.0.tar.gz: OK` and the files `docker-compose.yml`,
+`mongo-init/01-godata-user.js` and `deploy/scripts/godata-backup.sh`. If the first command shows `permission denied`,
+the session does not have the `docker` group yet: see step 2.2. If `FAILED` appears, the file is corrupt: delete both
+downloaded files and run the block again.
+
+The second block creates `.env` with two passwords drawn by `openssl`, as in step B6 of the installation manual. Only
+your user can read the file and the passwords are not shown.
+
+```bash
+cd "$GODATA_DIR"
+install -m 600 /dev/null .env
+cat > .env <<EOF
+GODATA_VERSION=$GODATA_NEW_VERSION
+GODATA_BIND=0.0.0.0
+GODATA_PORT=3000
+GODATA_DB=go-data
+MONGO_ROOT_PASSWORD=$(openssl rand -hex 24)
+GODATA_MONGO_PASSWORD=$(openssl rand -hex 24)
+EOF
+grep -v PASSWORD .env
+ls -l .env
+```
+
+Expected result: the four lines without passwords and the file with mode `-rw-------`. Step 2.5 replaces
+`GODATA_BIND`, `GODATA_PORT` and `GODATA_DB` with the values of the old installation.
+
+Then run step C1 (counts script).
+
+#### 2.4. Download the images
+
+```bash
+cd "$GODATA_DIR"
+docker compose pull
+docker image ls ghcr.io/eei-opas-bra/godata
+```
+
+Expected result: the `mongo` and `godata` images downloaded and the `ghcr.io/eei-opas-bra/godata` image with the tag
+of the new version. If the server cannot download the image from `ghcr.io`, use the block of **Without access to
+ghcr.io** of step 3.2 and then run `docker compose pull mongo` in the installation folder.
+
+#### 2.5. Configure
+
+The block creates `config/config.json` and `config/datasources.json` with the installation's own values, read from
+`server/config.json` and `server/datasources.json` of the old folder, as in step 1.5: the keys of the `config.json`
+table of the [configuration manual](configuration.md) that differ from the new version's default (the public address,
+the time zone, the date formats, the sender, the API key, among others) and the mail server. The MongoDB connection
+does not go into these files: on Docker, it comes from `.env`.
+
+The block also writes to `.env` the database name (`GODATA_DB`), the port (`GODATA_PORT`) and the interface the old
+API listened on (`GODATA_BIND`: `127.0.0.1` if it listened on the server itself only, `0.0.0.0` otherwise), so the
+system keeps the same address. It runs the image's `node` in a temporary container, with your user and group 1000,
+and shows only the key names, never the values. If `config/` already has these files, the block stops without
+changing anything.
+
+```bash
+cd "$GODATA_DIR"
+docker compose run --rm --no-deps -T -u "$(id -u):1000" -v "$GODATA_DIR/config:/config" -v "$GODATA_DIR/.env:/env" -v "$GODATA_OLD_API/server:/antigo:ro" --entrypoint node godata -e '
+const fs = require("fs");
+const read = file => JSON.parse(fs.readFileSync(file, "utf8"));
+const isObject = value => value !== null && typeof value === "object" && !Array.isArray(value);
+const diff = (value, base) => {
+  if (isObject(value) && isObject(base)) {
+    const out = {};
+    for (const key of Object.keys(value)) {
+      const changed = diff(value[key], base[key]);
+      if (changed !== undefined) out[key] = changed;
+    }
+    return Object.keys(out).length ? out : undefined;
+  }
+  return JSON.stringify(value) === JSON.stringify(base) ? undefined : value;
+};
+const paths = (value, prefix) => isObject(value) ? Object.keys(value).flatMap(key => paths(value[key], prefix + "." + key)) : [prefix];
+if (fs.existsSync("/config/config.json") || fs.existsSync("/config/datasources.json")) {
+  console.error("stop: config/ already has config.json or datasources.json");
+  process.exit(1);
+}
+const oldConfig = read("/antigo/config.json");
+const baseConfig = read("/opt/godata/deploy/defaults/config.json");
+const own = ["public", "enableConfigRewrite", "timezone", "dateDisplayFormat", "dateTimeDisplayFormat", "passwordReset", "apiKey", "captcha", "cors", "session", "backUp"];
+const config = {};
+const review = [];
+for (const key of Object.keys(oldConfig)) {
+  const changed = diff(oldConfig[key], baseConfig[key]);
+  if (changed === undefined || key === "host" || key === "port") continue;
+  if (own.includes(key)) config[key] = changed;
+  else review.push(...paths(changed, "config.json:" + key));
+}
+const oldSources = read("/antigo/datasources.json");
+const sources = {};
+const email = diff(oldSources.email, read("/opt/godata/deploy/defaults/datasources.json").email);
+if (email !== undefined) sources.email = email;
+const env = {
+  GODATA_BIND: ["127.0.0.1", "localhost"].includes(oldConfig.host) ? "127.0.0.1" : "0.0.0.0",
+  GODATA_PORT: String(oldConfig.port || 3000),
+  GODATA_DB: (oldSources.mongoDb && oldSources.mongoDb.database) || "go-data"
+};
+const lines = fs.readFileSync("/env", "utf8").split("\n").map(line => {
+  const key = line.split("=")[0];
+  return Object.hasOwn(env, key) ? key + "=" + env[key] : line;
+});
+fs.writeFileSync("/config/config.json", JSON.stringify(config, null, 2) + "\n", { mode: 0o640 });
+fs.writeFileSync("/config/datasources.json", JSON.stringify(sources, null, 2) + "\n", { mode: 0o640 });
+fs.writeFileSync("/env", lines.join("\n"));
+console.log("config.json: " + (Object.keys(config).join(", ") || "none"));
+console.log("datasources.json: " + (sources.email ? "email" : "none"));
+console.log(".env: " + Object.keys(env).map(key => key + "=" + env[key]).join(", "));
+console.log("review: " + (review.join(", ") || "none"));
+'
+grep -v PASSWORD .env
+```
+
+Expected result: four lines, for example `config.json: public, enableConfigRewrite, timezone`,
+`datasources.json: email`, `.env: GODATA_BIND=0.0.0.0, GODATA_PORT=3000, GODATA_DB=go-data` and `review: none`,
+followed by the `.env` lines without passwords. The database shown must be the one of the old installation: step 2.7
+restores the dump into it. The `review` line lists the other keys where the old configuration differs from the new
+version's default. For each one, decide whether it is a choice of the installation or an old default: a choice of the
+installation goes into `config/config.json` as in the **On Docker** blocks of the configuration manual; an old default
+stays out. Both files may hold the mail password: only your user and the container can read them. On the same server,
+the port becomes free when the old process stops, in step 2.6.
+
+#### 2.6. Stop Go.Data and dump
+
+From this step on the system is down. The first block saves the description of the process in pm2, stops it and saves
+the pm2 list with the process stopped: without this, a restart of the server would start the old Go.Data again. The
+process is not deleted: it is the way back. The other pm2 processes do not change.
+
+```bash
+pm2 describe "$GODATA_PM2" > "$GODATA_BACKUP/pm2-antes.txt"
+pm2 stop "$GODATA_PM2"
+pm2 save
+pm2 list
+```
+
+Expected result: the process as `stopped` in `pm2 list`.
+
+The second block dumps the old database, with Go.Data stopped. The connection comes from `server/datasources.json` of
+the old folder and goes into a temporary file that only the owner can read, deleted at the end: with or without a
+user and password on MongoDB, the password never shows on the command line.
+
+```bash
+GODATA_OLD_DB="$(node -p 'require(process.argv[1]).mongoDb.database || "go-data"' "$GODATA_OLD_API/server/datasources.json")"
+GODATA_MONGO_CFG="$(mktemp)"
+node -e '
+const m = require(process.argv[1]).mongoDb;
+const auth = m.user && m.password ? encodeURIComponent(m.user) + ":" + encodeURIComponent(m.password) + "@" : "";
+const query = auth && m.authSource ? "?authSource=" + encodeURIComponent(m.authSource) : "";
+const uri = m.url || "mongodb://" + auth + (m.host || "127.0.0.1") + ":" + (m.port || 27017) + "/" + query;
+console.log("uri: \x27" + uri.replace(/\x27/g, "\x27\x27") + "\x27");
+' "$GODATA_OLD_API/server/datasources.json" > "$GODATA_MONGO_CFG"
+if mongodump --config "$GODATA_MONGO_CFG" --db "$GODATA_OLD_DB" --archive="$GODATA_BACKUP/banco-antigo.archive.gz" --gzip; then
+  rm -f "$GODATA_MONGO_CFG"
+  chmod 600 "$GODATA_BACKUP/banco-antigo.archive.gz"
+  ls -lh "$GODATA_BACKUP"
+else
+  rm -f "$GODATA_MONGO_CFG" "$GODATA_BACKUP/banco-antigo.archive.gz"
+  echo "dump failed: do not go on with the move" >&2
+  false
+fi
+```
+
+Expected result: `done dumping` lines from `mongodump` and, in `GODATA_BACKUP`, the file `banco-antigo.archive.gz`,
+larger than zero and with mode `-rw-------`. If `dump failed` appears, the block deletes whatever it wrote in part: do
+not go on, start the old process again with `pm2 start godata` and `pm2 save` (replace `godata` with the process
+name) and fix the cause.
+
+#### 2.7. Restore the database on Docker
+
+The block starts only the `mongo` container, which creates the MongoDB users at its first start, and restores the dump
+of step 2.6 into it. `mongorestore` runs inside the container, with the MongoDB `root` user and the password the
+container itself knows, as in step 6.2 of the [backup manual](backup.md).
+
+```bash
+cd "$GODATA_DIR"
+docker compose up -d --wait --wait-timeout 300 mongo
+docker compose exec -T mongo sh -c "$(cat <<'EOF'
+umask 077
+d="$(mktemp -d)"
+trap 'rm -rf "$d"' EXIT
+printf "password: '%s'\n" "$(printf '%s' "$MONGO_INITDB_ROOT_PASSWORD" | sed "s/'/''/g")" > "$d/mongorestore.yml"
+mongorestore --config "$d/mongorestore.yml" --username "$MONGO_INITDB_ROOT_USERNAME" --authenticationDatabase admin --nsInclude="$GODATA_DB.*" --archive --gzip --drop
+EOF
+)" < "$GODATA_BACKUP/banco-antigo.archive.gz"
+docker compose ps
+```
+
+Expected result: at the end of `mongorestore`, a line like `125000 document(s) restored successfully. 0 document(s)
+failed to restore.` and the `mongo` container as `Up` and `(healthy)`. If `mongorestore` shows an error, do not go on:
+follow **Go back to the previous version**.
+
+Then run step C3 (counts on Docker). It is the first count: the old Go.Data is stopped since the dump and the Go.Data
+container has not started nor migrated the database yet.
+
+#### 2.8. Copy the attachments and the system backups
+
+The block copies `server/storage` and `backups/` of the old folder to `data/storage` and `data/backups`. The old
+folder does not change.
+
+```bash
+cp -a "$GODATA_OLD_API/server/storage/." "$GODATA_DIR/data/storage/"
+if [ -d "$GODATA_OLD_API/backups" ]; then cp -a "$GODATA_OLD_API/backups/." "$GODATA_DIR/data/backups/"; fi
+echo "storage: $(find "$GODATA_OLD_API/server/storage/" -type f | wc -l) files in the old folder, $(find "$GODATA_DIR/data/storage" -type f | wc -l) in data/storage"
+ls -l "$GODATA_DIR/data/backups"
+```
+
+Expected result: the `storage:` line with the same number of files in both folders and the list of the system
+backups.
+
+#### 2.9. Start
+
+The Go.Data container migrates the restored database before it starts the system and moves the system backups folder
+to `/opt/godata/backups` (the `data/backups` folder seen from inside the container). The migration from a 2.x version
+can take several minutes: run this step inside the `tmux` session.
+
+```bash
+cd "$GODATA_DIR"
+docker compose up -d --wait --wait-timeout 900
+docker compose ps
+docker compose logs godata | grep godata-entrypoint
+```
+
+Expected result: both containers as `Healthy` and, in the log, the lines `database has users`,
+`running migrate-database`, `migrate-database finished`, `backup location: changed` followed by the old folder and
+`/opt/godata/backups`, and `starting Go.Data` followed by the new version. On the same server, if the old folder of
+that line is not `backups/` inside `GODATA_OLD_API`, also copy its files with
+`sudo cp -a <old folder>/. "$GODATA_DIR/data/backups/"`.
+
+While the command waits, `docker compose logs -f godata`, in another terminal, shows the progress. If the log shows
+`migration failed` or `refusing to start`, the command only ends with an error after up to 10 minutes: follow
+**Go back to the previous version**.
+
+Then run steps C3 (counts on Docker) and C4 (comparison) and follow **Final check**. With everything checked, run step
+B10 of the installation manual (daily dump) and, on the same server, step 2.10.
+
+#### 2.10. Remove the old installation
+
+Only after the check. The first block deletes the old process from pm2 and saves the pm2 list without it. The other
+pm2 processes do not change.
+
+```bash
+pm2 delete "$GODATA_PM2"
+pm2 save --force
+pm2 list
+```
+
+Expected result: `pm2 list` without the old process.
+
+The second block turns off the old MongoDB, which Go.Data no longer uses. It first checks the open connections to that
+MongoDB: if a program is connected, another system uses it, and the block stops without turning anything off.
+
+```bash
+GODATA_OLD_MONGO_PORT="$(node -p 'require(process.argv[1]).mongoDb.port || 27017' "$GODATA_OLD_API/server/datasources.json")"
+if [ -n "$(sudo ss -Htn state established "( sport = :$GODATA_OLD_MONGO_PORT )")" ]; then
+  sudo ss -Htnp state established "( sport = :$GODATA_OLD_MONGO_PORT )"
+  echo "stop: programs are connected to the MongoDB on port $GODATA_OLD_MONGO_PORT, keep it running" >&2
+  false
+else
+  sudo systemctl disable --now mongod
+  echo "mongod: $(systemctl is-active mongod || true), $(systemctl is-enabled mongod || true)"
+fi
+```
+
+Expected result: `mongod: inactive, disabled`. If `stop:` appears, the previous lines show the connected programs:
+check with the people who run them before turning MongoDB off. The block only sees the connections of this moment:
+also confirm that no other system uses that MongoDB from time to time, such as a nightly job. The data of the old
+MongoDB stays on disk. If the crontab has the daily dump line of the old installation (`crontab -l`), delete it.
+
+### To a new server
+
+The old server stops Go.Data and prepares three files: the database dump, a package with the configuration, the
+attachments and the system backups, and the description of the process in pm2. They go to the new server, which
+makes the Docker installation with the steps of **On the same server**. The old server does not change beyond the
+stop of the process: going back means starting it again there. After the check, the people who run the network point
+the system address (the DNS name) to the new server.
+
+#### On the old server
+
+##### 2.11. Set the variables and check
+
+Run the blocks of this step and of steps 2.12 and 2.13 on the old server, as the user who operates Go.Data, in a
+`tmux` session.
+
+```bash
+export GODATA_PM2=godata
+export GODATA_OLD_API=/godata/v2.49.0/go-data/build
+export GODATA_TRANSFER="$HOME/godata-mudanca"
+```
+
+Expected result: no output.
+
+- `GODATA_PM2`: name of the Go.Data process in pm2 (`pm2 list`).
+- `GODATA_OLD_API`: the API folder in use, the one that holds `server/config.json`. It is the `exec cwd` value of
+  `pm2 describe godata` (replace `godata` with the process name). On the WHO installer, it is
+  `/godata/v<version>/go-data/build`.
+- `GODATA_TRANSFER`: new folder, which does not exist yet, for the files that go to the new server.
+
+The next block checks the API folder, `mongodump` and the folder for the files. It changes nothing on the server.
+
+```bash
+GODATA_OLD_CWD="$(pm2 jlist | node -e 'const p = JSON.parse(require("fs").readFileSync(0, "utf8")).find(x => x.name === process.argv[1]); console.log(p ? p.pm2_env.pm_cwd : "")' "$GODATA_PM2")"
+GODATA_DUMP_VERSION="$(mongodump --version 2> /dev/null | head -n 1 || true)"
+if [ "$GODATA_OLD_CWD" != "$GODATA_OLD_API" ]; then
+  echo "stop: the pm2 process $GODATA_PM2 runs from '$GODATA_OLD_CWD', set GODATA_OLD_API to that folder" >&2
+  false
+elif [ ! -f "$GODATA_OLD_API/server/config.json" ] || [ ! -f "$GODATA_OLD_API/server/datasources.json" ]; then
+  echo "stop: no server/config.json or server/datasources.json in $GODATA_OLD_API" >&2
+  false
+elif [ "${GODATA_DUMP_VERSION#mongodump version: 100.}" = "$GODATA_DUMP_VERSION" ]; then
+  echo "stop: mongodump is not from the MongoDB Database Tools 100, found: '$GODATA_DUMP_VERSION'" >&2
+  false
+elif [ -e "$GODATA_TRANSFER" ]; then
+  echo "stop: $GODATA_TRANSFER already exists" >&2
+  false
+else
+  echo "ok: $GODATA_DUMP_VERSION, database $(node -p 'require(process.argv[1]).mongoDb.database || "go-data"' "$GODATA_OLD_API/server/datasources.json")"
+fi
+du -sh "$GODATA_OLD_API/server/storage/" "$GODATA_OLD_API/backups"
+df -h "$HOME"
+```
+
+Expected result: a line that starts with `ok:`, with the `mongodump` version (`mongodump version: 100.` followed by
+the number) and the database name, the size of the attachments and of the system backups and the free space. The
+folder for the files needs room for the dump and for those two sizes. If a line that starts with `stop:` appears, do
+not go on.
+
+MongoDB 4.4 and later ship `mongodump` from the 100 series (MongoDB Database Tools). The old tools, from MongoDB 4.2
+or older, show a version that starts with `r` and do not read the connection file of step 2.12. In that case,
+download the MongoDB Database Tools for the server's system as a `.tgz` file, from the MongoDB downloads page, extract
+it into a folder of your user and put its `bin` folder at the start of the `PATH` of this terminal, with
+`export PATH="<folder>/bin:$PATH"`. Nothing is installed on the system. Then run this block again.
+
+##### 2.12. Stop Go.Data and make the dump and the package
+
+From this step on the system is down. The first block creates the folder for the files, saves the description of the
+process in pm2, stops it and saves the pm2 list with the process stopped, as in step 2.6.
+
+```bash
+mkdir -m 700 "$GODATA_TRANSFER"
+pm2 describe "$GODATA_PM2" > "$GODATA_TRANSFER/pm2-antes.txt"
+pm2 stop "$GODATA_PM2"
+pm2 save
+pm2 list
+```
+
+Expected result: the process as `stopped` in `pm2 list`.
+
+The second block makes the database dump, as in step 2.6, and the package `arquivos-antigos.tar.gz` with
+`server/config.json`, `server/datasources.json`, `server/storage` and `backups/` of the API folder.
+
+```bash
+GODATA_OLD_DB="$(node -p 'require(process.argv[1]).mongoDb.database || "go-data"' "$GODATA_OLD_API/server/datasources.json")"
+GODATA_MONGO_CFG="$(mktemp)"
+node -e '
+const m = require(process.argv[1]).mongoDb;
+const auth = m.user && m.password ? encodeURIComponent(m.user) + ":" + encodeURIComponent(m.password) + "@" : "";
+const query = auth && m.authSource ? "?authSource=" + encodeURIComponent(m.authSource) : "";
+const uri = m.url || "mongodb://" + auth + (m.host || "127.0.0.1") + ":" + (m.port || 27017) + "/" + query;
+console.log("uri: \x27" + uri.replace(/\x27/g, "\x27\x27") + "\x27");
+' "$GODATA_OLD_API/server/datasources.json" > "$GODATA_MONGO_CFG"
+if mongodump --config "$GODATA_MONGO_CFG" --db "$GODATA_OLD_DB" --archive="$GODATA_TRANSFER/banco-antigo.archive.gz" --gzip && tar -czhf "$GODATA_TRANSFER/arquivos-antigos.tar.gz" -C "$GODATA_OLD_API" server/config.json server/datasources.json server/storage backups; then
+  rm -f "$GODATA_MONGO_CFG"
+  chmod 600 "$GODATA_TRANSFER/banco-antigo.archive.gz" "$GODATA_TRANSFER/arquivos-antigos.tar.gz"
+  ls -lh "$GODATA_TRANSFER"
+else
+  rm -f "$GODATA_MONGO_CFG" "$GODATA_TRANSFER/banco-antigo.archive.gz" "$GODATA_TRANSFER/arquivos-antigos.tar.gz"
+  echo "dump failed: do not go on with the move" >&2
+  false
+fi
+```
+
+Expected result: `done dumping` lines from `mongodump` and, in `GODATA_TRANSFER`, the files
+`arquivos-antigos.tar.gz`, `banco-antigo.archive.gz` and `pm2-antes.txt`, the first two larger than zero and with mode
+`-rw-------`. If `dump failed` appears, the block deletes whatever it wrote in part: do not go on, start the process
+again with `pm2 start godata` and `pm2 save` (replace `godata` with the process name) and fix the cause. If the system
+backups folder is not `backups/` inside `GODATA_OLD_API` (**System configuration > Backups > Quick actions >
+Automatic backup settings**, **Location** field), also take its files to the new server and copy them later to
+`data/backups`.
+
+##### 2.13. Copy the files to the new server
+
+The block copies the folder with the files to the home folder of the user on the new server, over SSH, keeping the
+modes. Replace `usuario@servidor-novo` with the user and the address of the new server.
+
+```bash
+scp -rp "$GODATA_TRANSFER" usuario@servidor-novo:
+```
+
+Expected result: a line with `100%` for each file. On the new server, the files land in `godata-mudanca`, in the
+user's home folder. If the two servers cannot reach each other over SSH, take the folder by other means to the same
+place on the new server. From here on, the old server does not change: it is the way back.
+
+#### On the new server
+
+##### 2.14. Check the new server
+
+Run the **Variables** block on the new server, as the user who received the files, in a `tmux` session. The next block
+checks the CPU, the Ubuntu version, the new folder and the files of the old server. It changes nothing on the server.
+
+```bash
+if ! grep -m1 -wo avx /proc/cpuinfo; then
+  echo "stop: this CPU has no AVX instructions, MongoDB 7.0 does not run on it" >&2
+  false
+elif ! grep -qxE 'VERSION_ID="(22|24)\.04"' /etc/os-release; then
+  echo "stop: the Docker path needs Ubuntu 22.04 or 24.04, this server runs $(. /etc/os-release && echo "$PRETTY_NAME")" >&2
+  false
+elif sudo test -e "$GODATA_DIR" && [ -n "$(sudo ls -A "$GODATA_DIR")" ]; then
+  echo "stop: $GODATA_DIR already exists and is not empty" >&2
+  false
+elif [ ! -s "$HOME/godata-mudanca/banco-antigo.archive.gz" ] || [ ! -s "$HOME/godata-mudanca/arquivos-antigos.tar.gz" ]; then
+  echo "stop: the files of the old server are not in $HOME/godata-mudanca" >&2
+  false
+else
+  echo "ok: $(. /etc/os-release && echo "$PRETTY_NAME"), $GODATA_DIR is free, files of the old server in $HOME/godata-mudanca"
+fi
+```
+
+Expected result: `avx` and a line that starts with `ok:`. If a line that starts with `stop:` appears, do not go on.
+
+Then run steps 2.2 (Docker) and 2.3 (installation folder) and step C1 (counts script).
+
+##### 2.15. Move the files into the installation folder
+
+The block moves the files of the old server to `GODATA_BACKUP`, extracts the package into `GODATA_BACKUP/antigo` and
+sets `GODATA_OLD_API` to that folder, which the next steps read as the old API folder.
+
+```bash
+mkdir -p -m 700 "$GODATA_BACKUP"
+mv "$HOME/godata-mudanca"/* "$GODATA_BACKUP/"
+rmdir "$HOME/godata-mudanca"
+chmod 600 "$GODATA_BACKUP/banco-antigo.archive.gz" "$GODATA_BACKUP/arquivos-antigos.tar.gz"
+mkdir -m 700 "$GODATA_BACKUP/antigo"
+tar -xzf "$GODATA_BACKUP/arquivos-antigos.tar.gz" -C "$GODATA_BACKUP/antigo"
+export GODATA_OLD_API="$GODATA_BACKUP/antigo"
+echo "GODATA_OLD_API=$GODATA_OLD_API"
+ls -l "$GODATA_BACKUP" "$GODATA_OLD_API/server"
+```
+
+Expected result: the `GODATA_OLD_API=` line with the `antigo` folder and, in the lists, the files of the old server
+and the folders and files `config.json`, `datasources.json` and `storage`. If the terminal is closed after this step,
+set `GODATA_OLD_API` to that folder when running the **Variables** block again.
+
+Then run steps 2.4, 2.5, 2.7 (with count C3), 2.8 and 2.9 of **On the same server**. Step 2.6 was already done on the
+old server (step 2.12) and step 2.10 does not apply: the old server keeps Go.Data stopped, as the way back, until the
+decision to turn it off. After the check, the `GODATA_BACKUP/antigo` folder can be deleted: the package
+`arquivos-antigos.tar.gz` stays in `GODATA_BACKUP`.
+
+### Old server on Windows
+
+The old server part runs in PowerShell, as the user who administers Go.Data on Windows, and prepares the same files
+as step 2.12. The dump uses `mongodump.exe` from the MongoDB Database Tools for Windows: download the `.zip` file from
+the MongoDB downloads page and extract it into a folder, without installing anything. `tar.exe` and `scp.exe` come
+with Windows 10, Windows 11 and Windows Server 2019 or later. The new server part is the one of
+**On the new server**.
+
+#### 2.16. Set the variables and check
+
+```powershell
+$GoDataApi = 'C:\GoData\go-data\build'
+$GoDataTools = 'C:\mongodb-database-tools\bin'
+$GoDataTransfer = "$env:USERPROFILE\godata-mudanca"
+```
+
+Expected result: no output.
+
+- `$GoDataApi`: the Go.Data API folder, the one that holds `server\config.json`.
+- `$GoDataTools`: the `bin` folder of the extracted MongoDB Database Tools, the one that holds `mongodump.exe`.
+- `$GoDataTransfer`: new folder, which does not exist yet, for the files that go to the new server.
+
+The next block checks the configuration files, `mongodump.exe` and the folder for the files. It changes nothing on the
+server.
+
+```powershell
+if (-not (Test-Path "$GoDataTools\mongodump.exe")) {
+  Write-Error "stop: no mongodump.exe in $GoDataTools"
+} elseif (-not (Test-Path "$GoDataApi\server\config.json") -or -not (Test-Path "$GoDataApi\server\datasources.json")) {
+  Write-Error "stop: no server\config.json or server\datasources.json in $GoDataApi"
+} elseif (Test-Path $GoDataTransfer) {
+  Write-Error "stop: $GoDataTransfer already exists"
+} else {
+  & "$GoDataTools\mongodump.exe" --version
+  $GoDataSources = Get-Content -Raw "$GoDataApi\server\datasources.json" | ConvertFrom-Json
+  "ok: database $($GoDataSources.mongoDb.database), MongoDB on $($GoDataSources.mongoDb.host):$($GoDataSources.mongoDb.port)"
+}
+```
+
+Expected result: the `mongodump` version (`mongodump version: 100.` followed by the number) and a line that starts
+with `ok:`, with the database name and the MongoDB address. If an error with `stop:` appears, do not go on.
+
+#### 2.17. Stop Go.Data and make the dump and the package
+
+From this step on the system is down. Stop the Go.Data API and keep MongoDB running: on a pm2 process, `pm2 stop` and
+`pm2 save`, as in step 2.12; on a Windows service, `Stop-Service` followed by the name of the API service. If the API
+and MongoDB only run together, as in the WHO application, which opens both, leave it open and ask the users not to
+use the system until the move is over.
+
+The block makes the database dump, with the connection of `server\datasources.json` in a temporary file of the user's
+folder, deleted at the end, and the package `arquivos-antigos.tar.gz` with the same files as step 2.12. If something
+fails, it deletes the folder for the files.
+
+```powershell
+$GoDataSources = Get-Content -Raw "$GoDataApi\server\datasources.json" | ConvertFrom-Json
+$m = $GoDataSources.mongoDb
+$GoDataDb = if ($m.database) { $m.database } else { 'go-data' }
+$GoDataAuth = if ($m.user -and $m.password) { [uri]::EscapeDataString($m.user) + ':' + [uri]::EscapeDataString($m.password) + '@' } else { '' }
+$GoDataQuery = if ($GoDataAuth -and $m.authSource) { '?authSource=' + [uri]::EscapeDataString($m.authSource) } else { '' }
+$GoDataUri = if ($m.url) { $m.url } else { 'mongodb://' + $GoDataAuth + $(if ($m.host) { $m.host } else { '127.0.0.1' }) + ':' + $(if ($m.port) { $m.port } else { 27017 }) + '/' + $GoDataQuery }
+New-Item -ItemType Directory -Path $GoDataTransfer | Out-Null
+$GoDataCfg = (New-TemporaryFile).FullName
+Set-Content -Encoding ASCII -Path $GoDataCfg -Value ("uri: '" + $GoDataUri.Replace("'", "''") + "'")
+& "$GoDataTools\mongodump.exe" --config $GoDataCfg --db $GoDataDb "--archive=$GoDataTransfer\banco-antigo.archive.gz" --gzip
+$GoDataDumpExit = $LASTEXITCODE
+Remove-Item $GoDataCfg
+if ($GoDataDumpExit -eq 0) { tar.exe -czf "$GoDataTransfer\arquivos-antigos.tar.gz" -C $GoDataApi server/config.json server/datasources.json server/storage backups }
+if ($GoDataDumpExit -eq 0 -and $LASTEXITCODE -eq 0) {
+  Get-ChildItem $GoDataTransfer
+} else {
+  Remove-Item -Recurse -Force $GoDataTransfer
+  Write-Error 'dump failed: do not go on with the move'
+}
+```
+
+Expected result: `done dumping` lines from `mongodump` and, in the list, the files `arquivos-antigos.tar.gz` and
+`banco-antigo.archive.gz`, larger than zero. If `dump failed` appears, do not go on: start the Go.Data API again and
+fix the cause. The folder sits inside the user's folder, which only that user and the Windows administrators can
+read.
+
+#### 2.18. Copy the files to the new server
+
+The block enters the folder that holds the folder with the files, so that `scp` does not take the drive letter for a
+server name, and copies the folder to the home folder of the user on the new server. Replace `usuario@servidor-novo`
+with the user and the address of the new server.
+
+```powershell
+Set-Location (Split-Path $GoDataTransfer)
+scp -r (Split-Path -Leaf $GoDataTransfer) usuario@servidor-novo:
+```
+
+Expected result: a line with `100%` for each file. On the new server, the files land in `godata-mudanca`, in the
+user's home folder. Then follow **On the new server** (steps 2.14 and 2.15). From here on, the old server does not
+change: it is the way back.
 
 ## Case 3: Docker to Docker
 
@@ -713,8 +1348,8 @@ users.
 
 ## Go back to the previous version
 
-The way back restores the database from the pre-upgrade dump: everything recorded after it is lost. The safety dump of
-the backup manual keeps the current state first.
+In cases 1 and 3, the way back restores the database from the pre-upgrade dump: everything recorded after it is
+lost. The safety dump of the backup manual keeps the current state first.
 
 ### Case 1
 
@@ -770,6 +1405,54 @@ process was started in another way, use the command recorded in `pm2-antes.txt`,
 Then run step A12 of the [installation manual](installation.md) again, which recreates the pm2 service with the
 previous Node.js. The daily dump keeps using Node.js 22, which stays installed. Finally, take the counts (step C2) and
 compare them with the first one (step C4). The login screen must show the previous version.
+
+### Case 2
+
+The old database is not restored: the old MongoDB was only read and still has everything recorded up to the dump.
+Going back means stopping Docker and starting the old process again. What is recorded on Docker after the move does
+not go back to the old database.
+
+#### V2.1. On the same server
+
+The block stops and removes the containers, without deleting the folders of `data/`, turns the old MongoDB on again,
+if step 2.10 turned it off, and starts the old process.
+
+```bash
+cd "$GODATA_DIR"
+docker compose down
+sudo systemctl enable --now mongod
+pm2 start "$GODATA_PM2"
+pm2 save
+pm2 list
+```
+
+Expected result: the containers removed and the old process as `online` in `pm2 list`. If step 2.10 already deleted
+the process, create it again in the `GODATA_OLD_API` folder with the command recorded in `pm2-antes.txt`, in
+`GODATA_BACKUP` (`script path` and `exec cwd`), and save the list with `pm2 save`. To try the move again, delete the
+`GODATA_DIR` folder and start over from step 2.1.
+
+#### V2.2. New server
+
+On the new server, stop the containers:
+
+```bash
+cd "$GODATA_DIR"
+docker compose down
+```
+
+Expected result: the containers removed.
+
+On the old server, run the variables block of step 2.11 and start the old process:
+
+```bash
+pm2 start "$GODATA_PM2"
+pm2 save
+pm2 list
+```
+
+Expected result: the process as `online` in `pm2 list`. On an old server on Windows, start the Go.Data API again the
+same way it was stopped in step 2.17. If the system address already points to the new server, point it back to the
+old server.
 
 ### Case 3
 

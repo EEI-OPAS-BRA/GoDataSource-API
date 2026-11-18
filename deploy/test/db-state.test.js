@@ -14,7 +14,8 @@ const {
   migrationInProgress,
   setBackupLocation,
   buildUri,
-  buildUriFromDatasources
+  buildUriFromDatasources,
+  resolveConn
 } = require('../lib/db-state');
 
 const baseUri = process.env.GODATA_TEST_MONGO_URI;
@@ -146,5 +147,62 @@ test('CLI print-uri never echoes a malformed datasources file', () => {
     assert.ok(!res.stderr.includes('s3cret'), res.stderr);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+function withDatasourcesFile(content, fn) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dbstate-'));
+  try {
+    const file = path.join(dir, 'datasources.json');
+    fs.writeFileSync(file, JSON.stringify(content));
+    return fn(file);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+test('resolveConn with --datasources takes the URI and the database from the file', () => {
+  const password = 'p@ss:w/rd%#';
+  withDatasourcesFile({ mongoDb: { host: 'h', port: 27017, database: 'gd', user: 'u', password, authSource: 'admin' } },
+    file => {
+      const conn = resolveConn({ datasources: file }, { GODATA_DB: 'from-env', GODATA_MONGO_PASSWORD: 'env-pw' });
+      assert.strictEqual(conn.dbName, 'gd');
+      assert.strictEqual(decodeURIComponent(new URL(conn.uri).password), password);
+      assert.strictEqual(new URL(conn.uri).host, 'h:27017');
+      assert.strictEqual(resolveConn({ datasources: file, db: 'other' }, {}).dbName, 'other');
+    });
+});
+
+test('resolveConn with --datasources defaults the database to go-data', () => {
+  withDatasourcesFile({ mongoDb: { host: 'h', port: 1 } }, file => {
+    assert.deepStrictEqual(resolveConn({ datasources: file }, {}), { uri: 'mongodb://h:1/', dbName: 'go-data' });
+  });
+});
+
+test('resolveConn refuses --uri together with --datasources', () => {
+  withDatasourcesFile({ mongoDb: { host: 'h' } }, file => {
+    assert.throws(() => resolveConn({ uri: 'mongodb://x:1/', datasources: file }, {}), /cannot be used together/);
+  });
+});
+
+test('CLI subcommands read the connection from --datasources', { skip }, async () => {
+  const { promisify } = require('node:util');
+  const execFile = promisify(require('node:child_process').execFile);
+  const script = path.join(__dirname, '../lib/db-state.js');
+  const name = `${dbName}_ds`;
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dbstate-'));
+  const file = path.join(dir, 'datasources.json');
+  fs.writeFileSync(file, JSON.stringify({ mongoDb: { url: baseUri, database: name } }));
+  const run = async (...args) => (await execFile(process.execPath, [script, ...args, '--datasources', file])).stdout;
+  try {
+    assert.strictEqual(await run('has-users'), 'no\n');
+    assert.strictEqual(await run('db-empty'), 'yes\n');
+    assert.strictEqual(await run('migration-in-progress'), 'no\n');
+    await withDb(db => db.collection('systemSettings').insertOne({ dataBackup: { location: '/old' } }), name);
+    assert.strictEqual(await run('set-backup-location', '/opt/godata/backups'), 'changed /old -> /opt/godata/backups\n');
+    assert.strictEqual(await run('set-backup-location', '/opt/godata/backups'), 'unchanged /opt/godata/backups\n');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+    await withDb(db => db.dropDatabase(), name);
   }
 });

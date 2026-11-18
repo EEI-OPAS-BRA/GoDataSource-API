@@ -916,9 +916,9 @@ fi
 
 Expected result: `mongod: inactive, disabled`. If `stop:` appears, the previous lines show the connections: the
 address of each client and, for the programs of the server itself, the process name. Check with the people who run
-them before turning MongoDB off. The block only sees the connections of this moment:
-also confirm that no other system uses that MongoDB from time to time, such as a nightly job. The data of the old
-MongoDB stays on disk. If the crontab has the daily dump line of the old installation (`crontab -l`), delete it.
+them before turning MongoDB off. The block only sees the connections of this moment: also confirm that no other
+system uses that MongoDB from time to time, such as a nightly job. The data of the old MongoDB stays on disk. If the
+crontab has the daily dump line of the old installation (`crontab -l`), delete it.
 
 ### To a new server
 
@@ -1144,9 +1144,9 @@ with `ok:`, with the database name and the MongoDB address. If an error with `st
 #### 2.17. Stop Go.Data and make the dump and the package
 
 From this step on the system is down. Stop the Go.Data API and keep MongoDB running: on a pm2 process, `pm2 stop` and
-`pm2 save`, as in step 2.12; on a Windows service, `Stop-Service` followed by the name of the API service. If the API
-and MongoDB only run together, as in the WHO application, which opens both, leave it open and ask the users not to
-use the system until the move is over.
+`pm2 save`, as in step 2.12; on a Windows service, `Stop-Service` followed by the name of the API service. If the
+installation cannot stop the API without stopping MongoDB, leave the system open and ask the users not to use it until
+the move is over.
 
 The block makes the database dump, with the connection of `server\datasources.json` in a temporary file of the user's
 folder, deleted at the end, and the package `arquivos-antigos.tar.gz` with the same files as step 2.12. If something

@@ -916,10 +916,9 @@ fi
 
 Resultado esperado: `mongod: inactive, disabled`. Se aparecer `stop:`, as linhas anteriores mostram as conexões: o
 endereço de cada cliente e, para os programas do próprio servidor, o nome do processo. Confira com quem os administra
-antes de desligar o MongoDB. O bloco vê só as conexões deste momento:
-confirme também que nenhum outro sistema usa esse MongoDB de vez em quando, como uma rotina noturna. Os dados do
-MongoDB antigo continuam no disco. Se o crontab tem a linha do dump diário da instalação antiga (`crontab -l`),
-apague-a.
+antes de desligar o MongoDB. O bloco vê só as conexões deste momento: confirme também que nenhum outro sistema usa
+esse MongoDB de vez em quando, como uma rotina noturna. Os dados do MongoDB antigo continuam no disco. Se o crontab
+tem a linha do dump diário da instalação antiga (`crontab -l`), apague-a.
 
 ### Para um servidor novo
 
@@ -1147,8 +1146,8 @@ Resultado esperado: a versão do `mongodump` (`mongodump version: 100.` seguido 
 
 A partir deste passo o sistema fica fora do ar. Pare a API do Go.Data e deixe o MongoDB no ar: num processo do pm2,
 `pm2 stop` e `pm2 save`, como no passo 2.12; num serviço do Windows, `Stop-Service` seguido do nome do serviço da API.
-Se a API e o MongoDB só funcionam juntos, como no aplicativo da OMS, que abre os dois, deixe-o aberto e peça aos
-usuários que não usem o sistema até o fim da mudança.
+Se a instalação não permite parar a API sem parar o MongoDB, deixe o sistema aberto e peça aos usuários que não o
+usem até o fim da mudança.
 
 O bloco faz o dump do banco, com a conexão de `server\datasources.json` num arquivo temporário da pasta do usuário,
 apagado no fim, e o pacote `arquivos-antigos.tar.gz` com os mesmos arquivos do passo 2.12. Se algo falhar, ele apaga

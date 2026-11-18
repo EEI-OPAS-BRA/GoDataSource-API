@@ -791,8 +791,9 @@ installations. It creates an administrator and the Go.Data user, moves the Go.Da
 authentication on and keeps MongoDB on the local address only. Do it outside an upgrade window, with a recent dump
 (step 3.1 of the [backup manual](backup.md)). Go.Data is down for a few seconds, when MongoDB restarts in step E4.
 
-Before starting, check whether other systems use the same MongoDB. With authentication on, they can no longer
-connect until they have their own users and passwords: create those users and adjust those systems before step E4.
+Before starting, check whether other systems use the same MongoDB. After step E4, the systems on the same server
+connect only with their own user and password, and the systems on other servers can no longer reach MongoDB. Create
+those users and adjust those systems before step E4.
 
 ### E1. Set the variables and check MongoDB
 

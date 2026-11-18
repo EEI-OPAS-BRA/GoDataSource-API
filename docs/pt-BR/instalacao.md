@@ -787,8 +787,9 @@ autenticação e deixa o MongoDB só no endereço local. Faça-a fora da janela 
 (passo 3.1 do [manual de backup](backup.md)). O Go.Data fica fora do ar por alguns segundos, quando o MongoDB reinicia
 no passo E4.
 
-Antes de começar, confira se outros sistemas usam o mesmo MongoDB. Com a autenticação ligada, eles deixam de se
-conectar até terem os seus próprios usuários e senhas: crie esses usuários e ajuste esses sistemas antes do passo E4.
+Antes de começar, confira se outros sistemas usam o mesmo MongoDB. Depois do passo E4, os sistemas do mesmo servidor
+só se conectam com usuário e senha próprios, e os de outros servidores deixam de alcançar o MongoDB. Crie esses
+usuários e ajuste esses sistemas antes do passo E4.
 
 ### E1. Defina as variáveis e confira o MongoDB
 

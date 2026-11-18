@@ -1,0 +1,151 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Version tag to release (for example v2026.10.0)
+        required: true
+        type: string
+
+concurrency:
+  group: release-${{ github.event.inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    # Never self-hosted: this repository is public.
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    env:
+      TAG: ${{ github.event.inputs.tag || github.ref_name }}
+      IMAGE: ghcr.io/eei-opas-bra/godata
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref_name }}
+          fetch-depth: 0
+          path: api
+
+      - name: Check the tag
+        id: tag
+        working-directory: api
+        run: |
+          if [[ ! "$TAG" =~ ^v[0-9]{4}\.[0-9]{2}\.[0-9]+(-rc\.[0-9]+)?$ ]]; then
+            echo "::error::Tag '$TAG' is not a release tag (expected vYYYY.MM.P or vYYYY.MM.P-rc.N)"
+            exit 1
+          fi
+          version="${TAG#v}"
+          git fetch --no-tags origin main
+          if ! git merge-base --is-ancestor HEAD origin/main; then
+            echo "::error::Tag '$TAG' is not on main. Release tags are cut on main only."
+            exit 1
+          fi
+          {
+            echo "version=$version"
+            echo "series=$(echo "$version" | cut -d. -f1,2)"
+            if [[ "$version" == *-rc.* ]]; then echo "final=false"; else echo "final=true"; fi
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Check the Frontend tag
+        run: |
+          if ! gh api "repos/EEI-OPAS-BRA/GoDataSource-Frontend/git/ref/tags/$TAG" > /dev/null; then
+            echo "::error::Tag '$TAG' does not exist in EEI-OPAS-BRA/GoDataSource-Frontend. Tag the Frontend first."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          repository: EEI-OPAS-BRA/GoDataSource-Frontend
+          ref: ${{ github.event.inputs.tag || github.ref_name }}
+          path: frontend
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Find an rc image to promote
+        id: promote
+        working-directory: api
+        run: |
+          sha="$(git rev-parse HEAD)"
+          rc=""
+          while read -r candidate; do
+            [[ -n "$candidate" && "$candidate" != "$TAG" ]] || continue
+            if docker buildx imagetools inspect "$IMAGE:${candidate#v}" > /dev/null 2>&1; then
+              rc="${candidate#v}"
+              break
+            fi
+          done < <(git tag --points-at "$sha" 'v*-rc.*' | sort -V -r)
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+
+      - name: Build the package and the image
+        if: steps.promote.outputs.rc == ''
+        env:
+          VERSION: ${{ steps.tag.outputs.version }}
+          SERIES: ${{ steps.tag.outputs.series }}
+          FINAL: ${{ steps.tag.outputs.final }}
+        run: |
+          api/deploy/release/build-artifacts.sh --api-dir api --frontend-dir frontend \
+            --version "$VERSION" --out out --image --image-name "$IMAGE" --revision "$(git -C api rev-parse HEAD)"
+          docker push "$IMAGE:$VERSION"
+          if [[ "$FINAL" == true ]]; then
+            for t in "$SERIES" latest; do
+              docker tag "$IMAGE:$VERSION" "$IMAGE:$t"
+              docker push "$IMAGE:$t"
+            done
+          fi
+
+      - name: Promote the rc image and re-pack
+        if: steps.promote.outputs.rc != ''
+        env:
+          VERSION: ${{ steps.tag.outputs.version }}
+          SERIES: ${{ steps.tag.outputs.series }}
+          FINAL: ${{ steps.tag.outputs.final }}
+          RC: ${{ steps.promote.outputs.rc }}
+        run: |
+          tags=(-t "$IMAGE:$VERSION")
+          if [[ "$FINAL" == true ]]; then
+            tags+=(-t "$IMAGE:$SERIES" -t "$IMAGE:latest")
+          fi
+          docker buildx imagetools create "${tags[@]}" "$IMAGE:$RC"
+          api/deploy/release/build-artifacts.sh --api-dir api --frontend-dir frontend \
+            --version "$VERSION" --out out
+          docker pull "$IMAGE:$VERSION"
+          image_file="godata-image-$VERSION.tar.gz"
+          docker save "$IMAGE:$VERSION" | gzip > "out/$image_file"
+          (cd out && sha256sum "$image_file" > "$image_file.sha256")
+          echo "Image promoted from \`$RC\` (same commit): \`$IMAGE:$VERSION\` is the image the pilots validated." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publish to the GitHub Release
+        env:
+          VERSION: ${{ steps.tag.outputs.version }}
+          FINAL: ${{ steps.tag.outputs.final }}
+        run: |
+          files=(
+            "out/godata-$VERSION.tar.gz"
+            "out/godata-$VERSION.tar.gz.sha256"
+            "out/godata-image-$VERSION.tar.gz"
+            "out/godata-image-$VERSION.tar.gz.sha256"
+          )
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            gh release upload "$TAG" "${files[@]}" --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            flags=(--draft)
+            if [[ "$FINAL" != true ]]; then flags+=(--prerelease); fi
+            gh release create "$TAG" "${flags[@]}" --repo "$GITHUB_REPOSITORY" --title "$TAG" --notes ""
+            gh release upload "$TAG" "${files[@]}" --repo "$GITHUB_REPOSITORY" --clobber
+          fi

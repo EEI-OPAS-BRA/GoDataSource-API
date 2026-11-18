@@ -161,9 +161,9 @@ usuários: confira o que mudou e, se for o caso, volte à versão anterior.
 ## Backup
 
 O dump anterior à atualização fica em `GODATA_BACKUP`, fora da limpeza automática dos dumps. Ele é feito com o
-Go.Data parado, logo depois da primeira contagem, para que nada registrado depois dele se perca. Os casos indicam
-quando fazer este passo. Se o dump falhar, não continue a atualização: inicie de novo a versão anterior e resolva a
-causa.
+Go.Data parado, logo depois da primeira contagem, e por isso guarda tudo o que foi registrado antes da atualização. Os
+casos indicam quando fazer este passo. Se o dump falhar, não continue a atualização: inicie de novo a versão anterior
+e resolva a causa.
 
 ### D1. Dump no pm2
 
@@ -533,8 +533,8 @@ versão deste manual.
 
 ## Caso 3: Docker para Docker
 
-A atualização troca a versão da imagem do Go.Data no `.env`. No início, o contêiner migra o banco e grava a pasta dos
-backups do sistema. O contêiner `mongo` e os dados em `data/` não mudam.
+A atualização troca a versão da imagem do Go.Data no `.env`. No início, o contêiner `godata` novo migra o banco e
+grava a pasta dos backups do sistema. O contêiner `mongo` continua o mesmo.
 
 ### 3.1. Confira a instalação
 

@@ -54,8 +54,9 @@ export GODATA_PM2=godata
   contains `docker-compose.yml` and `.env`.
 - `GODATA_PM2`: the process name in pm2 (`pm2 list`). Docker does not use this variable.
 
-Run the steps as the user that operates Go.Data, without `sudo`. The commands that need `sudo` already include it. On
-a server with two installations, run the steps once for each of them, with its own values.
+Run the steps as the user that operates Go.Data, without `sudo`. On Docker, that user must be able to run `docker`
+without `sudo` (`docker` group). On a server with two installations, run the steps once for each of them, with its
+own values.
 
 ## 2. Public address, time zone and dates
 
@@ -73,49 +74,23 @@ sender of the system e-mails.
 - `dateDisplayFormat` and `dateTimeDisplayFormat` are the date and date-time formats in the user interface.
 - `session.secret` gets a random value, used by the captcha (step 5).
 
-The block writes the whole file. If `config/config.json` already has other keys (for example `apiKey`), add them to
-the block before running it. To change a value later, edit the file and apply it again (step 4).
+The blocks of steps 2, 3, 5, 6 and 7 write only the keys of the step and keep the other keys of the file. They can be
+run again to change a value. Each run of this step draws a new `session.secret`, which only invalidates the captchas
+open at that moment.
 
 ### 2.1. On pm2
 
-```bash
-mkdir -p "$GODATA_DIR/config"
-touch "$GODATA_DIR/config/config.json"
-chmod 600 "$GODATA_DIR/config/config.json"
-cat > "$GODATA_DIR/config/config.json" <<EOF
-{
-  "public": {
-    "protocol": "https",
-    "host": "godata.exemplo.gov.br",
-    "port": ""
-  },
-  "enableConfigRewrite": false,
-  "timezone": "America/Sao_Paulo",
-  "dateDisplayFormat": "DD/MM/YYYY",
-  "dateTimeDisplayFormat": "DD/MM/YYYY HH:mm",
-  "passwordReset": {
-    "from": "nao-responda@exemplo.gov.br"
-  },
-  "session": {
-    "secret": "$(openssl rand -hex 32)"
-  }
-}
-EOF
-```
-
-Expected result: no output. Only the owner can read the file. The change applies after step 4.
-
-### 2.2. On Docker
-
-The container reads the file as the `node` user (uid and gid 1000). The block gives read access to group 1000 and to
-no one else.
+The block uses the server's `node` and creates the file readable by its owner only.
 
 ```bash
 mkdir -p "$GODATA_DIR/config"
-touch "$GODATA_DIR/config/config.json"
-sudo chgrp 1000 "$GODATA_DIR/config/config.json"
-chmod 640 "$GODATA_DIR/config/config.json"
-cat > "$GODATA_DIR/config/config.json" <<EOF
+node -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o600 });
+' "$GODATA_DIR/config/config.json" <<EOF
 {
   "public": {
     "protocol": "https",
@@ -137,6 +112,45 @@ EOF
 ```
 
 Expected result: no output. The change applies after step 4.
+
+### 2.2. On Docker
+
+The server does not need Node.js: the block runs the `node` of the Go.Data image in a temporary container, with your
+user and group 1000, the group of the container's `node` user. A new file is readable only by your user and by the
+container (permissions `640`, group 1000).
+
+```bash
+mkdir -p "$GODATA_DIR/config"
+cd "$GODATA_DIR"
+docker compose run --rm --no-deps -T -u "$(id -u):1000" -v "$GODATA_DIR/config:/config" --entrypoint node godata -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o640 });
+' /config/config.json <<EOF
+{
+  "public": {
+    "protocol": "https",
+    "host": "godata.exemplo.gov.br",
+    "port": ""
+  },
+  "enableConfigRewrite": false,
+  "timezone": "America/Sao_Paulo",
+  "dateDisplayFormat": "DD/MM/YYYY",
+  "dateTimeDisplayFormat": "DD/MM/YYYY HH:mm",
+  "passwordReset": {
+    "from": "nao-responda@exemplo.gov.br"
+  },
+  "session": {
+    "secret": "$(openssl rand -hex 32)"
+  }
+}
+EOF
+```
+
+Expected result: the `docker compose` lines about the temporary container and no error. The change applies after
+step 4.
 
 ## 3. Mail server
 
@@ -148,47 +162,20 @@ Go.Data sends over SMTP the password reset, user change and two-step verificatio
 - If the mail server does not require authentication, remove the `auth` block and the comma before it.
 - `transports` is a list: it replaces the default mail server as a whole.
 
-### 3.1. On pm2
+The block writes the `email` key into `config/datasources.json` and keeps the rest of the file. On pm2, the file also
+holds the MongoDB connection, created during the installation. On Docker, it only needs the `email` key: the MongoDB
+connection comes from `.env`.
 
-On pm2, `config/datasources.json` also holds the MongoDB connection, created during the installation. The block writes
-only the `email` key and keeps the rest of the file.
+### 3.1. On pm2
 
 ```bash
 node -e '
 const fs = require("fs");
 const file = process.argv[1];
 const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
-data.email = JSON.parse(fs.readFileSync(0, "utf8"));
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
 fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o600 });
 ' "$GODATA_DIR/config/datasources.json" <<'EOF'
-{
-  "transports": [
-    {
-      "type": "SMTP",
-      "host": "smtp.exemplo.gov.br",
-      "port": 465,
-      "secure": true,
-      "auth": {
-        "user": "usuario-smtp",
-        "pass": "senha-smtp"
-      }
-    }
-  ]
-}
-EOF
-```
-
-Expected result: no output. The change applies after step 4.
-
-### 3.2. On Docker
-
-On Docker, the file only needs the `email` key: the MongoDB connection comes from `.env`.
-
-```bash
-touch "$GODATA_DIR/config/datasources.json"
-sudo chgrp 1000 "$GODATA_DIR/config/datasources.json"
-chmod 640 "$GODATA_DIR/config/datasources.json"
-cat > "$GODATA_DIR/config/datasources.json" <<'EOF'
 {
   "email": {
     "transports": [
@@ -209,6 +196,39 @@ EOF
 ```
 
 Expected result: no output. The change applies after step 4.
+
+### 3.2. On Docker
+
+```bash
+cd "$GODATA_DIR"
+docker compose run --rm --no-deps -T -u "$(id -u):1000" -v "$GODATA_DIR/config:/config" --entrypoint node godata -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o640 });
+' /config/datasources.json <<'EOF'
+{
+  "email": {
+    "transports": [
+      {
+        "type": "SMTP",
+        "host": "smtp.exemplo.gov.br",
+        "port": 465,
+        "secure": true,
+        "auth": {
+          "user": "usuario-smtp",
+          "pass": "senha-smtp"
+        }
+      }
+    ]
+  }
+}
+EOF
+```
+
+Expected result: the `docker compose` lines about the temporary container and no error. The change applies after
+step 4.
 
 ## 4. Apply the configuration
 
@@ -242,17 +262,32 @@ docker compose exec -T -u node godata node -p 'require("/opt/godata/server/confi
 Expected result: the log shows the line `configuration: server/config.json and server/datasources.json built from
 the image defaults and /opt/godata/config` and the last command prints the public address. If a file in `config/`
 has a syntax error, the log shows, for example, `error: configuration failed: invalid JSON in
-/opt/godata/config/config.json at line 4 column 5` and the container keeps restarting until it is fixed. In that
-message, `/opt/godata/config` is the `config/` folder of the installation as seen from inside the container. Fix the
-file and run the block again.
+/opt/godata/config/config.json at line 4 column 5` and the container restarts in a loop until the file is fixed. In
+that message, `/opt/godata/config` is the `config/` folder of the installation as seen from inside the container. Fix
+the file and run the block again.
 
 ## 5. Captcha (optional)
 
-The captcha shows on the login page, in **Forgot password** and in the security questions. It is off by default. To
-turn it on, add the `captcha` key to `config/config.json`, separated from the other keys by a comma, and apply it
-(step 4):
+The captcha shows on the login page, in **Forgot password** and in the security questions. It is off by default. The
+block writes the `captcha` key into `config/config.json` and turns the captcha on in all three places. To turn it on
+in only some of them, change `true` to `false` in the others before running it. To turn it off, run the block with all
+three set to `false`. Then apply it (step 4).
 
-```json
+The captcha keeps the expected text in a session, signed with `session.secret`. Step 2 already writes a random value
+into that key. With an empty `session.secret`, each API process draws its own secret when it starts. Since the API
+runs several processes (one per processor core), a process does not recognise the session created by another one,
+and the captcha is no longer checked on part of the requests.
+
+### 5.1. On pm2
+
+```bash
+node -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o600 });
+' "$GODATA_DIR/config/config.json" <<'EOF'
 {
   "captcha": {
     "login": true,
@@ -260,12 +295,33 @@ turn it on, add the `captcha` key to `config/config.json`, separated from the ot
     "resetPasswordQuestions": true
   }
 }
+EOF
 ```
 
-The captcha keeps the expected text in a session, signed with `session.secret`. Step 2 already writes a random value
-into that key. With an empty `session.secret`, each API process draws its own secret when it starts. Since the API
-runs several processes (one per processor core), a process does not recognise the session created by another one,
-and the captcha is no longer checked on part of the requests.
+Expected result: no output. Apply it as in step 4.1.
+
+### 5.2. On Docker
+
+```bash
+cd "$GODATA_DIR"
+docker compose run --rm --no-deps -T -u "$(id -u):1000" -v "$GODATA_DIR/config:/config" --entrypoint node godata -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o640 });
+' /config/config.json <<'EOF'
+{
+  "captcha": {
+    "login": true,
+    "forgotPassword": true,
+    "resetPasswordQuestions": true
+  }
+}
+EOF
+```
+
+Expected result: the `docker compose` lines about the temporary container and no error. Apply it as in step 4.2.
 
 ## 6. API key (optional)
 
@@ -274,20 +330,31 @@ file and sends the key when it asks for the version, the time zone and the date 
 refuses the request and the user interface does not open properly. The file is public: any browser can read it, so
 the key protects nothing. It also goes into the configuration QR code of the mobile app, which is not used in Brazil.
 
-Both sides ship with the value `your_api_key_here` and can stay that way. To use another key, add it to
-`config/config.json`, separated from the other keys by a comma:
-
-```json
-{
-  "apiKey": "chave-da-instalacao"
-}
-```
+Both files ship with the default value `your_api_key_here`, which can be kept. To change the key, the first block
+writes a random value into `config/config.json`. The value itself does not matter: it only has to be the same in both
+files, and the second block takes care of that.
 
 ### 6.1. On pm2
 
-On pm2, the merge command also gets `--runtime-config`, which writes the same key into
+```bash
+node -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o600 });
+' "$GODATA_DIR/config/config.json" <<EOF
+{
+  "apiKey": "$(openssl rand -hex 16)"
+}
+EOF
+```
+
+Expected result: no output.
+
+The merge command also gets `--runtime-config`, which writes the same key into
 `atual/client/dist/assets/runtime-config.json`. Every upgrade brings a new `runtime-config.json`, with the default
-key: run this block again after each upgrade.
+key: after each upgrade, run only this second block again.
 
 ```bash
 node "$GODATA_DIR/atual/deploy/lib/merge-config.js" --defaults "$GODATA_DIR/atual/deploy/defaults" --overrides "$GODATA_DIR/config" --server-dir "$GODATA_DIR/atual/server" --runtime-config "$GODATA_DIR/atual/client/dist/assets/runtime-config.json"
@@ -299,8 +366,24 @@ the page in the browser, the login page shows the system version.
 
 ### 6.2. On Docker
 
-On Docker, the container copies the key into `runtime-config.json` at every start, upgrades included. Apply it as in
-step 4.2.
+```bash
+cd "$GODATA_DIR"
+docker compose run --rm --no-deps -T -u "$(id -u):1000" -v "$GODATA_DIR/config:/config" --entrypoint node godata -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o640 });
+' /config/config.json <<EOF
+{
+  "apiKey": "$(openssl rand -hex 16)"
+}
+EOF
+```
+
+Expected result: the `docker compose` lines about the temporary container and no error.
+
+The container copies the key into `runtime-config.json` at every start, upgrades included. Restarting it is enough:
 
 ```bash
 cd "$GODATA_DIR"
@@ -317,19 +400,55 @@ starts. After reloading the page in the browser, the login page shows the system
 With `cors.enabled` set to `false`, the default, the API accepts browser calls from any site. With `true`, it accepts
 only calls from the public address (`public`, step 2), from the origins listed in `whitelist`, and calls without an
 origin, made by other servers. The public address must be right: with `true` and a wrong `public`, the user interface
-itself stops working. To turn it on, add the `cors` key to `config/config.json` and apply it (step 4):
+itself stops working.
 
-```json
+The block writes the `cors` key into `config/config.json`. To accept other origins, write them in the list before
+running it, each with the protocol and without a trailing slash, for example
+`"whitelist": ["https://painel.exemplo.gov.br"]`. The list replaces the default one as a whole. To turn it off, run
+the block with `"enabled": false`. Then apply it (step 4).
+
+### 7.1. On pm2
+
+```bash
+node -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o600 });
+' "$GODATA_DIR/config/config.json" <<'EOF'
 {
   "cors": {
     "enabled": true,
     "whitelist": []
   }
 }
+EOF
 ```
 
-Each item of `whitelist` is a full address, with the protocol and without a trailing slash, for example
-`"https://painel.exemplo.gov.br"`. The list replaces the default one as a whole.
+Expected result: no output. Apply it as in step 4.1.
+
+### 7.2. On Docker
+
+```bash
+cd "$GODATA_DIR"
+docker compose run --rm --no-deps -T -u "$(id -u):1000" -v "$GODATA_DIR/config:/config" --entrypoint node godata -e '
+const fs = require("fs");
+const file = process.argv[1];
+const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o640 });
+' /config/config.json <<'EOF'
+{
+  "cors": {
+    "enabled": true,
+    "whitelist": []
+  }
+}
+EOF
+```
+
+Expected result: the `docker compose` lines about the temporary container and no error. Apply it as in step 4.2.
 
 ## MongoDB connection
 

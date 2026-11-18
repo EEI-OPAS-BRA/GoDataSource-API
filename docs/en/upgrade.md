@@ -420,7 +420,8 @@ pm2 stop "$GODATA_PM2"
 pm2 list
 ```
 
-Expected result: the process as `stopped` in `pm2 list`.
+Expected result: the process as `stopped` in `pm2 list`. The `In-memory PM2 is out-of-date` warning of step 1.3 may
+appear again.
 
 Then run steps C2 (counts on pm2) and D1 (dump on pm2).
 
@@ -464,9 +465,10 @@ cd "$GODATA_DIR/atual"
 npm run migrate-database
 ```
 
-Expected result: the command ends without error. The migration may take several minutes, and longer on installations
-older than 2.50. If it fails or is interrupted, do not run it again: follow **Go back to the previous version** or
-**Recover from a failed migration**.
+Expected result: the command ends without error, with a line that starts with `Portuguese translations:`. Warnings
+such as `DeprecationWarning` and `MaxListenersExceededWarning` appear with `"level":"error"` and are expected. The
+migration may take several minutes, and longer on installations older than 2.50. If it fails or is interrupted, do
+not run it again: follow **Go back to the previous version** or **Recover from a failed migration**.
 
 ### 1.9. Start the new version
 

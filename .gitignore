@@ -29,3 +29,4 @@ server/storage/icons/*
 
 local/godatabckp/
 *.bson
+deploy/defaults/

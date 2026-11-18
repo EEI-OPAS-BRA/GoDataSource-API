@@ -1,0 +1,23 @@
+# The context may be a configured server folder: keep its credentials, health data and logs out of the image.
+# server/config.json and server/datasources.json are generated at every start from deploy/defaults.
+.git
+.github
+**/node_modules
+**/.env
+**/*.log
+**/*.bson
+ecosystem.config.*
+docs
+local
+logs/*
+backups/*
+server/storage/*
+server/config.json
+server/datasources.json
+server/boot/scheduler.json
+config
+data
+dumps
+deploy/docker/config
+deploy/docker/data
+deploy/docker/dumps

@@ -1,0 +1,61 @@
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: "5"
+
+services:
+  mongo:
+    image: mongo:7.0.48
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:?set MONGO_ROOT_PASSWORD in .env}
+      GODATA_DB: ${GODATA_DB:-go-data}
+      GODATA_MONGO_PASSWORD: ${GODATA_MONGO_PASSWORD:?set GODATA_MONGO_PASSWORD in .env}
+    volumes:
+      - ./data/mongo:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d:ro
+    # Unused by a standalone server; without a mount here every down and up leaves an anonymous volume behind
+    tmpfs:
+      - /data/configdb
+    ulimits:
+      nofile:
+        soft: 64000
+        hard: 64000
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "quit(db.adminCommand('ping').ok ? 0 : 1)"]
+      interval: 10s
+      timeout: 10s
+      retries: 6
+      start_period: 60s
+    stop_grace_period: 60s
+    security_opt:
+      - no-new-privileges:true
+    logging: *logging
+
+  godata:
+    image: ghcr.io/eei-opas-bra/godata:${GODATA_VERSION:?set GODATA_VERSION in .env}
+    restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      mongo:
+        condition: service_healthy
+    ports:
+      - "${GODATA_BIND:-0.0.0.0}:${GODATA_PORT:-3000}:3000"
+    environment:
+      GODATA_VERSION: ${GODATA_VERSION}
+      GODATA_MONGO_HOST: mongo
+      GODATA_MONGO_PORT: "27017"
+      GODATA_DB: ${GODATA_DB:-go-data}
+      GODATA_MONGO_USER: godata
+      GODATA_MONGO_PASSWORD: ${GODATA_MONGO_PASSWORD:?set GODATA_MONGO_PASSWORD in .env}
+      GODATA_MONGO_AUTH_SOURCE: admin
+    volumes:
+      - ./config:/opt/godata/config:ro
+      - ./data/storage:/opt/godata/server/storage
+      - ./data/backups:/opt/godata/backups
+      - ./data/state:/opt/godata/state
+    logging: *logging

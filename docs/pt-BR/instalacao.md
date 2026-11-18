@@ -617,7 +617,8 @@ seção HTTPS, ou abra o sistema por um túnel SSH, com `ssh -L 3000:127.0.0.1:3
 3. O sistema pede a troca da senha. Informe a senha atual (`admin`) e uma senha nova, forte e só deste usuário.
 4. Em seguida, o sistema oferece cadastrar as perguntas de segurança, usadas para recuperar a senha sem e-mail.
    Cadastre-as.
-5. Para usar o sistema em português, abra o menu do usuário e escolha o idioma **Português**.
+5. Para usar o sistema em português, abra o menu do usuário, no canto superior direito, clique em **Language** e
+   escolha **Português**.
 
 Crie depois os usuários nominais das equipes. Não compartilhe o usuário `admin@who.int`.
 
@@ -935,7 +936,8 @@ Resultado esperado:
 - Uma linha que começa com `{"platform":"-","version":"2.51.0","build":"2026.10.0"`.
 - Os processos `node` do contêiner `godata` com o UID `1000` (o usuário `node` do contêiner), nunca com o UID `0`
   (`root`).
-- Nenhuma porta publicada para o MongoDB: o último comando antes do crontab mostra um erro ou nada.
+- Nenhuma porta publicada para o MongoDB: `docker compose port mongo 27017` mostra `:0`, nada ou um erro, conforme a
+  versão do Docker Compose.
 - A linha do dump diário no crontab.
 
 Confira também no navegador o login, a versão na tela de login e, em **Sistema > Backups**, o **Local** dos backups

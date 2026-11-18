@@ -620,7 +620,8 @@ address `http://localhost:3000`.
    this user.
 4. The system then offers to register the security questions, used to recover the password without email. Register
    them.
-5. To use the system in Portuguese, open the user menu and choose the language **Português**.
+5. To use the system in Portuguese, open the user menu, in the top right corner, click **Language** and choose
+   **Português**.
 
 Then create named users for the teams. Do not share the `admin@who.int` user.
 
@@ -942,7 +943,8 @@ Expected result:
 - A line that starts with `{"platform":"-","version":"2.51.0","build":"2026.10.0"`.
 - The `node` processes of the `godata` container with UID `1000` (the `node` user of the container), never with UID
   `0` (`root`).
-- No published port for MongoDB: the last command before the crontab prints an error or nothing.
+- No published port for MongoDB: `docker compose port mongo 27017` prints `:0`, nothing or an error, depending on
+  the Docker Compose version.
 - The daily dump line in the crontab.
 
 Also check in the browser the login, the version on the login screen and, in **System > Backups**, the backup

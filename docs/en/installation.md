@@ -899,8 +899,10 @@ pm2 logs "$GODATA_PM2" --lines 20 --nostream
 ```
 
 Expected result: an error `MongoServerError: Command listDatabases requires authentication`, MongoDB listening only
-on `127.0.0.1:27017`, the `{"started":...}` line of Go.Data and a log with no connection errors. If something fails,
-the previous MongoDB configuration is in `/etc/mongod.conf.antes-da-autenticacao`.
+on `127.0.0.1:27017`, the `{"started":...}` line of Go.Data and, in the log, `Database connection initialized`, with
+no connection errors. Warnings such as `DeprecationWarning` and `MaxListenersExceededWarning` appear with
+`"level":"error"` and are expected. If something fails, the previous MongoDB configuration is in
+`/etc/mongod.conf.antes-da-autenticacao`.
 
 ## Final check
 

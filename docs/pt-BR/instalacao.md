@@ -92,9 +92,9 @@ fi
 ```
 
 Resultado esperado: `avx` e uma linha que começa com `ok:`. Se aparecer uma linha que começa com `stop:`, não siga
-adiante. Sem AVX, veja **O que você vai precisar**. Com outra versão do Ubuntu, use o caminho
-B. Se a pasta já existe e não está vazia, escolha outra pasta em `GODATA_DIR` (passo A1) ou confira o que há nela:
-este manual não instala sobre uma instalação existente.
+adiante. Sem AVX, veja **O que você vai precisar**. Com outra versão do Ubuntu, use o caminho B. Se a pasta já existe e
+não está vazia, escolha outra pasta em `GODATA_DIR` (passo A1) ou confira o que há nela: este manual não instala sobre
+uma instalação existente.
 
 ### A3. Crie a pasta da instalação
 
@@ -445,9 +445,8 @@ fi
 ```
 
 Resultado esperado: `avx` e uma linha que começa com `ok:`. Se aparecer uma linha que começa com `stop:`, não siga
-adiante. Sem AVX, veja **O que você vai precisar**. Se a pasta já existe e não está vazia,
-escolha outra pasta em `GODATA_DIR` (passo B1) ou confira o que há nela: este manual não instala sobre uma instalação
-existente.
+adiante. Sem AVX, veja **O que você vai precisar**. Se a pasta já existe e não está vazia, escolha outra pasta em
+`GODATA_DIR` (passo B1) ou confira o que há nela: este manual não instala sobre uma instalação existente.
 
 ### B3. Instale o Docker
 
@@ -612,8 +611,8 @@ backups para fora do servidor.
 ## Primeiro acesso
 
 Abra no navegador `http://<endereço do servidor>:3000` (troque `3000` pelo valor de `GODATA_PORT`). Até a seção
-**HTTPS com nginx**, o acesso não é cifrado: se a rede até o servidor não for confiável, faça antes a
-seção HTTPS, ou abra o sistema por um túnel SSH, com `ssh -L 3000:127.0.0.1:3000 usuario@servidor` e o endereço
+**HTTPS com nginx**, o acesso não é cifrado: se a rede até o servidor não for confiável, faça antes a seção HTTPS, ou
+abra o sistema por um túnel SSH, com `ssh -L 3000:127.0.0.1:3000 usuario@servidor` e o endereço
 `http://localhost:3000`.
 
 1. A tela de login mostra a versão `2.51.0 - build 2026.10.0`.
@@ -815,9 +814,9 @@ quem administra o MongoDB antes de seguir.
 
 ### E2. Crie os usuários
 
-O primeiro bloco sorteia a senha do administrador do MongoDB, se o arquivo dela ainda não existe (`/root/mongodb-admin.txt`,
-que só o `root` lê), e acrescenta à conexão do Go.Data, em `config/datasources.json`, o usuário `godata` com uma senha sorteada. O
-resto do arquivo, como o servidor de e-mail, não muda.
+O primeiro bloco sorteia a senha do administrador do MongoDB, se o arquivo dela ainda não existe
+(`/root/mongodb-admin.txt`, que só o `root` lê), e acrescenta à conexão do Go.Data, em `config/datasources.json`, o
+usuário `godata` com uma senha sorteada. O resto do arquivo, como o servidor de e-mail, não muda.
 
 ```bash
 sudo sh -c 'umask 077 && test -s /root/mongodb-admin.txt || openssl rand -hex 24 > /root/mongodb-admin.txt'

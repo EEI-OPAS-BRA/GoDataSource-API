@@ -471,12 +471,14 @@ older than 2.50. If it fails or is interrupted, do not run it again: follow **Go
 ### 1.9. Start the new version
 
 pm2 stores the real folder of the version as the process folder, not the `atual` link. That is why the old process is
-deleted and a new one is created from `atual`. `pm2 update` restarts pm2 with the version installed in step 1.3 and
-restores the other processes, if any.
+deleted and a new one is created from `atual`. The saved pm2 list is updated right after deleting the process:
+otherwise `pm2 update`, which restarts pm2 with the version installed in step 1.3, would also restore the old process.
+The other pm2 processes, if any, are restored.
 
 ```bash
 cd "$GODATA_DIR/atual"
 pm2 delete "$GODATA_PM2"
+pm2 save --force
 pm2 update
 pm2 start npm --name "$GODATA_PM2" --time -- start
 pm2 save
@@ -486,7 +488,7 @@ pm2 list
 ```
 
 Expected result: a line such as `{"started":"2026-11-18T12:00:00.000Z","uptime":12.3}` and the process as `online` in
-`pm2 list`. If the `{"started":...}` line does not appear within 5 minutes, see the reason with
+`pm2 list`, only once. If the `{"started":...}` line does not appear within 5 minutes, see the reason with
 `pm2 logs godata --lines 100 --nostream` (replace `godata` with the process name).
 
 ### 1.10. Start at boot, system backups and daily dump
@@ -710,6 +712,7 @@ which the daily dump uses.
 
 ```bash
 pm2 delete "$GODATA_PM2"
+pm2 save --force
 export NVM_DIR="$HOME/.nvm"
 . "$NVM_DIR/nvm.sh"
 case "$(sed -n 1p "$GODATA_BACKUP/node-antes.txt")" in

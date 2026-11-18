@@ -327,8 +327,8 @@ Expected result: the `docker compose` lines about the temporary container and no
 
 `apiKey` must be equal to the `apiKey` key of `client/dist/assets/runtime-config.json`. The user interface reads that
 file and sends the key when it asks for the version, the time zone and the date formats. With different keys, the API
-refuses the request and the user interface does not open properly. The file is public: any browser can read it, so
-the key protects nothing. It also goes into the configuration QR code of the mobile app, which is not used in Brazil.
+refuses the request and the user interface stays on the loading screen, without showing the login page. The file is
+public: any browser can read it, so the key protects nothing. It also goes into the configuration QR code of the mobile app, which is not used in Brazil.
 
 Both files ship with the default value `your_api_key_here`, which can be kept. To change the key, the first block
 writes a random value into `config/config.json`. The value itself does not matter: it only has to be the same in both

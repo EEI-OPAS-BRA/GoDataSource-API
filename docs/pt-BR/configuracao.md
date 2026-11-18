@@ -326,7 +326,8 @@ Resultado esperado: as linhas do `docker compose` sobre o contêiner temporário
 
 `apiKey` precisa ser igual à chave `apiKey` de `client/dist/assets/runtime-config.json`. A interface lê esse arquivo e
 envia a chave ao pedir a versão, o fuso horário e os formatos de data. Com chaves diferentes, a API recusa o pedido e
-a interface não abre corretamente. O arquivo é público: qualquer navegador pode lê-lo, então a chave não protege nada.
+a interface fica parada na tela de carregamento, sem mostrar a tela de login. O arquivo é público: qualquer navegador
+pode lê-lo, então a chave não protege nada.
 Ela também entra no QR code de configuração do aplicativo móvel, que não é usado no Brasil.
 
 Os dois arquivos trazem o valor padrão `your_api_key_here`, que pode ser mantido. Para trocar a chave, o primeiro

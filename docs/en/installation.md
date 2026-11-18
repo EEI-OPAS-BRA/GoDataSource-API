@@ -340,12 +340,14 @@ not go on.
 cd "$GODATA_DIR/atual"
 pm2 start npm --name "$GODATA_PM2" --time -- start
 pm2 save
-timeout 300 sh -c "until curl -fsS http://127.0.0.1:$GODATA_PORT/status; do sleep 5; done"
+timeout 300 sh -c "until curl -fsS http://127.0.0.1:$GODATA_PORT/status 2> /dev/null; do sleep 5; done"
+echo
 pm2 list
 ```
 
 Expected result: a line such as `{"started":"2026-11-18T12:00:00.000Z","uptime":12.3}` and the `godata` process as
-`online` in `pm2 list`. `pm2 save` writes the process list, which pm2 restores when it starts.
+`online` in `pm2 list`. `pm2 save` writes the process list, which pm2 restores when it starts. If the
+`{"started":...}` line does not appear within 5 minutes, see the reason in `pm2 logs godata --lines 100 --nostream`.
 
 ### A12. Start at boot and log rotation
 
@@ -595,7 +597,8 @@ docker compose logs godata | grep godata-entrypoint
 ```
 
 Expected result: both containers as `Healthy` and, in the log, the lines `database is empty`,
-`running init-database`, `init-database finished`, `backup location: changed` and `starting Go.Data 2026.10.0`. The
+`running init-database`, `init-database finished`, `backup location:` with `/opt/godata/backups` and
+`starting Go.Data 2026.10.0`. The
 containers have the `restart: unless-stopped` policy: they come back on their own after a restart of the server.
 
 ### B10. Schedule the daily dump
@@ -663,7 +666,8 @@ fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o600 });
 EOF
 node "$GODATA_DIR/atual/deploy/lib/merge-config.js" --defaults "$GODATA_DIR/atual/deploy/defaults" --overrides "$GODATA_DIR/config" --server-dir "$GODATA_DIR/atual/server"
 pm2 restart "$GODATA_PM2"
-timeout 300 sh -c "until curl -fsS http://127.0.0.1:$GODATA_PORT/status; do sleep 5; done"
+timeout 300 sh -c "until curl -fsS http://127.0.0.1:$GODATA_PORT/status 2> /dev/null; do sleep 5; done"
+echo
 ```
 
 Expected result: the process restarted and the `{"started":...}` line of Go.Data.
@@ -854,7 +858,8 @@ MongoDB still accepts connections without a password, so Go.Data keeps working w
 ```bash
 node "$GODATA_DIR/atual/deploy/lib/merge-config.js" --defaults "$GODATA_DIR/atual/deploy/defaults" --overrides "$GODATA_DIR/config" --server-dir "$GODATA_DIR/atual/server"
 pm2 restart "$GODATA_PM2"
-timeout 300 sh -c "until curl -fsS http://127.0.0.1:$GODATA_PORT/status; do sleep 5; done"
+timeout 300 sh -c "until curl -fsS http://127.0.0.1:$GODATA_PORT/status 2> /dev/null; do sleep 5; done"
+echo
 ```
 
 Expected result: the process restarted and the `{"started":...}` line of Go.Data.
@@ -888,7 +893,8 @@ answers.
 ```bash
 mongosh --quiet --eval 'db.adminCommand({ listDatabases: 1 })' || true
 sudo ss -ltn 'sport = :27017'
-timeout 300 sh -c "until curl -fsS http://127.0.0.1:$GODATA_PORT/status; do sleep 5; done"
+timeout 300 sh -c "until curl -fsS http://127.0.0.1:$GODATA_PORT/status 2> /dev/null; do sleep 5; done"
+echo
 pm2 logs "$GODATA_PM2" --lines 20 --nostream
 ```
 

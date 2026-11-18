@@ -186,7 +186,7 @@ if mongodump --config "$GODATA_MONGO_CFG" --db "$(node -p 'require("./server/dat
   chmod 600 "$GODATA_BACKUP"/*.archive.gz "$GODATA_BACKUP/config-antes.tar.gz"
   ls -lh "$GODATA_BACKUP"
 else
-  rm -f "$GODATA_MONGO_CFG"
+  rm -f "$GODATA_MONGO_CFG" "$GODATA_BACKUP/$(node -p 'require("./server/datasources.json").mongoDb.database').archive.gz" "$GODATA_BACKUP/config-antes.tar.gz"
   echo "dump failed: do not go on with the update" >&2
   false
 fi
@@ -194,8 +194,8 @@ fi
 
 Resultado esperado: linhas `done dumping` do `mongodump` e, em `GODATA_BACKUP`, o arquivo do banco
 (`go-data.archive.gz`, por exemplo) e `config-antes.tar.gz`, com tamanho maior que zero e permissão `-rw-------`. Se
-aparecer `dump failed`, não siga para o passo 1.7: inicie de novo o processo com `pm2 start godata` (troque `godata`
-pelo nome do processo) e resolva a causa.
+aparecer `dump failed`, o bloco apaga o que tiver gravado em parte: não siga para o passo 1.7, inicie de novo o
+processo com `pm2 start godata` (troque `godata` pelo nome do processo) e resolva a causa.
 
 ### D2. Dump no Docker
 

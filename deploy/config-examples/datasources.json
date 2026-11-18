@@ -1,0 +1,16 @@
+{
+  "email": {
+    "transports": [
+      {
+        "type": "SMTP",
+        "host": "smtp.exemplo.gov.br",
+        "port": 465,
+        "secure": true,
+        "auth": {
+          "user": "usuario-smtp",
+          "pass": "senha-smtp"
+        }
+      }
+    ]
+  }
+}

@@ -70,7 +70,9 @@ completa para o português.
 ### Instalação e compatibilidade
 
 - Base: Go.Data 2.51.0 da OMS.
-- Atualização a partir de qualquer versão 2.x da OMS instalada pelo código-fonte. As migrações do banco de dados são
-  executadas na atualização e não têm desfazer automático, por isso o backup é obrigatório.
-- Requisitos: Node.js 22 LTS e o MongoDB já utilizado pela instalação.
-- O passo a passo, com backup e retorno à versão anterior, está no [Guia de atualização](atualizacao.md).
+- Duas formas de instalar: com pm2, no Ubuntu 22.04, com Node.js 22 e MongoDB 7.0; ou com Docker, no Ubuntu 22.04 ou
+  24.04, com a imagem publicada. O passo a passo está no [manual de instalação](instalacao.md).
+- Atualização a partir de qualquer versão 2.x da OMS instalada pelo código-fonte ou pelo instalador da OMS. As
+  migrações do banco de dados são executadas na atualização e não têm desfazer automático, por isso o backup é
+  obrigatório. Servidores com MongoDB anterior ao 7.0 passam para o Docker.
+- O passo a passo da atualização, com backup e retorno à versão anterior, está no [Guia de atualização](atualizacao.md).

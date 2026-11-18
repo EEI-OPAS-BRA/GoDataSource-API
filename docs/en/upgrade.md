@@ -812,7 +812,8 @@ sudo cat data/state/migration-failed 2> /dev/null || echo "no marker"
 
 Expected result: the `godata` container as `Up` and `(health: starting)` or `(unhealthy)`, the last lines of the
 container and the content of the marker: the time, the image version, the reason (`reason:`) and the last lines of the
-command that failed.
+last database command that ran. When the container refused before running any command, those lines come from an
+earlier run: the reason is only in the `reason:` line.
 
 ### R2. Go back to the pre-upgrade dump
 
@@ -855,7 +856,7 @@ cd "$GODATA_DIR"
 docker compose exec -T mongo sh -c 'mongosh --quiet --nodb --eval "db = new Mongo(\"mongodb://127.0.0.1:27017\").getDB(\"admin\"); db.auth(process.env.MONGO_INITDB_ROOT_USERNAME, process.env.MONGO_INITDB_ROOT_PASSWORD); printjson(db.getSiblingDB(process.env.GODATA_DB).migrationLog.updateMany({ status: \"Started\" }, { \$set: { status: \"Failed\", endDate: new Date() } }))"'
 ```
 
-Expected result, in both: a line with `matchedCount: 1` and `modifiedCount: 1`. Then, on pm2, repeat step 1.8; on
+Expected result, in both: the output shows `matchedCount: 1` and `modifiedCount: 1`. Then, on pm2, repeat step 1.8; on
 Docker, run step R3.
 
 ### R5. Interrupted first installation on Docker
@@ -873,8 +874,8 @@ docker compose up -d --wait --wait-timeout 900
 docker compose logs godata | grep godata-entrypoint
 ```
 
-Expected result: `{ ok: 1, dropped: 'go-data' }`, the containers as `Healthy` and, in the log, `database is empty`,
-`running init-database` and `init-database finished`.
+Expected result: the output shows `ok: 1` and `dropped: 'go-data'`, the containers as `Healthy` and, in the log,
+`database is empty`, `running init-database` and `init-database finished`.
 
 ## MongoDB 7.0 patch upgrade
 

@@ -809,8 +809,9 @@ sudo cat data/state/migration-failed 2> /dev/null || echo "no marker"
 ```
 
 Resultado esperado: o contêiner `godata` como `Up` e `(health: starting)` ou `(unhealthy)`, as últimas linhas do
-contêiner e o conteúdo do marcador: a hora, a versão da imagem, o motivo (`reason:`) e as últimas linhas do comando
-que falhou.
+contêiner e o conteúdo do marcador: a hora, a versão da imagem, o motivo (`reason:`) e as últimas linhas do último
+comando de banco executado. Quando o contêiner recusou antes de executar qualquer comando, essas linhas são de uma
+execução anterior: o motivo está só na linha `reason:`.
 
 ### R2. Volte ao dump anterior à atualização
 
@@ -853,7 +854,7 @@ cd "$GODATA_DIR"
 docker compose exec -T mongo sh -c 'mongosh --quiet --nodb --eval "db = new Mongo(\"mongodb://127.0.0.1:27017\").getDB(\"admin\"); db.auth(process.env.MONGO_INITDB_ROOT_USERNAME, process.env.MONGO_INITDB_ROOT_PASSWORD); printjson(db.getSiblingDB(process.env.GODATA_DB).migrationLog.updateMany({ status: \"Started\" }, { \$set: { status: \"Failed\", endDate: new Date() } }))"'
 ```
 
-Resultado esperado, nos dois: uma linha com `matchedCount: 1` e `modifiedCount: 1`. Em seguida, no pm2, repita o passo
+Resultado esperado, nos dois: a saída mostra `matchedCount: 1` e `modifiedCount: 1`. Em seguida, no pm2, repita o passo
 1.8; no Docker, faça o passo R3.
 
 ### R5. Primeira instalação interrompida no Docker
@@ -871,8 +872,8 @@ docker compose up -d --wait --wait-timeout 900
 docker compose logs godata | grep godata-entrypoint
 ```
 
-Resultado esperado: `{ ok: 1, dropped: 'go-data' }`, os contêineres como `Healthy` e, no log, `database is empty`,
-`running init-database` e `init-database finished`.
+Resultado esperado: a saída mostra `ok: 1` e `dropped: 'go-data'`, os contêineres como `Healthy` e, no log,
+`database is empty`, `running init-database` e `init-database finished`.
 
 ## Atualização do MongoDB 7.0
 

@@ -13,7 +13,8 @@
 #
 # Cron needs a PATH that has mongodump and node on a pm2 install (nvm is not loaded by cron),
 # or docker on a Docker install:
-#   30 2 * * * <install-dir>/deploy-scripts/godata-backup.sh <install-dir> >> <install-dir>/dumps/backup.log 2>&1
+#   pm2:    30 2 * * * <install-dir>/atual/deploy/scripts/godata-backup.sh <install-dir> >> <install-dir>/dumps/backup.log 2>&1
+#   Docker: 30 2 * * * <install-dir>/deploy/scripts/godata-backup.sh <install-dir> >> <install-dir>/dumps/backup.log 2>&1
 #
 # No password appears on any command line. Docker: mongodump runs in the mongo container with a
 # 0600 --config file built there from the container's own root password (mongodump reads only

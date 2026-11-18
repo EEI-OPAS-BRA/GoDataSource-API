@@ -174,11 +174,12 @@ printf "uri: '%s'\n" "$(node deploy/lib/db-state.js print-uri --datasources serv
 mongodump --config "$GODATA_MONGO_CFG" --db "$(node -p 'require("./server/datasources.json").mongoDb.database')" --archive="$GODATA_BACKUP/$(node -p 'require("./server/datasources.json").mongoDb.database').archive.gz" --gzip
 rm -f "$GODATA_MONGO_CFG"
 tar -czf "$GODATA_BACKUP/config-antes.tar.gz" -C "$GODATA_OLD_API" server/config.json server/datasources.json -C "$GODATA_DIR" config
+chmod 600 "$GODATA_BACKUP"/*.archive.gz "$GODATA_BACKUP/config-antes.tar.gz"
 ls -lh "$GODATA_BACKUP"
 ```
 
 Expected result: `done dumping` lines from `mongodump` and, in `GODATA_BACKUP`, the database file (`go-data.archive.gz`,
-for example) and `config-antes.tar.gz`, both larger than zero.
+for example) and `config-antes.tar.gz`, both larger than zero and with mode `-rw-------`.
 
 ### D2. Dump on Docker
 

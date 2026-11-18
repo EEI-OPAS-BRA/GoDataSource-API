@@ -905,7 +905,7 @@ MongoDB: if a program is connected, another system uses it, and the block stops 
 ```bash
 GODATA_OLD_MONGO_PORT="$(node -p 'require(process.argv[1]).mongoDb.port || 27017' "$GODATA_OLD_API/server/datasources.json")"
 if [ -n "$(sudo ss -Htn state established "( sport = :$GODATA_OLD_MONGO_PORT )")" ]; then
-  sudo ss -Htnp state established "( sport = :$GODATA_OLD_MONGO_PORT )"
+  sudo ss -Htnp state established "( sport = :$GODATA_OLD_MONGO_PORT or dport = :$GODATA_OLD_MONGO_PORT )"
   echo "stop: programs are connected to the MongoDB on port $GODATA_OLD_MONGO_PORT, keep it running" >&2
   false
 else
@@ -914,8 +914,9 @@ else
 fi
 ```
 
-Expected result: `mongod: inactive, disabled`. If `stop:` appears, the previous lines show the connected programs:
-check with the people who run them before turning MongoDB off. The block only sees the connections of this moment:
+Expected result: `mongod: inactive, disabled`. If `stop:` appears, the previous lines show the connections: the
+address of each client and, for the programs of the server itself, the process name. Check with the people who run
+them before turning MongoDB off. The block only sees the connections of this moment:
 also confirm that no other system uses that MongoDB from time to time, such as a nightly job. The data of the old
 MongoDB stays on disk. If the crontab has the daily dump line of the old installation (`crontab -l`), delete it.
 

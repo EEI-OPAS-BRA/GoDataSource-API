@@ -473,12 +473,14 @@ anteriores à 2.50. Se ela falhar ou for interrompida, não execute de novo: sig
 ### 1.9. Inicie a nova versão
 
 O pm2 guarda a pasta real da versão do processo, e não o atalho `atual`. Por isso o processo antigo é apagado e um novo
-é criado a partir de `atual`. O `pm2 update` reinicia o pm2 com a versão instalada no passo 1.3 e restaura os outros
-processos, se houver.
+é criado a partir de `atual`. A lista gravada do pm2 é atualizada logo depois de apagar o processo: sem isso, o
+`pm2 update`, que reinicia o pm2 com a versão instalada no passo 1.3, restauraria também o processo antigo. Os outros
+processos do pm2, se houver, são restaurados.
 
 ```bash
 cd "$GODATA_DIR/atual"
 pm2 delete "$GODATA_PM2"
+pm2 save --force
 pm2 update
 pm2 start npm --name "$GODATA_PM2" --time -- start
 pm2 save
@@ -488,7 +490,7 @@ pm2 list
 ```
 
 Resultado esperado: uma linha como `{"started":"2026-11-18T12:00:00.000Z","uptime":12.3}` e o processo como `online`
-em `pm2 list`. Se a linha `{"started":...}` não aparecer em 5 minutos, veja o motivo em
+em `pm2 list`, uma única vez. Se a linha `{"started":...}` não aparecer em 5 minutos, veja o motivo em
 `pm2 logs godata --lines 100 --nostream` (troque `godata` pelo nome do processo).
 
 ### 1.10. Início automático, backups do sistema e dump diário
@@ -708,6 +710,7 @@ versão anterior. Na primeira mudança, `atual` continua apontando para a versã
 
 ```bash
 pm2 delete "$GODATA_PM2"
+pm2 save --force
 export NVM_DIR="$HOME/.nvm"
 . "$NVM_DIR/nvm.sh"
 case "$(sed -n 1p "$GODATA_BACKUP/node-antes.txt")" in

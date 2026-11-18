@@ -33,7 +33,7 @@ outro servidor, a versão aparece com `mongosh --quiet --eval 'db.version()'` ex
 
 | O servidor tem | Caso |
 | --- | --- |
-| Ubuntu 20.04 ou anterior, ou Windows, com pm2 | 2, para um servidor novo com Ubuntu 22.04 ou 24.04 e Docker |
+| Ubuntu 20.04 ou anterior, ou Windows, com pm2, como serviço ou como processo node | 2, para um servidor novo com Ubuntu 22.04 ou 24.04 e Docker. A API é parada do jeito que roda hoje, como no passo 2.17 |
 | Ubuntu 22.04, pm2 e MongoDB 7.0 | 1, pm2 para pm2 |
 | Ubuntu 22.04 com pm2 e MongoDB abaixo da 7.0 (5.0, 6.0), ou Ubuntu 24.04 com pm2 | 2, pm2 para Docker no mesmo servidor |
 | Docker, instalado pelo [manual de instalação](instalacao.md) | 3, Docker para Docker |
@@ -894,7 +894,8 @@ Enquanto o comando espera, `docker compose logs -f godata`, em outro terminal, m
 **Voltar à versão anterior**.
 
 Em seguida, faça os passos C3 (contagens no Docker) e C4 (comparação) e siga **Conferência**. Com tudo conferido, faça
-o passo B10 do manual de instalação (dump diário) e, no mesmo servidor, o passo 2.10.
+o passo B10 do manual de instalação (dump diário) e, só depois de alguns dias de uso da versão nova, no mesmo
+servidor, o passo 2.10.
 
 #### 2.10. Retire a instalação antiga
 

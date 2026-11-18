@@ -422,7 +422,8 @@ pm2 stop "$GODATA_PM2"
 pm2 list
 ```
 
-Resultado esperado: o processo como `stopped` em `pm2 list`.
+Resultado esperado: o processo como `stopped` em `pm2 list`. O aviso `In-memory PM2 is out-of-date` do passo 1.3 pode
+aparecer de novo.
 
 Em seguida, faça os passos C2 (contagens no pm2) e D1 (dump no pm2).
 
@@ -466,9 +467,10 @@ cd "$GODATA_DIR/atual"
 npm run migrate-database
 ```
 
-Resultado esperado: o comando termina sem erro. A migração pode levar vários minutos e é mais demorada em instalações
-anteriores à 2.50. Se ela falhar ou for interrompida, não execute de novo: siga **Voltar à versão anterior** ou
-**Recuperar de uma migração com falha**.
+Resultado esperado: o comando termina sem erro, com uma linha que começa com `Portuguese translations:`. Avisos como
+`DeprecationWarning` e `MaxListenersExceededWarning` aparecem com `"level":"error"` e são esperados. A migração pode
+levar vários minutos e é mais demorada em instalações anteriores à 2.50. Se ela falhar ou for interrompida, não
+execute de novo: siga **Voltar à versão anterior** ou **Recuperar de uma migração com falha**.
 
 ### 1.9. Inicie a nova versão
 

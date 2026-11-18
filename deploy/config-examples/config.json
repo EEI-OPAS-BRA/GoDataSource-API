@@ -1,13 +1,14 @@
 {
   "public": {
-    "host": "godata.saude.uf.gov.br",
     "protocol": "https",
+    "host": "godata.exemplo.gov.br",
     "port": ""
   },
+  "enableConfigRewrite": false,
   "timezone": "America/Sao_Paulo",
   "dateDisplayFormat": "DD/MM/YYYY",
   "dateTimeDisplayFormat": "DD/MM/YYYY HH:mm",
   "passwordReset": {
-    "from": "nao-responda@saude.uf.gov.br"
+    "from": "nao-responda@exemplo.gov.br"
   }
 }

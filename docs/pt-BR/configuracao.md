@@ -159,6 +159,7 @@ etapas. Troque `smtp.exemplo.gov.br`, `usuario-smtp` e `senha-smtp` pelos dados 
   `"port": 587` e `"secure": false`.
 - Se o servidor de e-mail não pede autenticação, retire o bloco `auth` e a vírgula antes dele.
 - `transports` é uma lista: ela substitui por inteiro o servidor de e-mail padrão.
+- Se a senha do SMTP tiver `"` ou `\`, escreva `\"` e `\\` no JSON.
 
 O bloco grava a chave `email` em `config/datasources.json` e mantém o resto do arquivo. No pm2, o arquivo também
 guarda a conexão com o MongoDB, criada na instalação. No Docker, ele só precisa da chave `email`: a conexão com o

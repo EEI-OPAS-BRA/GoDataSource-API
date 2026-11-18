@@ -31,9 +31,9 @@ server, `mongosh --quiet --eval 'db.version()'` run there shows its version.
 
 | The server has | Case |
 | --- | --- |
-| Ubuntu 20.04 or older, or Windows, with any kind of installation | 2, onto a new server with Ubuntu 22.04 or 24.04 and Docker |
-| Ubuntu 22.04 or later, pm2 and MongoDB 7.0 | 1, pm2 to pm2 |
-| Ubuntu 22.04 or later, pm2 and MongoDB below 7.0 (5.0, 6.0) | 2, pm2 to Docker on the same server |
+| Ubuntu 20.04 or older, or Windows, with pm2 | 2, onto a new server with Ubuntu 22.04 or 24.04 and Docker |
+| Ubuntu 22.04, pm2 and MongoDB 7.0 | 1, pm2 to pm2 |
+| Ubuntu 22.04 with pm2 and MongoDB below 7.0 (5.0, 6.0), or Ubuntu 24.04 with pm2 | 2, pm2 to Docker on the same server |
 | Docker, installed with the [installation manual](installation.md) | 3, Docker to Docker |
 
 Case 1 covers three starting points, all with pm2 and MongoDB 7.0 on the server itself:
@@ -55,7 +55,7 @@ For the first two, the upgrade also moves the installation to the folder layout 
 - Check the free disk space: at least twice the size of the database, plus 3 GB.
 - The previous installation stays untouched until the check is done: on pm2, the folder of the previous version and
   the previous Node.js; on Docker, the previous image; in case 2, the old pm2 process, stopped, and the old MongoDB.
-  Keep them for a few days of use of the new version.
+  Keep them for a few days of use of the new version. Only remove the old installation (step 2.10) after those days.
 - Run every step as the user who operates Go.Data, without `sudo`, in the same terminal. The commands that need
   `sudo` already have it. On Docker, this user must be able to use `docker` without `sudo` (`docker` group).
 - Open that terminal in a `tmux` session (`sudo apt-get install -y tmux`, then `tmux new -s godata`). If the SSH
@@ -222,6 +222,8 @@ stays available for the way back. Case 1 does not change the MongoDB authenticat
 
 ### 1.1. Check the server and the installation
 
+If a previous attempt stopped before step 1.6, continue from the step where it stopped instead of starting over.
+
 The block checks the processor, the Ubuntu version, the MongoDB version, the API folder in use and the installation
 folder. It changes nothing on the server.
 
@@ -362,7 +364,7 @@ anything. On an installation that already follows the installation manual, skip 
 node -e '
 const fs = require("fs");
 const [oldServer, configDir, defaultsDir] = process.argv.slice(1);
-const read = file => JSON.parse(fs.readFileSync(file, "utf8"));
+const read = file => JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, ""));
 const isObject = value => value !== null && typeof value === "object" && !Array.isArray(value);
 const diff = (value, base) => {
   if (isObject(value) && isObject(base)) {
@@ -607,6 +609,9 @@ elif [ ! -f "$GODATA_OLD_API/server/config.json" ] || [ ! -f "$GODATA_OLD_API/se
 elif [ "${GODATA_DUMP_VERSION#mongodump version: 100.}" = "$GODATA_DUMP_VERSION" ]; then
   echo "stop: mongodump is not from the MongoDB Database Tools 100, found: '$GODATA_DUMP_VERSION'" >&2
   false
+elif echo "$GODATA_DUMP_VERSION" | grep -Eq '^mongodump version: 100\.[0-2]\.'; then
+  echo "stop: mongodump is older than the Database Tools 100.3, which has no --config, found: '$GODATA_DUMP_VERSION'" >&2
+  false
 elif sudo test -e "$GODATA_DIR" && [ -n "$(sudo ls -A "$GODATA_DIR")" ]; then
   echo "stop: $GODATA_DIR already exists and is not empty, use another folder in GODATA_DIR, for example /opt/godata-docker" >&2
   false
@@ -615,12 +620,12 @@ else
 fi
 ```
 
-Expected result: `avx` and a line that starts with `ok:`, with the `mongodump` version (`mongodump version: 100.`
-followed by the number). If a line that starts with `stop:` appears, do not go on:
+Expected result: `avx` and a line that starts with `ok:`, with the `mongodump` version (100.3 or later, such as
+`mongodump version: 100.10.0`). If a line that starts with `stop:` appears, do not go on:
 
 - On Ubuntu 20.04 or older, follow **To a new server**.
 - If the process runs from another folder, set `GODATA_OLD_API` to the folder shown.
-- If `mongodump` is not from the 100 series, see step 2.11.
+- If `mongodump` is not from the 100 series, or is older than 100.3, see step 2.11.
 - If the new folder already exists and is not empty, set `GODATA_DIR` to `/opt/godata-docker` (or another empty
   folder). This manual does not install over a folder with files.
 
@@ -663,8 +668,12 @@ your user can read the file and the passwords are not shown.
 
 ```bash
 cd "$GODATA_DIR"
-install -m 600 /dev/null .env
-cat > .env <<EOF
+if [ -e .env ]; then
+  echo "stop: $GODATA_DIR/.env already exists, new passwords would no longer match MongoDB" >&2
+  false
+else
+  install -m 600 /dev/null .env
+  cat > .env <<EOF
 GODATA_VERSION=$GODATA_NEW_VERSION
 GODATA_BIND=0.0.0.0
 GODATA_PORT=3000
@@ -672,8 +681,9 @@ GODATA_DB=go-data
 MONGO_ROOT_PASSWORD=$(openssl rand -hex 24)
 GODATA_MONGO_PASSWORD=$(openssl rand -hex 24)
 EOF
-grep -v PASSWORD .env
-ls -l .env
+  grep -v PASSWORD .env
+  ls -l .env
+fi
 ```
 
 Expected result: the four lines without passwords and the file with mode `-rw-------`. Step 2.5 replaces
@@ -711,7 +721,7 @@ changing anything.
 cd "$GODATA_DIR"
 docker compose run --rm --no-deps -T -u "$(id -u):1000" -v "$GODATA_DIR/config:/config" -v "$GODATA_DIR/.env:/env" -v "$GODATA_OLD_API/server:/antigo:ro" --entrypoint node godata -e '
 const fs = require("fs");
-const read = file => JSON.parse(fs.readFileSync(file, "utf8"));
+const read = file => JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, ""));
 const isObject = value => value !== null && typeof value === "object" && !Array.isArray(value);
 const diff = (value, base) => {
   if (isObject(value) && isObject(base)) {
@@ -888,7 +898,7 @@ B10 of the installation manual (daily dump) and, on the same server, step 2.10.
 
 #### 2.10. Remove the old installation
 
-Only after the check. The first block deletes the old process from pm2 and saves the pm2 list without it. The other
+Only after the check and after a few days of use of the new version. The first block deletes the old process from pm2 and saves the pm2 list without it. The other
 pm2 processes do not change.
 
 ```bash
@@ -963,6 +973,9 @@ elif [ ! -f "$GODATA_OLD_API/server/config.json" ] || [ ! -f "$GODATA_OLD_API/se
 elif [ "${GODATA_DUMP_VERSION#mongodump version: 100.}" = "$GODATA_DUMP_VERSION" ]; then
   echo "stop: mongodump is not from the MongoDB Database Tools 100, found: '$GODATA_DUMP_VERSION'" >&2
   false
+elif echo "$GODATA_DUMP_VERSION" | grep -Eq '^mongodump version: 100\.[0-2]\.'; then
+  echo "stop: mongodump is older than the Database Tools 100.3, which has no --config, found: '$GODATA_DUMP_VERSION'" >&2
+  false
 elif [ -e "$GODATA_TRANSFER" ]; then
   echo "stop: $GODATA_TRANSFER already exists" >&2
   false
@@ -973,13 +986,14 @@ du -sh "$GODATA_OLD_API/server/storage/" "$GODATA_OLD_API/backups"
 df -h "$HOME"
 ```
 
-Expected result: a line that starts with `ok:`, with the `mongodump` version (`mongodump version: 100.` followed by
-the number) and the database name, the size of the attachments and of the system backups and the free space. The
+Expected result: a line that starts with `ok:`, with the `mongodump` version (100.3 or later, such as
+`mongodump version: 100.10.0`) and the database name, the size of the attachments and of the system backups and the free space. The
 folder for the files needs room for the dump and for those two sizes. If a line that starts with `stop:` appears, do
 not go on.
 
-MongoDB 4.4 and later ship `mongodump` from the 100 series (MongoDB Database Tools). The old tools, from MongoDB 4.2
-or older, show a version that starts with `r` and do not read the connection file of step 2.12. In that case,
+MongoDB 4.4 and later ship `mongodump` from the 100 series (MongoDB Database Tools), but the `--config` option that
+step 2.12 uses exists only since 100.3. Older tools, from MongoDB 4.2 or older (a version that starts with `r`) or
+from the 100 series below 100.3, do not read the connection file. In that case,
 download the MongoDB Database Tools for the server's system as a `.tgz` file, from the MongoDB downloads page, extract
 it into a folder of your user and put its `bin` folder at the start of the `PATH` of this terminal, with
 `export PATH="<folder>/bin:$PATH"`. Nothing is installed on the system. Then run this block again.
@@ -1104,7 +1118,9 @@ decision to turn it off. After the check, the `GODATA_BACKUP/antigo` folder can 
 The old server part runs in PowerShell, as the user who administers Go.Data on Windows, and prepares the same files
 as step 2.12. The dump uses `mongodump.exe` from the MongoDB Database Tools for Windows: download the `.zip` file from
 the MongoDB downloads page and extract it into a folder, without installing anything. `tar.exe` and `scp.exe` come
-with Windows 10, Windows 11 and Windows Server 2019 or later. The new server part is the one of
+with Windows 10, Windows 11 and Windows Server 2019 or later, and `New-TemporaryFile` comes with PowerShell 5 or
+later; step 2.16 checks all three. Windows versions older than Windows 10 1803 or Windows Server 2019, or with
+PowerShell below 5, are not covered by this procedure. The new server part is the one of
 **On the new server**.
 
 #### 2.16. Set the variables and check
@@ -1125,8 +1141,12 @@ The next block checks the configuration files, `mongodump.exe` and the folder fo
 server.
 
 ```powershell
-if (-not (Test-Path "$GoDataTools\mongodump.exe")) {
+if ((Get-Command tar.exe, scp.exe, New-TemporaryFile -ErrorAction SilentlyContinue | Measure-Object).Count -ne 3) {
+  Write-Error "stop: tar.exe, scp.exe or New-TemporaryFile is missing on this Windows"
+} elseif (-not (Test-Path "$GoDataTools\mongodump.exe")) {
   Write-Error "stop: no mongodump.exe in $GoDataTools"
+} elseif ((& "$GoDataTools\mongodump.exe" --version 2>&1 | Select-Object -First 1) -notmatch '^mongodump version: 100\.([3-9]|[1-9][0-9]+)\.') {
+  Write-Error "stop: mongodump.exe is not from the MongoDB Database Tools 100.3 or later"
 } elseif (-not (Test-Path "$GoDataApi\server\config.json") -or -not (Test-Path "$GoDataApi\server\datasources.json")) {
   Write-Error "stop: no server\config.json or server\datasources.json in $GoDataApi"
 } elseif (Test-Path $GoDataTransfer) {
@@ -1138,15 +1158,15 @@ if (-not (Test-Path "$GoDataTools\mongodump.exe")) {
 }
 ```
 
-Expected result: the `mongodump` version (`mongodump version: 100.` followed by the number) and a line that starts
-with `ok:`, with the database name and the MongoDB address. If an error with `stop:` appears, do not go on.
+Expected result: the `mongodump` version (100.3 or later, such as `mongodump version: 100.10.0`) and a line that
+starts with `ok:`, with the database name and the MongoDB address. If an error with `stop:` appears, do not go on.
 
 #### 2.17. Stop Go.Data and make the dump and the package
 
 From this step on the system is down. Stop the Go.Data API and keep MongoDB running: on a pm2 process, `pm2 stop` and
 `pm2 save`, as in step 2.12; on a Windows service, `Stop-Service` followed by the name of the API service. If the
-installation cannot stop the API without stopping MongoDB, leave the system open and ask the users not to use it until
-the move is over.
+API does not run as a service or on pm2, stop only the API's `node.exe`, from Task Manager or with `Stop-Process` on
+the API process, and leave `mongod` running. Anything recorded after the dump would not reach the new server.
 
 The block makes the database dump, with the connection of `server\datasources.json` in a temporary file of the user's
 folder, deleted at the end, and the package `arquivos-antigos.tar.gz` with the same files as step 2.12. If something
@@ -1430,7 +1450,20 @@ pm2 list
 Expected result: the containers removed and the old process as `online` in `pm2 list`. If step 2.10 already deleted
 the process, create it again in the `GODATA_OLD_API` folder with the command recorded in `pm2-antes.txt`, in
 `GODATA_BACKUP` (`script path` and `exec cwd`), and save the list with `pm2 save`. To try the move again, delete the
-`GODATA_DIR` folder and start over from step 2.1.
+`GODATA_DIR` folder with the block below and start over from step 2.1. First, check that `GODATA_DIR` is the Docker
+folder of this case, not the old installation.
+
+```bash
+if [ -f "$GODATA_DIR/docker-compose.yml" ]; then
+  (cd "$GODATA_DIR" && docker compose down) && sudo rm -rf "$GODATA_DIR"
+else
+  echo "stop: $GODATA_DIR is not a Docker install folder" >&2
+  false
+fi
+```
+
+Expected result: the containers removed and no error output. If `stop:` appears, the folder has no
+`docker-compose.yml` and nothing was deleted: fix `GODATA_DIR`.
 
 #### V2.2. New server
 

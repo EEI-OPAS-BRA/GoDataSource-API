@@ -3,12 +3,12 @@
     "transports": [
       {
         "type": "SMTP",
-        "host": "smtp.saude.uf.gov.br",
-        "secure": true,
+        "host": "smtp.exemplo.gov.br",
         "port": 465,
+        "secure": true,
         "auth": {
-          "user": "<smtp-user>",
-          "pass": "<smtp-password>"
+          "user": "usuario-smtp",
+          "pass": "senha-smtp"
         }
       }
     ]

@@ -159,8 +159,9 @@ check what changed and, if needed, go back to the previous version.
 ## Backup
 
 The pre-upgrade dump goes to `GODATA_BACKUP`, out of reach of the automatic cleanup of the dumps. It is taken with
-Go.Data stopped, right after the first count, so nothing recorded after it is lost. The cases say when to run this
-step. If the dump fails, do not go on with the upgrade: start the previous version again and solve the cause.
+Go.Data stopped, right after the first count, so it holds everything recorded before the upgrade. The cases say when
+to run this step. If the dump fails, do not go on with the upgrade: start the previous version again and solve the
+cause.
 
 ### D1. Dump on pm2
 
@@ -531,8 +532,8 @@ of this manual.
 
 ## Case 3: Docker to Docker
 
-The upgrade changes the version of the Go.Data image in `.env`. At start, the container migrates the database and
-writes the system backups folder. The `mongo` container and the data in `data/` do not change.
+The upgrade changes the version of the Go.Data image in `.env`. At start, the new `godata` container migrates the
+database and writes the system backups folder. The `mongo` container stays the same.
 
 ### 3.1. Check the installation
 

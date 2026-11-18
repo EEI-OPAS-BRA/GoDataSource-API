@@ -70,7 +70,8 @@ translation.
 ### Installation and compatibility
 
 - Base: WHO Go.Data 2.51.0.
-- Update from any WHO 2.x version installed from source. Database migrations run during the update and cannot be
-  undone automatically, so a backup is mandatory.
-- Requirements: Node.js 22 LTS and the MongoDB the installation already uses.
-- The step by step procedure, with backup and rollback, is in the [Upgrade guide](upgrade.md).
+- Two ways to install: pm2 on Ubuntu 22.04 with Node.js 22 and MongoDB 7.0; or Docker on Ubuntu 22.04 or 24.04 with
+  the published image. The step by step procedure is in the [installation manual](installation.md).
+- Update from any WHO 2.x version installed from source or from the WHO installer. Database migrations run during the
+  update and cannot be undone automatically, so a backup is mandatory. Servers with MongoDB below 7.0 move to Docker.
+- The update procedure, with backup and rollback, is in the [Upgrade guide](upgrade.md).

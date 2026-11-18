@@ -471,7 +471,7 @@ No Docker, a conexão vem do `.env`:
 | Variável | Para que serve |
 | --- | --- |
 | `GODATA_VERSION` | Versão da imagem, sem o `v` inicial (por exemplo `2026.10.0`) |
-| `GODATA_BIND` | Interface do servidor em que a porta fica aberta. Use `127.0.0.1` quando o nginx do mesmo servidor atende o Go.Data |
+| `GODATA_BIND` | Endereço em que a porta fica aberta (padrão `0.0.0.0`) |
 | `GODATA_PORT` | Porta do servidor que leva ao Go.Data (padrão `3000`) |
 | `GODATA_DB` | Nome do banco (padrão `go-data`) |
 | `MONGO_ROOT_PASSWORD`, `GODATA_MONGO_PASSWORD` | Senhas dos usuários `root` e `godata` do MongoDB, geradas na instalação |
@@ -485,7 +485,7 @@ No Docker, a conexão vem do `.env`:
 
 | Chave | Para que serve |
 | --- | --- |
-| `host`, `port` | Endereço e porta em que a API escuta (padrão `0.0.0.0` e `3000`). No pm2, use uma porta para cada instância do servidor e `"host": "127.0.0.1"` quando só o nginx do próprio servidor acessa a API. No Docker, são fixos: use `GODATA_BIND` e `GODATA_PORT` no `.env` |
+| `host`, `port` | Endereço e porta em que a API escuta (padrão `0.0.0.0` e `3000`). No pm2, use uma porta para cada instância do servidor. No Docker, são fixos: use `GODATA_BIND` e `GODATA_PORT` no `.env` |
 | `public.protocol`, `public.host`, `public.port` | Endereço que os usuários abrem, usado nos links dos e-mails. Veja o passo 2 |
 | `enableConfigRewrite` | Com `true` (padrão), o Go.Data regrava `public` sozinho. Use `false` com `public` preenchido |
 | `timezone` | Fuso horário, por exemplo `America/Sao_Paulo` |

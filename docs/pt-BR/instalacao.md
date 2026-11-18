@@ -25,12 +25,11 @@
 
 - Um processador com as instruções AVX, exigidas pelo MongoDB 7.0. Numa máquina virtual, o tipo de processador
   precisa repassar as instruções do processador físico (por exemplo, o tipo `host`). Sem AVX, o MongoDB não inicia e
-  a instalação não pode seguir: peça à equipe de infraestrutura que ajuste o tipo de processador da máquina virtual
-  ou que forneça outro servidor.
+  a instalação não pode seguir: ajuste o tipo de processador da máquina virtual ou use outro servidor.
 - Pelo menos 4 GB de memória e 20 GB livres em disco, além do espaço dos dados, dos dumps e dos backups.
 - Um usuário do Ubuntu que não seja o `root` e que possa usar o `sudo`. Todos os passos são executados com esse
   usuário.
-- Um endereço (nome no DNS) pelo qual os usuários vão abrir o sistema, para o HTTPS.
+- Um endereço (nome no DNS) pelo qual os usuários vão abrir o sistema.
 
 Para conferir o processador antes de escolher o servidor:
 
@@ -42,7 +41,7 @@ Resultado esperado: `avx`. Se nada aparecer, o processador não tem AVX.
 
 O caminho A segue o modelo das instalações atuais com pm2. O caminho B não exige instalar o MongoDB nem o Node.js no
 servidor, e a atualização se resume a trocar a versão da imagem. Faça só um dos dois caminhos e depois siga as seções
-**Primeiro acesso**, **HTTPS com nginx** e **Conferência final**.
+**Primeiro acesso** e **Conferência final**.
 
 ## Caminho A: pm2
 
@@ -175,9 +174,13 @@ As senhas são sorteadas pelo `openssl` e não aparecem na tela nem nos comandos
 administrador, se o arquivo dela ainda não existe, e cria `config/datasources.json` com a conexão do Go.Data.
 
 ```bash
-sudo sh -c 'umask 077 && test -s /root/mongodb-admin.txt || openssl rand -hex 24 > /root/mongodb-admin.txt'
-install -m 600 /dev/null "$GODATA_DIR/config/datasources.json"
-cat > "$GODATA_DIR/config/datasources.json" <<EOF
+if [ -e "$GODATA_DIR/config/datasources.json" ]; then
+  echo "stop: $GODATA_DIR/config/datasources.json already exists, a new password would no longer match MongoDB" >&2
+  false
+else
+  sudo sh -c 'umask 077 && test -s /root/mongodb-admin.txt || openssl rand -hex 24 > /root/mongodb-admin.txt'
+  install -m 600 /dev/null "$GODATA_DIR/config/datasources.json"
+  cat > "$GODATA_DIR/config/datasources.json" <<EOF
 {
   "mongoDb": {
     "host": "127.0.0.1",
@@ -189,6 +192,7 @@ cat > "$GODATA_DIR/config/datasources.json" <<EOF
   }
 }
 EOF
+fi
 ```
 
 Resultado esperado: nenhuma saída.
@@ -325,7 +329,10 @@ houver no banco, por isso o bloco só o executa num banco vazio.
 
 ```bash
 cd "$GODATA_DIR/atual"
-if [ "$(node deploy/lib/db-state.js db-empty --datasources server/datasources.json)" = yes ]; then
+if ! state=$(node deploy/lib/db-state.js db-empty --datasources server/datasources.json); then
+  echo "stop: could not connect to the database $GODATA_DB" >&2
+  false
+elif [ "$state" = yes ]; then
   npm run init-database
 else
   echo "stop: the database $GODATA_DB is not empty, init-database would erase it" >&2
@@ -334,7 +341,8 @@ fi
 ```
 
 Resultado esperado: o comando leva alguns minutos e termina sem erro. Se aparecer
-`stop: the database go-data is not empty`, o banco já tem dados: confira `GODATA_DB` (passo A1) e não continue.
+`stop: the database go-data is not empty`, o banco já tem dados: confira `GODATA_DB` (passo A1) e não continue. Se aparecer
+`stop: could not connect to the database go-data`, confira se o MongoDB está ativo e os dados de `config/datasources.json`.
 
 ### A11. Inicie com o pm2
 
@@ -420,7 +428,7 @@ Resultado esperado: nenhuma saída.
 - `GODATA_DB`: nome do banco no MongoDB.
 - `GODATA_PORT`: porta em que o Go.Data atende no servidor.
 
-Os três últimos valores vão para o arquivo `.env` no passo B6, que passa a valer daí em diante. Depois da instalação,
+`GODATA_VERSION`, `GODATA_DB` e `GODATA_PORT` vão para o arquivo `.env` no passo B6, que passa a valer daí em diante. Depois da instalação,
 não exporte essas variáveis num terminal novo: o `docker compose` usa o valor do terminal no lugar do `.env` (veja o
 [manual de configuração](configuracao.md)). Num servidor com duas instalações, a segunda usa outra pasta e outra
 porta, por exemplo `/opt/godata-teste` e `3001`, e tem o seu próprio MongoDB.
@@ -546,7 +554,7 @@ ls -l .env
 ```
 
 Resultado esperado: as quatro linhas sem senha e o arquivo com permissão `-rw-------`. O MongoDB cria os usuários com
-essas senhas no primeiro início. Depois dele, não mude as senhas nem `GODATA_DB` no `.env`. O `.env` entra no pacote de
+essas senhas no primeiro início. Depois do primeiro início, não mude as senhas nem `GODATA_DB` no `.env`. O `.env` entra no pacote de
 configuração que o script de backup grava junto com cada dump.
 
 ### B7. Baixe a imagem
@@ -610,10 +618,7 @@ backups para fora do servidor.
 
 ## Primeiro acesso
 
-Abra no navegador `http://<endereço do servidor>:3000` (troque `3000` pelo valor de `GODATA_PORT`). Até a seção
-**HTTPS com nginx**, o acesso não é cifrado: se a rede até o servidor não for confiável, faça antes a seção HTTPS, ou
-abra o sistema por um túnel SSH, com `ssh -L 3000:127.0.0.1:3000 usuario@servidor` e o endereço
-`http://localhost:3000`.
+Abra no navegador `http://<endereço do servidor>:3000` (troque `3000` pelo valor de `GODATA_PORT`).
 
 1. A tela de login mostra a versão `2.51.0 - build 2026.10.0`.
 2. Entre com o e-mail `admin@who.int` e a senha `admin`.
@@ -625,167 +630,11 @@ abra o sistema por um túnel SSH, com `ssh -L 3000:127.0.0.1:3000 usuario@servid
 
 Crie depois os usuários nominais das equipes. Não compartilhe o usuário `admin@who.int`.
 
-## HTTPS com nginx
-
-O nginx recebe os acessos em HTTPS (porta 443) e os repassa ao Go.Data, que passa a atender só no próprio servidor.
-O firewall (`ufw`) deixa abertas só as portas do SSH (22), do HTTP (80, que redireciona para o HTTPS) e do HTTPS
-(443). O endereço público do passo 2 do [manual de configuração](configuracao.md) precisa ser o mesmo nome que o
-certificado cobre, com `"protocol": "https"`.
-
-Em todos os blocos desta seção, troque `godata.exemplo.gov.br` pelo nome do sistema no DNS. Se `GODATA_PORT` não é
-`3000`, troque também `127.0.0.1:3000` pela porta da instalação.
-
-### H1. Instale o nginx
-
-```bash
-sudo apt-get update
-sudo apt-get install -y nginx
-sudo rm -f /etc/nginx/sites-enabled/default
-systemctl is-active nginx
-```
-
-Resultado esperado: `active`.
-
-### H2. Deixe o Go.Data só no endereço local
-
-#### H2.1. No pm2
-
-Por padrão, a API atende em todos os endereços do servidor (`0.0.0.0`). O bloco a deixa só em `127.0.0.1`, de onde o
-nginx a acessa, e aplica a configuração.
-
-```bash
-node -e '
-const fs = require("fs");
-const file = process.argv[1];
-const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
-Object.assign(data, JSON.parse(fs.readFileSync(0, "utf8")));
-fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o600 });
-' "$GODATA_DIR/config/config.json" <<'EOF'
-{
-  "host": "127.0.0.1"
-}
-EOF
-node "$GODATA_DIR/atual/deploy/lib/merge-config.js" --defaults "$GODATA_DIR/atual/deploy/defaults" --overrides "$GODATA_DIR/config" --server-dir "$GODATA_DIR/atual/server"
-pm2 restart "$GODATA_PM2"
-timeout 300 sh -c "until curl -fsS http://127.0.0.1:$GODATA_PORT/status 2> /dev/null; do sleep 5; done"
-echo
-```
-
-Resultado esperado: o processo reiniciado e a linha `{"started":...}` do Go.Data.
-
-#### H2.2. No Docker
-
-O Docker abre as portas publicadas por fora do `ufw`: o firewall não as fecha. Por isso, a porta do Go.Data passa a
-ser publicada só em `127.0.0.1` (`GODATA_BIND` no `.env`).
-
-```bash
-cd "$GODATA_DIR"
-sed -i 's/^GODATA_BIND=.*/GODATA_BIND=127.0.0.1/' .env
-docker compose up -d --wait --wait-timeout 900
-docker compose port godata 3000
-```
-
-Resultado esperado: o contêiner `godata` recriado, `Healthy`, e a linha `127.0.0.1:3000`.
-
-### H3. Site do nginx com certificado do Let's Encrypt
-
-Use este passo quando o nome do sistema é público e o servidor recebe acessos da internet na porta 80. O certbot
-obtém o certificado, configura o HTTPS no site e renova o certificado sozinho. Se a instituição fornece o
-certificado, pule para o passo H4. Troque também `ti@exemplo.gov.br` pelo e-mail que recebe os avisos do certificado.
-
-```bash
-sudo tee /etc/nginx/sites-available/godata > /dev/null <<'EOF'
-server {
-    listen 80;
-    server_name godata.exemplo.gov.br;
-    client_max_body_size 4096m;
-
-    location / {
-        proxy_pass http://127.0.0.1:3000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_read_timeout 3600s;
-        proxy_send_timeout 3600s;
-    }
-}
-EOF
-sudo ln -sfn /etc/nginx/sites-available/godata /etc/nginx/sites-enabled/godata
-sudo nginx -t
-sudo systemctl reload nginx
-sudo apt-get install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d godata.exemplo.gov.br --non-interactive --agree-tos -m ti@exemplo.gov.br --redirect
-```
-
-Resultado esperado: `syntax is ok` e `test is successful` do `nginx -t` e, no fim, `Successfully deployed
-certificate` e `Congratulations! You have successfully enabled HTTPS`. O `client_max_body_size` de 4096 MB acompanha o
-limite de importação do Go.Data (`jobSettings.importResources.maxFileSize`).
-
-### H4. Site do nginx com certificado da instituição
-
-Use este passo quando a instituição fornece o certificado. São dois arquivos em formato PEM: o certificado, com a
-cadeia completa (o certificado do servidor seguido dos intermediários), e a chave privada. Copie-os para o servidor e
-troque `/caminho/do/certificado.crt` e `/caminho/da/chave.key` pelos caminhos deles.
-
-```bash
-sudo install -m 644 /caminho/do/certificado.crt /etc/ssl/certs/godata.crt
-sudo install -m 600 /caminho/da/chave.key /etc/ssl/private/godata.key
-sudo tee /etc/nginx/sites-available/godata > /dev/null <<'EOF'
-server {
-    listen 80;
-    server_name godata.exemplo.gov.br;
-    return 301 https://$host$request_uri;
-}
-
-server {
-    listen 443 ssl;
-    server_name godata.exemplo.gov.br;
-    ssl_certificate /etc/ssl/certs/godata.crt;
-    ssl_certificate_key /etc/ssl/private/godata.key;
-    ssl_protocols TLSv1.2 TLSv1.3;
-    client_max_body_size 4096m;
-
-    location / {
-        proxy_pass http://127.0.0.1:3000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_read_timeout 3600s;
-        proxy_send_timeout 3600s;
-    }
-}
-EOF
-sudo ln -sfn /etc/nginx/sites-available/godata /etc/nginx/sites-enabled/godata
-sudo nginx -t
-sudo systemctl reload nginx
-```
-
-Resultado esperado: `syntax is ok` e `test is successful`. Quando o certificado vencer, copie os novos arquivos para
-os mesmos caminhos e execute `sudo systemctl reload nginx`. O `client_max_body_size` de 4096 MB acompanha o limite de
-importação do Go.Data (`jobSettings.importResources.maxFileSize`).
-
-### H5. Firewall
-
-Se o SSH do servidor usa outra porta, troque `22` antes de executar: com a porta errada, a sessão SSH cai e não volta.
-
-```bash
-sudo apt-get install -y ufw
-sudo ufw allow 22/tcp
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
-sudo ufw --force enable
-sudo ufw status
-```
-
-Resultado esperado: `Status: active` e as portas 22, 80 e 443 como `ALLOW`. Abra no navegador
-`https://godata.exemplo.gov.br`: a tela de login aparece, com o cadeado de conexão segura.
-
 ## Endurecimento do MongoDB existente
 
 Esta seção é para um servidor do caminho A cujo MongoDB aceita conexões sem usuário e senha, como em instalações mais
-antigas. Ela cria um administrador e o usuário do Go.Data, passa a conexão do Go.Data a usar o usuário, liga a
+antigas. Ela vale para uma instalação organizada como no caminho A deste manual; instalações com outra organização
+seguem antes o manual de atualização. Ela cria um administrador e o usuário do Go.Data, passa a conexão do Go.Data a usar o usuário, liga a
 autenticação e deixa o MongoDB só no endereço local. Faça-a fora da janela de uma atualização, com um dump recente
 (passo 3.1 do [manual de backup](backup.md)). O Go.Data fica fora do ar por alguns segundos, quando o MongoDB reinicia
 no passo E4.
@@ -824,10 +673,13 @@ node -e '
 const fs = require("fs");
 const file = process.argv[1];
 const data = JSON.parse(fs.readFileSync(file, "utf8"));
+if (data.mongoDb && data.mongoDb.user) {
+  console.error("stop: " + file + " already has a MongoDB user, a new password would no longer match MongoDB");
+  process.exit(1);
+}
 data.mongoDb = Object.assign({}, data.mongoDb, { user: "godata", password: require("crypto").randomBytes(24).toString("hex"), authSource: "admin" });
 fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n", { mode: 0o600 });
-' "$GODATA_DIR/config/datasources.json"
-chmod 600 "$GODATA_DIR/config/datasources.json"
+' "$GODATA_DIR/config/datasources.json" && chmod 600 "$GODATA_DIR/config/datasources.json"
 ```
 
 Resultado esperado: nenhuma saída.
@@ -866,21 +718,28 @@ Resultado esperado: o processo reiniciado e a linha `{"started":...}` do Go.Data
 ### E4. Ligue a autenticação
 
 O bloco guarda uma cópia da configuração atual do MongoDB em `/etc/mongod.conf.antes-da-autenticacao`, deixa o
-MongoDB só em `127.0.0.1`, liga a autenticação e reinicia o MongoDB e o Go.Data. Se o arquivo já tiver uma seção
-`security` ou usar `bindIpAll`, o bloco para sem alterar nada: nesse caso, edite o arquivo com quem administra o
-MongoDB.
+MongoDB só em `127.0.0.1`, liga a autenticação e reinicia o MongoDB e o Go.Data. Se o arquivo não existir, já tiver uma
+seção `security` ou usar `bindIpAll`, o bloco para sem alterar nada: nesse caso, edite o arquivo com quem administra
+o MongoDB. Se o MongoDB não reiniciar, o bloco para antes de reiniciar o Go.Data.
 
 ```bash
-if sudo grep -qE '^security:|bindIpAll' /etc/mongod.conf; then
+if ! sudo test -f /etc/mongod.conf; then
+  echo "stop: /etc/mongod.conf not found, edit the MongoDB configuration by hand" >&2
+  false
+elif sudo grep -qE '^security:|bindIpAll' /etc/mongod.conf; then
   echo "stop: /etc/mongod.conf has a security section or bindIpAll, edit it by hand" >&2
   false
 else
   sudo cp -a /etc/mongod.conf /etc/mongod.conf.antes-da-autenticacao
   sudo sed -i 's/^\([[:space:]]*bindIp:\).*/\1 127.0.0.1/' /etc/mongod.conf
-  printf 'security:\n  authorization: enabled\n' | sudo tee -a /etc/mongod.conf > /dev/null
-  sudo systemctl restart mongod
-  timeout 120 sh -c 'until mongosh --quiet --eval "db.adminCommand({ ping: 1 })" > /dev/null 2>&1; do sleep 2; done'
-  pm2 restart "$GODATA_PM2"
+  printf '\nsecurity:\n  authorization: enabled\n' | sudo tee -a /etc/mongod.conf > /dev/null
+  if sudo systemctl restart mongod; then
+    timeout 120 sh -c 'until mongosh --quiet --eval "db.adminCommand({ ping: 1 })" > /dev/null 2>&1; do sleep 2; done'
+    pm2 restart "$GODATA_PM2"
+  else
+    echo "stop: mongod did not restart, the previous configuration is in /etc/mongod.conf.antes-da-autenticacao" >&2
+    false
+  fi
 fi
 ```
 

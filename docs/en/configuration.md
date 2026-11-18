@@ -469,7 +469,7 @@ On Docker, the connection comes from `.env`:
 | Variable | What it does |
 | --- | --- |
 | `GODATA_VERSION` | Image version, without the leading `v` (for example `2026.10.0`) |
-| `GODATA_BIND` | Server interface where the port is opened. Use `127.0.0.1` when nginx on the same server serves Go.Data |
+| `GODATA_BIND` | Address the port listens on (default `0.0.0.0`) |
 | `GODATA_PORT` | Server port that leads to Go.Data (default `3000`) |
 | `GODATA_DB` | Database name (default `go-data`) |
 | `MONGO_ROOT_PASSWORD`, `GODATA_MONGO_PASSWORD` | Passwords of the MongoDB `root` and `godata` users, generated during the installation |
@@ -483,7 +483,7 @@ On Docker, the connection comes from `.env`:
 
 | Key | What it does |
 | --- | --- |
-| `host`, `port` | Address and port the API listens on (default `0.0.0.0` and `3000`). On pm2, use one port per instance on the server, and `"host": "127.0.0.1"` when only nginx on the same server reaches the API. On Docker, they are fixed: use `GODATA_BIND` and `GODATA_PORT` in `.env` |
+| `host`, `port` | Address and port the API listens on (default `0.0.0.0` and `3000`). On pm2, use one port per instance on the server. On Docker, they are fixed: use `GODATA_BIND` and `GODATA_PORT` in `.env` |
 | `public.protocol`, `public.host`, `public.port` | Address users open, used in the links of the e-mails. See step 2 |
 | `enableConfigRewrite` | With `true` (default), Go.Data rewrites `public` by itself. Use `false` with `public` filled in |
 | `timezone` | Time zone, for example `America/Sao_Paulo` |

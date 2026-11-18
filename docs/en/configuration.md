@@ -161,6 +161,7 @@ Go.Data sends over SMTP the password reset, user change and two-step verificatio
   `"port": 587` and `"secure": false`.
 - If the mail server does not require authentication, remove the `auth` block and the comma before it.
 - `transports` is a list: it replaces the default mail server as a whole.
+- If the SMTP password has a `"` or a `\`, write `\"` and `\\` in the JSON.
 
 The block writes the `email` key into `config/datasources.json` and keeps the rest of the file. On pm2, the file also
 holds the MongoDB connection, created during the installation. On Docker, it only needs the `email` key: the MongoDB

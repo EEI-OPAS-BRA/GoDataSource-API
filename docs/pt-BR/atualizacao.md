@@ -33,9 +33,9 @@ outro servidor, a versão aparece com `mongosh --quiet --eval 'db.version()'` ex
 
 | O servidor tem | Caso |
 | --- | --- |
-| Ubuntu 20.04 ou anterior, ou Windows, com qualquer forma de instalação | 2, para um servidor novo com Ubuntu 22.04 ou 24.04 e Docker |
-| Ubuntu 22.04 ou posterior, pm2 e MongoDB 7.0 | 1, pm2 para pm2 |
-| Ubuntu 22.04 ou posterior, pm2 e MongoDB abaixo da 7.0 (5.0, 6.0) | 2, pm2 para Docker no mesmo servidor |
+| Ubuntu 20.04 ou anterior, ou Windows, com pm2 | 2, para um servidor novo com Ubuntu 22.04 ou 24.04 e Docker |
+| Ubuntu 22.04, pm2 e MongoDB 7.0 | 1, pm2 para pm2 |
+| Ubuntu 22.04 com pm2 e MongoDB abaixo da 7.0 (5.0, 6.0), ou Ubuntu 24.04 com pm2 | 2, pm2 para Docker no mesmo servidor |
 | Docker, instalado pelo [manual de instalação](instalacao.md) | 3, Docker para Docker |
 
 O caso 1 vale para três pontos de partida, todos com pm2 e o MongoDB 7.0 no próprio servidor:
@@ -57,7 +57,7 @@ Nos dois primeiros, a atualização também passa a instalação para a organiza
 - Confira o espaço livre em disco: pelo menos duas vezes o tamanho do banco, mais 3 GB.
 - A instalação anterior fica intacta até a conferência terminar: no pm2, a pasta da versão anterior e o Node.js
   anterior; no Docker, a imagem anterior; no caso 2, o processo antigo do pm2, parado, e o MongoDB antigo. Guarde-as
-  por alguns dias de uso da versão nova.
+  por alguns dias de uso da versão nova. Só retire a instalação antiga (passo 2.10) depois desses dias.
 - Execute todos os passos com o usuário que opera o Go.Data, sem `sudo`, no mesmo terminal. Os comandos que precisam
   de `sudo` já o trazem. No Docker, esse usuário precisa usar o `docker` sem `sudo` (grupo `docker`).
 - Abra esse terminal numa sessão do `tmux` (`sudo apt-get install -y tmux`, depois `tmux new -s godata`). Se a conexão
@@ -224,6 +224,8 @@ continua disponível para a volta. O caso 1 não muda a autenticação do MongoD
 
 ### 1.1. Confira o servidor e a instalação
 
+Se uma tentativa anterior parou antes do passo 1.6, continue do passo em que ela parou, em vez de começar de novo.
+
 O bloco confere o processador, a versão do Ubuntu, a do MongoDB, a pasta da API em uso e a pasta da instalação. Ele
 não altera nada no servidor.
 
@@ -363,7 +365,7 @@ manual de instalação, pule o primeiro bloco.
 node -e '
 const fs = require("fs");
 const [oldServer, configDir, defaultsDir] = process.argv.slice(1);
-const read = file => JSON.parse(fs.readFileSync(file, "utf8"));
+const read = file => JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, ""));
 const isObject = value => value !== null && typeof value === "object" && !Array.isArray(value);
 const diff = (value, base) => {
   if (isObject(value) && isObject(base)) {
@@ -607,6 +609,9 @@ elif [ ! -f "$GODATA_OLD_API/server/config.json" ] || [ ! -f "$GODATA_OLD_API/se
 elif [ "${GODATA_DUMP_VERSION#mongodump version: 100.}" = "$GODATA_DUMP_VERSION" ]; then
   echo "stop: mongodump is not from the MongoDB Database Tools 100, found: '$GODATA_DUMP_VERSION'" >&2
   false
+elif echo "$GODATA_DUMP_VERSION" | grep -Eq '^mongodump version: 100\.[0-2]\.'; then
+  echo "stop: mongodump is older than the Database Tools 100.3, which has no --config, found: '$GODATA_DUMP_VERSION'" >&2
+  false
 elif sudo test -e "$GODATA_DIR" && [ -n "$(sudo ls -A "$GODATA_DIR")" ]; then
   echo "stop: $GODATA_DIR already exists and is not empty, use another folder in GODATA_DIR, for example /opt/godata-docker" >&2
   false
@@ -615,12 +620,12 @@ else
 fi
 ```
 
-Resultado esperado: `avx` e uma linha que começa com `ok:`, com a versão do `mongodump` (`mongodump version: 100.`
-seguido do número). Se aparecer uma linha que começa com `stop:`, não siga adiante:
+Resultado esperado: `avx` e uma linha que começa com `ok:`, com a versão do `mongodump` (100.3 ou posterior, como
+`mongodump version: 100.10.0`). Se aparecer uma linha que começa com `stop:`, não siga adiante:
 
 - Com Ubuntu 20.04 ou anterior, siga **Para um servidor novo**.
 - Se o processo roda de outra pasta, use em `GODATA_OLD_API` a pasta mostrada.
-- Se o `mongodump` não é da série 100, veja o passo 2.11.
+- Se o `mongodump` não é da série 100, ou é anterior à 100.3, veja o passo 2.11.
 - Se a pasta nova já existe e não está vazia, use `/opt/godata-docker` em `GODATA_DIR` (ou outra pasta vazia). Este
   manual não instala sobre uma pasta com arquivos.
 
@@ -663,8 +668,12 @@ seu usuário lê o arquivo e as senhas não aparecem na tela.
 
 ```bash
 cd "$GODATA_DIR"
-install -m 600 /dev/null .env
-cat > .env <<EOF
+if [ -e .env ]; then
+  echo "stop: $GODATA_DIR/.env already exists, new passwords would no longer match MongoDB" >&2
+  false
+else
+  install -m 600 /dev/null .env
+  cat > .env <<EOF
 GODATA_VERSION=$GODATA_NEW_VERSION
 GODATA_BIND=0.0.0.0
 GODATA_PORT=3000
@@ -672,8 +681,9 @@ GODATA_DB=go-data
 MONGO_ROOT_PASSWORD=$(openssl rand -hex 24)
 GODATA_MONGO_PASSWORD=$(openssl rand -hex 24)
 EOF
-grep -v PASSWORD .env
-ls -l .env
+  grep -v PASSWORD .env
+  ls -l .env
+fi
 ```
 
 Resultado esperado: as quatro linhas sem senha e o arquivo com permissão `-rw-------`. O passo 2.5 troca
@@ -711,7 +721,7 @@ alterar nada.
 cd "$GODATA_DIR"
 docker compose run --rm --no-deps -T -u "$(id -u):1000" -v "$GODATA_DIR/config:/config" -v "$GODATA_DIR/.env:/env" -v "$GODATA_OLD_API/server:/antigo:ro" --entrypoint node godata -e '
 const fs = require("fs");
-const read = file => JSON.parse(fs.readFileSync(file, "utf8"));
+const read = file => JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, ""));
 const isObject = value => value !== null && typeof value === "object" && !Array.isArray(value);
 const diff = (value, base) => {
   if (isObject(value) && isObject(base)) {
@@ -888,7 +898,7 @@ o passo B10 do manual de instalação (dump diário) e, no mesmo servidor, o pas
 
 #### 2.10. Retire a instalação antiga
 
-Só depois da conferência. O primeiro bloco apaga o processo antigo do pm2 e grava a lista do pm2 sem ele. Os outros
+Só depois da conferência e depois de alguns dias de uso da versão nova. O primeiro bloco apaga o processo antigo do pm2 e grava a lista do pm2 sem ele. Os outros
 processos do pm2 não mudam.
 
 ```bash
@@ -962,6 +972,9 @@ elif [ ! -f "$GODATA_OLD_API/server/config.json" ] || [ ! -f "$GODATA_OLD_API/se
 elif [ "${GODATA_DUMP_VERSION#mongodump version: 100.}" = "$GODATA_DUMP_VERSION" ]; then
   echo "stop: mongodump is not from the MongoDB Database Tools 100, found: '$GODATA_DUMP_VERSION'" >&2
   false
+elif echo "$GODATA_DUMP_VERSION" | grep -Eq '^mongodump version: 100\.[0-2]\.'; then
+  echo "stop: mongodump is older than the Database Tools 100.3, which has no --config, found: '$GODATA_DUMP_VERSION'" >&2
+  false
 elif [ -e "$GODATA_TRANSFER" ]; then
   echo "stop: $GODATA_TRANSFER already exists" >&2
   false
@@ -972,14 +985,14 @@ du -sh "$GODATA_OLD_API/server/storage/" "$GODATA_OLD_API/backups"
 df -h "$HOME"
 ```
 
-Resultado esperado: uma linha que começa com `ok:`, com a versão do `mongodump` (`mongodump version: 100.` seguido do
-número) e o nome do banco, o tamanho dos anexos e dos backups do sistema e o espaço livre. A pasta dos arquivos
+Resultado esperado: uma linha que começa com `ok:`, com a versão do `mongodump` (100.3 ou posterior, como
+`mongodump version: 100.10.0`) e o nome do banco, o tamanho dos anexos e dos backups do sistema e o espaço livre. A pasta dos arquivos
 precisa de espaço para o dump e para esses dois tamanhos. Se aparecer uma linha que começa com `stop:`, não siga
 adiante.
 
-O MongoDB 4.4 e posteriores trazem o `mongodump` da série 100 (MongoDB Database Tools). As ferramentas antigas, de um
-MongoDB 4.2 ou anterior, mostram uma versão que começa com `r` e não leem o arquivo de conexão do passo 2.12. Nesse
-caso, baixe as MongoDB Database Tools para o sistema do servidor em formato `.tgz`, na página de downloads do
+O MongoDB 4.4 e posteriores trazem o `mongodump` da série 100 (MongoDB Database Tools), mas a opção `--config`, que o
+passo 2.12 usa, existe só a partir da 100.3. As ferramentas mais antigas, de um MongoDB 4.2 ou anterior (versão que
+começa com `r`) ou da série 100 abaixo da 100.3, não leem o arquivo de conexão. Nesse caso, baixe as MongoDB Database Tools para o sistema do servidor em formato `.tgz`, na página de downloads do
 MongoDB, extraia o arquivo numa pasta do seu usuário e ponha a pasta `bin` dela no início do `PATH` deste terminal,
 com `export PATH="<pasta>/bin:$PATH"`. Nada é instalado no sistema. Depois, execute este bloco de novo.
 
@@ -1105,7 +1118,9 @@ o pacote `arquivos-antigos.tar.gz` continua em `GODATA_BACKUP`.
 A parte do servidor antigo é feita no PowerShell, com o usuário que administra o Go.Data no Windows, e prepara os
 mesmos arquivos do passo 2.12. O dump usa o `mongodump.exe` das MongoDB Database Tools para Windows: baixe o arquivo
 `.zip` na página de downloads do MongoDB e extraia-o numa pasta, sem instalar nada. O `tar.exe` e o `scp.exe` já vêm
-no Windows 10, no Windows 11 e no Windows Server 2019 ou posterior. A parte do servidor novo é a de
+no Windows 10, no Windows 11 e no Windows Server 2019 ou posterior, e o `New-TemporaryFile` vem no PowerShell 5 ou
+posterior; o passo 2.16 confere os três. Versões do Windows anteriores ao Windows 10 1803 ou ao Windows Server 2019, ou
+com PowerShell abaixo do 5, não são cobertas por este procedimento. A parte do servidor novo é a de
 **No servidor novo**.
 
 #### 2.16. Defina as variáveis e confira
@@ -1126,8 +1141,12 @@ O bloco seguinte confere os arquivos de configuração, o `mongodump.exe` e a pa
 no servidor.
 
 ```powershell
-if (-not (Test-Path "$GoDataTools\mongodump.exe")) {
+if ((Get-Command tar.exe, scp.exe, New-TemporaryFile -ErrorAction SilentlyContinue | Measure-Object).Count -ne 3) {
+  Write-Error "stop: tar.exe, scp.exe or New-TemporaryFile is missing on this Windows"
+} elseif (-not (Test-Path "$GoDataTools\mongodump.exe")) {
   Write-Error "stop: no mongodump.exe in $GoDataTools"
+} elseif ((& "$GoDataTools\mongodump.exe" --version 2>&1 | Select-Object -First 1) -notmatch '^mongodump version: 100\.([3-9]|[1-9][0-9]+)\.') {
+  Write-Error "stop: mongodump.exe is not from the MongoDB Database Tools 100.3 or later"
 } elseif (-not (Test-Path "$GoDataApi\server\config.json") -or -not (Test-Path "$GoDataApi\server\datasources.json")) {
   Write-Error "stop: no server\config.json or server\datasources.json in $GoDataApi"
 } elseif (Test-Path $GoDataTransfer) {
@@ -1139,15 +1158,16 @@ if (-not (Test-Path "$GoDataTools\mongodump.exe")) {
 }
 ```
 
-Resultado esperado: a versão do `mongodump` (`mongodump version: 100.` seguido do número) e uma linha que começa com
-`ok:`, com o nome do banco e o endereço do MongoDB. Se aparecer um erro com `stop:`, não siga adiante.
+Resultado esperado: a versão do `mongodump` (100.3 ou posterior, como `mongodump version: 100.10.0`) e uma linha que
+começa com `ok:`, com o nome do banco e o endereço do MongoDB. Se aparecer um erro com `stop:`, não siga adiante.
 
 #### 2.17. Pare o Go.Data e faça o dump e o pacote
 
 A partir deste passo o sistema fica fora do ar. Pare a API do Go.Data e deixe o MongoDB no ar: num processo do pm2,
 `pm2 stop` e `pm2 save`, como no passo 2.12; num serviço do Windows, `Stop-Service` seguido do nome do serviço da API.
-Se a instalação não permite parar a API sem parar o MongoDB, deixe o sistema aberto e peça aos usuários que não o
-usem até o fim da mudança.
+Se a API não roda como serviço nem no pm2, pare só o `node.exe` da API, pelo Gerenciador de Tarefas ou com
+`Stop-Process` no processo da API, e deixe o `mongod` rodando. Tudo o que for registrado depois do dump não chegaria
+ao servidor novo.
 
 O bloco faz o dump do banco, com a conexão de `server\datasources.json` num arquivo temporário da pasta do usuário,
 apagado no fim, e o pacote `arquivos-antigos.tar.gz` com os mesmos arquivos do passo 2.12. Se algo falhar, ele apaga
@@ -1427,7 +1447,20 @@ pm2 list
 Resultado esperado: os contêineres removidos e o processo antigo como `online` em `pm2 list`. Se o passo 2.10 já
 apagou o processo, crie-o de novo na pasta `GODATA_OLD_API` com o comando registrado em `pm2-antes.txt`, em
 `GODATA_BACKUP` (`script path` e `exec cwd`), e grave a lista com `pm2 save`. Para tentar a mudança de novo, apague
-a pasta `GODATA_DIR` e comece pelo passo 2.1.
+a pasta `GODATA_DIR` com o bloco abaixo e comece pelo passo 2.1. Antes, confira que `GODATA_DIR` é a pasta do Docker
+deste caso, e não a da instalação antiga.
+
+```bash
+if [ -f "$GODATA_DIR/docker-compose.yml" ]; then
+  (cd "$GODATA_DIR" && docker compose down) && sudo rm -rf "$GODATA_DIR"
+else
+  echo "stop: $GODATA_DIR is not a Docker install folder" >&2
+  false
+fi
+```
+
+Resultado esperado: os contêineres removidos e nenhuma saída de erro. Se aparecer `stop:`, a pasta não tem o
+`docker-compose.yml` e nada foi apagado: corrija `GODATA_DIR`.
 
 #### V2.2. Servidor novo
 

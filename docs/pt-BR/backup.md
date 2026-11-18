@@ -216,7 +216,8 @@ depois de uma atualização, siga o [manual de atualização](atualizacao.md).
   `dumps/antes-da-restauracao/`, fora da limpeza automática. Guarde esse dump até conferir a restauração no passo 8.
   Se a restauração der errado, restaure esse dump pelo mesmo passo. Se o dump de segurança falhar, o bloco mostra
   `safety dump failed` e não move nada: resolva a causa antes de seguir.
-- O terceiro bloco para o sistema e restaura. Se o arquivo escolhido não existir, ele mostra `no dump file found` e
+- O terceiro bloco confere que o dump de segurança do bloco anterior existe e, só então, para o sistema e restaura.
+  Se não houver dump de segurança recente, ele mostra `no recent safety dump` e não para o sistema. Se o arquivo escolhido não existir, ele mostra `no dump file found` e
   não para o sistema.
 
 ### 6.1. No pm2
@@ -243,7 +244,10 @@ de configuração com a data e hora de agora.
 
 ```bash
 GODATA_DUMP="${GODATA_DUMP:-$(ls -1 "$GODATA_DIR"/dumps/*.archive.gz | tail -n 1)}"
-if [ -f "$GODATA_DUMP" ]; then
+if ! find "$GODATA_DIR/dumps/antes-da-restauracao" -name '*.archive.gz' -mmin -120 | grep -q .; then
+  echo "stop: no recent safety dump in $GODATA_DIR/dumps/antes-da-restauracao, run the previous block first" >&2
+  false
+elif [ -f "$GODATA_DUMP" ]; then
   GODATA_DB="$(node -p 'require(process.argv[1]).mongoDb.database' "$GODATA_DIR/atual/server/datasources.json")"
   pm2 stop "$GODATA_PM2"
   GODATA_MONGO_CFG="$(mktemp)"
@@ -290,7 +294,10 @@ de configuração com a data e hora de agora.
 ```bash
 cd "$GODATA_DIR"
 GODATA_DUMP="${GODATA_DUMP:-$(ls -1 "$GODATA_DIR"/dumps/*.archive.gz | tail -n 1)}"
-if [ -f "$GODATA_DUMP" ]; then
+if ! find "$GODATA_DIR/dumps/antes-da-restauracao" -name '*.archive.gz' -mmin -120 | grep -q .; then
+  echo "stop: no recent safety dump in $GODATA_DIR/dumps/antes-da-restauracao, run the previous block first" >&2
+  false
+elif [ -f "$GODATA_DUMP" ]; then
   docker compose stop godata
   docker compose exec -T mongo sh -c "$(cat <<'EOF'
 umask 077
@@ -324,7 +331,8 @@ passo até o passo 8.
   `dumps/antes-da-restauracao/`, fora da limpeza automática. Guarde esse dump até conferir a restauração no passo 8.
   Se a restauração der errado, restaure esse dump pelo passo 6. Se o dump de segurança falhar, o bloco mostra
   `safety dump failed` e não move nada: resolva a causa antes de seguir.
-- O terceiro bloco para o sistema e restaura. Se o arquivo escolhido não existir, ele mostra `no backup file found` e
+- O terceiro bloco confere que o dump de segurança do bloco anterior existe e, só então, para o sistema e restaura.
+  Se não houver dump de segurança recente, ele mostra `no recent safety dump` e não para o sistema. Se o arquivo escolhido não existir, ele mostra `no backup file found` e
   não para o sistema.
 
 Na saída da restauração, avisos como `DeprecationWarning` e `MaxListenersExceededWarning` aparecem com `"level":
@@ -354,7 +362,10 @@ de configuração com a data e hora de agora.
 
 ```bash
 GODATA_SNAPSHOT="${GODATA_SNAPSHOT:-$(ls -1 "$GODATA_DIR/backups" | grep '^snapshot_.*\.zip$' | tail -n 1)}"
-if [ -f "$GODATA_DIR/backups/$GODATA_SNAPSHOT" ]; then
+if ! find "$GODATA_DIR/dumps/antes-da-restauracao" -name '*.archive.gz' -mmin -120 | grep -q .; then
+  echo "stop: no recent safety dump in $GODATA_DIR/dumps/antes-da-restauracao, run the previous block first" >&2
+  false
+elif [ -f "$GODATA_DIR/backups/$GODATA_SNAPSHOT" ]; then
   pm2 stop "$GODATA_PM2"
   cd "$GODATA_DIR/atual"
   npm run restore-backup -- --file="$GODATA_DIR/backups/$GODATA_SNAPSHOT"
@@ -396,7 +407,10 @@ de configuração com a data e hora de agora.
 ```bash
 cd "$GODATA_DIR"
 GODATA_SNAPSHOT="${GODATA_SNAPSHOT:-$(sudo ls -1 "$GODATA_DIR/data/backups" | grep '^snapshot_.*\.zip$' | tail -n 1)}"
-if sudo test -f "$GODATA_DIR/data/backups/$GODATA_SNAPSHOT"; then
+if ! find "$GODATA_DIR/dumps/antes-da-restauracao" -name '*.archive.gz' -mmin -120 | grep -q .; then
+  echo "stop: no recent safety dump in $GODATA_DIR/dumps/antes-da-restauracao, run the previous block first" >&2
+  false
+elif sudo test -f "$GODATA_DIR/data/backups/$GODATA_SNAPSHOT"; then
   docker compose stop godata
   docker compose run --rm -T godata npm run restore-backup -- --file="/opt/godata/backups/$GODATA_SNAPSHOT"
 else

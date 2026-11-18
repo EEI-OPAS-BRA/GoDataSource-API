@@ -540,8 +540,12 @@ MongoDB e a do usuário `godata`, que o Go.Data usa. Só o seu usuário lê o ar
 
 ```bash
 cd "$GODATA_DIR"
-install -m 600 /dev/null .env
-cat > .env <<EOF
+if [ -e .env ]; then
+  echo "stop: $GODATA_DIR/.env already exists, new passwords would no longer match MongoDB" >&2
+  false
+else
+  install -m 600 /dev/null .env
+  cat > .env <<EOF
 GODATA_VERSION=$GODATA_VERSION
 GODATA_BIND=0.0.0.0
 GODATA_PORT=$GODATA_PORT
@@ -549,8 +553,9 @@ GODATA_DB=$GODATA_DB
 MONGO_ROOT_PASSWORD=$(openssl rand -hex 24)
 GODATA_MONGO_PASSWORD=$(openssl rand -hex 24)
 EOF
-grep -v PASSWORD .env
-ls -l .env
+  grep -v PASSWORD .env
+  ls -l .env
+fi
 ```
 
 Resultado esperado: as quatro linhas sem senha e o arquivo com permissão `-rw-------`. O MongoDB cria os usuários com

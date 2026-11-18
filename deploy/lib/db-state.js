@@ -78,7 +78,8 @@ function setBackupLocation({ location, ...conn }) {
   });
 }
 
-const USAGE = 'usage: db-state.js <has-users|db-empty|migration-in-progress|set-backup-location <path>> [--uri <uri>] [--db <name>]\n' +
+const USAGE = 'usage: db-state.js <has-users|db-empty|migration-in-progress|set-backup-location <path>>\n' +
+  '                   [--uri <uri> | --datasources <file>] [--db <name>]\n' +
   '       db-state.js print-uri --datasources <file>';
 
 function parseArgs(argv) {
@@ -92,6 +93,19 @@ function parseArgs(argv) {
     }
   }
   return opts;
+}
+
+// --datasources reads the connection from a server datasources.json, so no password goes on a command line
+function resolveConn(opts, env) {
+  if (opts.uri && opts.datasources) {
+    throw new Error(`--uri and --datasources cannot be used together\n${USAGE}`);
+  }
+  if (opts.datasources) {
+    const datasources = readJsonObject(opts.datasources);
+    const database = datasources.mongoDb && datasources.mongoDb.database;
+    return { uri: buildUriFromDatasources(datasources), dbName: opts.db || database || 'go-data' };
+  }
+  return { uri: opts.uri || buildUri(env), dbName: opts.db || env.GODATA_DB || 'go-data' };
 }
 
 async function main(argv, env) {
@@ -110,10 +124,7 @@ async function main(argv, env) {
     (command === 'set-backup-location' && !arg)) {
     throw new Error(USAGE);
   }
-  const conn = {
-    uri: opts.uri || buildUri(env),
-    dbName: opts.db || env.GODATA_DB || 'go-data'
-  };
+  const conn = resolveConn(opts, env);
 
   if (command === 'has-users') {
     console.log(await hasUsers(conn) ? 'yes' : 'no');
@@ -138,4 +149,12 @@ if (require.main === module) {
   );
 }
 
-module.exports = { hasUsers, dbEmpty, migrationInProgress, setBackupLocation, buildUri, buildUriFromDatasources };
+module.exports = {
+  hasUsers,
+  dbEmpty,
+  migrationInProgress,
+  setBackupLocation,
+  buildUri,
+  buildUriFromDatasources,
+  resolveConn
+};

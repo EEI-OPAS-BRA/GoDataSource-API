@@ -905,7 +905,7 @@ esse MongoDB: se algum programa está conectado, outro sistema o usa, e o bloco 
 ```bash
 GODATA_OLD_MONGO_PORT="$(node -p 'require(process.argv[1]).mongoDb.port || 27017' "$GODATA_OLD_API/server/datasources.json")"
 if [ -n "$(sudo ss -Htn state established "( sport = :$GODATA_OLD_MONGO_PORT )")" ]; then
-  sudo ss -Htnp state established "( sport = :$GODATA_OLD_MONGO_PORT )"
+  sudo ss -Htnp state established "( sport = :$GODATA_OLD_MONGO_PORT or dport = :$GODATA_OLD_MONGO_PORT )"
   echo "stop: programs are connected to the MongoDB on port $GODATA_OLD_MONGO_PORT, keep it running" >&2
   false
 else
@@ -914,8 +914,9 @@ else
 fi
 ```
 
-Resultado esperado: `mongod: inactive, disabled`. Se aparecer `stop:`, as linhas anteriores mostram os programas
-conectados: confira com quem os administra antes de desligar o MongoDB. O bloco vê só as conexões deste momento:
+Resultado esperado: `mongod: inactive, disabled`. Se aparecer `stop:`, as linhas anteriores mostram as conexões: o
+endereço de cada cliente e, para os programas do próprio servidor, o nome do processo. Confira com quem os administra
+antes de desligar o MongoDB. O bloco vê só as conexões deste momento:
 confirme também que nenhum outro sistema usa esse MongoDB de vez em quando, como uma rotina noturna. Os dados do
 MongoDB antigo continuam no disco. Se o crontab tem a linha do dump diário da instalação antiga (`crontab -l`),
 apague-a.

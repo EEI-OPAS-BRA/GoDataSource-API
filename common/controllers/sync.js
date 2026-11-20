@@ -751,7 +751,9 @@ module.exports = function (Sync) {
               {
                 password: password,
                 generatePersonVisualId: generatePersonVisualId,
-                snapshotFromClient: snapshotFromClient
+                snapshotFromClient: snapshotFromClient,
+                // used to map the outbreaks of the instance that sent the data
+                clientId: _.get(req, 'authData.client.credentials.clientId')
               },
               function (err) {
                 // send done function to return the response
@@ -772,7 +774,9 @@ module.exports = function (Sync) {
               {
                 password: password,
                 generatePersonVisualId: generatePersonVisualId,
-                snapshotFromClient: snapshotFromClient
+                snapshotFromClient: snapshotFromClient,
+                // used to map the outbreaks of the instance that sent the data
+                clientId: _.get(req, 'authData.client.credentials.clientId')
               },
               function (err) {
                 // don't send the done function as the response was already sent

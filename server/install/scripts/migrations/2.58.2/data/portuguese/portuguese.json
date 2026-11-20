@@ -687,6 +687,150 @@
     },
     "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_TEMPLATES": {
       "translation": "Modelos de surto, mapeamentos de importação e filtros salvos"
+    },
+    "LNG_LAYOUT_MENU_ITEM_SYNC_OUTBREAK_MAPPINGS_LABEL": {
+      "translation": "Mapeamento de surtos"
+    },
+    "LNG_SYNC_OUTBREAK_MAPPING_STATUS_PENDING": {
+      "translation": "Aguardando mapeamento"
+    },
+    "LNG_SYNC_OUTBREAK_MAPPING_STATUS_APPROVED": {
+      "translation": "Aprovado"
+    },
+    "LNG_SYNC_OUTBREAK_MAPPING_STATUS_REVIEW": {
+      "translation": "Revisão necessária"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_INTRO_TITLE": {
+      "translation": "Surtos e questionários recebidos de outras instâncias"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_INTRO_DESCRIPTION": {
+      "translation": "Quando outra instância (por exemplo, um município) envia um surto que tem outro ID aqui, ou um questionário diferente, você escolhe a qual surto ele corresponde e liga as perguntas e respostas. Enquanto isso não for aprovado, os registros desse surto ficam guardados e são importados na aprovação. O mapeamento fica salvo para as próximas sincronizações."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_EMPTY": {
+      "translation": "Nenhum surto recebido precisa de mapeamento."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_TITLE": {
+      "translation": "Aguardando você"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_APPROVED_TITLE": {
+      "translation": "Aprovados"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_RECEIVED_FROM": {
+      "translation": "Recebido de"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_UNKNOWN_OUTBREAK": {
+      "translation": "Surto ainda não recebido"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_HERE": {
+      "translation": "Nesta instância"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_IMPORTED_AS_NEW": {
+      "translation": "Importado como surto novo"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_NOT_DEFINED": {
+      "translation": "Ainda não definido"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_NEW_QUESTIONS": {
+      "translation": "{{count}} pergunta(s) nova(s) ou alterada(s) para revisar."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_NOTE": {
+      "translation": "Os registros deste surto estão guardados até a aprovação."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_MAP_BUTTON": {
+      "translation": "Mapear"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_VIEW_BUTTON": {
+      "translation": "Ver mapeamento"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_TITLE": {
+      "translation": "Mapeamento do surto"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STAGED_RECORDS": {
+      "translation": "{{count}} registro(s) aguardando a aprovação deste mapeamento."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_NO_QUESTIONNAIRE": {
+      "translation": "O questionário deste surto ainda não foi recebido. Ele chega na próxima sincronização da outra instância."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STEP_OUTBREAK": {
+      "translation": "A qual surto ele corresponde?"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_MODE_MAP": {
+      "translation": "É um surto que já existe aqui"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_MODE_MAP_DESCRIPTION": {
+      "translation": "Os registros recebidos passam para o surto escolhido, e você liga as perguntas dos questionários."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_MODE_NEW": {
+      "translation": "Importar como surto novo"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_MODE_NEW_DESCRIPTION": {
+      "translation": "O surto não existe aqui e é importado como foi recebido, com o seu próprio questionário."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_TARGET_OUTBREAK": {
+      "translation": "Surto desta instância"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STEP_QUESTIONS": {
+      "translation": "Ligue as perguntas"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STEP_QUESTIONS_DESCRIPTION": {
+      "translation": "Para cada pergunta recebida, escolha a pergunta correspondente daqui ou \"Ignorar\". As respostas das perguntas ignoradas ficam em branco. Nas perguntas de escolha, ligue também as opções."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_BUTTON": {
+      "translation": "Sugerir correspondências"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_RESULT": {
+      "translation": "{{count}} pergunta(s) ligada(s) automaticamente por variável ou texto iguais. Confira antes de aprovar."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_ONLY_PENDING": {
+      "translation": "Mostrar só pendentes"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_COLUMN_RECEIVED": {
+      "translation": "Pergunta recebida"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_COLUMN_HERE": {
+      "translation": "Pergunta desta instância"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_NEW": {
+      "translation": "Nova"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_CHOOSE_QUESTION": {
+      "translation": "Escolha a pergunta"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_IGNORE": {
+      "translation": "Ignorar (fica em branco)"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_ANSWERS": {
+      "translation": "Opções de resposta"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_CHOOSE_ANSWER": {
+      "translation": "Escolha a opção"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_TAB_DONE": {
+      "translation": "Todas as perguntas deste questionário foram decididas."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_IGNORE_REMAINING": {
+      "translation": "Ignorar as perguntas e opções restantes"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_PENDING_COUNT": {
+      "translation": "{{count}} pergunta(s) ainda sem decisão"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_READY": {
+      "translation": "Pronto para aprovar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_BUTTON": {
+      "translation": "Aprovar mapeamento"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_DIALOG_TITLE": {
+      "translation": "Aprovar mapeamento"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_DIALOG_MESSAGE": {
+      "translation": "O mapeamento será usado em todas as próximas sincronizações, e os {{count}} registro(s) guardado(s) serão importados agora. Deseja continuar?"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_SUCCESS_MESSAGE": {
+      "translation": "Mapeamento aprovado. {{count}} registro(s) importado(s)."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_PARTIAL_MESSAGE": {
+      "translation": "Mapeamento aprovado. {{imported}} registro(s) importado(s) e {{failed}} com erro. Veja os detalhes no histórico de notificações."
     }
   }
 }

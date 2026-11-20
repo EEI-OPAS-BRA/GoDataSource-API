@@ -648,6 +648,150 @@
     },
     "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_TEMPLATES": {
       "translation": "Outbreak templates, import mappings and saved filters"
+    },
+    "LNG_LAYOUT_MENU_ITEM_SYNC_OUTBREAK_MAPPINGS_LABEL": {
+      "translation": "Outbreak mapping"
+    },
+    "LNG_SYNC_OUTBREAK_MAPPING_STATUS_PENDING": {
+      "translation": "Waiting for mapping"
+    },
+    "LNG_SYNC_OUTBREAK_MAPPING_STATUS_APPROVED": {
+      "translation": "Approved"
+    },
+    "LNG_SYNC_OUTBREAK_MAPPING_STATUS_REVIEW": {
+      "translation": "Review needed"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_INTRO_TITLE": {
+      "translation": "Outbreaks and questionnaires received from other instances"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_INTRO_DESCRIPTION": {
+      "translation": "When another instance (for example, a municipality) sends an outbreak that has another ID here, or a different questionnaire, you choose to which outbreak it corresponds and link the questions and answers. Until it is approved, the records of that outbreak are kept aside and imported on approval. The mapping is saved for the next synchronizations."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_EMPTY": {
+      "translation": "No received outbreak needs mapping."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_TITLE": {
+      "translation": "Waiting for you"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_APPROVED_TITLE": {
+      "translation": "Approved"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_RECEIVED_FROM": {
+      "translation": "Received from"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_UNKNOWN_OUTBREAK": {
+      "translation": "Outbreak not received yet"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_HERE": {
+      "translation": "On this instance"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_IMPORTED_AS_NEW": {
+      "translation": "Imported as a new outbreak"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_NOT_DEFINED": {
+      "translation": "Not defined yet"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_NEW_QUESTIONS": {
+      "translation": "{{count}} new or changed question(s) to review."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_NOTE": {
+      "translation": "The records of this outbreak are kept aside until the approval."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_MAP_BUTTON": {
+      "translation": "Map"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_VIEW_BUTTON": {
+      "translation": "View mapping"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_TITLE": {
+      "translation": "Outbreak mapping"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STAGED_RECORDS": {
+      "translation": "{{count}} record(s) waiting for the approval of this mapping."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_NO_QUESTIONNAIRE": {
+      "translation": "The questionnaire of this outbreak wasn't received yet. It arrives on the next synchronization of the other instance."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STEP_OUTBREAK": {
+      "translation": "Which outbreak does it correspond to?"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_MODE_MAP": {
+      "translation": "It is an outbreak that already exists here"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_MODE_MAP_DESCRIPTION": {
+      "translation": "The received records go to the chosen outbreak, and you link the questions of the questionnaires."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_MODE_NEW": {
+      "translation": "Import as a new outbreak"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_MODE_NEW_DESCRIPTION": {
+      "translation": "The outbreak doesn't exist here and is imported as it was received, with its own questionnaire."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_TARGET_OUTBREAK": {
+      "translation": "Outbreak of this instance"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STEP_QUESTIONS": {
+      "translation": "Link the questions"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STEP_QUESTIONS_DESCRIPTION": {
+      "translation": "For each received question, choose the corresponding question here or \"Ignore\". The answers of ignored questions stay blank. For choice questions, link the options too."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_BUTTON": {
+      "translation": "Suggest matches"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_RESULT": {
+      "translation": "{{count}} question(s) linked automatically by equal variable or text. Check them before approving."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_ONLY_PENDING": {
+      "translation": "Show only pending"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_COLUMN_RECEIVED": {
+      "translation": "Received question"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_COLUMN_HERE": {
+      "translation": "Question of this instance"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_NEW": {
+      "translation": "New"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_CHOOSE_QUESTION": {
+      "translation": "Choose the question"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_IGNORE": {
+      "translation": "Ignore (stays blank)"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_ANSWERS": {
+      "translation": "Answer options"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_CHOOSE_ANSWER": {
+      "translation": "Choose the option"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_TAB_DONE": {
+      "translation": "Every question of this questionnaire was decided."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_IGNORE_REMAINING": {
+      "translation": "Ignore the remaining questions and options"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_PENDING_COUNT": {
+      "translation": "{{count}} question(s) still without a decision"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_READY": {
+      "translation": "Ready to approve"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_BUTTON": {
+      "translation": "Approve mapping"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_DIALOG_TITLE": {
+      "translation": "Approve mapping"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_DIALOG_MESSAGE": {
+      "translation": "The mapping will be used on every next synchronization, and the {{count}} record(s) kept aside will be imported now. Do you want to continue?"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_SUCCESS_MESSAGE": {
+      "translation": "Mapping approved. {{count}} record(s) imported."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_PARTIAL_MESSAGE": {
+      "translation": "Mapping approved. {{imported}} record(s) imported and {{failed}} with errors. See the details in the notifications history."
     }
   }
 }

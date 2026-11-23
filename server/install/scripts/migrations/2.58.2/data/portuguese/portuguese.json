@@ -773,7 +773,7 @@
       "translation": "Ligue as perguntas"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STEP_QUESTIONS_DESCRIPTION": {
-      "translation": "Para cada pergunta recebida, escolha a pergunta correspondente daqui ou \"Ignorar\". As respostas das perguntas ignoradas ficam em branco. Nas perguntas de escolha, ligue também as opções."
+      "translation": "Para cada pergunta recebida, escolha a pergunta correspondente deste surto ou \"Ignorar\". Nas perguntas de escolha, ligue também cada opção de resposta. Ignorar significa descartar: a resposta não é importada, os registros chegam aqui sem ela e a pergunta não é criada no questionário deste surto. Vale o mesmo para uma opção ignorada, e as outras opções da pergunta são importadas normalmente. Nada é apagado na instância que enviou os dados. O mapeamento fica salvo, e a pergunta continua ignorada nas próximas sincronizações."
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_BUTTON": {
       "translation": "Sugerir correspondências"

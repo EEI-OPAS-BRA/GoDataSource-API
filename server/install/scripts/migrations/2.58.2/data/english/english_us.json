@@ -734,7 +734,7 @@
       "translation": "Link the questions"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STEP_QUESTIONS_DESCRIPTION": {
-      "translation": "For each received question, choose the corresponding question here or \"Ignore\". The answers of ignored questions stay blank. For choice questions, link the options too."
+      "translation": "For each received question, choose the corresponding question of this outbreak or \"Ignore\". For choice questions, also link each answer option. Ignoring means discarding: the answer isn't imported, the records arrive here without it and the question isn't added to this outbreak's questionnaire. The same applies to an ignored option, and the other options of the question are imported normally. Nothing is deleted on the instance that sent the data. The mapping is saved, so the question stays ignored in the next synchronizations."
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_BUTTON": {
       "translation": "Suggest matches"

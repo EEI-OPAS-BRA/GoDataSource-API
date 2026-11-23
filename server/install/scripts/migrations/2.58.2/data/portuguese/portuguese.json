@@ -667,6 +667,12 @@
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OVERWRITE_ANSWER": {
       "translation": "Um registro só é atualizado quando a versão recebida é mais recente do que a que já existe. Configurações próprias de quem recebe, como perfis, configurações do sistema e traduções personalizadas, não são alteradas."
     },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_RECEIVER_EDITS_QUESTION": {
+      "translation": "Quem recebe pode alterar os dados de quem envia?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_RECEIVER_EDITS_ANSWER": {
+      "translation": "Não. Se a instância que recebe editar um registro recebido, a alteração fica só nela e nunca volta para quem enviou. Quem enviou continua sendo o dono do registro: quando ele alterar esse registro de novo, a versão dele substitui a edição feita aqui nas respostas que vêm dele (as respostas de perguntas que existem só aqui são mantidas). Por isso, para corrigir um dado recebido, peça a correção a quem enviou, para que seja feita na origem e chegue aqui na próxima sincronização. Informações próprias desta instância devem ficar em perguntas que existem só no questionário daqui."
+    },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_FAILED_QUESTION": {
       "translation": "A sincronização falhou. O que fazer?"
     },

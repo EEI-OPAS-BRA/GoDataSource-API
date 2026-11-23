@@ -628,6 +628,12 @@
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OVERWRITE_ANSWER": {
       "translation": "A record is only updated when the received version is newer than the existing one. The receiver's own settings, such as roles, system settings and customized translations, are not changed."
     },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_RECEIVER_EDITS_QUESTION": {
+      "translation": "Can the receiving instance change the data of the sending instance?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_RECEIVER_EDITS_ANSWER": {
+      "translation": "No. If the receiving instance edits a received record, the change stays only there and never goes back to the sender. The sender remains the owner of the record: when it changes that record again, its version replaces the edit made here in the answers that come from it (answers of questions that exist only here are kept). So, to fix received data, ask the sender to fix it at the source, and it will arrive here in the next synchronization. Information that belongs to this instance should be kept in questions that exist only in the questionnaire here."
+    },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_FAILED_QUESTION": {
       "translation": "The synchronization failed. What should I do?"
     },

@@ -661,6 +661,20 @@ const syncRecord = function (app, logger, model, record, options, done) {
         return;
       }
 
+      // another Go.Data instance sends complete records: the received value of each key is the current one there
+      // (an answer cleared / an option unselected must stay so here), only keys that weren't received are kept (e.g. answers of questions that exist only here)
+      if (options.snapshotFromClient) {
+        Object.keys(dbRecord[mergeField]).forEach((mergeFieldProp) => {
+          if (!Object.prototype.hasOwnProperty.call(record[mergeField], mergeFieldProp)) {
+            record[mergeField][mergeFieldProp] = dbRecord[mergeField][mergeFieldProp];
+          }
+        });
+        return;
+      }
+
+      // list of values (e.g. the options selected in a multiple answers question)
+      const isValuesList = (value) => _.isArray(value) && value.every((item) => item === null || typeof item !== 'object');
+
       // merge properties recursively
       const mergeRecursive = (
         destination,
@@ -670,6 +684,14 @@ const syncRecord = function (app, logger, model, record, options, done) {
         if (!destination.hasOwnProperty(property)) {
           destination[property] = source[property];
         } else {
+          // a received list of values is always the current one: merging it position by position would bring back unselected options or duplicate values
+          if (
+            isValuesList(destination[property]) &&
+            isValuesList(source[property])
+          ) {
+            return;
+          }
+
           // if array or object we need to look further
           if (
             _.isArray(source[property]) ||

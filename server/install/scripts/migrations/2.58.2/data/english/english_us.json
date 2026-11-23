@@ -790,6 +790,66 @@
     "LNG_PAGE_SYNC_OUTBREAK_MAPPING_CHOICE_TO_TEXT": {
       "translation": "The received options will be written as text in this question (e.g. \"Health center\"). Several selected options are separated by commas."
     },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STEP_QUESTIONS_SHORT": {
+      "translation": "For each received question, choose where its answers go in this outbreak. Start with the automatic suggestion and review what is left."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_LINK_TITLE": {
+      "translation": "Link"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_LINK_TEXT": {
+      "translation": "Choose the corresponding question of this outbreak. For choice questions, also link each answer option."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_IGNORE_TITLE": {
+      "translation": "Ignore"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_IGNORE_TEXT": {
+      "translation": "The answer is discarded on import and the question stays blank here. Nothing changes on the sending instance."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_TYPES_TITLE": {
+      "translation": "Compatible types"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_TYPES_TEXT": {
+      "translation": "Questions with an incompatible type or already linked to another question are disabled in the list, with the reason."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_RULES_SHOW": {
+      "translation": "See all rules"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_RULES_HIDE": {
+      "translation": "Hide rules"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_DESCRIPTION": {
+      "translation": "Automatically links the questions and options that have the same variable or the same text. You review and adjust them afterwards."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_TITLE": {
+      "translation": "Automatic suggestion"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_RUNNING": {
+      "translation": "Looking for matches…"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_SUMMARY": {
+      "translation": "{{questions}} question(s) and {{answers}} option(s) linked automatically. Review the ones marked as \"Suggested\" before approving."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_NONE": {
+      "translation": "No new matches found. Link the remaining questions manually or mark them as \"Ignore\"."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGESTED_BADGE": {
+      "translation": "Suggested"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_HELP_COLUMN_RECEIVED": {
+      "translation": "Question of the questionnaire of the instance that sent the data."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_HELP_COLUMN_HERE": {
+      "translation": "Question of this outbreak that receives the answers. \"Ignore\" discards the answer."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_HELP_ANSWERS": {
+      "translation": "Each received option is converted to the option chosen here. Several received options can go to the same option."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_HELP_ONLY_PENDING": {
+      "translation": "Hides the questions already decided, so you can focus on what is left."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_UPDATED_AT": {
+      "translation": "Updated on {{date}}"
+    },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPING_PENDING_COUNT": {
       "translation": "{{count}} question(s) still without a decision"
     },

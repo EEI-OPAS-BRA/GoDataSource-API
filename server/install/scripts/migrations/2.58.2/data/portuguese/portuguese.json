@@ -829,6 +829,66 @@
     "LNG_PAGE_SYNC_OUTBREAK_MAPPING_CHOICE_TO_TEXT": {
       "translation": "As opções recebidas serão gravadas como texto nesta pergunta (por exemplo, \"UBS\"). Várias opções marcadas ficam separadas por vírgula."
     },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STEP_QUESTIONS_SHORT": {
+      "translation": "Para cada pergunta recebida, escolha onde as respostas devem ficar neste surto. Comece pela sugestão automática e revise o que faltar."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_LINK_TITLE": {
+      "translation": "Ligar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_LINK_TEXT": {
+      "translation": "Escolha a pergunta correspondente deste surto. Nas perguntas de escolha, ligue também cada opção de resposta."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_IGNORE_TITLE": {
+      "translation": "Ignorar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_IGNORE_TEXT": {
+      "translation": "A resposta é descartada na importação e a pergunta fica em branco aqui. Nada muda na instância que enviou."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_TYPES_TITLE": {
+      "translation": "Tipos compatíveis"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_TYPES_TEXT": {
+      "translation": "Perguntas de tipo incompatível ou já ligadas a outra pergunta aparecem desabilitadas na lista, com o motivo."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_RULES_SHOW": {
+      "translation": "Ver regras completas"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_RULES_HIDE": {
+      "translation": "Ocultar regras"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_DESCRIPTION": {
+      "translation": "Liga automaticamente as perguntas e as opções que têm a mesma variável ou o mesmo texto. Você confere e ajusta depois."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_TITLE": {
+      "translation": "Sugestão automática"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_RUNNING": {
+      "translation": "Procurando correspondências…"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_SUMMARY": {
+      "translation": "{{questions}} pergunta(s) e {{answers}} opção(ões) ligadas automaticamente. Confira as marcadas como \"Sugerida\" antes de aprovar."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_NONE": {
+      "translation": "Nenhuma correspondência nova encontrada. Ligue as perguntas restantes manualmente ou marque \"Ignorar\"."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGESTED_BADGE": {
+      "translation": "Sugerida"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_HELP_COLUMN_RECEIVED": {
+      "translation": "Pergunta do questionário da instância que enviou os dados."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_HELP_COLUMN_HERE": {
+      "translation": "Pergunta deste surto que vai receber as respostas. \"Ignorar\" descarta a resposta."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_HELP_ANSWERS": {
+      "translation": "Cada opção recebida é convertida na opção escolhida aqui. Várias opções recebidas podem ir para a mesma opção."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_HELP_ONLY_PENDING": {
+      "translation": "Esconde as perguntas que já foram decididas, para focar no que falta."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_UPDATED_AT": {
+      "translation": "Atualizado em {{date}}"
+    },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPING_PENDING_COUNT": {
       "translation": "{{count}} pergunta(s) ainda sem decisão"
     },

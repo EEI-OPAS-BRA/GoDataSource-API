@@ -772,6 +772,18 @@
     "LNG_PAGE_SYNC_OUTBREAK_MAPPING_IGNORE_REMAINING": {
       "translation": "Ignore the remaining questions and options"
     },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_COMPATIBILITY_HINT": {
+      "translation": "Only questions with a compatible answer type can be chosen: the same type, single answer to multiple answers or a choice question to free text. Each question of this outbreak receives the answers of only one received question."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_INCOMPATIBLE_TYPE": {
+      "translation": "incompatible answer type"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_ALREADY_LINKED": {
+      "translation": "already linked to another received question"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_CHOICE_TO_TEXT": {
+      "translation": "The received options will be written as text in this question (e.g. \"Health center\"). Several selected options are separated by commas."
+    },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPING_PENDING_COUNT": {
       "translation": "{{count}} question(s) still without a decision"
     },

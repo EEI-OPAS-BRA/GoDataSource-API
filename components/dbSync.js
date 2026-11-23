@@ -649,9 +649,14 @@ const syncRecord = function (app, logger, model, record, options, done) {
     model.mergeFieldsOnUpdate.forEach((mergeField) => {
       // not a merge field ?
       // OR not need to merge data since we don't try to update it ?
+      // OR the received data is complete for this field (e.g. answers converted from a mapped outbreak), so removed values must stay removed ?
       if (
         !record[mergeField] ||
-        !dbRecord[mergeField]
+        !dbRecord[mergeField] ||
+        (
+          Array.isArray(options.skipMergeFields) &&
+          options.skipMergeFields.includes(mergeField)
+        )
       ) {
         return;
       }

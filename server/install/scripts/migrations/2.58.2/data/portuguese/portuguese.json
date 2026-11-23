@@ -811,6 +811,18 @@
     "LNG_PAGE_SYNC_OUTBREAK_MAPPING_IGNORE_REMAINING": {
       "translation": "Ignorar as perguntas e opções restantes"
     },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_COMPATIBILITY_HINT": {
+      "translation": "Só podem ser escolhidas perguntas com tipo de resposta compatível: o mesmo tipo, resposta única para múltipla escolha ou pergunta de escolha para texto livre. Cada pergunta deste surto recebe as respostas de uma única pergunta recebida."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_INCOMPATIBLE_TYPE": {
+      "translation": "tipo de resposta incompatível"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_ALREADY_LINKED": {
+      "translation": "já ligada a outra pergunta recebida"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_CHOICE_TO_TEXT": {
+      "translation": "As opções recebidas serão gravadas como texto nesta pergunta (por exemplo, \"UBS\"). Várias opções marcadas ficam separadas por vírgula."
+    },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPING_PENDING_COUNT": {
       "translation": "{{count}} pergunta(s) ainda sem decisão"
     },

@@ -147,14 +147,22 @@ module.exports = function (SyncOutbreakMapping) {
 
   /**
    * Validate the question mappings sent by the user
+   * @param {Object} sourceLabels - map of received option label token => text (language of the user), written when an option is converted to free text
    * @returns {Object} question mappings with only the known questions
    */
-  function validateQuestionMappings(questionMappings, mapping, targetQuestionnaires) {
+  function validateQuestionMappings(questionMappings, mapping, targetQuestionnaires, sourceLabels) {
     const result = {};
+    const typeName = (question) => (question.answerType || '').replace('LNG_REFERENCE_DATA_CATEGORY_QUESTION_ANSWER_TYPE_', '');
     syncOutbreakMapping.QUESTIONNAIRES.forEach((questionnaire) => {
       result[questionnaire] = {};
       const targetQuestions = _.keyBy(targetQuestionnaires[questionnaire] || [], 'variable');
+      const usedTargets = {};
       (_.get(mapping, `sourceQuestionnaires.${questionnaire}`) || []).forEach((sourceQuestion) => {
+        // markup questions don't have answers
+        if (!syncOutbreakMapping.isAnswerableQuestion(sourceQuestion)) {
+          return;
+        }
+
         const questionMapping = _.get(questionMappings, [questionnaire, sourceQuestion.variable]);
         if (!questionMapping) {
           return;
@@ -177,11 +185,39 @@ module.exports = function (SyncOutbreakMapping) {
           });
         }
 
+        // the answers must fit the question of this instance
+        const conversion = syncOutbreakMapping.getConversion(sourceQuestion, targetQuestion);
+        if (!conversion) {
+          throw app.utils.apiError.getError('REQUEST_VALIDATION_ERROR', {
+            errorMessages: `Question "${sourceQuestion.variable}" (${typeName(sourceQuestion)}) can't be mapped to question "${targetVariable}" (${typeName(targetQuestion)}): the answer types aren't compatible`
+          });
+        }
+
+        // a question of this instance receives the answers of only one received question, otherwise one would overwrite the other
+        if (usedTargets[targetVariable]) {
+          throw app.utils.apiError.getError('REQUEST_VALIDATION_ERROR', {
+            errorMessages: `Questions "${usedTargets[targetVariable]}" and "${sourceQuestion.variable}" are mapped to the same question "${targetVariable}"`
+          });
+        }
+        usedTargets[targetVariable] = sourceQuestion.variable;
+
         // options
         const answers = {};
         if (syncOutbreakMapping.isChoiceQuestion(sourceQuestion)) {
           const targetValues = targetQuestion.answers.map((answer) => answer.value);
           sourceQuestion.answers.forEach((sourceAnswer) => {
+            // option written as text: the text sent by the user or the text of the option
+            if (conversion === syncOutbreakMapping.CONVERSION.CHOICE_TO_TEXT) {
+              const text = _.get(questionMapping, ['answers', sourceAnswer.value]);
+              answers[sourceAnswer.value] = text === null ?
+                null : (
+                  typeof text === 'string' && text.trim() ?
+                    text.trim() :
+                    (sourceLabels[sourceAnswer.label] || sourceAnswer.value)
+                );
+              return;
+            }
+
             if (!_.has(questionMapping.answers || {}, sourceAnswer.value)) {
               return;
             }
@@ -189,7 +225,7 @@ module.exports = function (SyncOutbreakMapping) {
             const targetValue = questionMapping.answers[sourceAnswer.value];
             if (
               targetValue !== null &&
-              syncOutbreakMapping.isChoiceQuestion(targetQuestion) &&
+              targetValue !== undefined &&
               !targetValues.includes(targetValue)
             ) {
               throw app.utils.apiError.getError('REQUEST_VALIDATION_ERROR', {
@@ -203,6 +239,7 @@ module.exports = function (SyncOutbreakMapping) {
 
         result[questionnaire][sourceQuestion.variable] = {
           targetVariable,
+          conversion,
           answers
         };
       });
@@ -261,9 +298,17 @@ module.exports = function (SyncOutbreakMapping) {
           });
         }
 
-        return app.models.outbreak
-          .findById(data.targetOutbreakId)
-          .then((targetOutbreak) => {
+        // texts of the received options, used when they are written to free text questions
+        const sourceLabelTokens = [];
+        _.each(mapping.sourceQuestionnaires || {}, (questions) => {
+          (questions || []).forEach((question) => (question.answers || []).forEach((answer) => sourceLabelTokens.push(answer.label)));
+        });
+
+        return Promise.all([
+          app.models.outbreak.findById(data.targetOutbreakId),
+          translate(sourceLabelTokens, options)
+        ])
+          .then(([targetOutbreak, sourceLabels]) => {
             if (!targetOutbreak) {
               throw app.utils.apiError.getError('REQUEST_VALIDATION_ERROR', {
                 errorMessages: 'Property "targetOutbreakId" must be an outbreak of this instance'
@@ -273,7 +318,8 @@ module.exports = function (SyncOutbreakMapping) {
             const questionMappings = validateQuestionMappings(
               data.questionMappings,
               mapping,
-              syncOutbreakMapping.getFlatQuestionnaires(targetOutbreak)
+              syncOutbreakMapping.getFlatQuestionnaires(targetOutbreak),
+              sourceLabels
             );
 
             // every received question (& option) must be reviewed

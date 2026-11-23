@@ -373,7 +373,11 @@ module.exports = function (Sync) {
                                 }
 
                                 // sync the record with the main database
-                                dbSync.syncRecord(app, app.logger, syncModel, collectionRecord, reqOptions, (err, syncResult) => {
+                                // (the record might need specific options, e.g. converted answers of a mapped outbreak must not be merged with the old ones)
+                                const recordOptions = prepared.syncOptions ?
+                                  Object.assign({}, reqOptions, prepared.syncOptions) :
+                                  reqOptions;
+                                dbSync.syncRecord(app, app.logger, syncModel, collectionRecord, recordOptions, (err, syncResult) => {
                                   // generate follow-ups ?
                                   if (syncResult &&
                                     syncResult.flag === app.utils.dbSync.syncRecordFlags.CREATED &&

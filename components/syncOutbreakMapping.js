@@ -70,11 +70,30 @@ const OUTBREAK_COLLECTIONS = [
   'fileAttachment'
 ];
 
+// answer types
+const ANSWER_TYPE = {
+  SINGLE: 'LNG_REFERENCE_DATA_CATEGORY_QUESTION_ANSWER_TYPE_SINGLE_ANSWER',
+  MULTIPLE: 'LNG_REFERENCE_DATA_CATEGORY_QUESTION_ANSWER_TYPE_MULTIPLE_ANSWERS',
+  FREE_TEXT: 'LNG_REFERENCE_DATA_CATEGORY_QUESTION_ANSWER_TYPE_FREE_TEXT',
+  MARKUP: 'LNG_REFERENCE_DATA_CATEGORY_QUESTION_ANSWER_TYPE_MARKUP'
+};
+
 // answer types that have options
 const CHOICE_ANSWER_TYPES = [
-  'LNG_REFERENCE_DATA_CATEGORY_QUESTION_ANSWER_TYPE_SINGLE_ANSWER',
-  'LNG_REFERENCE_DATA_CATEGORY_QUESTION_ANSWER_TYPE_MULTIPLE_ANSWERS'
+  ANSWER_TYPE.SINGLE,
+  ANSWER_TYPE.MULTIPLE
 ];
+
+// how the answers of a received question are converted to the question of this instance
+// Note: must match the web app (sync-outbreak-mapping.model.ts)
+const CONVERSION = {
+  // same answer type: values are copied (options are converted)
+  SAME: 'same',
+  // single answer -> multiple answers: the converted option becomes a list
+  SINGLE_TO_MULTIPLE: 'singleToMultiple',
+  // single / multiple answers -> free text: the text of the options is written (multiple options separated by comma)
+  CHOICE_TO_TEXT: 'choiceToText'
+};
 
 // person types
 const PERSON_TYPE = {
@@ -128,6 +147,108 @@ function isChoiceQuestion(question) {
 }
 
 /**
+ * Whether a question can have answers (markup questions are only texts displayed in the questionnaire)
+ */
+function isAnswerableQuestion(question) {
+  return !!question && question.answerType !== ANSWER_TYPE.MARKUP;
+}
+
+/**
+ * How the answers of a received question are converted to a question of this instance
+ * @returns {string|null} one of CONVERSION, null when the questions aren't compatible
+ */
+function getConversion(sourceQuestion, targetQuestion) {
+  if (
+    !isAnswerableQuestion(sourceQuestion) ||
+    !isAnswerableQuestion(targetQuestion)
+  ) {
+    return null;
+  }
+
+  if (sourceQuestion.answerType === targetQuestion.answerType) {
+    return CONVERSION.SAME;
+  }
+
+  if (
+    sourceQuestion.answerType === ANSWER_TYPE.SINGLE &&
+    targetQuestion.answerType === ANSWER_TYPE.MULTIPLE
+  ) {
+    return CONVERSION.SINGLE_TO_MULTIPLE;
+  }
+
+  if (
+    isChoiceQuestion(sourceQuestion) &&
+    targetQuestion.answerType === ANSWER_TYPE.FREE_TEXT
+  ) {
+    return CONVERSION.CHOICE_TO_TEXT;
+  }
+
+  return null;
+}
+
+/**
+ * Remove from a mapping the decisions that don't apply anymore to the questionnaires of the outbreak of this instance
+ * (question / option removed, answer type changed), so the received questions are mapped again
+ * Note: it also completes the conversion of the mappings approved before it was saved
+ * @param {Object} mapping
+ * @param {Object} targetOutbreak - outbreak of this instance (with its questionnaires)
+ * @returns {{questionMappings: Object, changed: boolean}}
+ */
+function sanitizeQuestionMappings(mapping, targetOutbreak) {
+  const questionMappings = _.cloneDeep(mapping.questionMappings || {});
+  let changed = false;
+  QUESTIONNAIRES.forEach((questionnaire) => {
+    const sourceQuestions = _.keyBy(_.get(mapping, `sourceQuestionnaires.${questionnaire}`) || [], 'variable');
+    const targetQuestions = _.keyBy(flattenQuestions(targetOutbreak && targetOutbreak[questionnaire]), 'variable');
+    _.each(questionMappings[questionnaire] || {}, (questionMapping, sourceVariable) => {
+      if (!questionMapping || !questionMapping.targetVariable) {
+        return;
+      }
+
+      // question of this instance removed / not compatible anymore => map again
+      // Note: received questions that aren't in the questionnaire anymore are kept as they are, they don't receive answers
+      const sourceQuestion = sourceQuestions[sourceVariable];
+      const targetQuestion = targetQuestions[questionMapping.targetVariable];
+      const conversion = sourceQuestion ?
+        getConversion(sourceQuestion, targetQuestion) :
+        questionMapping.conversion;
+      if (!targetQuestion || !conversion) {
+        delete questionMappings[questionnaire][sourceVariable];
+        changed = true;
+        return;
+      }
+
+      if (questionMapping.conversion !== conversion) {
+        questionMapping.conversion = conversion;
+        changed = true;
+      }
+
+      // options of this instance that were removed => map them again
+      if (
+        conversion !== CONVERSION.CHOICE_TO_TEXT &&
+        isChoiceQuestion(targetQuestion)
+      ) {
+        const targetValues = targetQuestion.answers.map((answer) => answer.value);
+        _.each(questionMapping.answers || {}, (targetValue, sourceValue) => {
+          if (
+            targetValue !== null &&
+            !targetValues.includes(targetValue)
+          ) {
+            delete questionMapping.answers[sourceValue];
+            changed = true;
+          }
+        });
+      }
+    });
+  });
+
+  return {
+    questionMappings,
+    changed
+  };
+}
+
+/**
  * Questionnaires of an outbreak as flat lists
  */
 function getFlatQuestionnaires(outbreak) {
@@ -147,6 +268,11 @@ function getUnmappedQuestions(mapping) {
   QUESTIONNAIRES.forEach((questionnaire) => {
     const questionMappings = _.get(mapping, `questionMappings.${questionnaire}`) || {};
     (_.get(mapping, `sourceQuestionnaires.${questionnaire}`) || []).forEach((question) => {
+      // markup questions don't have answers, so there is nothing to map
+      if (!isAnswerableQuestion(question)) {
+        return;
+      }
+
       const questionMapping = questionMappings[question.variable];
 
       // never mapped
@@ -318,9 +444,25 @@ function mapAnswers(answers, questionMappings, sourceQuestions) {
           return item;
         }
 
-        const value = Array.isArray(item.value) ?
+        let value = Array.isArray(item.value) ?
           item.value.map(mapValue).filter((mapped) => mapped !== undefined) :
           mapValue(item.value);
+
+        // format of the question of this instance
+        if (value !== undefined && value !== null && value !== '') {
+          switch (questionMapping.conversion) {
+            case CONVERSION.SINGLE_TO_MULTIPLE:
+              value = Array.isArray(value) ? value : [value];
+              break;
+            case CONVERSION.CHOICE_TO_TEXT:
+              // the texts of the options
+              value = Array.isArray(value) ?
+                (value.length ? value.join(', ') : undefined) :
+                value;
+              break;
+          }
+        }
+
         return Object.assign({}, item, {
           value
         });
@@ -430,7 +572,61 @@ function createContext(clientId, options) {
         }
       });
 
-      return context;
+      return revalidateMappings(context, mappings);
+    })
+    .then(() => context);
+}
+
+/**
+ * The questionnaires of the outbreaks of this instance might have changed since the mappings were approved
+ * Decisions that don't apply anymore are removed & the mapping must be reviewed, otherwise answers would be written to questions / options that don't exist
+ */
+function revalidateMappings(context, mappings) {
+  const mappedToOutbreaks = mappings.filter((mapping) => (
+    mapping.mode === MODE.MAP &&
+    mapping.targetOutbreakId &&
+    mapping.status !== STATUS.PENDING
+  ));
+  if (!mappedToOutbreaks.length) {
+    return Promise.resolve();
+  }
+
+  return app.models.outbreak
+    .rawFind({
+      _id: {
+        $in: _.uniq(mappedToOutbreaks.map((mapping) => mapping.targetOutbreakId))
+      }
+    }, {
+      projection: QUESTIONNAIRES.reduce((projection, questionnaire) => Object.assign(projection, {
+        [questionnaire]: 1
+      }), {})
+    })
+    .then((targetOutbreaks) => {
+      const targetOutbreaksMap = _.keyBy(targetOutbreaks, 'id');
+      return Promise.all(mappedToOutbreaks.map((mapping) => {
+        const sanitized = sanitizeQuestionMappings(mapping.toJSON(), targetOutbreaksMap[mapping.targetOutbreakId]);
+        if (!sanitized.changed) {
+          return Promise.resolve();
+        }
+
+        const unmappedQuestions = getUnmappedQuestions({
+          sourceQuestionnaires: mapping.sourceQuestionnaires,
+          questionMappings: sanitized.questionMappings
+        });
+        const data = {
+          questionMappings: sanitized.questionMappings
+        };
+        if (unmappedQuestions.length) {
+          data.status = STATUS.REVIEW;
+          data.pendingQuestions = unmappedQuestions;
+        }
+
+        return mapping
+          .updateAttributes(data, context.options)
+          .then((savedMapping) => {
+            context.mappings[savedMapping.sourceOutbreakId] = savedMapping;
+          });
+      }));
     });
 }
 
@@ -566,7 +762,7 @@ function prepareRecord(context, collectionName, record) {
       }
 
       return convertRecord(context, mapping, collectionName, record)
-        .then(({ convertedRecord, pendingVariables }) => {
+        .then(({ convertedRecord, pendingVariables, authoritativeFields }) => {
           // the answers of the questions that weren't mapped yet are imported when the mapping is approved
           return (
             pendingVariables.length ?
@@ -575,7 +771,11 @@ function prepareRecord(context, collectionName, record) {
           )
             .then(() => ({
               action: 'import',
-              record: convertedRecord
+              record: convertedRecord,
+              // the converted answers are complete, they must not be merged with the old ones (removed answers / options would come back)
+              syncOptions: {
+                skipMergeFields: authoritativeFields
+              }
             }));
         });
     });
@@ -594,9 +794,13 @@ function convertRecord(context, mapping, collectionName, record) {
     context.personTypes[record._id || record.id] = record.type;
   }
 
-  return getQuestionnaireFields(context, collectionName, record)
-    .then((fields) => {
+  return Promise.all([
+    getQuestionnaireFields(context, collectionName, record),
+    getCurrentRecord(collectionName, record)
+  ])
+    .then(([fields, currentRecord]) => {
       const pendingVariables = [];
+      const authoritativeFields = [];
       fields.forEach(({ field, questionnaire }) => {
         if (!_.isPlainObject(record[field])) {
           return;
@@ -607,14 +811,59 @@ function convertRecord(context, mapping, collectionName, record) {
           _.get(mapping, `questionMappings.${questionnaire}`),
           _.get(mapping, `sourceQuestionnaires.${questionnaire}`)
         );
-        convertedRecord[field] = mapped.answers;
+
+        // answers of this instance that don't come from the received questionnaire (e.g. questions that exist only here) are kept
+        const receivedTargets = getReceivedTargetVariables(mapping, questionnaire);
+        const keptAnswers = _.pickBy(
+          _.get(currentRecord, field) || {},
+          (answer, variable) => !receivedTargets[variable]
+        );
+        convertedRecord[field] = Object.assign(keptAnswers, mapped.answers);
+        authoritativeFields.push(field);
         pendingVariables.push(...mapped.pendingVariables.map((variable) => `${questionnaire}.${variable}`));
       });
 
       return {
         convertedRecord,
-        pendingVariables
+        pendingVariables,
+        authoritativeFields
       };
+    });
+}
+
+/**
+ * Questions of this instance that receive the answers of the received questionnaire
+ * Note: questions mapped from received questions that were removed from the received questionnaire keep their answers
+ * @returns {Object} map of target variable => true
+ */
+function getReceivedTargetVariables(mapping, questionnaire) {
+  const sourceVariables = _.keyBy(_.get(mapping, `sourceQuestionnaires.${questionnaire}`) || [], 'variable');
+  const result = {};
+  _.each(_.get(mapping, `questionMappings.${questionnaire}`) || {}, (questionMapping, sourceVariable) => {
+    if (
+      questionMapping &&
+      questionMapping.targetVariable &&
+      sourceVariables[sourceVariable]
+    ) {
+      result[questionMapping.targetVariable] = true;
+    }
+  });
+  return result;
+}
+
+/**
+ * Record of this instance (if it was already imported)
+ */
+function getCurrentRecord(collectionName, record) {
+  const recordId = record._id || record.id;
+  if (!recordId) {
+    return Promise.resolve(null);
+  }
+
+  return app.dataSources.mongoDb.connector
+    .collection(dbSync.collectionsMap[collectionName])
+    .findOne({
+      _id: recordId
     });
 }
 
@@ -678,7 +927,7 @@ function importStagedRecords(mapping, options) {
         record.id = record._id;
 
         const imported = stagedRecord.reason === STAGE_REASON.QUESTIONS ?
-          applyPendingAnswers(context, mapping, stagedRecord.collectionName, record) :
+          applyPendingAnswers(context, mapping, stagedRecord.collectionName, record, stagedRecord.pendingVariables) :
           prepareRecord(context, stagedRecord.collectionName, record)
             .then((prepared) => {
               if (prepared.action !== 'import') {
@@ -691,7 +940,7 @@ function importStagedRecords(mapping, options) {
                   app.logger,
                   getRecordModel(stagedRecord.collectionName, prepared.record),
                   prepared.record,
-                  Object.assign({}, importOptions),
+                  Object.assign({}, importOptions, prepared.syncOptions),
                   (err) => err ? reject(err) : resolve()
                 );
               });
@@ -713,10 +962,13 @@ function importStagedRecords(mapping, options) {
 }
 
 /**
- * Add the answers of the questions that were mapped now to a record that was already imported
- * Note: answers that already exist aren't changed, since they might have been updated after the import
+ * Apply the answers of the questions (and options) that were mapped now to a record that was already imported
+ * - the record wasn't changed here since it was imported: the answers of the pending questions are replaced by the complete conversion
+ *   (e.g. a received option that is mapped now is added to the options already imported)
+ * - the record was changed here after the import: only answers that don't exist are added, so the changes made here aren't lost
+ * @param {string[]} pendingVariables - questionnaire.variable of the received questions that were pending when the record was imported
  */
-function applyPendingAnswers(context, mapping, collectionName, record) {
+function applyPendingAnswers(context, mapping, collectionName, record, pendingVariables) {
   return convertRecord(context, mapping, collectionName, record)
     .then(({ convertedRecord }) => getQuestionnaireFields(context, collectionName, record)
       .then((fields) => {
@@ -731,23 +983,58 @@ function applyPendingAnswers(context, mapping, collectionName, record) {
               return;
             }
 
+            const changedHere = !!dbRecord.updatedAt && !!record.updatedAt &&
+              localizationHelper.toMoment(dbRecord.updatedAt).toDate().getTime() > localizationHelper.toMoment(record.updatedAt).toDate().getTime();
             const update = {};
-            fields.forEach(({ field }) => {
+            const unset = {};
+            fields.forEach(({ field, questionnaire }) => {
+              // questions of this instance that receive the pending answers
+              const pendingTargets = {};
+              (pendingVariables || []).forEach((pendingVariable) => {
+                const [pendingQuestionnaire, sourceVariable] = pendingVariable.split('.');
+                const targetVariable = pendingQuestionnaire === questionnaire &&
+                  _.get(mapping, ['questionMappings', questionnaire, sourceVariable, 'targetVariable']);
+                if (targetVariable) {
+                  pendingTargets[targetVariable] = true;
+                }
+              });
+
+              if (!changedHere) {
+                Object.keys(pendingTargets).forEach((variable) => {
+                  if (_.has(convertedRecord, [field, variable])) {
+                    update[`${field}.${variable}`] = convertedRecord[field][variable];
+                  } else if (_.has(dbRecord, [field, variable])) {
+                    unset[`${field}.${variable}`] = '';
+                  }
+                });
+                return;
+              }
+
               _.each(convertedRecord[field] || {}, (answer, variable) => {
                 if (!_.has(dbRecord, [field, variable])) {
                   update[`${field}.${variable}`] = answer;
                 }
               });
             });
-            if (_.isEmpty(update)) {
+            if (
+              _.isEmpty(update) &&
+              _.isEmpty(unset)
+            ) {
               return;
             }
 
             return collection.updateOne({
               _id: record._id
-            }, {
-              $set: update
-            });
+            }, Object.assign(
+              {
+                $set: Object.assign(update, {
+                  dbUpdatedAt: localizationHelper.now().toDate()
+                })
+              },
+              _.isEmpty(unset) ? {} : {
+                $unset: unset
+              }
+            ));
           });
       }));
 }
@@ -772,6 +1059,11 @@ module.exports = {
   QUESTIONNAIRES,
   STATUS,
   MODE,
+  CONVERSION,
+  ANSWER_TYPE,
+  isAnswerableQuestion,
+  getConversion,
+  sanitizeQuestionMappings,
   STAGE_REASON,
   STAGED_COLLECTION,
   OUTBREAK_COLLECTIONS,

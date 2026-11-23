@@ -423,11 +423,18 @@ module.exports = function (Outbreak) {
     }
 
     // prefilter
-    app.models.contactOfContact
-      .addGeographicalRestrictions(
-        options.remotingContext,
-        filter.where
-      )
+    let withholdPersonName;
+    app.models.relationship
+      .getExportPersonNameWithholding(options.remotingContext)
+      .then((withhold) => {
+        withholdPersonName = withhold;
+
+        return app.models.contactOfContact
+          .addGeographicalRestrictions(
+            options.remotingContext,
+            filter.where
+          );
+      })
       .then((updatedFilter) => {
         // update casesQuery if needed
         updatedFilter && (filter.where = updatedFilter);
@@ -561,6 +568,7 @@ module.exports = function (Outbreak) {
                 relatedPersonData: {
                   type: exportHelper.RELATION_TYPE.HAS_ONE,
                   collection: 'person',
+                  withhold: withholdPersonName,
                   project: [
                     '_id',
                     // contact

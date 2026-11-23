@@ -1,0 +1,11 @@
+{
+  "id": "english_us",
+  "tokens": {
+    "LNG_API_ERROR_CODE_ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE": {
+      "translation": "A Current Address is required"
+    },
+    "LNG_PAGE_IMPORT_DATA_ERROR_RECORD_ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE": {
+      "translation": "Failed to import record {{recordNo}} because a Current Address is required"
+    }
+  }
+}

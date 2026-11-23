@@ -7,6 +7,7 @@ const runFunctions = [];
 [
   require('./migrateDatabaseCollections'),
   require('./migrateModelData'),
+  require('./applyPortugueseTranslations'),
   require('./updateAdminEmail')
 ].forEach(function (installScript) {
   runFunctions.push(installScript);

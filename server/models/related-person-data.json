@@ -18,6 +18,10 @@
       "type": "string",
       "description": "Visual (human readable) id of the related person"
     },
+    "masked": {
+      "type": "boolean",
+      "description": "True when the logged in user is not allowed to read this person, in which case the name comes empty"
+    },
     "name": {
       "type": "string",
       "description": "Event name (only populated when type is event)"
@@ -33,6 +37,22 @@
     "lastName": {
       "type": "string",
       "description": "Last name (only populated when type is case/contact/contact of contact)"
+    },
+    "classification": {
+      "type": "string",
+      "description": "Classification (only populated when the related person is a case)"
+    },
+    "dateOfReporting": {
+      "type": "date",
+      "description": "Date the related person was reported"
+    },
+    "dateOfOnset": {
+      "type": "date",
+      "description": "Date of onset (only populated when the related person is a case)"
+    },
+    "followUpTeamId": {
+      "type": "string",
+      "description": "Id of the follow-up team assigned to the related person"
     }
   },
   "validations": [],

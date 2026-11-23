@@ -5034,6 +5034,12 @@
           "unauthenticated"
         ]
       },
+      "LNG_API_ERROR_CODE_ACCESS_DENIED": {
+        "translation": "You do not have permission to access this record or perform this action.",
+        "modules": [
+          "unauthenticated"
+        ]
+      },
       "LNG_API_ERROR_CODE_ADDRESS_MULTIPLE_USUAL_PLACE_OF_RESIDENCE": {
         "translation": "Multiple addresses have been set as Current Address. Only one address should be set as Current Address.",
         "modules": [
@@ -5041,7 +5047,7 @@
         ]
       },
       "LNG_API_ERROR_CODE_ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE": {
-        "translation": "One of the addresses must be set as the Current Address",
+        "translation": "A Current Address is required",
         "modules": [
           "unauthenticated"
         ]
@@ -5613,6 +5619,12 @@
       },
       "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_CROSS_LOCATION_CREATION_DESCRIPTION": {
         "translation": "Allows creating cases in locations beyond the user's team responsibility area; the case address Location field lists all locations"
+      },
+      "LNG_OUTBREAK_FIELD_LABEL_PREVENT_ADDRESS_DELETION": {
+        "translation": "Prevent address deletion"
+      },
+      "LNG_OUTBREAK_FIELD_LABEL_PREVENT_ADDRESS_DELETION_DESCRIPTION": {
+        "translation": "When enabled, the delete button is hidden on the address blocks of cases, contacts and contacts of contacts"
       },
       "LNG_OUTBREAK_FIELD_LABEL_ALLOW_RESIDENCE_CHAIN_ACCESS": {
         "translation": "Allow team to view the full contact chain of a resident case"
@@ -6449,6 +6461,9 @@
       },
       "LNG_PAGE_CREATE_ENTITY_RELATIONSHIP_TITLE": {
         "translation": "Create relationship"
+      },
+      "LNG_PAGE_CREATE_ENTITY_RELATIONSHIP_ERROR_SOMETHING_WENT_WRONG": {
+        "translation": "Something went wrong..."
       }
     },
     "uiContactFields": {
@@ -6864,6 +6879,24 @@
       },
       "LNG_PAGE_LIST_CONTACTS_ACTION_IMPORT_CONTACTS_RELATIONSHIPS": {
         "translation": "Import contact relationships"
+      },
+      "LNG_PAGE_LIST_CONTACTS_ACTION_API_QUERY": {
+        "translation": "API query"
+      },
+      "LNG_PAGE_LIST_CONTACTS_API_QUERY_DIALOG_DESCRIPTION": {
+        "translation": "This endpoint returns the contacts of the outbreak with their relationships and the data of the related person (case, contact or event) already resolved, in a single call."
+      },
+      "LNG_PAGE_LIST_CONTACTS_API_QUERY_DIALOG_OPEN_DOCUMENTATION_HINT": {
+        "translation": "Click <b>{{button}}</b> to open the documentation (Swagger) already focused on this endpoint, in a new tab."
+      },
+      "LNG_PAGE_LIST_CONTACTS_API_QUERY_DIALOG_OUTBREAK_ID_HINT": {
+        "translation": "There you will need to enter the selected <b>outbreak id</b> in the <code>id</code> field of the form. Copy the value below before continuing:"
+      },
+      "LNG_PAGE_LIST_CONTACTS_API_QUERY_DIALOG_COPY_OUTBREAK_ID": {
+        "translation": "Copy outbreak id"
+      },
+      "LNG_PAGE_LIST_CONTACTS_API_QUERY_DIALOG_GO_TO_DOCUMENTATION_BUTTON": {
+        "translation": "Go to documentation"
       }
     },
     "uiCreateContactPage": {
@@ -10932,6 +10965,9 @@
           "unauthenticated"
         ]
       },
+      "LNG_FORM_VALIDATION_ERROR_AT_LEAST_ONE_ITEM_REQUIRED": {
+        "translation": "At least one item must be added"
+      },
       "LNG_FORM_VALIDATION_ERROR_GENERAL_ASYNC": {
         "translation": "Invalid data",
         "modules": [
@@ -13085,7 +13121,7 @@
         "translation": "Failed to import record {{recordNo}} because there are multiple addresses specified as Current Address"
       },
       "LNG_PAGE_IMPORT_DATA_ERROR_RECORD_ADDRESS_MUST_HAVE_USUAL_PLACE_OF_RESIDENCE": {
-        "translation": "Failed to import record {{recordNo}} because address must be specified as a Current Address"
+        "translation": "Failed to import record {{recordNo}} because a Current Address is required"
       },
       "LNG_PAGE_IMPORT_DATA_ERROR_RECORD_ADDRESS_PREVIOUS_PLACE_OF_RESIDENCE_MUST_HAVE_DATE": {
         "translation": "Failed to import record {{recordNo}} because previous address should have date"

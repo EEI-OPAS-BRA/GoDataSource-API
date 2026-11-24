@@ -131,10 +131,10 @@
       "translation": "Ver logs"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_TITLE": {
-      "translation": "Para que serve esta tela?"
+      "translation": "Como funciona o envio de dados"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_DESCRIPTION": {
-      "translation": "Cadastre aqui as outras instâncias do Go.Data (servidores upstream, por exemplo um servidor central) para onde esta instância envia os seus dados e controle quando a sincronização acontece."
+      "translation": "Esta instância envia os seus dados para os servidores cadastrados nesta tela, usando a chave de acesso criada em cada um deles."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_1_TITLE": {
       "translation": "Cadastre o servidor"
@@ -158,16 +158,16 @@
       "translation": "Acompanhe o resultado"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_4_DESCRIPTION": {
-      "translation": "O resultado (sucesso, sucesso com avisos ou falha) fica registrado na página \"Acompanhar sincronização\"."
+      "translation": "O resultado (sucesso, sucesso com avisos ou falha) aparece em \"Últimos envios\", logo abaixo, e o histórico completo fica na página \"Acompanhar sincronização\"."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_NOTE_1": {
       "translation": "A sincronização é de mão única: os dados são enviados desta instância para o servidor upstream, e não o contrário."
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_TITLE": {
-      "translation": "Para que serve esta tela?"
+      "translation": "Como funciona o recebimento de dados"
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_DESCRIPTION": {
-      "translation": "Aqui você cria as credenciais que permitem que outros sistemas se conectem a esta instância e enviem dados para ela: outra instância do Go.Data que envia seus dados para cá (cadastrando esta instância em \"Enviar dados para Servidores\") ou o aplicativo móvel."
+      "translation": "Outras instâncias do Go.Data e o aplicativo móvel enviam dados para cá usando uma chave de acesso criada nesta tela."
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_1_TITLE": {
       "translation": "Crie o aplicativo"
@@ -575,7 +575,7 @@
       "translation": "Acompanhe o resultado"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_4_DESCRIPTION": {
-      "translation": "Em \"Acompanhar sincronização\", cada envio e cada recebimento fica registrado com a direção, o status e, em caso de problema, os detalhes do erro."
+      "translation": "\"Enviar dados para Servidores\" e \"Receber dados de Servidores\" mostram as últimas sincronizações de cada lado. Em \"Acompanhar sincronização\" fica o histórico completo, com a direção, o status e, em caso de problema, os detalhes do erro."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_GO_TO": {
       "translation": "Ir para"
@@ -590,7 +590,7 @@
       "translation": "Enviar dados para Servidores"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_SEND_DESCRIPTION": {
-      "translation": "Usada pela instância que envia. Aqui ficam os servidores para onde os dados vão."
+      "translation": "Usada pela instância que envia. Aqui ficam os servidores para onde os dados vão e os últimos envios."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_1": {
       "translation": "Cadastro do servidor com URL, credenciais e teste de conexão."
@@ -608,7 +608,7 @@
       "translation": "Receber dados de Servidores"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_DESCRIPTION": {
-      "translation": "Usada pela instância que recebe. Aqui ficam as chaves de quem pode enviar dados para cá."
+      "translation": "Usada pela instância que recebe. Aqui ficam as chaves de quem pode enviar dados para cá, os surtos recebidos que aguardam revisão e os últimos recebimentos."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_1": {
       "translation": "Criação de um aplicativo cliente para cada instância que envia."
@@ -626,7 +626,7 @@
       "translation": "Acompanhar sincronização"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_DESCRIPTION": {
-      "translation": "Histórico de tudo que esta instância enviou e recebeu."
+      "translation": "Histórico completo de tudo que esta instância enviou e recebeu. As últimas sincronizações também aparecem nas telas de enviar e de receber."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_ITEM_1": {
       "translation": "Coluna Direção indicando se os dados foram enviados ou recebidos."
@@ -695,31 +695,31 @@
       "translation": "Modelos de surto, mapeamentos de importação e filtros salvos"
     },
     "LNG_LAYOUT_MENU_ITEM_SYNC_OUTBREAK_MAPPINGS_LABEL": {
-      "translation": "Mapeamento de surtos"
+      "translation": "Revisar dados recebidos"
     },
     "LNG_SYNC_OUTBREAK_MAPPING_STATUS_PENDING": {
-      "translation": "Aguardando mapeamento"
+      "translation": "Aguardando revisão"
     },
     "LNG_SYNC_OUTBREAK_MAPPING_STATUS_APPROVED": {
       "translation": "Aprovado"
     },
     "LNG_SYNC_OUTBREAK_MAPPING_STATUS_REVIEW": {
-      "translation": "Revisão necessária"
+      "translation": "Perguntas novas para revisar"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_INTRO_TITLE": {
-      "translation": "Surtos e questionários recebidos de outras instâncias"
+      "translation": "Diga onde os dados recebidos entram"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_INTRO_DESCRIPTION": {
-      "translation": "Quando outra instância (por exemplo, um município) envia um surto que tem outro ID aqui, ou um questionário diferente, você escolhe a qual surto ele corresponde e liga as perguntas e respostas. Enquanto isso não for aprovado, os registros desse surto ficam guardados e são importados na aprovação. O mapeamento fica salvo para as próximas sincronizações."
+      "translation": "Quando outra instância (por exemplo, um município) envia um surto que não existe aqui com o mesmo ID, ou que usa um questionário diferente, os registros desse surto ficam guardados até você dizer em qual surto eles entram e como as perguntas e respostas se ligam. Depois da aprovação eles são importados, e as próximas sincronizações desse surto entram direto. Esta etapa faz parte de \"Receber dados de Servidores\"."
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_EMPTY": {
-      "translation": "Nenhum surto recebido precisa de mapeamento."
+      "translation": "Nenhum surto recebido está aguardando revisão."
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_TITLE": {
-      "translation": "Aguardando você"
+      "translation": "Aguardando revisão"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_APPROVED_TITLE": {
-      "translation": "Aprovados"
+      "translation": "Já revisados"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_RECEIVED_FROM": {
       "translation": "Recebido de"
@@ -743,10 +743,10 @@
       "translation": "Os registros deste surto estão guardados até a aprovação."
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_MAP_BUTTON": {
-      "translation": "Mapear"
+      "translation": "Revisar"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_VIEW_BUTTON": {
-      "translation": "Ver mapeamento"
+      "translation": "Ver ou alterar"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPING_TITLE": {
       "translation": "Mapeamento do surto"
@@ -909,6 +909,207 @@
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_PARTIAL_MESSAGE": {
       "translation": "Mapeamento aprovado. {{imported}} registro(s) importado(s) e {{failed}} com erro. Veja os detalhes no histórico de notificações."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_ONLY": {
+      "translation": "Somente: {{name}}"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_SHOW_ALL": {
+      "translation": "Mostrar todos"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_REFRESH": {
+      "translation": "Atualizar"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_SENT_EMPTY": {
+      "translation": "Nenhum envio ainda. Use o botão de sincronizar da lista para enviar agora."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_RECEIVED_EMPTY": {
+      "translation": "Nenhum dado recebido ainda."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_DETAILS": {
+      "translation": "Detalhes"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_FULL_HISTORY": {
+      "translation": "Ver histórico completo"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_ACTION_VIEW_HISTORY": {
+      "translation": "Ver últimas sincronizações"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_ACTION_REVIEW_RECEIVED": {
+      "translation": "Registros aguardando: revisar dados recebidos"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_REVIEW_TITLE": {
+      "translation": "Revise os dados recebidos"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_REVIEW_DESCRIPTION": {
+      "translation": "Quando chega um surto que não existe aqui, ou que usa outro questionário, os registros dele ficam guardados e \"Receber dados de Servidores\" mostra um aviso. Abra \"Revisar dados recebidos\", escolha em qual surto os dados entram e ligue as perguntas. Isso é feito uma vez por surto; as próximas sincronizações entram direto."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_5": {
+      "translation": "Aviso dos surtos recebidos que aguardam revisão, com atalho para \"Revisar dados recebidos\"."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PAGES_QUESTION": {
+      "translation": "Qual a diferença entre as telas de sincronização?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PAGES_ANSWER": {
+      "translation": "\"Enviar dados para Servidores\" é usada por quem envia: para onde os dados vão e quando. \"Receber dados de Servidores\" é usada por quem recebe: as chaves de quem pode enviar e o aviso quando um surto recebido precisa de revisão. \"Revisar dados recebidos\" é uma etapa do recebimento: diz em qual surto e em quais perguntas os dados recebidos entram. \"Acompanhar sincronização\" é o histórico completo dos dois lados."
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_IN_PROGRESS": {
+      "translation": "Em andamento"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_SENT": {
+      "translation": "Enviado"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_SENT_WITH_WARNINGS": {
+      "translation": "Enviado, com avisos do servidor"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_NOTHING_RECEIVED": {
+      "translation": "Nenhum dado novo"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_PARTIAL": {
+      "translation": "Recebido, mas alguns registros não entraram"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_WAITING": {
+      "translation": "Recebido, parte aguardando revisão"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_RECEIVED": {
+      "translation": "Recebido e importado"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_NOTHING_TO_SEND": {
+      "translation": "Nada novo para enviar"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_FAILED": {
+      "translation": "Falhou"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_ALL_OUTBREAKS": {
+      "translation": "Todos os surtos"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_SAVED_IN": {
+      "translation": "Surto desta instância onde os dados foram salvos"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_IMPORTED": {
+      "translation": "{{count}} importado(s)"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_STAGED": {
+      "translation": "{{count}} aguardando revisão"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_STAGED_TOOLTIP": {
+      "translation": "Os registros estão guardados. Clique para dizer onde eles entram."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_FAILED": {
+      "translation": "{{count}} com erro"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_FAILED_TOOLTIP": {
+      "translation": "Clique em \"Detalhes\" para ver o erro de cada registro."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_NOT_ALLOWED": {
+      "translation": "{{count}} recusado(s)"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_NOT_ALLOWED_TOOLTIP": {
+      "translation": "Esta chave de acesso não tem permissão para enviar dados deste surto. Ajuste os surtos permitidos na tabela abaixo."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_OTHER": {
+      "translation": "+ {{count}} registro(s) gerais"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_OTHER_TOOLTIP": {
+      "translation": "Dados que não pertencem a um surto, como locais, dados de referência e textos dos questionários."
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TABLE_TITLE": {
+      "translation": "Chaves de acesso"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TABLE_DESCRIPTION": {
+      "translation": "Quem pode enviar dados para cá. Cada linha é uma chave usada por outra instância do Go.Data ou pelo aplicativo móvel; use \"Adicionar\" para criar uma e passe o ID e o segredo do cliente para quem vai enviar os dados."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TABLE_TITLE": {
+      "translation": "Servidores de destino"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TABLE_DESCRIPTION": {
+      "translation": "Para onde esta instância envia os seus dados. Cada linha é uma instância que recebe os dados desta; use o botão de sincronizar da linha para enviar agora."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_MORE_OUTBREAKS": {
+      "translation": "Ver mais {{count}} surto(s)"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_FEWER_OUTBREAKS": {
+      "translation": "Ver menos surtos"
+    },
+    "LNG_SYNC_AREA_TAB_KEYS": {
+      "translation": "Chaves de acesso"
+    },
+    "LNG_SYNC_AREA_TAB_REVIEW": {
+      "translation": "Revisão"
+    },
+    "LNG_SYNC_AREA_TAB_HISTORY": {
+      "translation": "Histórico"
+    },
+    "LNG_SYNC_AREA_TAB_HOW_IT_WORKS": {
+      "translation": "Como funciona"
+    },
+    "LNG_SYNC_AREA_TAB_SERVERS": {
+      "translation": "Servidores de destino"
+    },
+    "LNG_SYNC_AREA_TAB_REVIEW_COUNT": {
+      "translation": "{{count}} surto(s) recebido(s) aguardando revisão"
+    },
+    "LNG_SYNC_AREA_HISTORY_RECEIVED_TITLE": {
+      "translation": "Histórico de recebimentos"
+    },
+    "LNG_SYNC_AREA_HISTORY_RECEIVED_DESCRIPTION": {
+      "translation": "Cada recebimento mostra de quem veio, quais surtos chegaram e o que aconteceu com os registros de cada um."
+    },
+    "LNG_SYNC_AREA_HISTORY_SENT_TITLE": {
+      "translation": "Histórico de envios"
+    },
+    "LNG_SYNC_AREA_HISTORY_SENT_DESCRIPTION": {
+      "translation": "Cada envio mostra para qual servidor foi, quais surtos foram enviados e como terminou."
+    },
+    "LNG_SYNC_AREA_DOCS_TITLE": {
+      "translation": "Documentação completa"
+    },
+    "LNG_SYNC_AREA_DOCS_DESCRIPTION": {
+      "translation": "O passo a passo do envio e do recebimento juntos, e as perguntas frequentes."
+    },
+    "LNG_SYNC_AREA_DOCS_CARD": {
+      "translation": "Explica as duas pontas da sincronização: quem envia e quem recebe."
+    },
+    "LNG_SYNC_AREA_DOCS_OPEN": {
+      "translation": "Abrir documentação"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_DESCRIPTION": {
+      "translation": "Surtos recebidos cujos registros estão guardados. Abra cada um e diga em qual surto e em quais perguntas os dados entram."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_APPROVED_DESCRIPTION": {
+      "translation": "Surtos que já têm destino: os dados deles entram direto nas próximas sincronizações. Abra um deles para ver ou alterar."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_APPROVED_EMPTY": {
+      "translation": "Nenhum surto revisado ainda."
+    },
+    "LNG_SYNC_AREA_STEPS_TITLE": {
+      "translation": "Passo a passo"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COLUMN_DATE": {
+      "translation": "Data"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COLUMN_FROM": {
+      "translation": "Quem enviou"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COLUMN_TO": {
+      "translation": "Para onde"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COLUMN_RESULT": {
+      "translation": "O que aconteceu"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_TOTAL": {
+      "translation": "{{count}} sincronização(ões) no total"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_PAGE": {
+      "translation": "{{first}}-{{last}} de {{total}}"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_PREVIOUS": {
+      "translation": "Página anterior"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_NEXT": {
+      "translation": "Próxima página"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_PARTIAL_DETAILS": {
+      "translation": "Recebido antes desta versão: mostra só o que ficou aguardando ou falhou, sem a contagem de importados."
     }
   }
 }

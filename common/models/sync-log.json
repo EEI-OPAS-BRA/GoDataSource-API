@@ -35,6 +35,10 @@
     "syncStepErrorDetail": {
       "type": "string",
       "description": "Technical code of the connection error"
+    },
+    "receivedSummary": {
+      "type": "object",
+      "description": "Received syncs: what happened to the records of each outbreak of the sender. {outbreaks: [{sourceOutbreakId, sourceOutbreakName, outbreakId, mappingId, imported, staged, failed, notAllowed}], otherImported, otherFailed}"
     }
   },
   "validations": [],

@@ -110,10 +110,10 @@
       "translation": "View logs"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_TITLE": {
-      "translation": "What is this page for?"
+      "translation": "How sending data works"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_DESCRIPTION": {
-      "translation": "Register here the other Go.Data instances (upstream servers, for example a central server) that this instance sends its data to, and control when the synchronization happens."
+      "translation": "This instance sends its data to the servers registered on this page, using the access key each of them created."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_1_TITLE": {
       "translation": "Register the server"
@@ -137,16 +137,16 @@
       "translation": "Follow the result"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_4_DESCRIPTION": {
-      "translation": "The outcome (success, success with warnings or failed) is recorded in the \"Track synchronization\" page."
+      "translation": "The outcome (success, success with warnings or failed) shows up in \"Latest sends\", right below, and the full history stays in the \"Track synchronization\" page."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_NOTE_1": {
       "translation": "Synchronization is one-way: data is sent from this instance to the upstream server, not the other way around."
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_TITLE": {
-      "translation": "What is this page for?"
+      "translation": "How receiving data works"
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_DESCRIPTION": {
-      "translation": "Here you create the credentials that let other systems connect to this instance and send data to it: another Go.Data instance that sends its data here (by registering this instance in its \"Send data to servers\" page), or the mobile app."
+      "translation": "Other Go.Data instances and the mobile app send data here using an access key created on this page."
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_1_TITLE": {
       "translation": "Create the application"
@@ -536,7 +536,7 @@
       "translation": "Track the result"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_4_DESCRIPTION": {
-      "translation": "In \"Track synchronization\", each sending and receiving is logged with its direction, status and, when something goes wrong, the error details."
+      "translation": "\"Send data to Servers\" and \"Receive data from Servers\" show the latest synchronizations of each side. \"Track synchronization\" holds the full history, with the direction, the status and, when something goes wrong, the error details."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_GO_TO": {
       "translation": "Go to"
@@ -551,7 +551,7 @@
       "translation": "Send data to servers"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_SEND_DESCRIPTION": {
-      "translation": "Used by the sending instance. It holds the servers the data goes to."
+      "translation": "Used by the sending instance. It holds the servers the data goes to and the latest sends."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_1": {
       "translation": "Server registration with URL, credentials and connection test."
@@ -569,7 +569,7 @@
       "translation": "Receive data from servers"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_DESCRIPTION": {
-      "translation": "Used by the receiving instance. It holds the keys of who can send data here."
+      "translation": "Used by the receiving instance. It holds the keys of who can send data here, the received outbreaks waiting for review and the latest data received."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_1": {
       "translation": "A client application for each instance that sends data."
@@ -587,7 +587,7 @@
       "translation": "Track synchronization"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_DESCRIPTION": {
-      "translation": "History of everything this instance sent and received."
+      "translation": "Full history of everything this instance sent and received. The latest synchronizations are also shown on the send and receive pages."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_ITEM_1": {
       "translation": "Direction column showing if the data was sent or received."
@@ -656,31 +656,31 @@
       "translation": "Outbreak templates, import mappings and saved filters"
     },
     "LNG_LAYOUT_MENU_ITEM_SYNC_OUTBREAK_MAPPINGS_LABEL": {
-      "translation": "Outbreak mapping"
+      "translation": "Review received data"
     },
     "LNG_SYNC_OUTBREAK_MAPPING_STATUS_PENDING": {
-      "translation": "Waiting for mapping"
+      "translation": "Waiting for review"
     },
     "LNG_SYNC_OUTBREAK_MAPPING_STATUS_APPROVED": {
       "translation": "Approved"
     },
     "LNG_SYNC_OUTBREAK_MAPPING_STATUS_REVIEW": {
-      "translation": "Review needed"
+      "translation": "New questions to review"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_INTRO_TITLE": {
-      "translation": "Outbreaks and questionnaires received from other instances"
+      "translation": "Say where the received data goes"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_INTRO_DESCRIPTION": {
-      "translation": "When another instance (for example, a municipality) sends an outbreak that has another ID here, or a different questionnaire, you choose to which outbreak it corresponds and link the questions and answers. Until it is approved, the records of that outbreak are kept aside and imported on approval. The mapping is saved for the next synchronizations."
+      "translation": "When another instance (for example, a municipality) sends an outbreak that does not exist here with the same ID, or that uses a different questionnaire, the records of that outbreak are kept aside until you say to which outbreak they belong and how the questions and answers are linked. After the approval they are imported, and the next synchronizations of that outbreak go straight in. This step is part of \"Receive data from Servers\"."
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_EMPTY": {
-      "translation": "No received outbreak needs mapping."
+      "translation": "No received outbreak is waiting for review."
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_TITLE": {
-      "translation": "Waiting for you"
+      "translation": "Waiting for review"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_APPROVED_TITLE": {
-      "translation": "Approved"
+      "translation": "Already reviewed"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_RECEIVED_FROM": {
       "translation": "Received from"
@@ -704,10 +704,10 @@
       "translation": "The records of this outbreak are kept aside until the approval."
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_MAP_BUTTON": {
-      "translation": "Map"
+      "translation": "Review"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_VIEW_BUTTON": {
-      "translation": "View mapping"
+      "translation": "View or change"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPING_TITLE": {
       "translation": "Outbreak mapping"
@@ -870,6 +870,207 @@
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_PARTIAL_MESSAGE": {
       "translation": "Mapping approved. {{imported}} record(s) imported and {{failed}} with errors. See the details in the notifications history."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_ONLY": {
+      "translation": "Only: {{name}}"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_SHOW_ALL": {
+      "translation": "Show all"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_REFRESH": {
+      "translation": "Refresh"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_SENT_EMPTY": {
+      "translation": "Nothing was sent yet. Use the synchronize button of the list to send now."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_RECEIVED_EMPTY": {
+      "translation": "No data was received yet."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_DETAILS": {
+      "translation": "Details"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_FULL_HISTORY": {
+      "translation": "Full history"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_ACTION_VIEW_HISTORY": {
+      "translation": "View latest synchronizations"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_ACTION_REVIEW_RECEIVED": {
+      "translation": "Records waiting: review received data"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_REVIEW_TITLE": {
+      "translation": "Review the received data"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_REVIEW_DESCRIPTION": {
+      "translation": "When an outbreak that does not exist here, or that uses another questionnaire, arrives, its records are kept aside and \"Receive data from Servers\" shows a notice. Open \"Review received data\", choose to which outbreak the data goes and link the questions. It is done once per outbreak; the next synchronizations go straight in."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_5": {
+      "translation": "Notice of the received outbreaks waiting for review, with a shortcut to \"Review received data\"."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PAGES_QUESTION": {
+      "translation": "What is the difference between the synchronization pages?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PAGES_ANSWER": {
+      "translation": "\"Send data to Servers\" is used by who sends: where the data goes and when. \"Receive data from Servers\" is used by who receives: the keys of who can send and the notice when a received outbreak needs a review. \"Review received data\" is a step of receiving: it says to which outbreak and to which questions the received data goes. \"Track synchronization\" is the full history of both sides."
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_IN_PROGRESS": {
+      "translation": "In progress"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_SENT": {
+      "translation": "Sent"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_SENT_WITH_WARNINGS": {
+      "translation": "Sent, with warnings from the server"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_NOTHING_RECEIVED": {
+      "translation": "No new data"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_PARTIAL": {
+      "translation": "Received, but some records did not get in"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_WAITING": {
+      "translation": "Received, part of it waiting for review"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_RECEIVED": {
+      "translation": "Received and imported"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_NOTHING_TO_SEND": {
+      "translation": "Nothing new to send"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_FAILED": {
+      "translation": "Failed"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_ALL_OUTBREAKS": {
+      "translation": "All outbreaks"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_SAVED_IN": {
+      "translation": "Outbreak of this instance where the data was saved"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_IMPORTED": {
+      "translation": "{{count}} imported"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_STAGED": {
+      "translation": "{{count}} waiting for review"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_STAGED_TOOLTIP": {
+      "translation": "The records are kept aside. Click to say where they go."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_FAILED": {
+      "translation": "{{count}} with errors"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_FAILED_TOOLTIP": {
+      "translation": "Click \"Details\" to see the error of each record."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_NOT_ALLOWED": {
+      "translation": "{{count}} refused"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_NOT_ALLOWED_TOOLTIP": {
+      "translation": "This access key is not allowed to send data of this outbreak. Change the outbreaks it can send in the table below."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_OTHER": {
+      "translation": "+ {{count}} general record(s)"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_OTHER_TOOLTIP": {
+      "translation": "Data that does not belong to an outbreak, such as locations, reference data and questionnaire texts."
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TABLE_TITLE": {
+      "translation": "Access keys"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TABLE_DESCRIPTION": {
+      "translation": "Who can send data here. Each row is a key used by another Go.Data instance or by the mobile app; use \"Add\" to create one and give the client ID and secret to who is going to send the data."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TABLE_TITLE": {
+      "translation": "Destination servers"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TABLE_DESCRIPTION": {
+      "translation": "Where this instance sends its data. Each row is an instance that receives the data of this one; use the synchronize button of the row to send now."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_MORE_OUTBREAKS": {
+      "translation": "Show {{count}} more outbreak(s)"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_FEWER_OUTBREAKS": {
+      "translation": "Show fewer outbreaks"
+    },
+    "LNG_SYNC_AREA_TAB_KEYS": {
+      "translation": "Access keys"
+    },
+    "LNG_SYNC_AREA_TAB_REVIEW": {
+      "translation": "Review"
+    },
+    "LNG_SYNC_AREA_TAB_HISTORY": {
+      "translation": "History"
+    },
+    "LNG_SYNC_AREA_TAB_HOW_IT_WORKS": {
+      "translation": "How it works"
+    },
+    "LNG_SYNC_AREA_TAB_SERVERS": {
+      "translation": "Destination servers"
+    },
+    "LNG_SYNC_AREA_TAB_REVIEW_COUNT": {
+      "translation": "{{count}} received outbreak(s) waiting for review"
+    },
+    "LNG_SYNC_AREA_HISTORY_RECEIVED_TITLE": {
+      "translation": "Received data history"
+    },
+    "LNG_SYNC_AREA_HISTORY_RECEIVED_DESCRIPTION": {
+      "translation": "Each sync shows who sent it, which outbreaks arrived and what happened to the records of each one."
+    },
+    "LNG_SYNC_AREA_HISTORY_SENT_TITLE": {
+      "translation": "Sent data history"
+    },
+    "LNG_SYNC_AREA_HISTORY_SENT_DESCRIPTION": {
+      "translation": "Each sync shows the server it went to, which outbreaks were sent and how it ended."
+    },
+    "LNG_SYNC_AREA_DOCS_TITLE": {
+      "translation": "Full documentation"
+    },
+    "LNG_SYNC_AREA_DOCS_DESCRIPTION": {
+      "translation": "The step by step of sending and receiving together, and the frequently asked questions."
+    },
+    "LNG_SYNC_AREA_DOCS_CARD": {
+      "translation": "Explains both ends of the synchronization: who sends and who receives."
+    },
+    "LNG_SYNC_AREA_DOCS_OPEN": {
+      "translation": "Open documentation"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_DESCRIPTION": {
+      "translation": "Received outbreaks whose records are kept aside. Open each one and say to which outbreak and to which questions the data goes."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_APPROVED_DESCRIPTION": {
+      "translation": "Outbreaks that already have a destination: their data goes straight in on the next synchronizations. Open one to see or change it."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_APPROVED_EMPTY": {
+      "translation": "No outbreak was reviewed yet."
+    },
+    "LNG_SYNC_AREA_STEPS_TITLE": {
+      "translation": "Step by step"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COLUMN_DATE": {
+      "translation": "Date"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COLUMN_FROM": {
+      "translation": "Sent by"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COLUMN_TO": {
+      "translation": "Sent to"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COLUMN_RESULT": {
+      "translation": "What happened"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_TOTAL": {
+      "translation": "{{count}} synchronization(s) in total"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_PAGE": {
+      "translation": "{{first}}-{{last}} of {{total}}"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_PREVIOUS": {
+      "translation": "Previous page"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_NEXT": {
+      "translation": "Next page"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_PARTIAL_DETAILS": {
+      "translation": "Received before this version: it shows only what was kept aside or failed, without the number of imported records."
     }
   }
 }

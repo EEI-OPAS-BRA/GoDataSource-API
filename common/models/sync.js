@@ -6,6 +6,7 @@ const app = require('../../server/server');
 const fs = require('fs');
 const dbSync = require('../../components/dbSync');
 const syncOutbreakMapping = require('../../components/syncOutbreakMapping');
+const syncReceivedSummary = require('../../components/syncReceivedSummary');
 const SyncClient = require('../../components/syncClient');
 const syncConfig = require('../../server/config.json').sync;
 const asyncActionsSettings = syncConfig.asyncActionsSettings;
@@ -150,6 +151,9 @@ module.exports = function (Sync) {
 
     // records received from another instance might belong to outbreaks that are mapped to the outbreaks of this instance
     let mappingContext = null;
+
+    // what happened to the received records of each outbreak, saved in the sync log
+    const receivedSummary = syncReceivedSummary.create();
 
     // check if backup should be triggered
     app.models.systemSettings
@@ -330,6 +334,9 @@ module.exports = function (Sync) {
                             )
                               .then((prepared) => {
                                 if (prepared.action !== 'import') {
+                                  if (prepared.action === 'stage') {
+                                    syncReceivedSummary.count(receivedSummary, collectionName, receivedRecord, syncReceivedSummary.STATE.STAGED);
+                                  }
                                   return doneRecord();
                                 }
 
@@ -340,6 +347,7 @@ module.exports = function (Sync) {
                                   dbSync.collectionsImportFilterMap[collectionName] &&
                                   !dbSync.collectionsImportFilterMap[collectionName](collectionName, collectionRecord, outbreakIDs)) {
                                   app.logger.debug(`Sync ${syncLogEntry.id}: Skipped syncing record (collection: ${collectionName}, id: ${collectionRecord.id}) as it's outbreak ID is not accepted`);
+                                  syncReceivedSummary.count(receivedSummary, collectionName, receivedRecord, syncReceivedSummary.STATE.NOT_ALLOWED);
                                   return doneRecord();
                                 }
 
@@ -411,12 +419,24 @@ module.exports = function (Sync) {
                                     app.logger.debug(`Sync ${syncLogEntry.id}: Failed syncing record (collection: ${collectionName}, id: ${collectionRecord.id}). Error: ${err.message}`);
                                     failedIds[collectionName].push(`ID: "${collectionRecord.id}". Error: ${err.message}`);
                                   }
+                                  syncReceivedSummary.count(
+                                    receivedSummary,
+                                    collectionName,
+                                    receivedRecord,
+                                    err ?
+                                      syncReceivedSummary.STATE.FAILED :
+                                      syncReceivedSummary.STATE.IMPORTED,
+                                    collectionName === 'outbreak' ?
+                                      collectionRecord.id :
+                                      collectionRecord.outbreakId
+                                  );
                                   return doneRecord();
                                 });
                               })
                               .catch((prepareError) => {
                                 app.logger.debug(`Sync ${syncLogEntry.id}: Failed mapping record (collection: ${collectionName}, id: ${receivedRecord.id}). Error: ${prepareError && prepareError.message ? prepareError.message : prepareError}`);
                                 failedIds[collectionName].push(`ID: "${receivedRecord.id}". Error: ${prepareError && prepareError.message ? prepareError.message : prepareError}`);
+                                syncReceivedSummary.count(receivedSummary, collectionName, receivedRecord, syncReceivedSummary.STATE.FAILED);
                                 return doneRecord();
                               });
                           });
@@ -514,6 +534,9 @@ module.exports = function (Sync) {
                   if (stagedMessage) {
                     err = (err || '') + stagedMessage;
                   }
+
+                  // what happened to the records of each outbreak; saved with the sync log
+                  syncLogEntry.receivedSummary = syncReceivedSummary.toLogFormat(receivedSummary, mappingContext);
 
                   // some/all collections could fail when copying related files
                   if (failedCollectionsRelatedFiles.length) {

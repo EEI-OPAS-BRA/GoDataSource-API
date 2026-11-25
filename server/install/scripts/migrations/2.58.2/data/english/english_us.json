@@ -77,7 +77,7 @@
       "translation": "By default, only what was created, changed or deleted since the last successful synchronization is sent."
     },
     "LNG_INFO_BANNER_SYNCED_DATA_NOTE_OUTBREAKS": {
-      "translation": "Only the data of the outbreaks allowed for the client credentials is sent."
+      "translation": "Only the data of the outbreaks accepted by the destination (or allowed in the key of the mobile app) is sent."
     },
     "LNG_LAYOUT_MENU_ITEM_DATA_SYNC_LABEL": {
       "translation": "Data synchronization"
@@ -97,83 +97,8 @@
     "LNG_UPSTREAM_SERVER_FIELD_LABEL_LAST_SYNC_STATUS": {
       "translation": "Last sync status"
     },
-    "LNG_UPSTREAM_SERVER_FIELD_LABEL_LAST_SYNC_LOGS": {
-      "translation": "Logs"
-    },
     "LNG_UPSTREAM_SERVER_LAST_SYNC_NEVER": {
       "translation": "Never synchronized"
-    },
-    "LNG_UPSTREAM_SERVER_LAST_SYNC_NO_MESSAGES": {
-      "translation": "No errors or warnings"
-    },
-    "LNG_UPSTREAM_SERVER_LAST_SYNC_VIEW_LOGS": {
-      "translation": "View logs"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_TITLE": {
-      "translation": "How sending data works"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_DESCRIPTION": {
-      "translation": "This instance sends its data to the servers registered on this page, using the access key each of them created."
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_1_TITLE": {
-      "translation": "Register the server"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_1_DESCRIPTION": {
-      "translation": "Add the URL of the other Go.Data instance and the client ID and secret generated there, in its \"Receive data from servers\" page."
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_2_TITLE": {
-      "translation": "Choose when to sync"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_2_DESCRIPTION": {
-      "translation": "Start it manually with the sync button (you can also send older data or everything), set an interval (in hours) for automatic sync, or enable \"Sync on every change\" to send changes as they happen."
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_3_TITLE": {
-      "translation": "Data is sent"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_3_DESCRIPTION": {
-      "translation": "This instance exports its data and sends it to the upstream server, which imports it. The first sync sends everything; the next ones send only what changed since the last successful sync."
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_4_TITLE": {
-      "translation": "Follow the result"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_4_DESCRIPTION": {
-      "translation": "The outcome (success, success with warnings or failed) shows up in \"Latest sends\", right below, and the full history stays in the \"Track synchronization\" page."
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_NOTE_1": {
-      "translation": "Synchronization is one-way: data is sent from this instance to the upstream server, not the other way around."
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_TITLE": {
-      "translation": "How receiving data works"
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_DESCRIPTION": {
-      "translation": "Other Go.Data instances and the mobile app send data here using an access key created on this page."
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_1_TITLE": {
-      "translation": "Create the application"
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_1_DESCRIPTION": {
-      "translation": "Give it a name. The client ID and secret can be generated automatically."
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_2_TITLE": {
-      "translation": "Choose the outbreaks"
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_2_DESCRIPTION": {
-      "translation": "Limit which outbreaks the application can access. Leave it empty to allow all outbreaks."
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_3_TITLE": {
-      "translation": "Share the credentials"
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_3_DESCRIPTION": {
-      "translation": "Use the client ID and secret when registering this instance in \"Send data to servers\" on the other Go.Data, or download the configuration file (QR code) to set up the mobile app."
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_4_TITLE": {
-      "translation": "Control the access"
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_4_DESCRIPTION": {
-      "translation": "Requests are accepted only while the application is active and the credentials match. Deactivate it to block access without deleting it."
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_NOTE_1": {
-      "translation": "Treat the client secret like a password: anyone who has it can connect to this instance as that application."
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_SECTION_GENERAL": {
       "translation": "General"
@@ -215,7 +140,7 @@
       "translation": "The address responded, but it does not look like a Go.Data server."
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_INVALID_CREDENTIALS": {
-      "translation": "The server is online, but the credentials were rejected. Check the client ID and secret, and if the application is active on the other instance."
+      "translation": "The server is online, but the credentials were rejected. Check the client ID and secret, and if the origin is active on the other instance."
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_API_NOT_FOUND": {
       "translation": "The server is online, but the API was not found at this address. The URL must end with /api."
@@ -227,31 +152,25 @@
       "translation": "Could not connect to the server."
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_URL_ALREADY_REGISTERED": {
-      "translation": "A server with this URL is already registered. To change it, use the pencil icon in the list, or use a different address."
+      "translation": "There is already a destination with this URL. To change it, open it in the list and use \"Edit\", or use another address."
     },
     "LNG_UPSTREAM_SERVER_LAST_SYNC_UP_TO_DATE": {
       "translation": "Already up to date"
-    },
-    "LNG_UPSTREAM_SERVER_LAST_SYNC_NO_NEW_DATA": {
-      "translation": "No new data to send"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_UP_TO_DATE_MESSAGE": {
       "translation": "The server is already up to date: there is no new data to send."
     },
     "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_TITLE": {
-      "translation": "Modify upstream server: {{name}}"
+      "translation": "Modify destination: {{name}}"
     },
     "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_ACTION_MODIFY_UPSTREAM_SERVER_SUCCESS_MESSAGE": {
-      "translation": "Upstream server updated"
+      "translation": "Destination saved"
     },
     "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_NOT_FOUND": {
-      "translation": "Upstream server not found. It may have been deleted."
+      "translation": "Destination not found. It may have been deleted."
     },
     "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_URL_CHANGED_NOTE": {
       "translation": "The URL was changed. The synchronization history is kept by URL, so the next synchronization will send all the data to this new address."
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_ACTION_MODIFY_SERVER": {
-      "translation": "Modify server"
     },
     "LNG_UPSTREAM_SERVER_FIELD_LABEL_CONNECTION": {
       "translation": "Connection"
@@ -356,7 +275,7 @@
       "translation": "Received"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_TITLE": {
-      "translation": "Synchronize with server"
+      "translation": "Synchronize with the destination"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_HINT_SINCE_LAST": {
       "translation": "Only the records created or updated since the last successful synchronization are sent. This is the usual option and the fastest one."
@@ -446,7 +365,7 @@
       "translation": "It wasn't possible to connect to the server \"{{name}}\". Check if it is online and if the URL is correct."
     },
     "LNG_SYNC_PROGRESS_DIALOG_ERROR_CREDENTIALS": {
-      "translation": "The server \"{{name}}\" didn't accept the credentials. Check the client ID and secret in the server settings."
+      "translation": "The destination \"{{name}}\" didn't accept the credentials. Check the client ID and secret when editing the destination."
     },
     "LNG_SYNC_PROGRESS_DIALOG_ERROR_SYNC": {
       "translation": "An error occurred while synchronizing the data."
@@ -455,7 +374,7 @@
       "translation": "Error details"
     },
     "LNG_SYNC_PROGRESS_DIALOG_LOG_HELP": {
-      "translation": "If the problem continues, contact the system administrator or the person responsible for the destination server."
+      "translation": "If the problem continues, contact the system administrator or the person responsible for the destination."
     },
     "LNG_SYNC_PROGRESS_DIALOG_VIEW_ERROR_BUTTON": {
       "translation": "View full log"
@@ -497,10 +416,10 @@
       "translation": "Going to receive data? Start by generating the keys"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_CALLOUT_DESCRIPTION": {
-      "translation": "Before anything is sent, the instance that receives the data must create a client application in \"Receive data from servers\". It generates the client ID and secret, the keys the other instance uses to connect. Without these keys, no server can send data here."
+      "translation": "Before anything is sent, the instance that receives the data must add an origin in \"Data receiving\". It generates the client ID and secret, the keys the other instance uses to connect. Without these keys, no instance can send data here."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_CALLOUT_BUTTON": {
-      "translation": "Generate keys in \"Receive data from servers\""
+      "translation": "Create the keys in \"Data receiving\""
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEPS_TITLE": {
       "translation": "Step by step setup"
@@ -518,13 +437,13 @@
       "translation": "Generate the access keys"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_1_DESCRIPTION": {
-      "translation": "In \"Receive data from Servers\", create a client application for each instance that will send data, with the type \"Go.Data instance\". Use the generate button to create the client ID and secret and the copy button to send them to the person responsible for the other instance. Keep the application active."
+      "translation": "In \"Data receiving\", add an origin for each instance that will send data, with the type \"Go.Data instance\". Use the generate button to create the client ID and secret and the copy button to send them to the person responsible for the other instance. Keep the origin active."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_2_TITLE": {
-      "translation": "Register the destination server"
+      "translation": "Add the destination"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_2_DESCRIPTION": {
-      "translation": "In \"Send data to servers\", register the instance that will receive the data: enter its URL and paste the client ID and secret generated in step 1. Use the \"Check server\" and \"Test credentials\" buttons to confirm everything is right before saving."
+      "translation": "In \"Data sending\", add the instance that will receive the data: enter its URL and paste the client ID and secret generated in step 1. Use the \"Check server\" and \"Test credentials\" buttons to confirm everything is right before saving."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_3_TITLE": {
       "translation": "Choose when and what to synchronize"
@@ -536,7 +455,7 @@
       "translation": "Track the result"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_4_DESCRIPTION": {
-      "translation": "\"Send data to Servers\" and \"Receive data from Servers\" show the latest synchronizations of each side. \"Track synchronization\" holds the full history, with the direction, the status and, when something goes wrong, the error details."
+      "translation": "The \"History\" tab of each origin and of each destination shows its synchronizations. \"Track synchronization\" holds the full history, with the direction, the status and, when something goes wrong, the error details."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_GO_TO": {
       "translation": "Go to"
@@ -548,13 +467,13 @@
       "translation": "What each page does"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_SEND_TITLE": {
-      "translation": "Send data to servers"
+      "translation": "Data sending"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_SEND_DESCRIPTION": {
-      "translation": "Used by the sending instance. It holds the servers the data goes to and the latest sends."
+      "translation": "Used by the sending instance. It lists the destinations the data goes to; on each one you see the accepted outbreaks, what was sent and can synchronize now."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_1": {
-      "translation": "Server registration with URL, credentials and connection test."
+      "translation": "Destination with URL, credentials and connection test."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_2": {
       "translation": "Automatic synchronization by interval or on every change."
@@ -566,22 +485,22 @@
       "translation": "Progress window with each step: connection, credentials, sending and result."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_TITLE": {
-      "translation": "Receive data from servers"
+      "translation": "Data receiving"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_DESCRIPTION": {
-      "translation": "Used by the receiving instance. It holds the keys of who can send data here, the received outbreaks waiting for review and the latest data received."
+      "translation": "Used by the receiving instance. It lists the origins that can send data here; on each one you decide its outbreaks, see what it sent and manage its key."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_1": {
-      "translation": "A client application for each instance that sends data."
+      "translation": "An origin for each instance or mobile app that sends data."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_2": {
       "translation": "Generation and copy of the client ID and secret."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_3": {
-      "translation": "Optional restriction of the outbreaks each client can send."
+      "translation": "Acceptance, pause or refusal of each outbreak the origin asks to send."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_4": {
-      "translation": "Access can be disabled at any time, without deleting the client."
+      "translation": "Access can be deactivated at any time, without deleting the origin."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_TITLE": {
       "translation": "Track synchronization"
@@ -608,7 +527,7 @@
       "translation": "Does the synchronization go both ways?"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_DIRECTION_ANSWER": {
-      "translation": "No. The data only goes from the sending instance to the receiving one. If both need to send data to each other, each one must register the other as a destination server."
+      "translation": "No. The data only goes from the sending instance to the receiving one. If both need to send data to each other, each one must add the other as a destination."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_WHAT_IS_SENT_QUESTION": {
       "translation": "What is sent in each synchronization?"
@@ -620,7 +539,7 @@
       "translation": "Can I send only some outbreaks?"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OUTBREAKS_ANSWER": {
-      "translation": "Yes. Choose the outbreaks in \"Outbreaks to synchronize\", in the server settings, or in the manual synchronization window. When a new outbreak is added to the list, the next synchronization sends all the data of the chosen outbreaks."
+      "translation": "Yes. Choose the outbreaks in \"Outbreaks to synchronize\", when editing the destination, or in the manual synchronization window. When a new outbreak is added to the list, the next synchronization sends all the data of the chosen outbreaks."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OVERWRITE_QUESTION": {
       "translation": "Can the synchronization delete or overwrite the receiver's data?"
@@ -638,7 +557,7 @@
       "translation": "The synchronization failed. What should I do?"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_FAILED_ANSWER": {
-      "translation": "The progress window shows the step that failed and why. The most common causes are the destination server being offline, a wrong URL or invalid or disabled credentials. The full details are in \"Track synchronization\". If the problem continues, contact the administrator of the destination server."
+      "translation": "The progress window shows the step that failed and why. The most common causes are the destination being offline, a wrong URL or invalid or disabled credentials. The full details are in the \"History\" tab of the destination and in \"Track synchronization\". If the problem continues, contact the administrator of the destination."
     },
     "LNG_INFO_BANNER_SYNCED_DATA_DATA_TEXTS": {
       "translation": "Texts of the questionnaires and lists"
@@ -667,20 +586,8 @@
     "LNG_SYNC_OUTBREAK_MAPPING_STATUS_REVIEW": {
       "translation": "New questions to review"
     },
-    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_INTRO_TITLE": {
-      "translation": "Say where the received data goes"
-    },
-    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_INTRO_DESCRIPTION": {
-      "translation": "When another instance (for example, a municipality) sends an outbreak that does not exist here with the same ID, or that uses a different questionnaire, the records of that outbreak are kept aside until you say to which outbreak they belong and how the questions and answers are linked. After the approval they are imported, and the next synchronizations of that outbreak go straight in. This step is part of \"Receive data from Servers\"."
-    },
-    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_EMPTY": {
-      "translation": "No received outbreak is waiting for review."
-    },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_TITLE": {
       "translation": "Questions to review"
-    },
-    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_APPROVED_TITLE": {
-      "translation": "Already reviewed"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_RECEIVED_FROM": {
       "translation": "Received from"
@@ -881,7 +788,7 @@
       "translation": "Refresh"
     },
     "LNG_SYNC_ACTIVITY_PANEL_SENT_EMPTY": {
-      "translation": "Nothing was sent yet. Use the synchronize button of the list to send now."
+      "translation": "Nothing was sent yet. Use \"Synchronize now\" to send."
     },
     "LNG_SYNC_ACTIVITY_PANEL_RECEIVED_EMPTY": {
       "translation": "No data was received yet."
@@ -892,9 +799,6 @@
     "LNG_SYNC_ACTIVITY_PANEL_FULL_HISTORY": {
       "translation": "Full history"
     },
-    "LNG_SYNC_ACTIVITY_PANEL_ACTION_VIEW_HISTORY": {
-      "translation": "View latest synchronizations"
-    },
     "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_ACTION_REVIEW_RECEIVED": {
       "translation": "Records waiting: review received data"
     },
@@ -902,16 +806,16 @@
       "translation": "Review the received data"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_REVIEW_DESCRIPTION": {
-      "translation": "When an outbreak that does not exist here, or that uses another questionnaire, arrives, its records are kept aside and \"Receive data from Servers\" shows a notice. Open \"Review received data\", choose to which outbreak the data goes and link the questions. It is done once per outbreak; the next synchronizations go straight in."
+      "translation": "When an outbreak that does not exist here, or that uses another questionnaire, arrives, its records are kept aside and the origin shows it in its \"Outbreaks\" tab. Use \"Review and accept\", choose to which outbreak the data goes and link the questions. It is done once per outbreak; the next synchronizations go straight in."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_5": {
-      "translation": "Notice of the received outbreaks waiting for review, with a shortcut to \"Review received data\"."
+      "translation": "Review of where the data of a new outbreak goes, in the \"Outbreaks\" tab of the origin."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PAGES_QUESTION": {
       "translation": "What is the difference between the synchronization pages?"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PAGES_ANSWER": {
-      "translation": "\"Send data to Servers\" is used by who sends: where the data goes and when. \"Receive data from Servers\" is used by who receives: the keys of who can send and the notice when a received outbreak needs a review. \"Review received data\" is a step of receiving: it says to which outbreak and to which questions the received data goes. \"Track synchronization\" is the full history of both sides."
+      "translation": "\"Data sending\" is used by who sends: the destinations, which outbreaks each one accepted and when the data goes. \"Data receiving\" is used by who receives: the origins, the decision about each outbreak and where its data goes. \"Track synchronization\" is the full history of both sides."
     },
     "LNG_SYNC_ACTIVITY_RESULT_IN_PROGRESS": {
       "translation": "In progress"
@@ -920,7 +824,7 @@
       "translation": "Sent"
     },
     "LNG_SYNC_ACTIVITY_RESULT_SENT_WITH_WARNINGS": {
-      "translation": "Sent, with warnings from the server"
+      "translation": "Sent, with warnings of the destination"
     },
     "LNG_SYNC_ACTIVITY_RESULT_NOTHING_RECEIVED": {
       "translation": "No new data"
@@ -965,7 +869,7 @@
       "translation": "{{count}} refused"
     },
     "LNG_SYNC_ACTIVITY_PANEL_COUNT_NOT_ALLOWED_TOOLTIP": {
-      "translation": "This access key is not allowed to send data of this outbreak. Change the outbreaks it can send in the table below."
+      "translation": "This origin isn't allowed to send data of this outbreak. Decide it in the \"Outbreaks\" tab of the origin."
     },
     "LNG_SYNC_ACTIVITY_PANEL_OTHER": {
       "translation": "+ {{count}} general record(s)"
@@ -974,16 +878,16 @@
       "translation": "Data that does not belong to an outbreak, such as locations, reference data and questionnaire texts."
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TABLE_TITLE": {
-      "translation": "Clients"
+      "translation": "Origins"
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TABLE_DESCRIPTION": {
-      "translation": "Go.Data instances and mobile apps that can send data here. Click the name to see the outbreaks and the history of each client; use \"Add\" to create the key of a new client."
+      "translation": "Go.Data instances and mobile apps that send data here. Open an origin to decide its outbreaks, see what it sent and manage its access key."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TABLE_TITLE": {
-      "translation": "Destination servers"
+      "translation": "Destinations"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TABLE_DESCRIPTION": {
-      "translation": "Where this instance sends its data. Click the name to see which outbreaks each server accepted and the history of what was sent."
+      "translation": "Instances this one sends its data to. Open a destination to see which outbreaks it accepted, what was sent and to synchronize now."
     },
     "LNG_SYNC_ACTIVITY_PANEL_MORE_OUTBREAKS": {
       "translation": "Show {{count}} more outbreak(s)"
@@ -991,59 +895,8 @@
     "LNG_SYNC_ACTIVITY_PANEL_FEWER_OUTBREAKS": {
       "translation": "Show fewer outbreaks"
     },
-    "LNG_SYNC_AREA_TAB_KEYS": {
-      "translation": "Clients"
-    },
-    "LNG_SYNC_AREA_TAB_REVIEW": {
-      "translation": "Pending"
-    },
-    "LNG_SYNC_AREA_TAB_HISTORY": {
-      "translation": "History"
-    },
-    "LNG_SYNC_AREA_TAB_HOW_IT_WORKS": {
-      "translation": "How it works"
-    },
-    "LNG_SYNC_AREA_TAB_SERVERS": {
-      "translation": "Destination servers"
-    },
-    "LNG_SYNC_AREA_TAB_REVIEW_COUNT": {
-      "translation": "{{count}} item(s) waiting for your decision"
-    },
-    "LNG_SYNC_AREA_HISTORY_RECEIVED_TITLE": {
-      "translation": "Received data history"
-    },
-    "LNG_SYNC_AREA_HISTORY_RECEIVED_DESCRIPTION": {
-      "translation": "Each sync shows who sent it, which outbreaks arrived and what happened to the records of each one."
-    },
-    "LNG_SYNC_AREA_HISTORY_SENT_TITLE": {
-      "translation": "Sent data history"
-    },
-    "LNG_SYNC_AREA_HISTORY_SENT_DESCRIPTION": {
-      "translation": "Each sync shows the server it went to, which outbreaks were sent and how it ended."
-    },
-    "LNG_SYNC_AREA_DOCS_TITLE": {
-      "translation": "Full documentation"
-    },
-    "LNG_SYNC_AREA_DOCS_DESCRIPTION": {
-      "translation": "The step by step of sending and receiving together, and the frequently asked questions."
-    },
-    "LNG_SYNC_AREA_DOCS_CARD": {
-      "translation": "Explains both ends of the synchronization: who sends and who receives."
-    },
-    "LNG_SYNC_AREA_DOCS_OPEN": {
-      "translation": "Open documentation"
-    },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_DESCRIPTION": {
       "translation": "Accepted outbreaks that got new questions, or outbreaks received without a request (older instances). Say where their answers go."
-    },
-    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_APPROVED_DESCRIPTION": {
-      "translation": "Outbreaks that already have a destination: their data goes straight in on the next synchronizations. Open one to see or change it."
-    },
-    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_APPROVED_EMPTY": {
-      "translation": "No outbreak was reviewed yet."
-    },
-    "LNG_SYNC_AREA_STEPS_TITLE": {
-      "translation": "Step by step"
     },
     "LNG_SYNC_ACTIVITY_PANEL_COLUMN_DATE": {
       "translation": "Date"
@@ -1076,7 +929,7 @@
       "translation": "Type of key"
     },
     "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_TYPE_DESCRIPTION": {
-      "translation": "Go.Data instance: the other instance asks to send each outbreak and you accept or refuse it in \"Pending\" or on the page of the client. Mobile app: the phone sends the outbreaks chosen in \"Access\"."
+      "translation": "Go.Data instance: the other instance asks to send each outbreak and you accept or refuse it in the \"Outbreaks\" tab of the origin. Mobile app: the phone sends the outbreaks chosen in \"Access\"."
     },
     "LNG_SYSTEM_CLIENT_APPLICATION_TYPE_INSTANCE": {
       "translation": "Go.Data instance (asks for each outbreak)"
@@ -1088,10 +941,7 @@
       "translation": "Accept automatically the outbreaks that already exist here"
     },
     "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_AUTO_ACCEPT_DESCRIPTION": {
-      "translation": "Outbreaks that exist in this instance with the same ID (e.g. created here and copied to the other instance) are accepted without waiting for your decision. The others wait in \"Pending\"."
-    },
-    "LNG_SYNC_AREA_TAB_SERVERS_COUNT": {
-      "translation": "{{count}} outbreak(s) waiting for the approval of the destination server"
+      "translation": "Outbreaks that exist in this instance with the same ID (e.g. created here and copied to the other instance) are accepted without waiting for your decision. The others wait in the \"Outbreaks\" tab of the origin."
     },
     "LNG_SYNC_OUTBREAK_ACCESS_STATUS_PENDING": {
       "translation": "Waiting for decision"
@@ -1181,7 +1031,7 @@
       "translation": "Approval of the outbreaks"
     },
     "LNG_SYNC_UPSTREAM_ACCESS_DESCRIPTION": {
-      "translation": "Each destination server decides which outbreaks of this instance it accepts. Only the accepted outbreaks are sent."
+      "translation": "Each destination decides which outbreaks of this instance it accepts. Only the accepted outbreaks are sent."
     },
     "LNG_SYNC_UPSTREAM_ACCESS_CHECKED_AT": {
       "translation": "Checked on {{date}}"
@@ -1193,16 +1043,16 @@
       "translation": "Check now"
     },
     "LNG_SYNC_UPSTREAM_ACCESS_ERROR": {
-      "translation": "The server couldn't be checked; showing the last known decision."
+      "translation": "The destination couldn't be checked; showing the last known decision."
     },
     "LNG_SYNC_UPSTREAM_ACCESS_LEGACY": {
-      "translation": "This server receives the outbreaks without approval (older version or key of the mobile app)."
+      "translation": "This destination receives the outbreaks without approval (older version or key of the mobile app)."
     },
     "LNG_SYNC_UPSTREAM_ACCESS_PENDING": {
       "translation": "{{count}} waiting for approval"
     },
     "LNG_SYNC_UPSTREAM_ACCESS_PENDING_HINT": {
-      "translation": "The data of these outbreaks is sent only after the destination server accepts them."
+      "translation": "The data of these outbreaks is only sent after the destination accepts them."
     },
     "LNG_SYNC_UPSTREAM_ACCESS_ACCEPTED": {
       "translation": "{{count}} accepted: sent on the synchronizations"
@@ -1220,10 +1070,10 @@
       "translation": "{{name}} didn't accept any outbreak of this instance yet. The data is sent as soon as they are accepted."
     },
     "LNG_SYNC_ACTIVITY_RESULT_WAITING_ACCESS": {
-      "translation": "Nothing sent: waiting for the approval of the server"
+      "translation": "Nothing sent: waiting for the approval of the destination"
     },
     "LNG_SYNC_ACTIVITY_RESULT_NOTHING_ACCEPTED": {
-      "translation": "Nothing sent: the server didn't accept any outbreak"
+      "translation": "Nothing sent: no outbreak accepted by the destination"
     },
     "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSED_TITLE": {
       "translation": "Paused"
@@ -1271,22 +1121,19 @@
       "translation": "Why isn't my data being sent?"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PENDING_ANSWER": {
-      "translation": "The destination server decides which outbreaks it receives. In \"Send data to Servers\", the \"Approval of the outbreaks\" column and the page of each server show what is waiting for approval, what was accepted and what was refused or paused. Only the accepted outbreaks are sent; the others are sent as soon as the destination server accepts or resumes them."
+      "translation": "The destination decides which outbreaks it receives. In \"Data sending\", the \"Approval of the outbreaks\" column and the \"Outbreaks\" tab of each destination show what is waiting for approval, what was accepted and what was refused or paused. Only the accepted outbreaks are sent; the others are sent as soon as the destination accepts or resumes them."
     },
     "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_INBOX_EMPTY": {
-      "translation": "Nothing is waiting for your decision. The accepted, paused and refused outbreaks are on the page of each client."
+      "translation": "Nothing waiting for your decision. The accepted, paused and refused outbreaks are on the page of each origin."
     },
     "LNG_SYNC_CLIENT_OPEN": {
-      "translation": "Open client"
-    },
-    "LNG_SYNC_CLIENT_EDIT_BUTTON": {
-      "translation": "Edit key"
+      "translation": "Open origin"
     },
     "LNG_SYNC_CLIENT_KEY_TITLE": {
       "translation": "Access key"
     },
     "LNG_SYNC_CLIENT_KEY_DESCRIPTION": {
-      "translation": "How this client connects and what it can send."
+      "translation": "How this origin connects and what it can send."
     },
     "LNG_SYNC_CLIENT_TYPE_LEGACY": {
       "translation": "Older key (no type)"
@@ -1304,13 +1151,13 @@
       "translation": "Received outbreaks"
     },
     "LNG_SYNC_CLIENT_NO_REQUESTS": {
-      "translation": "This client sends the outbreaks chosen in its key, without requests. Only the outbreaks whose destination must be reviewed are listed here."
+      "translation": "This origin sends the outbreaks chosen in its key, without asking. Only the outbreaks that need a review of where the data goes are listed here."
     },
     "LNG_SYNC_CLIENT_HISTORY_TITLE": {
-      "translation": "Data received from this client"
+      "translation": "Data received from this origin"
     },
     "LNG_SYNC_CLIENT_HISTORY_DESCRIPTION": {
-      "translation": "What this client sent, outbreak by outbreak, and what happened to the records."
+      "translation": "What this origin sent, outbreak by outbreak, and what happened to the records."
     },
     "LNG_SYNC_CLIENT_COLUMN_PENDING": {
       "translation": "Waiting for decision"
@@ -1321,11 +1168,8 @@
     "LNG_SYNC_CLIENT_OUTBREAKS_BY_REQUEST": {
       "translation": "Decided by request"
     },
-    "LNG_SYNC_UPSTREAM_SERVER_EDIT_BUTTON": {
-      "translation": "Edit server"
-    },
     "LNG_SYNC_UPSTREAM_SERVER_DATA_TITLE": {
-      "translation": "Destination server"
+      "translation": "Destination"
     },
     "LNG_SYNC_UPSTREAM_SERVER_DATA_DESCRIPTION": {
       "translation": "Where and when this instance sends its data."
@@ -1337,13 +1181,13 @@
       "translation": "No automatic sending by interval"
     },
     "LNG_SYNC_UPSTREAM_SERVER_HISTORY_TITLE": {
-      "translation": "Data sent to this server"
+      "translation": "Sent to this destination"
     },
     "LNG_SYNC_UPSTREAM_SERVER_HISTORY_DESCRIPTION": {
-      "translation": "What this instance sent to this server and how it ended."
+      "translation": "What this instance sent to this destination and how it went."
     },
     "LNG_SYNC_UPSTREAM_SERVER_NOT_FOUND": {
-      "translation": "Destination server not found."
+      "translation": "Destination not found."
     },
     "LNG_SYNC_UPSTREAM_SERVER_COLUMN_APPROVAL": {
       "translation": "Approval of the outbreaks"
@@ -1361,7 +1205,7 @@
       "translation": "{{count}} refused / paused"
     },
     "LNG_SYNC_UPSTREAM_SERVER_OPEN": {
-      "translation": "Open server"
+      "translation": "Open destination"
     },
     "LNG_SYNC_UPSTREAM_SERVER_APPROVAL_UNREACHABLE": {
       "translation": "No answer on the last check"
@@ -1371,6 +1215,210 @@
     },
     "LNG_SYNC_ACTIVITY_PANEL_SHOW_EMPTY_SENT": {
       "translation": "Show syncs without new data"
+    },
+    "LNG_SYNC_CLIENT_TITLE": {
+      "translation": "Origin"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_TITLE": {
+      "translation": "Destination"
+    },
+    "LNG_SYNC_TAB_OUTBREAKS": {
+      "translation": "Outbreaks"
+    },
+    "LNG_SYNC_TAB_HISTORY": {
+      "translation": "History"
+    },
+    "LNG_SYNC_TAB_SETTINGS": {
+      "translation": "Settings"
+    },
+    "LNG_SYNC_TAB_WAITING_COUNT": {
+      "translation": "{{count}} waiting for your decision"
+    },
+    "LNG_SYNC_TAB_WAITING_SERVER_COUNT": {
+      "translation": "{{count}} waiting for the decision of the destination"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_AUTO_ON": {
+      "translation": "Automatic sync on"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_AUTO_OFF": {
+      "translation": "Automatic sync off"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_LAST_SYNC": {
+      "translation": "Last send: {{date}}"
+    },
+    "LNG_SYNC_CREDENTIALS_SECRET": {
+      "translation": "Client secret"
+    },
+    "LNG_SYNC_CREDENTIALS_SHOW": {
+      "translation": "Show"
+    },
+    "LNG_SYNC_CREDENTIALS_HIDE": {
+      "translation": "Hide"
+    },
+    "LNG_SYNC_CREDENTIALS_COPY": {
+      "translation": "Copy"
+    },
+    "LNG_SYNC_CREDENTIALS_COPIED": {
+      "translation": "Copied"
+    },
+    "LNG_SYNC_ACTIONS_TITLE": {
+      "translation": "Actions"
+    },
+    "LNG_SYNC_CLIENT_ACTIONS_DESCRIPTION": {
+      "translation": "What can be done with this origin."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTIONS_DESCRIPTION": {
+      "translation": "What can be done with this destination."
+    },
+    "LNG_SYNC_DANGER_TITLE": {
+      "translation": "Danger zone"
+    },
+    "LNG_SYNC_DANGER_DESCRIPTION": {
+      "translation": "Actions that can't be undone."
+    },
+    "LNG_SYNC_ACTION_BUTTON_ENABLE": {
+      "translation": "Activate"
+    },
+    "LNG_SYNC_ACTION_BUTTON_DISABLE": {
+      "translation": "Deactivate"
+    },
+    "LNG_SYNC_ACTION_BUTTON_EDIT": {
+      "translation": "Edit"
+    },
+    "LNG_SYNC_ACTION_BUTTON_DOWNLOAD": {
+      "translation": "Download"
+    },
+    "LNG_SYNC_ACTION_BUTTON_SYNC": {
+      "translation": "Synchronize"
+    },
+    "LNG_SYNC_ACTION_BUTTON_DELETE": {
+      "translation": "Delete"
+    },
+    "LNG_SYNC_CLIENT_ACTION_EDIT_TITLE": {
+      "translation": "Edit origin"
+    },
+    "LNG_SYNC_CLIENT_ACTION_EDIT_DESCRIPTION": {
+      "translation": "Change the name, the type of the key and how the outbreaks are accepted."
+    },
+    "LNG_SYNC_CLIENT_ACTION_DISABLE_TITLE": {
+      "translation": "Deactivate origin"
+    },
+    "LNG_SYNC_CLIENT_ACTION_DISABLE_DESCRIPTION": {
+      "translation": "The origin can no longer send data. Nothing that already arrived is deleted, and it can be activated again at any time."
+    },
+    "LNG_SYNC_CLIENT_ACTION_ENABLE_TITLE": {
+      "translation": "Activate origin"
+    },
+    "LNG_SYNC_CLIENT_ACTION_ENABLE_DESCRIPTION": {
+      "translation": "The origin can send data here again."
+    },
+    "LNG_SYNC_CLIENT_ACTION_DOWNLOAD_TITLE": {
+      "translation": "Configuration file"
+    },
+    "LNG_SYNC_CLIENT_ACTION_DOWNLOAD_DESCRIPTION": {
+      "translation": "File with the address of this instance and the credentials, to set up the mobile app. Only available while the origin is active."
+    },
+    "LNG_SYNC_CLIENT_ACTION_DELETE_TITLE": {
+      "translation": "Delete origin"
+    },
+    "LNG_SYNC_CLIENT_ACTION_DELETE_DESCRIPTION": {
+      "translation": "The key stops existing and the origin can no longer send data. The data already received is kept."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_SYNC_TITLE": {
+      "translation": "Synchronize now"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_SYNC_DESCRIPTION": {
+      "translation": "Send now the data of the outbreaks accepted by this destination, without waiting for the automatic sync."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_DISABLE_TITLE": {
+      "translation": "Turn off automatic sync"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_DISABLE_DESCRIPTION": {
+      "translation": "The automatic sends (by interval and on every change) stop. You can still synchronize manually."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_ENABLE_TITLE": {
+      "translation": "Turn on automatic sync"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_ENABLE_DESCRIPTION": {
+      "translation": "The data is sent again by interval and on every change, as configured."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_EDIT_TITLE": {
+      "translation": "Edit destination"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_EDIT_DESCRIPTION": {
+      "translation": "Change the address, the credentials, the interval and the outbreaks to sync."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_DELETE_TITLE": {
+      "translation": "Delete destination"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_DELETE_DESCRIPTION": {
+      "translation": "This instance stops sending data to it. Nothing is deleted on the destination."
+    },
+    "LNG_LAYOUT_MENU_ITEM_CLIENT_APPLICATIONS_LABEL": {
+      "translation": "Data receiving"
+    },
+    "LNG_LAYOUT_MENU_ITEM_UPSTREAM_SERVERS_LABEL": {
+      "translation": "Data sending"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TITLE": {
+      "translation": "Data receiving"
+    },
+    "LNG_APP_PAGE_SYSTEM_CLIENT_APPLICATIONS": {
+      "translation": "Data receiving"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TITLE": {
+      "translation": "Data sending"
+    },
+    "LNG_SYNC_ADD_ORIGIN": {
+      "translation": "Add origin"
+    },
+    "LNG_SYNC_ADD_DESTINATION": {
+      "translation": "Add destination"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_TITLE": {
+      "translation": "New origin"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_ACTION_CREATE_UPSTREAM_SERVER_BUTTON": {
+      "translation": "Create origin"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_ACTION_CREATE_CLIENT_APPLICATION_SUCCESS_MESSAGE": {
+      "translation": "Origin created"
+    },
+    "LNG_PAGE_MODIFY_SYSTEM_CLIENT_APPLICATION_ACTION_MODIFY_CLIENT_APPLICATION_SUCCESS_MESSAGE": {
+      "translation": "Origin saved"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_ACTION_DELETE_SUCCESS_MESSAGE": {
+      "translation": "Origin deleted"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_ACTION_TOGGLE_ENABLED_SUCCESS_MESSAGE": {
+      "translation": "Origin updated"
+    },
+    "LNG_DIALOG_CONFIRM_DELETE_CLIENT_APPLICATION": {
+      "translation": "Are you sure you want to delete the origin \"{{name}}\"?"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_TITLE": {
+      "translation": "New destination"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_ACTION_CREATE_UPSTREAM_SERVER_BUTTON": {
+      "translation": "Create destination"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_ACTION_CREATE_UPSTREAM_SERVER_SUCCESS_MESSAGE": {
+      "translation": "Destination created"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_ACTION_DELETE_SUCCESS_MESSAGE": {
+      "translation": "Destination deleted"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_ACTION_TOGGLE_SYNC_ENABLED_SUCCESS_MESSAGE": {
+      "translation": "Automatic sync updated"
+    },
+    "LNG_DIALOG_CONFIRM_DELETE_SYSTEM_UPSTREAM_SERVER": {
+      "translation": "Are you sure you want to delete the destination \"{{name}}\"?"
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_CREDENTIALS_CLIENT_ID_DESCRIPTION": {
+      "translation": "Client ID created in \"Data receiving\" of the other Go.Data instance."
+    },
+    "LNG_UPSTREAM_SERVER_FIELD_LABEL_CREDENTIALS_CLIENT_SECRET_DESCRIPTION": {
+      "translation": "Client secret created in \"Data receiving\" of the other Go.Data instance."
     }
   }
 }

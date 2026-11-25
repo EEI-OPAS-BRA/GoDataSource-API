@@ -1362,6 +1362,15 @@
     },
     "LNG_SYNC_UPSTREAM_SERVER_OPEN": {
       "translation": "Open server"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_APPROVAL_UNREACHABLE": {
+      "translation": "No answer on the last check"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_SHOW_EMPTY_RECEIVED": {
+      "translation": "Show syncs without new data"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_SHOW_EMPTY_SENT": {
+      "translation": "Show syncs without new data"
     }
   }
 }

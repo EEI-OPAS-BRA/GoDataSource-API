@@ -508,8 +508,9 @@ function refreshSenderState(upstreamServer, params) {
       return getSentOutbreaks(upstreamServer, params.requestedOutbreakIds)
         .then((outbreaks) => {
           const decided = _.keyBy(response.outbreaks || [], 'outbreakId');
+          // new outbreaks & the ones still waiting for a decision (their numbers & questionnaires must be the current ones when the receiver decides)
           const toRequest = outbreaks
-            .filter((outbreak) => !decided[outbreak.id])
+            .filter((outbreak) => !decided[outbreak.id] || decided[outbreak.id].status === STATUS.PENDING)
             .map((outbreak) => outbreak.id);
 
           return (
@@ -537,7 +538,8 @@ function refreshSenderState(upstreamServer, params) {
     })
     .then((state) => saveSenderState(upstreamServer, Object.assign(state, {
       checkedAt: now,
-      error: null
+      error: null,
+      errorCode: null
     }, requestedAt ? {
       requestedAt
     } : {}), params.options))
@@ -553,6 +555,18 @@ function refreshSenderState(upstreamServer, params) {
     });
 }
 
+/**
+ * The upstream server couldn't be reached / didn't accept the credentials: the last decisions are kept, with the reason
+ * @param {Object} upstreamServer
+ * @param {Object} reason {code: e.g. INVALID_CREDENTIALS / CONNECTION_REFUSED, message}
+ */
+function saveSenderError(upstreamServer, reason, options) {
+  return saveSenderState(upstreamServer, {
+    error: reason.message || reason.code || 'error',
+    errorCode: reason.code || null
+  }, options);
+}
+
 module.exports = {
   STATUS,
   MODE,
@@ -565,5 +579,6 @@ module.exports = {
   requestReceivedOutbreak,
   acceptReviewedOutbreak,
   buildRequestPayload,
-  refreshSenderState
+  refreshSenderState,
+  saveSenderError
 };

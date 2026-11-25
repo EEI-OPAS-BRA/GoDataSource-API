@@ -1033,7 +1033,16 @@ module.exports = function (Sync) {
                   syncLogEntry.syncStepErrorDetail = failedCheck.code;
                 }
 
-                throw err;
+                // the approval of the outbreaks displayed by this instance must say why it isn't up to date
+                return syncOutbreakAccess
+                  .saveSenderError(upstreamServerEntry, {
+                    code: failedCheck ? failedCheck.errorCode : undefined,
+                    message: err && err.message ? err.message : String(err)
+                  }, options)
+                  .catch(() => null)
+                  .then(() => {
+                    throw err;
+                  });
               });
           });
       })

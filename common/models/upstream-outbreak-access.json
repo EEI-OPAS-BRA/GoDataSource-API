@@ -36,6 +36,10 @@
     "error": {
       "type": "string",
       "description": "Why the decisions couldn't be retrieved the last time"
+    },
+    "errorCode": {
+      "type": "string",
+      "description": "Why the upstream server couldn't be reached / didn't accept the credentials (e.g. CONNECTION_REFUSED, INVALID_CREDENTIALS)"
     }
   },
   "indexes": {

@@ -42,6 +42,12 @@ const SyncClient = function (upstreamServer, syncLogEntry) {
   this.upstreamServerURL = upstreamServer.url;
   this.syncLogEntry = syncLogEntry;
 
+  // when this instance sends its data (hours between syncs, 0: only manually)
+  this.schedule = {
+    syncInterval: Number(upstreamServer.syncInterval) > 0 ? Number(upstreamServer.syncInterval) : 0,
+    syncEnabled: upstreamServer.syncEnabled !== false
+  };
+
   /**
    * Send request to server
    * @param url
@@ -234,7 +240,9 @@ const SyncClient = function (upstreamServer, syncLogEntry) {
   this.getOutbreakAccess = function () {
     let requestOptions = Object.assign({}, this.options, {
       method: 'GET',
-      responseType: 'json'
+      responseType: 'json',
+      // when this instance sends its data, so the upstream server can display it
+      searchParams: this.schedule
     });
 
     let that = this;

@@ -127,7 +127,114 @@ const chooseOutbreaksExplicitly = (callback) => {
     .catch(callback);
 };
 
+/**
+ * The keys know when data was sent with them the last time, and the outbreaks when their data arrived (displayed in the lists)
+ * Saved from now on by each sync; the ones before are taken from the sync logs
+ */
+const saveLastReceivedSyncs = (callback) => {
+  MongoDBHelper
+    .getMongoDBConnection()
+    .then((dbConn) => {
+      const logs = dbConn.collection('databaseActionLog');
+      const clientApplication = dbConn.collection('clientApplication');
+      const syncOutbreakAccess = dbConn.collection('syncOutbreakAccess');
+      const finished = {
+        type: 'sync',
+        deleted: false,
+        syncClientId: {
+          $exists: true,
+          $not: /^webUser/
+        },
+        actionCompletionDate: {
+          $exists: true
+        }
+      };
+
+      // last sync of each key
+      return logs
+        .aggregate([{
+          $match: finished
+        }, {
+          $sort: {
+            actionCompletionDate: -1
+          }
+        }, {
+          $group: {
+            _id: '$syncClientId',
+            lastSyncAt: {
+              $first: '$actionCompletionDate'
+            },
+            lastSyncStatus: {
+              $first: '$status'
+            }
+          }
+        }])
+        .toArray()
+        .then((lastSyncs) => Promise.all(lastSyncs.map((lastSync) => clientApplication.updateOne({
+          'credentials.clientId': lastSync._id,
+          lastSyncAt: {
+            $exists: false
+          }
+        }, {
+          $set: {
+            lastSyncAt: lastSync.lastSyncAt,
+            lastSyncStatus: lastSync.lastSyncStatus
+          }
+        }))))
+
+        // last data of each outbreak
+        .then(() => logs
+          .aggregate([{
+            $match: Object.assign({
+              'receivedSummary.outbreaks.0': {
+                $exists: true
+              }
+            }, finished)
+          }, {
+            $unwind: '$receivedSummary.outbreaks'
+          }, {
+            $match: {
+              $or: [{
+                'receivedSummary.outbreaks.imported': {
+                  $gt: 0
+                }
+              }, {
+                'receivedSummary.outbreaks.staged': {
+                  $gt: 0
+                }
+              }]
+            }
+          }, {
+            $group: {
+              _id: {
+                clientId: '$syncClientId',
+                sourceOutbreakId: '$receivedSummary.outbreaks.sourceOutbreakId'
+              },
+              lastReceivedAt: {
+                $max: '$actionCompletionDate'
+              }
+            }
+          }])
+          .toArray()
+        )
+        .then((lastReceived) => Promise.all(lastReceived.map((item) => syncOutbreakAccess.updateMany({
+          clientId: item._id.clientId,
+          sourceOutbreakId: item._id.sourceOutbreakId,
+          lastReceivedAt: {
+            $exists: false
+          }
+        }, {
+          $set: {
+            lastReceivedAt: item.lastReceivedAt
+          }
+        }))));
+    })
+    .then(() => callback())
+    .catch(callback);
+};
+
 module.exports = {
   disableSyncOnEveryChange,
-  chooseOutbreaksExplicitly
+  chooseOutbreaksExplicitly,
+  saveLastReceivedSyncs
 };

@@ -1467,6 +1467,39 @@
     },
     "LNG_OUTBREAK_FIELD_LABEL_CASE_FOLLOWUP_TEMPLATE": {
       "translation": "Case follow-up template"
+    },
+    "LNG_SYNC_CLIENT_COLUMN_SCHEDULE": {
+      "translation": "Sends data"
+    },
+    "LNG_SYNC_CLIENT_COLUMN_LAST_SYNC": {
+      "translation": "Last received"
+    },
+    "LNG_SYNC_CLIENT_SCHEDULE_MOBILE": {
+      "translation": "When the app is synced"
+    },
+    "LNG_SYNC_CLIENT_SCHEDULE_UNKNOWN": {
+      "translation": "Not informed yet (informed by the origin when it syncs)"
+    },
+    "LNG_SYNC_CLIENT_SCHEDULE_PAUSED": {
+      "translation": "Paused at the origin"
+    },
+    "LNG_SYNC_CLIENT_LAST_SYNC_AT": {
+      "translation": "Last received {{date}}"
+    },
+    "LNG_SYNC_CLIENT_LAST_SYNC_NEVER": {
+      "translation": "Nothing received yet"
+    },
+    "LNG_SYNC_CLIENT_LAST_SYNC_FAILED": {
+      "translation": "failed"
+    },
+    "LNG_SYNC_CLIENT_LAST_SYNC_LATE": {
+      "translation": "late"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_LAST_RECEIVED_AT": {
+      "translation": "Last data received {{date}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_NOTHING_RECEIVED": {
+      "translation": "No data received yet"
     }
   }
 }

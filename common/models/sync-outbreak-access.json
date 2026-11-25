@@ -19,6 +19,10 @@
     "sourceOutbreakName": {
       "type": "string"
     },
+    "lastReceivedAt": {
+      "type": "date",
+      "description": "When data of the outbreak arrived the last time"
+    },
     "sourceDisease": {
       "type": "string",
       "description": "Reference data token of the disease of the outbreak"

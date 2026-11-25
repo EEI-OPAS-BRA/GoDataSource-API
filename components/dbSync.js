@@ -968,6 +968,15 @@ const syncRecord = function (app, logger, model, record, options, done) {
           });
         }
 
+        // the users received from another Go.Data instance never have roles or a password that can be used here
+        // (the instance removes them before sending, but the received data can't be trusted)
+        if (
+          options.snapshotFromClient &&
+          model.name === 'user'
+        ) {
+          alterUserData([record]);
+        }
+
         log('debug', `Record not found (id: ${record.id}), creating record.`);
         return model
           .create(record, options)
@@ -986,6 +995,20 @@ const syncRecord = function (app, logger, model, record, options, done) {
         ['team', 'user'].includes(model.name)
       ) {
         log('debug', `Record found (id: ${record.id}) but it is a ${model.name} in a sync from a client instance. Skipped record`);
+        return Promise.resolve({
+          record: dbRecord,
+          flag: syncRecordFlags.UNTOUCHED
+        });
+      }
+
+      // if we are in a sync action from another Go.Data instance, the shared data of this instance (reference data, locations, texts, icons) isn't changed
+      // e.g. a label changed by a municipality would change it here too; new records are still created
+      if (
+        options.snapshotFromClient &&
+        ['referenceData', 'location', 'languageToken', 'icon'].includes(model.name) &&
+        !dbRecord.outbreakId
+      ) {
+        log('debug', `Record found (id: ${record.id}) but it is a ${model.name} of this instance in a sync from a client instance. Skipped record`);
         return Promise.resolve({
           record: dbRecord,
           flag: syncRecordFlags.UNTOUCHED

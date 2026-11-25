@@ -33,6 +33,26 @@
     "autoAcceptSameIdOutbreaks": {
       "type": "boolean",
       "description": "Keys of other instances: accept automatically the outbreaks that exist in this instance with the same id"
+    },
+    "senderSyncInterval": {
+      "type": "number",
+      "description": "Keys of other instances: hours between the syncs of the instance (0: only manually); told by the instance when it syncs"
+    },
+    "senderSyncEnabled": {
+      "type": "boolean",
+      "description": "Keys of other instances: the instance has its syncs enabled; told by the instance when it syncs"
+    },
+    "senderScheduleReportedAt": {
+      "type": "date",
+      "description": "Keys of other instances: when the instance told when it syncs"
+    },
+    "lastSyncAt": {
+      "type": "date",
+      "description": "When data was sent with this key the last time"
+    },
+    "lastSyncStatus": {
+      "type": "string",
+      "description": "Status of the last data sent with this key"
     }
   },
   "validations": [],

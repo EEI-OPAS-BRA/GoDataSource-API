@@ -1485,6 +1485,39 @@
     },
     "LNG_OUTBREAK_FIELD_LABEL_CASE_FOLLOWUP_TEMPLATE": {
       "translation": "Modelo de acompanhamento de caso"
+    },
+    "LNG_SYNC_CLIENT_COLUMN_SCHEDULE": {
+      "translation": "Envia dados"
+    },
+    "LNG_SYNC_CLIENT_COLUMN_LAST_SYNC": {
+      "translation": "Último recebimento"
+    },
+    "LNG_SYNC_CLIENT_SCHEDULE_MOBILE": {
+      "translation": "Quando o aplicativo sincroniza"
+    },
+    "LNG_SYNC_CLIENT_SCHEDULE_UNKNOWN": {
+      "translation": "Ainda não informado (a origem informa quando sincroniza)"
+    },
+    "LNG_SYNC_CLIENT_SCHEDULE_PAUSED": {
+      "translation": "Pausado na origem"
+    },
+    "LNG_SYNC_CLIENT_LAST_SYNC_AT": {
+      "translation": "Último recebimento: {{date}}"
+    },
+    "LNG_SYNC_CLIENT_LAST_SYNC_NEVER": {
+      "translation": "Nada recebido ainda"
+    },
+    "LNG_SYNC_CLIENT_LAST_SYNC_FAILED": {
+      "translation": "falhou"
+    },
+    "LNG_SYNC_CLIENT_LAST_SYNC_LATE": {
+      "translation": "atrasado"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_LAST_RECEIVED_AT": {
+      "translation": "Últimos dados recebidos: {{date}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_NOTHING_RECEIVED": {
+      "translation": "Nenhum dado recebido ainda"
     }
   }
 }

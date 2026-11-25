@@ -571,6 +571,88 @@ function saveSenderError(upstreamServer, reason, options) {
   }, options);
 }
 
+/**
+ * Update a key without changing who / when it was modified (the data is about its syncs, not a change made by the user)
+ */
+function updateClientApplication(clientId, values) {
+  return app.dataSources.mongoDb.connector
+    .collection('clientApplication')
+    .updateOne({
+      'credentials.clientId': clientId,
+      deleted: false
+    }, {
+      $set: values
+    })
+    .catch((err) => {
+      app.logger.debug(`Couldn't update the key ${clientId}. ${err}`);
+    });
+}
+
+/**
+ * The instance that sends the data tells when it sends it; it is kept with its key, so the user knows how often the data arrives
+ * Older versions don't tell it
+ * @param {Object} client Key of the instance
+ * @param {Object} schedule {syncInterval: hours between the syncs (0: only manually), syncEnabled}
+ */
+function saveSenderSchedule(client, schedule) {
+  const syncInterval = Number(_.get(schedule, 'syncInterval'));
+  if (
+    !usesRequests(client) ||
+    _.get(schedule, 'syncInterval') === undefined ||
+    _.get(schedule, 'syncInterval') === null ||
+    !Number.isFinite(syncInterval) ||
+    syncInterval < 0
+  ) {
+    return Promise.resolve();
+  }
+
+  return updateClientApplication(client.credentials.clientId, {
+    senderSyncInterval: syncInterval,
+    senderSyncEnabled: schedule.syncEnabled !== false,
+    senderScheduleReportedAt: localizationHelper.now().toDate()
+  });
+}
+
+/**
+ * A key sent data: when & how it went, kept with the key; for the outbreaks that had data, when their data arrived
+ * @param {string} clientId
+ * @param {Object} syncLogEntry Import that finished
+ */
+function saveReceivedSync(clientId, syncLogEntry) {
+  if (!clientId) {
+    return Promise.resolve();
+  }
+
+  const receivedAt = syncLogEntry.actionCompletionDate || localizationHelper.now().toDate();
+  const outbreakIds = (_.get(syncLogEntry, 'receivedSummary.outbreaks') || [])
+    .filter((outbreak) => outbreak && outbreak.sourceOutbreakId && (outbreak.imported > 0 || outbreak.staged > 0))
+    .map((outbreak) => outbreak.sourceOutbreakId);
+  return Promise.all([
+    updateClientApplication(clientId, {
+      lastSyncAt: receivedAt,
+      lastSyncStatus: syncLogEntry.status
+    }),
+    outbreakIds.length ?
+      app.dataSources.mongoDb.connector
+        .collection('syncOutbreakAccess')
+        .updateMany({
+          clientId,
+          sourceOutbreakId: {
+            $in: outbreakIds
+          },
+          deleted: false
+        }, {
+          $set: {
+            lastReceivedAt: receivedAt
+          }
+        })
+        .catch((err) => {
+          app.logger.debug(`Couldn't save when the outbreaks of ${clientId} were received. ${err}`);
+        }) :
+      Promise.resolve()
+  ]);
+}
+
 module.exports = {
   STATUS,
   MODE,
@@ -584,5 +666,7 @@ module.exports = {
   acceptReviewedOutbreak,
   buildRequestPayload,
   refreshSenderState,
-  saveSenderError
+  saveSenderError,
+  saveSenderSchedule,
+  saveReceivedSync
 };

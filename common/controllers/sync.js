@@ -636,6 +636,9 @@ module.exports = function (Sync) {
         syncLogEntry.status = 'LNG_SYNC_STATUS_SUCCESS';
       }
 
+      // the key knows when it sent data the last time (and its outbreaks, when their data arrived)
+      syncOutbreakAccess.saveReceivedSync(_.get(req, 'authData.client.credentials.clientId'), syncLogEntry);
+
       // save sync log entry
       syncLogEntry
         .save(requestOptions)
@@ -756,6 +759,12 @@ module.exports = function (Sync) {
         snapshotFromClient = true;
       }
 
+      // the data sent by the key of another instance is always checked (only the accepted outbreaks, the synced collections, no changes to the users ...)
+      // the flag is sent by the instance itself, so it can't be trusted
+      if (syncOutbreakAccess.usesRequests(_.get(req, 'authData.client'))) {
+        snapshotFromClient = true;
+      }
+
       // get password
       const password = getSyncEncryptPassword(fields.password, _.get(requestOptions, 'remotingContext.req.authData.credentials'), autoEncrypt);
 
@@ -822,13 +831,20 @@ module.exports = function (Sync) {
    * @param callback
    */
   /**
-   * Another instance retrieves the decisions about its outbreaks
+   * Another instance retrieves the decisions about its outbreaks (and tells when it sends its data)
+   * @param syncInterval Hours between its syncs (0: only manually)
+   * @param syncEnabled Its syncs are enabled
    * @param options
    * @param callback
    */
-  Sync.getOutbreakAccess = function (options, callback) {
+  Sync.getOutbreakAccess = function (syncInterval, syncEnabled, options, callback) {
+    const client = _.get(options, 'remotingContext.req.authData.client');
     syncOutbreakAccess
-      .getClientResponse(_.get(options, 'remotingContext.req.authData.client'))
+      .saveSenderSchedule(client, {
+        syncInterval,
+        syncEnabled
+      })
+      .then(() => syncOutbreakAccess.getClientResponse(client))
       .then((response) => callback(null, response))
       .catch(callback);
   };

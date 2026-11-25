@@ -325,6 +325,22 @@
     "getOutbreakAccess": {
       "accepts": [
         {
+          "arg": "syncInterval",
+          "type": "number",
+          "http": {
+            "source": "query"
+          },
+          "description": "Hours between the syncs of the instance that sends the data (0: only manually)"
+        },
+        {
+          "arg": "syncEnabled",
+          "type": "boolean",
+          "http": {
+            "source": "query"
+          },
+          "description": "The instance that sends the data has its syncs enabled"
+        },
+        {
           "arg": "options",
           "type": "object",
           "http": "optionsFromRequest"

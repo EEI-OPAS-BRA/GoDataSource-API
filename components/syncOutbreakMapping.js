@@ -637,10 +637,10 @@ function revalidateMappings(context, mappings) {
  * @param {Object} [outbreak] - sender outbreak, when it was received
  * @returns {Promise<Object>} mapping
  */
-function saveOutbreakMapping(context, sourceOutbreakId, outbreak) {
+function saveOutbreakMapping(context, sourceOutbreakId, outbreak, sourceTexts) {
   // wait for a mapping that is being created
   if (context.creating[sourceOutbreakId]) {
-    return context.creating[sourceOutbreakId].then(() => saveOutbreakMapping(context, sourceOutbreakId, outbreak));
+    return context.creating[sourceOutbreakId].then(() => saveOutbreakMapping(context, sourceOutbreakId, outbreak, sourceTexts));
   }
 
   const mapping = context.mappings[sourceOutbreakId];
@@ -654,6 +654,11 @@ function saveOutbreakMapping(context, sourceOutbreakId, outbreak) {
     sourceOutbreakName: outbreak.name,
     sourceQuestionnaires: getFlatQuestionnaires(outbreak)
   } : {};
+
+  // texts of the questions, sent with the request of the outbreak (its data, with the texts, arrives only after it is accepted)
+  if (sourceTexts && Object.keys(sourceTexts).length) {
+    data.sourceTexts = Object.assign({}, mapping && mapping.sourceTexts, sourceTexts);
+  }
 
   // new outbreak
   if (!mapping) {
@@ -1073,6 +1078,7 @@ module.exports = {
   getUnmappedQuestions,
   mapAnswers,
   createContext,
+  saveOutbreakMapping,
   prepareRecord,
   importStagedRecords,
   getStagedMessage,

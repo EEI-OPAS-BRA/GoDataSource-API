@@ -4,6 +4,7 @@ const _ = require('lodash');
 const app = require('../../server/server');
 const localizationHelper = require('../../components/localizationHelper');
 const syncOutbreakMapping = require('../../components/syncOutbreakMapping');
+const syncOutbreakAccess = require('../../components/syncOutbreakAccess');
 
 module.exports = function (SyncOutbreakMapping) {
 
@@ -46,9 +47,24 @@ module.exports = function (SyncOutbreakMapping) {
   }
 
   /**
+   * Text sent by the other instance with the request of the outbreak (its texts arrive with its data, only after it is accepted)
+   */
+  function getSourceText(sourceTexts, token, options) {
+    const translations = sourceTexts && sourceTexts[token];
+    if (!translations) {
+      return undefined;
+    }
+
+    const languageId = _.get(app.utils.remote.getUserFromOptions(options), 'languageId') || 'english_us';
+    return translations[languageId] ||
+      translations.english_us ||
+      _.values(translations)[0];
+  }
+
+  /**
    * Add the texts to the questions of the questionnaires
    */
-  function translateQuestionnaires(questionnaires, options) {
+  function translateQuestionnaires(questionnaires, options, sourceTexts) {
     const tokens = [];
     _.each(questionnaires, (questions) => {
       (questions || []).forEach((question) => {
@@ -62,9 +78,9 @@ module.exports = function (SyncOutbreakMapping) {
         const result = {};
         _.each(questionnaires, (questions, questionnaire) => {
           result[questionnaire] = (questions || []).map((question) => Object.assign({}, question, {
-            textTranslated: translations[question.text] || question.text,
+            textTranslated: translations[question.text] || getSourceText(sourceTexts, question.text, options) || question.text,
             answers: question.answers.map((answer) => Object.assign({}, answer, {
-              labelTranslated: translations[answer.label] || answer.label
+              labelTranslated: translations[answer.label] || getSourceText(sourceTexts, answer.label, options) || answer.label
             }))
           }));
         });
@@ -87,7 +103,7 @@ module.exports = function (SyncOutbreakMapping) {
         }
 
         return Promise.all([
-          translateQuestionnaires(mapping.sourceQuestionnaires || {}, options),
+          translateQuestionnaires(mapping.sourceQuestionnaires || {}, options, mapping.sourceTexts),
           app.models.outbreak.find({
             fields: ['id', 'name'],
             order: 'name ASC'
@@ -346,6 +362,10 @@ module.exports = function (SyncOutbreakMapping) {
         approvedAt: localizationHelper.now().toDate(),
         approvedBy: _.get(app.utils.remote.getUserFromOptions(options), 'id')
       }), options))
+      // the user decided where the data goes, so the outbreak is accepted (keys of other instances)
+      .then((approvedMapping) => syncOutbreakAccess
+        .acceptReviewedOutbreak(approvedMapping, options)
+        .then(() => approvedMapping))
       .then((approvedMapping) => syncOutbreakMapping
         .importStagedRecords(approvedMapping, options)
         .then((importResult) => callback(null, {

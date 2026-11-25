@@ -221,6 +221,67 @@ const SyncClient = function (upstreamServer, syncLogEntry) {
       });
     });
   };
+
+  /**
+   * Decisions of the upstream server about the outbreaks of this instance
+   * @returns {Promise<Object|null>} {mode, outbreaks: [{outbreakId, status, decidedAt}]}; null when the upstream server doesn't know this request (older version)
+   */
+  this.getOutbreakAccess = function () {
+    let requestOptions = Object.assign({}, this.options, {
+      method: 'GET',
+      responseType: 'json'
+    });
+
+    let that = this;
+
+    return new Promise(function (resolve, reject) {
+      that.sendRequest('sync/outbreak-access', requestOptions, function (error, response, body) {
+        // older versions don't have this request
+        if (
+          error &&
+          error.response &&
+          error.response.statusCode === 404
+        ) {
+          return resolve(null);
+        }
+
+        // get error response depending on error and response status code
+        error = that.getErrorResponse(error, response);
+        if (error) {
+          return reject(error);
+        }
+
+        resolve(body);
+      });
+    });
+  };
+
+  /**
+   * Ask the upstream server to send outbreaks (only the outbreaks & their questionnaires are sent, never the data of the persons)
+   * @param payload {outbreaks, texts}
+   * @returns {Promise<Object>} decisions {mode, outbreaks: [{outbreakId, status, decidedAt}]}
+   */
+  this.requestOutbreakAccess = function (payload) {
+    let requestOptions = Object.assign({}, this.options, {
+      method: 'POST',
+      json: payload,
+      responseType: 'json'
+    });
+
+    let that = this;
+
+    return new Promise(function (resolve, reject) {
+      that.sendRequest('sync/outbreak-access', requestOptions, function (error, response, body) {
+        // get error response depending on error and response status code
+        error = that.getErrorResponse(error, response);
+        if (error) {
+          return reject(error);
+        }
+
+        resolve(body);
+      });
+    });
+  };
 };
 
 module.exports = SyncClient;

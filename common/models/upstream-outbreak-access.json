@@ -1,0 +1,62 @@
+{
+  "name": "upstreamOutbreakAccess",
+  "base": "extendedPersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "upstreamServerUrl": {
+      "type": "string",
+      "required": true,
+      "description": "Upstream server this instance sends its data to"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "request",
+        "legacy"
+      ],
+      "description": "request: the upstream server decides which outbreaks it receives; legacy: it receives the outbreaks without a request (older versions / keys of the mobile app)"
+    },
+    "outbreaks": {
+      "type": [
+        "object"
+      ],
+      "description": "Outbreaks of this instance and the decision of the upstream server: {outbreakId, name, status, decidedAt}"
+    },
+    "checkedAt": {
+      "type": "date",
+      "description": "Last time the decisions were retrieved from the upstream server"
+    },
+    "requestedAt": {
+      "type": "date",
+      "description": "Last time this instance asked to send outbreaks"
+    },
+    "error": {
+      "type": "string",
+      "description": "Why the decisions couldn't be retrieved the last time"
+    }
+  },
+  "indexes": {
+    "upstreamServerUrl_index": {
+      "upstreamServerUrl": 1
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "upstream_server_list",
+      "permission": "ALLOW",
+      "property": "find"
+    }
+  ],
+  "methods": {}
+}

@@ -199,6 +199,14 @@
     "defaultStatusCode": 422,
     "messagePattern": "Sync with upstream server `<%= upstreamServerName %>` is disabled"
   },
+  "UPSTREAM_SERVER_OUTBREAKS_NOT_ACCEPTED": {
+    "defaultStatusCode": 424,
+    "messagePattern": "Upstream server `<%= upstreamServerName %>` didn't accept any of the outbreaks of this instance yet. Waiting for its decision: <%= pending %>. Refused / paused: <%= refused %>"
+  },
+  "SYNC_OUTBREAK_ACCESS_NEEDS_REVIEW": {
+    "defaultStatusCode": 422,
+    "messagePattern": "The outbreak `<%= name %>` doesn't exist in this instance; it is accepted when the review of where its data goes is approved"
+  },
   "UPSTREAM_SERVER_SYNC_FAILED": {
     "defaultStatusCode": 424,
     "messagePattern": "Sync with upstream server `<%= upstreamServerName %>` failed"

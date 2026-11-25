@@ -518,7 +518,7 @@
       "translation": "Generate the access keys"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_1_DESCRIPTION": {
-      "translation": "In \"Receive data from servers\", create a client application for each instance that will send data. Use the generate button to create the client ID and secret and the copy button to send them to the person responsible for the other instance. Keep the application active."
+      "translation": "In \"Receive data from Servers\", create a client application for each instance that will send data, with the type \"Go.Data instance\". Use the generate button to create the client ID and secret and the copy button to send them to the person responsible for the other instance. Keep the application active."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_2_TITLE": {
       "translation": "Register the destination server"
@@ -677,7 +677,7 @@
       "translation": "No received outbreak is waiting for review."
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_TITLE": {
-      "translation": "Waiting for review"
+      "translation": "Questions to review"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_APPROVED_TITLE": {
       "translation": "Already reviewed"
@@ -995,7 +995,7 @@
       "translation": "Access keys"
     },
     "LNG_SYNC_AREA_TAB_REVIEW": {
-      "translation": "Review"
+      "translation": "Requests"
     },
     "LNG_SYNC_AREA_TAB_HISTORY": {
       "translation": "History"
@@ -1007,7 +1007,7 @@
       "translation": "Destination servers"
     },
     "LNG_SYNC_AREA_TAB_REVIEW_COUNT": {
-      "translation": "{{count}} received outbreak(s) waiting for review"
+      "translation": "{{count}} item(s) waiting for your decision"
     },
     "LNG_SYNC_AREA_HISTORY_RECEIVED_TITLE": {
       "translation": "Received data history"
@@ -1034,7 +1034,7 @@
       "translation": "Open documentation"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_DESCRIPTION": {
-      "translation": "Received outbreaks whose records are kept aside. Open each one and say to which outbreak and to which questions the data goes."
+      "translation": "Accepted outbreaks that got new questions, or outbreaks received without a request (older instances). Say where their answers go."
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_APPROVED_DESCRIPTION": {
       "translation": "Outbreaks that already have a destination: their data goes straight in on the next synchronizations. Open one to see or change it."
@@ -1071,6 +1071,207 @@
     },
     "LNG_SYNC_ACTIVITY_PANEL_PARTIAL_DETAILS": {
       "translation": "Received before this version: it shows only what was kept aside or failed, without the number of imported records."
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_TYPE": {
+      "translation": "Type of key"
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_TYPE_DESCRIPTION": {
+      "translation": "Go.Data instance: the other instance asks to send each outbreak and you accept or refuse it in \"Requests\". Mobile app: the phone sends the outbreaks chosen in \"Access\"."
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_TYPE_INSTANCE": {
+      "translation": "Go.Data instance (asks for each outbreak)"
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_TYPE_MOBILE": {
+      "translation": "Mobile app"
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_AUTO_ACCEPT": {
+      "translation": "Accept automatically the outbreaks that already exist here"
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_AUTO_ACCEPT_DESCRIPTION": {
+      "translation": "Outbreaks that exist in this instance with the same ID (e.g. created here and copied to the other instance) are accepted without waiting for your decision. The others stay in \"Requests\"."
+    },
+    "LNG_SYNC_AREA_TAB_SERVERS_COUNT": {
+      "translation": "{{count}} outbreak(s) waiting for the approval of the destination server"
+    },
+    "LNG_SYNC_OUTBREAK_ACCESS_STATUS_PENDING": {
+      "translation": "Waiting for decision"
+    },
+    "LNG_SYNC_OUTBREAK_ACCESS_STATUS_ACCEPTED": {
+      "translation": "Accepted"
+    },
+    "LNG_SYNC_OUTBREAK_ACCESS_STATUS_REFUSED": {
+      "translation": "Refused"
+    },
+    "LNG_SYNC_OUTBREAK_ACCESS_STATUS_PAUSED": {
+      "translation": "Paused"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_WAITING_TITLE": {
+      "translation": "Waiting for your decision"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_WAITING_DESCRIPTION": {
+      "translation": "Outbreaks other instances asked to send. No data of a person arrives before you accept."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_WAITING_EMPTY": {
+      "translation": "No request is waiting for a decision."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_ACCEPTED_TITLE": {
+      "translation": "Accepted"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_ACCEPTED_DESCRIPTION": {
+      "translation": "Outbreaks whose data this instance receives. You can refuse them at any time; what already arrived is kept."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_ACCEPTED_EMPTY": {
+      "translation": "No outbreak was accepted yet."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSED_TITLE": {
+      "translation": "Refused"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSED_DESCRIPTION": {
+      "translation": "Outbreaks whose data isn't received. The other instance sees they were refused and doesn't send them."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REQUESTED_AT": {
+      "translation": "Requested on {{date}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_DECIDED_AT": {
+      "translation": "Decided on {{date}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_AUTO_ACCEPTED_AT": {
+      "translation": "Accepted automatically on {{date}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_COUNTS": {
+      "translation": "{{cases}} case(s) · {{contacts}} contact(s)"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_DESTINATION_SAME": {
+      "translation": "Already exists here: the data goes into {{name}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_DESTINATION_MAP": {
+      "translation": "The data goes into {{name}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_DESTINATION_NEW": {
+      "translation": "Goes in as a new outbreak of this instance"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_DESTINATION_UNDEFINED": {
+      "translation": "Doesn't exist here: review where its data goes before accepting it"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_ACCEPT_BUTTON": {
+      "translation": "Accept"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REVIEW_AND_ACCEPT_BUTTON": {
+      "translation": "Review and accept"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REVIEW_AND_ACCEPT_TOOLTIP": {
+      "translation": "Say to which outbreak and to which questions the data goes; the outbreak is accepted when you approve it."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSE_BUTTON": {
+      "translation": "Refuse"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSE_TITLE": {
+      "translation": "Refuse {{name}}?"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSE_MESSAGE": {
+      "translation": "The data of \"{{name}}\" sent by {{client}} won't be received anymore. What already arrived is kept."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_ACCEPT_SUCCESS": {
+      "translation": "\"{{name}}\" accepted. Its data arrives on the next synchronization."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSE_SUCCESS": {
+      "translation": "\"{{name}}\" refused."
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_TITLE": {
+      "translation": "Approval of the outbreaks"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_DESCRIPTION": {
+      "translation": "Each destination server decides which outbreaks of this instance it accepts. Only the accepted outbreaks are sent."
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_CHECKED_AT": {
+      "translation": "Checked on {{date}}"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_NOT_CHECKED": {
+      "translation": "Not checked yet"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_REFRESH": {
+      "translation": "Check now"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_ERROR": {
+      "translation": "The server couldn't be checked; showing the last known decision."
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_LEGACY": {
+      "translation": "This server receives the outbreaks without approval (older version or key of the mobile app)."
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_PENDING": {
+      "translation": "{{count}} waiting for approval"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_PENDING_HINT": {
+      "translation": "The data of these outbreaks is sent only after the destination server accepts them."
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_ACCEPTED": {
+      "translation": "{{count}} accepted: sent on the synchronizations"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_REFUSED": {
+      "translation": "{{count}} refused or paused: not sent"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_NO_OUTBREAKS": {
+      "translation": "No outbreak to send."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_WAITING": {
+      "translation": "Waiting for approval"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_WAITING_MESSAGE": {
+      "translation": "{{name}} didn't accept any outbreak of this instance yet. The data is sent as soon as they are accepted."
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_WAITING_ACCESS": {
+      "translation": "Nothing sent: waiting for the approval of the server"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_NOTHING_ACCEPTED": {
+      "translation": "Nothing sent: the server didn't accept any outbreak"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSED_TITLE": {
+      "translation": "Paused"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSED_DESCRIPTION": {
+      "translation": "Outbreaks whose data stopped being received for a while. When they are resumed, the other instance sends what changed meanwhile."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSE_BUTTON": {
+      "translation": "Pause"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSE_TOOLTIP": {
+      "translation": "Stops receiving the data of this outbreak until you resume it. What already arrived is kept."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSE_TITLE": {
+      "translation": "Pause {{name}}?"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSE_MESSAGE": {
+      "translation": "The data of \"{{name}}\" sent by {{client}} stops being received until you resume it. What already arrived is kept, and the changes made meanwhile are sent when it is resumed."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSE_SUCCESS": {
+      "translation": "\"{{name}}\" paused."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_RESUME_BUTTON": {
+      "translation": "Resume"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_RESUME_TOOLTIP": {
+      "translation": "Receives the data of this outbreak again; the other instance sends what changed while it was paused."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_RESUME_SUCCESS": {
+      "translation": "\"{{name}}\" resumed. What changed meanwhile arrives on the next synchronization."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REMOVE_TOOLTIP": {
+      "translation": "Removes the outbreak from the list. What already arrived is kept; if the other instance still wants to send it, it comes back as a new request."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REMOVE_TITLE": {
+      "translation": "Remove {{name}}?"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REMOVE_MESSAGE": {
+      "translation": "\"{{name}}\" leaves the list and its data stops being received. What already arrived from {{client}} is kept. If {{client}} still wants to send it, it comes back as a new request, waiting for your decision."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REMOVE_SUCCESS": {
+      "translation": "\"{{name}}\" removed from the list."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PENDING_QUESTION": {
+      "translation": "Why isn't my data being sent?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PENDING_ANSWER": {
+      "translation": "The destination server decides which outbreaks it receives. In \"Send data to Servers > Destination servers\", \"Approval of the outbreaks\" shows what is waiting for approval, what was accepted and what was refused or paused. Only the accepted outbreaks are sent; the others are sent as soon as the destination server accepts or resumes them."
     }
   }
 }

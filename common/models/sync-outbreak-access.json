@@ -1,0 +1,289 @@
+{
+  "name": "syncOutbreakAccess",
+  "base": "extendedPersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "clientId": {
+      "type": "string",
+      "required": true,
+      "description": "Client ID of the instance that asked to send the outbreak"
+    },
+    "sourceOutbreakId": {
+      "type": "string",
+      "required": true,
+      "description": "Outbreak of the instance that asked to send its data"
+    },
+    "sourceOutbreakName": {
+      "type": "string"
+    },
+    "sourceDisease": {
+      "type": "string",
+      "description": "Reference data token of the disease of the outbreak"
+    },
+    "sourceStartDate": {
+      "type": "date"
+    },
+    "sourceCasesCount": {
+      "type": "number",
+      "description": "Number of cases of the outbreak when it was requested"
+    },
+    "sourceContactsCount": {
+      "type": "number",
+      "description": "Number of contacts of the outbreak when it was requested"
+    },
+    "sameIdOutbreak": {
+      "type": "boolean",
+      "description": "The outbreak exists in this instance with the same id, so its data goes straight into it"
+    },
+    "mappingId": {
+      "type": "string",
+      "description": "Review of where the data goes (outbreak / questionnaire mapping), for outbreaks that don't exist in this instance"
+    },
+    "status": {
+      "type": "string",
+      "required": true,
+      "enum": [
+        "PENDING",
+        "ACCEPTED",
+        "REFUSED",
+        "PAUSED"
+      ],
+      "default": "PENDING",
+      "description": "PENDING: waiting for a decision; ACCEPTED: its data is received; REFUSED: its data is refused; PAUSED: its data is refused until it is resumed (what was received is kept)"
+    },
+    "autoAccepted": {
+      "type": "boolean",
+      "description": "Accepted automatically, because the outbreak exists in this instance with the same id"
+    },
+    "requestedAt": {
+      "type": "date",
+      "description": "Last time the instance asked to send the outbreak"
+    },
+    "decidedAt": {
+      "type": "date"
+    },
+    "decidedBy": {
+      "type": "string"
+    }
+  },
+  "indexes": {
+    "clientId_sourceOutbreakId_index": {
+      "clientId": 1,
+      "sourceOutbreakId": 1
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "client_application_list",
+      "permission": "ALLOW",
+      "property": "find"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "client_application_list",
+      "permission": "ALLOW",
+      "property": "count"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "client_application_list",
+      "permission": "ALLOW",
+      "property": "getWaitingCount"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "client_application_modify",
+      "permission": "ALLOW",
+      "property": "accept"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "client_application_modify",
+      "permission": "ALLOW",
+      "property": "refuse"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "client_application_modify",
+      "permission": "ALLOW",
+      "property": "pause"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "client_application_modify",
+      "permission": "ALLOW",
+      "property": "resume"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "client_application_modify",
+      "permission": "ALLOW",
+      "property": "remove"
+    }
+  ],
+  "methods": {
+    "getWaitingCount": {
+      "accepts": [
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "result",
+          "type": "object",
+          "root": true,
+          "description": "requests: outbreaks waiting for a decision; reviews: received outbreaks waiting for the review of where their data goes; total"
+        }
+      ],
+      "description": "Number of received outbreaks waiting for the user",
+      "http": {
+        "verb": "get",
+        "path": "/waiting-count"
+      }
+    },
+    "accept": {
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "access",
+          "type": "object",
+          "root": true
+        }
+      ],
+      "description": "Accept to receive the data of an outbreak that exists in this instance with the same id (the other outbreaks are accepted when the review of where their data goes is approved)",
+      "http": {
+        "verb": "post",
+        "path": "/:id/accept"
+      }
+    },
+    "refuse": {
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "access",
+          "type": "object",
+          "root": true
+        }
+      ],
+      "description": "Refuse the data of an outbreak",
+      "http": {
+        "verb": "post",
+        "path": "/:id/refuse"
+      }
+    },
+    "pause": {
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "access",
+          "type": "object",
+          "root": true
+        }
+      ],
+      "description": "Stop receiving the data of an accepted outbreak until it is resumed (what was received is kept)",
+      "http": {
+        "verb": "post",
+        "path": "/:id/pause"
+      }
+    },
+    "resume": {
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "access",
+          "type": "object",
+          "root": true
+        }
+      ],
+      "description": "Receive again the data of a paused outbreak; the other instance sends what changed while it was paused",
+      "http": {
+        "verb": "post",
+        "path": "/:id/resume"
+      }
+    },
+    "remove": {
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "access",
+          "type": "object",
+          "root": true
+        }
+      ],
+      "description": "Remove the decision about an outbreak (what was received is kept); if the other instance still wants to send it, it is asked again",
+      "http": {
+        "verb": "post",
+        "path": "/:id/remove"
+      }
+    }
+  }
+}

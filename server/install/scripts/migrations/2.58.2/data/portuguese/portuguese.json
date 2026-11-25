@@ -557,7 +557,7 @@
       "translation": "Gere as chaves de acesso"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_1_DESCRIPTION": {
-      "translation": "Em \"Receber dados de Servidores\", crie um aplicativo cliente para cada instância que vai enviar dados. Use o botão de gerar para criar o ID e o segredo do cliente e o botão de copiar para enviá-los ao responsável pela outra instância. Deixe o aplicativo ativo."
+      "translation": "Em \"Receber dados de Servidores\", crie um aplicativo cliente para cada instância que vai enviar dados, com o tipo \"Instância do Go.Data\". Use o botão de gerar para criar o ID e o segredo do cliente e o botão de copiar para enviá-los ao responsável pela outra instância. Deixe o aplicativo ativo."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_2_TITLE": {
       "translation": "Cadastre o servidor de destino"
@@ -716,7 +716,7 @@
       "translation": "Nenhum surto recebido está aguardando revisão."
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_TITLE": {
-      "translation": "Aguardando revisão"
+      "translation": "Revisão de perguntas"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_APPROVED_TITLE": {
       "translation": "Já revisados"
@@ -1034,7 +1034,7 @@
       "translation": "Chaves de acesso"
     },
     "LNG_SYNC_AREA_TAB_REVIEW": {
-      "translation": "Revisão"
+      "translation": "Solicitações"
     },
     "LNG_SYNC_AREA_TAB_HISTORY": {
       "translation": "Histórico"
@@ -1046,7 +1046,7 @@
       "translation": "Servidores de destino"
     },
     "LNG_SYNC_AREA_TAB_REVIEW_COUNT": {
-      "translation": "{{count}} surto(s) recebido(s) aguardando revisão"
+      "translation": "{{count}} item(ns) aguardando sua decisão"
     },
     "LNG_SYNC_AREA_HISTORY_RECEIVED_TITLE": {
       "translation": "Histórico de recebimentos"
@@ -1073,7 +1073,7 @@
       "translation": "Abrir documentação"
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_DESCRIPTION": {
-      "translation": "Surtos recebidos cujos registros estão guardados. Abra cada um e diga em qual surto e em quais perguntas os dados entram."
+      "translation": "Surtos aceitos que ganharam perguntas novas, ou recebidos sem solicitação (instâncias antigas). Diga onde as respostas entram."
     },
     "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_APPROVED_DESCRIPTION": {
       "translation": "Surtos que já têm destino: os dados deles entram direto nas próximas sincronizações. Abra um deles para ver ou alterar."
@@ -1110,6 +1110,207 @@
     },
     "LNG_SYNC_ACTIVITY_PANEL_PARTIAL_DETAILS": {
       "translation": "Recebido antes desta versão: mostra só o que ficou aguardando ou falhou, sem a contagem de importados."
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_TYPE": {
+      "translation": "Tipo de chave"
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_TYPE_DESCRIPTION": {
+      "translation": "Instância do Go.Data: a outra instância pede para enviar cada surto e você aceita ou recusa em \"Solicitações\". Aplicativo móvel: o celular envia os surtos escolhidos em \"Acesso\"."
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_TYPE_INSTANCE": {
+      "translation": "Instância do Go.Data (pede cada surto)"
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_TYPE_MOBILE": {
+      "translation": "Aplicativo móvel"
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_AUTO_ACCEPT": {
+      "translation": "Aceitar automaticamente surtos que já existem aqui"
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_AUTO_ACCEPT_DESCRIPTION": {
+      "translation": "Surtos que existem nesta instância com o mesmo ID (por exemplo, criados aqui e copiados para a outra instância) são aceitos sem esperar a sua decisão. Os demais continuam em \"Solicitações\"."
+    },
+    "LNG_SYNC_AREA_TAB_SERVERS_COUNT": {
+      "translation": "{{count}} surto(s) aguardando aprovação do servidor de destino"
+    },
+    "LNG_SYNC_OUTBREAK_ACCESS_STATUS_PENDING": {
+      "translation": "Aguardando decisão"
+    },
+    "LNG_SYNC_OUTBREAK_ACCESS_STATUS_ACCEPTED": {
+      "translation": "Aceito"
+    },
+    "LNG_SYNC_OUTBREAK_ACCESS_STATUS_REFUSED": {
+      "translation": "Recusado"
+    },
+    "LNG_SYNC_OUTBREAK_ACCESS_STATUS_PAUSED": {
+      "translation": "Pausado"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_WAITING_TITLE": {
+      "translation": "Aguardando sua decisão"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_WAITING_DESCRIPTION": {
+      "translation": "Surtos que outras instâncias pediram para enviar. Nenhum dado de pessoa chega antes de você aceitar."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_WAITING_EMPTY": {
+      "translation": "Nenhuma solicitação aguardando decisão."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_ACCEPTED_TITLE": {
+      "translation": "Aceitos"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_ACCEPTED_DESCRIPTION": {
+      "translation": "Surtos cujos dados esta instância recebe. Você pode recusar a qualquer momento; o que já chegou é mantido."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_ACCEPTED_EMPTY": {
+      "translation": "Nenhum surto aceito ainda."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSED_TITLE": {
+      "translation": "Recusados"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSED_DESCRIPTION": {
+      "translation": "Surtos cujos dados não são recebidos. A outra instância vê que foram recusados e não os envia."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REQUESTED_AT": {
+      "translation": "Solicitado em {{date}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_DECIDED_AT": {
+      "translation": "Decidido em {{date}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_AUTO_ACCEPTED_AT": {
+      "translation": "Aceito automaticamente em {{date}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_COUNTS": {
+      "translation": "{{cases}} caso(s) · {{contacts}} contato(s)"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_DESTINATION_SAME": {
+      "translation": "Já existe aqui: os dados entram em {{name}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_DESTINATION_MAP": {
+      "translation": "Os dados entram em {{name}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_DESTINATION_NEW": {
+      "translation": "Entra como um surto novo nesta instância"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_DESTINATION_UNDEFINED": {
+      "translation": "Não existe aqui: revise onde os dados entram antes de aceitar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_ACCEPT_BUTTON": {
+      "translation": "Aceitar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REVIEW_AND_ACCEPT_BUTTON": {
+      "translation": "Revisar e aceitar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REVIEW_AND_ACCEPT_TOOLTIP": {
+      "translation": "Diga em qual surto e em quais perguntas os dados entram; ao aprovar, o surto é aceito."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSE_BUTTON": {
+      "translation": "Recusar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSE_TITLE": {
+      "translation": "Recusar {{name}}?"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSE_MESSAGE": {
+      "translation": "Os dados de \"{{name}}\" enviados por {{client}} deixarão de ser recebidos. O que já chegou é mantido."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_ACCEPT_SUCCESS": {
+      "translation": "\"{{name}}\" aceito. Os dados chegam na próxima sincronização."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSE_SUCCESS": {
+      "translation": "\"{{name}}\" recusado."
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_TITLE": {
+      "translation": "Aprovação dos surtos"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_DESCRIPTION": {
+      "translation": "Cada servidor de destino decide quais surtos desta instância aceita. Só os surtos aceitos são enviados."
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_CHECKED_AT": {
+      "translation": "Consultado em {{date}}"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_NOT_CHECKED": {
+      "translation": "Ainda não consultado"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_REFRESH": {
+      "translation": "Consultar agora"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_ERROR": {
+      "translation": "Não foi possível consultar o servidor; mostrando a última decisão conhecida."
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_LEGACY": {
+      "translation": "Este servidor recebe os surtos sem aprovação (versão anterior ou chave de aplicativo móvel)."
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_PENDING": {
+      "translation": "{{count}} aguardando aprovação"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_PENDING_HINT": {
+      "translation": "Os dados desses surtos só serão enviados depois que o servidor de destino aceitar."
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_ACCEPTED": {
+      "translation": "{{count}} aceito(s): enviados nas sincronizações"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_REFUSED": {
+      "translation": "{{count}} recusado(s) ou pausado(s): não são enviados"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_NO_OUTBREAKS": {
+      "translation": "Nenhum surto para enviar."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_WAITING": {
+      "translation": "Aguardando aprovação"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_WAITING_MESSAGE": {
+      "translation": "{{name}} ainda não aceitou nenhum surto desta instância. Os dados serão enviados assim que forem aceitos."
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_WAITING_ACCESS": {
+      "translation": "Nada enviado: aguardando aprovação do servidor"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_NOTHING_ACCEPTED": {
+      "translation": "Nada enviado: nenhum surto aceito pelo servidor"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSED_TITLE": {
+      "translation": "Pausados"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSED_DESCRIPTION": {
+      "translation": "Surtos cujos dados deixaram de ser recebidos por um tempo. Ao retomar, a outra instância envia o que mudou nesse período."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSE_BUTTON": {
+      "translation": "Pausar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSE_TOOLTIP": {
+      "translation": "Para de receber os dados deste surto até você retomar. O que já chegou é mantido."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSE_TITLE": {
+      "translation": "Pausar {{name}}?"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSE_MESSAGE": {
+      "translation": "Os dados de \"{{name}}\" enviados por {{client}} deixam de ser recebidos até você retomar. O que já chegou é mantido, e as mudanças feitas nesse período são enviadas ao retomar."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSE_SUCCESS": {
+      "translation": "\"{{name}}\" pausado."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_RESUME_BUTTON": {
+      "translation": "Retomar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_RESUME_TOOLTIP": {
+      "translation": "Volta a receber os dados deste surto; a outra instância envia o que mudou enquanto ele estava pausado."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_RESUME_SUCCESS": {
+      "translation": "\"{{name}}\" retomado. O que mudou nesse período chega na próxima sincronização."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REMOVE_TOOLTIP": {
+      "translation": "Tira o surto da lista. O que já chegou é mantido; se a outra instância ainda quiser enviá-lo, ele volta como uma nova solicitação."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REMOVE_TITLE": {
+      "translation": "Remover {{name}}?"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REMOVE_MESSAGE": {
+      "translation": "\"{{name}}\" sai da lista e seus dados deixam de ser recebidos. O que já chegou de {{client}} é mantido. Se {{client}} ainda quiser enviá-lo, ele volta como uma nova solicitação, aguardando a sua decisão."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REMOVE_SUCCESS": {
+      "translation": "\"{{name}}\" removido da lista."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PENDING_QUESTION": {
+      "translation": "Por que meus dados não estão sendo enviados?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PENDING_ANSWER": {
+      "translation": "O servidor de destino decide quais surtos recebe. Em \"Enviar dados para Servidores › Servidores de destino\", a seção \"Aprovação dos surtos\" mostra o que está aguardando aprovação, o que foi aceito e o que foi recusado ou pausado. Só os surtos aceitos são enviados; os demais são enviados assim que o servidor de destino aceitar ou retomar."
     }
   }
 }

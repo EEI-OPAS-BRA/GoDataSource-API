@@ -20,7 +20,19 @@
     },
     "outbreakIDs": {
       "type": ["string"],
-      "description": "Available outbreaks for this client. Not present/empty array means that all outbreaks are available"
+      "description": "Available outbreaks for this client. Not present/empty array means that all outbreaks are available. Not used by the keys of other Go.Data instances (type instance): they ask for each outbreak"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "instance",
+        "mobile"
+      ],
+      "description": "instance: another Go.Data instance, that asks to send each outbreak (the outbreaks are accepted / refused here); mobile: the mobile app (or an older key), limited by outbreakIDs"
+    },
+    "autoAcceptSameIdOutbreaks": {
+      "type": "boolean",
+      "description": "Keys of other instances: accept automatically the outbreaks that exist in this instance with the same id"
     }
   },
   "validations": [],

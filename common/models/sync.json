@@ -65,6 +65,24 @@
       "principalId": "$client_application",
       "permissions": "ALLOW",
       "property": "getAvailableOutbreaksForClient"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$client_application",
+      "permissions": "ALLOW",
+      "property": "getOutbreakAccess"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$client_application",
+      "permissions": "ALLOW",
+      "property": "requestOutbreakAccess"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "upstream_server_list",
+      "permission": "ALLOW",
+      "property": "checkUpstreamOutbreakAccess"
     },    {
       "principalType": "ROLE",
       "principalId": "$client_application",
@@ -302,6 +320,90 @@
       "http": {
         "verb": "get",
         "path": "/available-outbreaks"
+      }
+    },
+    "getOutbreakAccess": {
+      "accepts": [
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "access",
+          "type": "object",
+          "root": true,
+          "description": "mode: request (each outbreak is accepted / refused) or legacy; outbreaks: [{outbreakId, status, decidedAt, requestedAt}]"
+        }
+      ],
+      "description": "Another Go.Data instance retrieves the decisions about its outbreaks",
+      "http": {
+        "verb": "get",
+        "path": "/outbreak-access"
+      }
+    },
+    "requestOutbreakAccess": {
+      "accepts": [
+        {
+          "arg": "data",
+          "type": "object",
+          "http": {
+            "source": "body"
+          },
+          "required": true,
+          "description": "outbreaks: [{id, name, disease, startDate, casesCount, contactsCount, questionnaires}]; texts: {token: {languageId: translation}}"
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "access",
+          "type": "object",
+          "root": true,
+          "description": "Decisions about the outbreaks of the instance (see getOutbreakAccess)"
+        }
+      ],
+      "description": "Another Go.Data instance asks to send outbreaks; they wait here for a decision (only the outbreaks & their questionnaires are received, never the data of the persons)",
+      "http": {
+        "verb": "post",
+        "path": "/outbreak-access"
+      }
+    },
+    "checkUpstreamOutbreakAccess": {
+      "accepts": [
+        {
+          "arg": "data",
+          "type": "object",
+          "http": {
+            "source": "body"
+          },
+          "required": true,
+          "description": "upstreamServerURL"
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "access",
+          "type": "object",
+          "root": true,
+          "description": "Decisions of the upstream server: {mode, outbreaks: [{outbreakId, name, status, decidedAt}], checkedAt, requestedAt}"
+        }
+      ],
+      "description": "Ask an upstream server which outbreaks of this instance it accepts; the outbreaks it doesn't know yet are requested",
+      "http": {
+        "verb": "post",
+        "path": "/upstream-servers/outbreak-access"
       }
     },
     "sync": {

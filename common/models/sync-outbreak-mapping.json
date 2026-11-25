@@ -23,6 +23,10 @@
       "type": "object",
       "description": "Last received questionnaires of the outbreak, as flat lists of questions"
     },
+    "sourceTexts": {
+      "type": "object",
+      "description": "Texts of the received questions & answers (token => {languageId: translation}), sent with the request of the outbreak, before its data arrives"
+    },
     "mode": {
       "type": "string",
       "description": "map: the outbreak corresponds to targetOutbreakId; new: it is imported as it is. Empty until the mapping is approved (validated on approval)"

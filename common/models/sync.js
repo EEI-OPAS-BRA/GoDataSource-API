@@ -7,6 +7,7 @@ const fs = require('fs');
 const dbSync = require('../../components/dbSync');
 const syncOutbreakMapping = require('../../components/syncOutbreakMapping');
 const syncReceivedSummary = require('../../components/syncReceivedSummary');
+const syncOutbreakAccess = require('../../components/syncOutbreakAccess');
 const SyncClient = require('../../components/syncClient');
 const syncConfig = require('../../server/config.json').sync;
 const asyncActionsSettings = syncConfig.asyncActionsSettings;
@@ -155,6 +156,9 @@ module.exports = function (Sync) {
     // what happened to the received records of each outbreak, saved in the sync log
     const receivedSummary = syncReceivedSummary.create();
 
+    // keys of other instances: only the records of the accepted outbreaks are received
+    let accessContext = null;
+
     // check if backup should be triggered
     app.models.systemSettings
       .findOne()
@@ -209,6 +213,20 @@ module.exports = function (Sync) {
             .createContext(options.clientId, reqOptions)
             .then((context) => {
               mappingContext = context;
+
+              // outbreaks accepted from this key
+              return app.models.clientApplication.findOne({
+                where: {
+                  'credentials.clientId': options.clientId
+                }
+              });
+            })
+            .then((clientApplication) => syncOutbreakAccess.createImportContext(
+              clientApplication ? clientApplication.toJSON() : null,
+              reqOptions
+            ))
+            .then((context) => {
+              accessContext = context;
             });
         }
       })
@@ -322,6 +340,19 @@ module.exports = function (Sync) {
                                 finishedRecord();
                               }
                             };
+
+                            // keys of other instances: the records of outbreaks that weren't accepted are refused (an outbreak received without a request is listed for a decision)
+                            if (!syncOutbreakAccess.isRecordAllowed(accessContext, collectionName, receivedRecord)) {
+                              return (
+                                collectionName === 'outbreak' ?
+                                  syncOutbreakAccess.requestReceivedOutbreak(accessContext, receivedRecord) :
+                                  Promise.resolve()
+                              )
+                                .then(() => {
+                                  syncReceivedSummary.count(receivedSummary, collectionName, receivedRecord, syncReceivedSummary.STATE.NOT_ALLOWED);
+                                  doneRecord();
+                                });
+                            }
 
                             // records of mapped outbreaks are converted to the outbreaks of this instance, or kept aside until the mapping is approved
                             (

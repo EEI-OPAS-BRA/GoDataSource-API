@@ -1013,16 +1013,16 @@
       "translation": "Dados que não pertencem a um surto, como locais, dados de referência e textos dos questionários."
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TABLE_TITLE": {
-      "translation": "Chaves de acesso"
+      "translation": "Clientes"
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TABLE_DESCRIPTION": {
-      "translation": "Quem pode enviar dados para cá. Cada linha é uma chave usada por outra instância do Go.Data ou pelo aplicativo móvel; use \"Adicionar\" para criar uma e passe o ID e o segredo do cliente para quem vai enviar os dados."
+      "translation": "Instâncias do Go.Data e aplicativos móveis que podem enviar dados para cá. Clique no nome para ver os surtos e o histórico de cada cliente; use \"Adicionar\" para criar a chave de um novo cliente."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TABLE_TITLE": {
       "translation": "Servidores de destino"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TABLE_DESCRIPTION": {
-      "translation": "Para onde esta instância envia os seus dados. Cada linha é uma instância que recebe os dados desta; use o botão de sincronizar da linha para enviar agora."
+      "translation": "Para onde esta instância envia os seus dados. Clique no nome para ver quais surtos cada servidor aceitou e o histórico de envios."
     },
     "LNG_SYNC_ACTIVITY_PANEL_MORE_OUTBREAKS": {
       "translation": "Ver mais {{count}} surto(s)"
@@ -1031,10 +1031,10 @@
       "translation": "Ver menos surtos"
     },
     "LNG_SYNC_AREA_TAB_KEYS": {
-      "translation": "Chaves de acesso"
+      "translation": "Clientes"
     },
     "LNG_SYNC_AREA_TAB_REVIEW": {
-      "translation": "Solicitações"
+      "translation": "Pendências"
     },
     "LNG_SYNC_AREA_TAB_HISTORY": {
       "translation": "Histórico"
@@ -1115,7 +1115,7 @@
       "translation": "Tipo de chave"
     },
     "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_TYPE_DESCRIPTION": {
-      "translation": "Instância do Go.Data: a outra instância pede para enviar cada surto e você aceita ou recusa em \"Solicitações\". Aplicativo móvel: o celular envia os surtos escolhidos em \"Acesso\"."
+      "translation": "Instância do Go.Data: a outra instância pede para enviar cada surto e você aceita ou recusa em \"Pendências\" ou na página do cliente. Aplicativo móvel: o celular envia os surtos escolhidos em \"Acesso\"."
     },
     "LNG_SYSTEM_CLIENT_APPLICATION_TYPE_INSTANCE": {
       "translation": "Instância do Go.Data (pede cada surto)"
@@ -1127,7 +1127,7 @@
       "translation": "Aceitar automaticamente surtos que já existem aqui"
     },
     "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_AUTO_ACCEPT_DESCRIPTION": {
-      "translation": "Surtos que existem nesta instância com o mesmo ID (por exemplo, criados aqui e copiados para a outra instância) são aceitos sem esperar a sua decisão. Os demais continuam em \"Solicitações\"."
+      "translation": "Surtos que existem nesta instância com o mesmo ID (por exemplo, criados aqui e copiados para a outra instância) são aceitos sem esperar a sua decisão. Os demais aguardam em \"Pendências\"."
     },
     "LNG_SYNC_AREA_TAB_SERVERS_COUNT": {
       "translation": "{{count}} surto(s) aguardando aprovação do servidor de destino"
@@ -1310,7 +1310,97 @@
       "translation": "Por que meus dados não estão sendo enviados?"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PENDING_ANSWER": {
-      "translation": "O servidor de destino decide quais surtos recebe. Em \"Enviar dados para Servidores › Servidores de destino\", a seção \"Aprovação dos surtos\" mostra o que está aguardando aprovação, o que foi aceito e o que foi recusado ou pausado. Só os surtos aceitos são enviados; os demais são enviados assim que o servidor de destino aceitar ou retomar."
+      "translation": "O servidor de destino decide quais surtos recebe. Em \"Enviar dados para Servidores\", a coluna \"Aprovação dos surtos\" e a página de cada servidor mostram o que está aguardando aprovação, o que foi aceito e o que foi recusado ou pausado. Só os surtos aceitos são enviados; os demais são enviados assim que o servidor de destino aceitar ou retomar."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_INBOX_EMPTY": {
+      "translation": "Nada aguardando sua decisão. Os surtos aceitos, pausados e recusados ficam na página de cada cliente."
+    },
+    "LNG_SYNC_CLIENT_OPEN": {
+      "translation": "Abrir cliente"
+    },
+    "LNG_SYNC_CLIENT_EDIT_BUTTON": {
+      "translation": "Editar chave"
+    },
+    "LNG_SYNC_CLIENT_KEY_TITLE": {
+      "translation": "Chave de acesso"
+    },
+    "LNG_SYNC_CLIENT_KEY_DESCRIPTION": {
+      "translation": "Como este cliente se conecta e o que ele pode enviar."
+    },
+    "LNG_SYNC_CLIENT_TYPE_LEGACY": {
+      "translation": "Chave antiga (sem tipo)"
+    },
+    "LNG_SYNC_CLIENT_TYPE_SHORT_INSTANCE": {
+      "translation": "Instância do Go.Data"
+    },
+    "LNG_SYNC_CLIENT_ACTIVE": {
+      "translation": "Ativo"
+    },
+    "LNG_SYNC_CLIENT_INACTIVE": {
+      "translation": "Inativo"
+    },
+    "LNG_SYNC_CLIENT_OUTBREAKS_TITLE": {
+      "translation": "Surtos recebidos"
+    },
+    "LNG_SYNC_CLIENT_NO_REQUESTS": {
+      "translation": "Este cliente envia os surtos escolhidos na chave, sem solicitação. Aqui aparecem só os surtos que precisam de revisão de onde os dados entram."
+    },
+    "LNG_SYNC_CLIENT_HISTORY_TITLE": {
+      "translation": "Recebimentos deste cliente"
+    },
+    "LNG_SYNC_CLIENT_HISTORY_DESCRIPTION": {
+      "translation": "O que este cliente enviou, surto por surto, e o que aconteceu com os registros."
+    },
+    "LNG_SYNC_CLIENT_COLUMN_PENDING": {
+      "translation": "Aguardando decisão"
+    },
+    "LNG_SYNC_CLIENT_COLUMN_ACCEPTED": {
+      "translation": "Surtos aceitos"
+    },
+    "LNG_SYNC_CLIENT_OUTBREAKS_BY_REQUEST": {
+      "translation": "Decididos por solicitação"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_EDIT_BUTTON": {
+      "translation": "Editar servidor"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_DATA_TITLE": {
+      "translation": "Servidor de destino"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_DATA_DESCRIPTION": {
+      "translation": "Para onde e quando esta instância envia os seus dados."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_EVERY_HOURS": {
+      "translation": "A cada {{hours}} hora(s)"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_NO_INTERVAL": {
+      "translation": "Sem envio automático por intervalo"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_HISTORY_TITLE": {
+      "translation": "Envios para este servidor"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_HISTORY_DESCRIPTION": {
+      "translation": "O que esta instância enviou para este servidor e como terminou."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_NOT_FOUND": {
+      "translation": "Servidor de destino não encontrado."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_COLUMN_APPROVAL": {
+      "translation": "Aprovação dos surtos"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_APPROVAL_NOT_NEEDED": {
+      "translation": "Sem aprovação"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_APPROVAL_PENDING": {
+      "translation": "{{count}} aguardando"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_APPROVAL_ACCEPTED": {
+      "translation": "{{count}} aceito(s)"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_APPROVAL_REFUSED": {
+      "translation": "{{count}} recusado(s) / pausado(s)"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_OPEN": {
+      "translation": "Abrir servidor"
     }
   }
 }

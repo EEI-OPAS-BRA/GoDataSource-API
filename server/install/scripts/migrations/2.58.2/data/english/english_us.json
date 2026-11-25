@@ -974,16 +974,16 @@
       "translation": "Data that does not belong to an outbreak, such as locations, reference data and questionnaire texts."
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TABLE_TITLE": {
-      "translation": "Access keys"
+      "translation": "Clients"
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TABLE_DESCRIPTION": {
-      "translation": "Who can send data here. Each row is a key used by another Go.Data instance or by the mobile app; use \"Add\" to create one and give the client ID and secret to who is going to send the data."
+      "translation": "Go.Data instances and mobile apps that can send data here. Click the name to see the outbreaks and the history of each client; use \"Add\" to create the key of a new client."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TABLE_TITLE": {
       "translation": "Destination servers"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TABLE_DESCRIPTION": {
-      "translation": "Where this instance sends its data. Each row is an instance that receives the data of this one; use the synchronize button of the row to send now."
+      "translation": "Where this instance sends its data. Click the name to see which outbreaks each server accepted and the history of what was sent."
     },
     "LNG_SYNC_ACTIVITY_PANEL_MORE_OUTBREAKS": {
       "translation": "Show {{count}} more outbreak(s)"
@@ -992,10 +992,10 @@
       "translation": "Show fewer outbreaks"
     },
     "LNG_SYNC_AREA_TAB_KEYS": {
-      "translation": "Access keys"
+      "translation": "Clients"
     },
     "LNG_SYNC_AREA_TAB_REVIEW": {
-      "translation": "Requests"
+      "translation": "Pending"
     },
     "LNG_SYNC_AREA_TAB_HISTORY": {
       "translation": "History"
@@ -1076,7 +1076,7 @@
       "translation": "Type of key"
     },
     "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_TYPE_DESCRIPTION": {
-      "translation": "Go.Data instance: the other instance asks to send each outbreak and you accept or refuse it in \"Requests\". Mobile app: the phone sends the outbreaks chosen in \"Access\"."
+      "translation": "Go.Data instance: the other instance asks to send each outbreak and you accept or refuse it in \"Pending\" or on the page of the client. Mobile app: the phone sends the outbreaks chosen in \"Access\"."
     },
     "LNG_SYSTEM_CLIENT_APPLICATION_TYPE_INSTANCE": {
       "translation": "Go.Data instance (asks for each outbreak)"
@@ -1088,7 +1088,7 @@
       "translation": "Accept automatically the outbreaks that already exist here"
     },
     "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_AUTO_ACCEPT_DESCRIPTION": {
-      "translation": "Outbreaks that exist in this instance with the same ID (e.g. created here and copied to the other instance) are accepted without waiting for your decision. The others stay in \"Requests\"."
+      "translation": "Outbreaks that exist in this instance with the same ID (e.g. created here and copied to the other instance) are accepted without waiting for your decision. The others wait in \"Pending\"."
     },
     "LNG_SYNC_AREA_TAB_SERVERS_COUNT": {
       "translation": "{{count}} outbreak(s) waiting for the approval of the destination server"
@@ -1271,7 +1271,97 @@
       "translation": "Why isn't my data being sent?"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PENDING_ANSWER": {
-      "translation": "The destination server decides which outbreaks it receives. In \"Send data to Servers > Destination servers\", \"Approval of the outbreaks\" shows what is waiting for approval, what was accepted and what was refused or paused. Only the accepted outbreaks are sent; the others are sent as soon as the destination server accepts or resumes them."
+      "translation": "The destination server decides which outbreaks it receives. In \"Send data to Servers\", the \"Approval of the outbreaks\" column and the page of each server show what is waiting for approval, what was accepted and what was refused or paused. Only the accepted outbreaks are sent; the others are sent as soon as the destination server accepts or resumes them."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_INBOX_EMPTY": {
+      "translation": "Nothing is waiting for your decision. The accepted, paused and refused outbreaks are on the page of each client."
+    },
+    "LNG_SYNC_CLIENT_OPEN": {
+      "translation": "Open client"
+    },
+    "LNG_SYNC_CLIENT_EDIT_BUTTON": {
+      "translation": "Edit key"
+    },
+    "LNG_SYNC_CLIENT_KEY_TITLE": {
+      "translation": "Access key"
+    },
+    "LNG_SYNC_CLIENT_KEY_DESCRIPTION": {
+      "translation": "How this client connects and what it can send."
+    },
+    "LNG_SYNC_CLIENT_TYPE_LEGACY": {
+      "translation": "Older key (no type)"
+    },
+    "LNG_SYNC_CLIENT_TYPE_SHORT_INSTANCE": {
+      "translation": "Go.Data instance"
+    },
+    "LNG_SYNC_CLIENT_ACTIVE": {
+      "translation": "Active"
+    },
+    "LNG_SYNC_CLIENT_INACTIVE": {
+      "translation": "Inactive"
+    },
+    "LNG_SYNC_CLIENT_OUTBREAKS_TITLE": {
+      "translation": "Received outbreaks"
+    },
+    "LNG_SYNC_CLIENT_NO_REQUESTS": {
+      "translation": "This client sends the outbreaks chosen in its key, without requests. Only the outbreaks whose destination must be reviewed are listed here."
+    },
+    "LNG_SYNC_CLIENT_HISTORY_TITLE": {
+      "translation": "Data received from this client"
+    },
+    "LNG_SYNC_CLIENT_HISTORY_DESCRIPTION": {
+      "translation": "What this client sent, outbreak by outbreak, and what happened to the records."
+    },
+    "LNG_SYNC_CLIENT_COLUMN_PENDING": {
+      "translation": "Waiting for decision"
+    },
+    "LNG_SYNC_CLIENT_COLUMN_ACCEPTED": {
+      "translation": "Accepted outbreaks"
+    },
+    "LNG_SYNC_CLIENT_OUTBREAKS_BY_REQUEST": {
+      "translation": "Decided by request"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_EDIT_BUTTON": {
+      "translation": "Edit server"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_DATA_TITLE": {
+      "translation": "Destination server"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_DATA_DESCRIPTION": {
+      "translation": "Where and when this instance sends its data."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_EVERY_HOURS": {
+      "translation": "Every {{hours}} hour(s)"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_NO_INTERVAL": {
+      "translation": "No automatic sending by interval"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_HISTORY_TITLE": {
+      "translation": "Data sent to this server"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_HISTORY_DESCRIPTION": {
+      "translation": "What this instance sent to this server and how it ended."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_NOT_FOUND": {
+      "translation": "Destination server not found."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_COLUMN_APPROVAL": {
+      "translation": "Approval of the outbreaks"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_APPROVAL_NOT_NEEDED": {
+      "translation": "No approval"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_APPROVAL_PENDING": {
+      "translation": "{{count}} waiting"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_APPROVAL_ACCEPTED": {
+      "translation": "{{count}} accepted"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_APPROVAL_REFUSED": {
+      "translation": "{{count}} refused / paused"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_OPEN": {
+      "translation": "Open server"
     }
   }
 }

@@ -8,6 +8,10 @@ const path = require('path');
 const fs = require('fs');
 const extendedPersistedModelConstants = require('../../components/baseModelOptions/extendedPersistedModel').constants;
 
+// sync on every change sends a package for each saved record, overloading the instances that receive the data;
+// it's off unless it is explicitly allowed in config.json (sync.allowSyncOnEveryChange), the scheduled syncs are used instead
+const allowSyncOnEveryChange = _.get(require('../config.json'), 'sync.allowSyncOnEveryChange', false) === true;
+
 module.exports = function (ExtendedPersistedModel) {
   // shortcut to Extended Persisted Model
   const EPM = ExtendedPersistedModel;
@@ -208,6 +212,11 @@ module.exports = function (ExtendedPersistedModel) {
     // check if the update is not already in a sync action
     // we won't sync on changes done in a sync action or init action
     if (context.options._sync || context.options._init) {
+      return callback();
+    }
+
+    // sync on every change isn't allowed
+    if (!allowSyncOnEveryChange) {
       return callback();
     }
 

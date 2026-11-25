@@ -5,6 +5,9 @@ const async = require('async');
 const app = require('../../server/server');
 const fs = require('fs');
 const dbSync = require('../../components/dbSync');
+const syncOutbreakMapping = require('../../components/syncOutbreakMapping');
+const syncReceivedSummary = require('../../components/syncReceivedSummary');
+const syncOutbreakAccess = require('../../components/syncOutbreakAccess');
 const SyncClient = require('../../components/syncClient');
 const syncConfig = require('../../server/config.json').sync;
 const asyncActionsSettings = syncConfig.asyncActionsSettings;
@@ -147,6 +150,15 @@ module.exports = function (Sync) {
     // get the list of outbreaks for which follow-ups must be generated
     let automaticGenFollowupOutbreaks = {};
 
+    // records received from another instance might belong to outbreaks that are mapped to the outbreaks of this instance
+    let mappingContext = null;
+
+    // what happened to the received records of each outbreak, saved in the sync log
+    const receivedSummary = syncReceivedSummary.create();
+
+    // keys of other instances: only the records of the accepted outbreaks are received
+    let accessContext = null;
+
     // check if backup should be triggered
     app.models.systemSettings
       .findOne()
@@ -192,6 +204,33 @@ module.exports = function (Sync) {
           automaticGenFollowupOutbreaks[outbreakData.id] = outbreakData;
         });
 
+        // mappings of the outbreaks of the instance that sent the data
+        if (
+          reqOptions.snapshotFromClient &&
+          options.clientId
+        ) {
+          return syncOutbreakMapping
+            .createContext(options.clientId, reqOptions)
+            .then((context) => {
+              mappingContext = context;
+
+              // outbreaks accepted from this key
+              return app.models.clientApplication.findOne({
+                where: {
+                  'credentials.clientId': options.clientId
+                }
+              });
+            })
+            .then((clientApplication) => syncOutbreakAccess.createImportContext(
+              clientApplication ? clientApplication.toJSON() : null,
+              reqOptions
+            ))
+            .then((context) => {
+              accessContext = context;
+            });
+        }
+      })
+      .then(() => {
         // extract snapshot
         return syncWorker.extractAndDecryptSnapshotArchive(filePath, options)
           .then(function (result) {
@@ -221,6 +260,16 @@ module.exports = function (Sync) {
                 let aFileParts = a.split('.');
                 let bFileParts = b.split('.');
                 if (aFileParts[0] !== bFileParts[0]) {
+                  // the outbreaks & persons must be mapped before the records that depend on them
+                  if (mappingContext) {
+                    const firstCollections = ['outbreak', 'person'];
+                    const aRank = firstCollections.indexOf(aFileParts[0]) > -1 ? firstCollections.indexOf(aFileParts[0]) : firstCollections.length;
+                    const bRank = firstCollections.indexOf(bFileParts[0]) > -1 ? firstCollections.indexOf(bFileParts[0]) : firstCollections.length;
+                    if (aRank !== bRank) {
+                      return aRank - bRank;
+                    }
+                  }
+
                   // sort by collection name;
                   // Note: we are currently relying on the fact that alphabetical order is the correct order
                   return aFileParts[0] < bFileParts[0] ? -1 : 1;
@@ -278,85 +327,149 @@ module.exports = function (Sync) {
                           let collectionRecords = JSON.parse(data);
 
                           // construct sync functions
-                          let syncFunctions = collectionRecords.map((collectionRecord) => (doneRecord) => {
+                          let syncFunctions = collectionRecords.map((receivedRecord) => (finishedRecord) => {
                             // convert mongodb id notation to Loopback notation
                             // to be consistent with external function calls
-                            collectionRecord.id = collectionRecord._id;
+                            receivedRecord.id = receivedRecord._id;
 
-                            // if needed for the collection, check for collectionRecord outbreakId
-                            if (outbreakIDs.length &&
-                              dbSync.collectionsImportFilterMap[collectionName] &&
-                              !dbSync.collectionsImportFilterMap[collectionName](collectionName, collectionRecord, outbreakIDs)) {
-                              app.logger.debug(`Sync ${syncLogEntry.id}: Skipped syncing record (collection: ${collectionName}, id: ${collectionRecord.id}) as it's outbreak ID is not accepted`);
-                              return doneRecord();
-                            }
-
-                            // another Go.Data instance can't change the translations of the application, only the texts of its data (e.g. questionnaires)
-                            if (
-                              reqOptions.snapshotFromClient &&
-                              collectionName === 'languageToken' &&
-                              !dbSync.isDataLanguageToken(collectionRecord.token)
-                            ) {
-                              app.logger.debug(`Sync ${syncLogEntry.id}: Skipped syncing language token '${collectionRecord.token}' as it isn't the text of a questionnaire or reference data`);
-                              return doneRecord();
-                            }
-
-                            // differentiate between different types of person
-                            let syncModel = model;
-                            if (model.modelName === app.models.person.modelName) {
-                              switch (collectionRecord.type) {
-                                case 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE':
-                                  syncModel = app.models.case;
-                                  break;
-                                case 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_EVENT':
-                                  syncModel = app.models.event;
-                                  break;
-                                case 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT':
-                                  syncModel = app.models.contact;
-                                  break;
-                                case 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT_OF_CONTACT':
-                                  syncModel = app.models.contactOfContact;
-                                  break;
+                            // call it only once, even if something fails after
+                            let recordDone = false;
+                            const doneRecord = () => {
+                              if (!recordDone) {
+                                recordDone = true;
+                                finishedRecord();
                               }
+                            };
+
+                            // keys of other instances: the records of outbreaks that weren't accepted are refused (an outbreak received without a request is listed for a decision)
+                            if (!syncOutbreakAccess.isRecordAllowed(accessContext, collectionName, receivedRecord)) {
+                              return (
+                                collectionName === 'outbreak' ?
+                                  syncOutbreakAccess.requestReceivedOutbreak(accessContext, receivedRecord) :
+                                  Promise.resolve()
+                              )
+                                .then(() => {
+                                  syncReceivedSummary.count(receivedSummary, collectionName, receivedRecord, syncReceivedSummary.STATE.NOT_ALLOWED);
+                                  doneRecord();
+                                });
                             }
 
-                            // sync the record with the main database
-                            dbSync.syncRecord(app, app.logger, syncModel, collectionRecord, reqOptions, (err, syncResult) => {
-                              // generate follow-ups ?
-                              if (syncResult &&
-                                syncResult.flag === app.utils.dbSync.syncRecordFlags.CREATED &&
-                                automaticGenFollowupOutbreaks[syncResult.record.outbreakId] && (
-                                  (
-                                    syncResult.record.type === 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE' &&
-                                    automaticGenFollowupOutbreaks[syncResult.record.outbreakId]['allowCasesFollowUp'] &&
-                                    automaticGenFollowupOutbreaks[syncResult.record.outbreakId]['generateFollowUpsWhenCreatingCases']
-                                  )  || (
-                                    syncResult.record.type === 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT' &&
-                                    automaticGenFollowupOutbreaks[syncResult.record.outbreakId]['generateFollowUpsWhenCreatingContacts']
+                            // records of mapped outbreaks are converted to the outbreaks of this instance, or kept aside until the mapping is approved
+                            (
+                              mappingContext ?
+                                syncOutbreakMapping.prepareRecord(mappingContext, collectionName, receivedRecord) :
+                                Promise.resolve({
+                                  action: 'import',
+                                  record: receivedRecord
+                                })
+                            )
+                              .then((prepared) => {
+                                if (prepared.action !== 'import') {
+                                  if (prepared.action === 'stage') {
+                                    syncReceivedSummary.count(receivedSummary, collectionName, receivedRecord, syncReceivedSummary.STATE.STAGED);
+                                  }
+                                  return doneRecord();
+                                }
+
+                                const collectionRecord = prepared.record;
+
+                                // if needed for the collection, check for collectionRecord outbreakId
+                                if (outbreakIDs.length &&
+                                  dbSync.collectionsImportFilterMap[collectionName] &&
+                                  !dbSync.collectionsImportFilterMap[collectionName](collectionName, collectionRecord, outbreakIDs)) {
+                                  app.logger.debug(`Sync ${syncLogEntry.id}: Skipped syncing record (collection: ${collectionName}, id: ${collectionRecord.id}) as it's outbreak ID is not accepted`);
+                                  syncReceivedSummary.count(receivedSummary, collectionName, receivedRecord, syncReceivedSummary.STATE.NOT_ALLOWED);
+                                  return doneRecord();
+                                }
+
+                                // another Go.Data instance can't change the translations of the application, only the texts of its data (e.g. questionnaires)
+                                if (
+                                  reqOptions.snapshotFromClient &&
+                                  collectionName === 'languageToken' &&
+                                  !dbSync.isDataLanguageToken(collectionRecord.token)
+                                ) {
+                                  app.logger.debug(`Sync ${syncLogEntry.id}: Skipped syncing language token '${collectionRecord.token}' as it isn't the text of a questionnaire or reference data`);
+                                  return doneRecord();
+                                }
+
+                                // differentiate between different types of person
+                                let syncModel = model;
+                                if (model.modelName === app.models.person.modelName) {
+                                  switch (collectionRecord.type) {
+                                    case 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE':
+                                      syncModel = app.models.case;
+                                      break;
+                                    case 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_EVENT':
+                                      syncModel = app.models.event;
+                                      break;
+                                    case 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT':
+                                      syncModel = app.models.contact;
+                                      break;
+                                    case 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT_OF_CONTACT':
+                                      syncModel = app.models.contactOfContact;
+                                      break;
+                                  }
+                                }
+
+                                // sync the record with the main database
+                                // (the record might need specific options, e.g. converted answers of a mapped outbreak must not be merged with the old ones)
+                                const recordOptions = prepared.syncOptions ?
+                                  Object.assign({}, reqOptions, prepared.syncOptions) :
+                                  reqOptions;
+                                dbSync.syncRecord(app, app.logger, syncModel, collectionRecord, recordOptions, (err, syncResult) => {
+                                  // generate follow-ups ?
+                                  if (syncResult &&
+                                    syncResult.flag === app.utils.dbSync.syncRecordFlags.CREATED &&
+                                    automaticGenFollowupOutbreaks[syncResult.record.outbreakId] && (
+                                    (
+                                      syncResult.record.type === 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE' &&
+                                        automaticGenFollowupOutbreaks[syncResult.record.outbreakId]['allowCasesFollowUp'] &&
+                                        automaticGenFollowupOutbreaks[syncResult.record.outbreakId]['generateFollowUpsWhenCreatingCases']
+                                    )  || (
+                                      syncResult.record.type === 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT' &&
+                                        automaticGenFollowupOutbreaks[syncResult.record.outbreakId]['generateFollowUpsWhenCreatingContacts']
+                                    )
                                   )
-                                )
-                              ) {
-                                // keep the contact ids per outbreak and createdBy user
-                                if (!automaticGenFollowupCreatedContacts[syncResult.record.outbreakId]) {
-                                  automaticGenFollowupCreatedContacts[syncResult.record.outbreakId] = {};
-                                }
-                                if (!automaticGenFollowupCreatedContacts[syncResult.record.outbreakId][syncResult.record.createdBy]) {
-                                  automaticGenFollowupCreatedContacts[syncResult.record.outbreakId][syncResult.record.createdBy] = {};
-                                }
-                                if (!automaticGenFollowupCreatedContacts[syncResult.record.outbreakId][syncResult.record.createdBy][syncResult.record.type]) {
-                                  automaticGenFollowupCreatedContacts[syncResult.record.outbreakId][syncResult.record.createdBy][syncResult.record.type] = [];
-                                }
-                                automaticGenFollowupCreatedContacts[syncResult.record.outbreakId][syncResult.record.createdBy][syncResult.record.type].push(syncResult.record.id);
-                                automaticGenFollowupCreatedByUsers[syncResult.record.createdBy] = true;
-                              }
+                                  ) {
+                                    // keep the contact ids per outbreak and createdBy user
+                                    if (!automaticGenFollowupCreatedContacts[syncResult.record.outbreakId]) {
+                                      automaticGenFollowupCreatedContacts[syncResult.record.outbreakId] = {};
+                                    }
+                                    if (!automaticGenFollowupCreatedContacts[syncResult.record.outbreakId][syncResult.record.createdBy]) {
+                                      automaticGenFollowupCreatedContacts[syncResult.record.outbreakId][syncResult.record.createdBy] = {};
+                                    }
+                                    if (!automaticGenFollowupCreatedContacts[syncResult.record.outbreakId][syncResult.record.createdBy][syncResult.record.type]) {
+                                      automaticGenFollowupCreatedContacts[syncResult.record.outbreakId][syncResult.record.createdBy][syncResult.record.type] = [];
+                                    }
+                                    automaticGenFollowupCreatedContacts[syncResult.record.outbreakId][syncResult.record.createdBy][syncResult.record.type].push(syncResult.record.id);
+                                    automaticGenFollowupCreatedByUsers[syncResult.record.createdBy] = true;
+                                  }
 
-                              // error ?
-                              if (err) {
-                                app.logger.debug(`Sync ${syncLogEntry.id}: Failed syncing record (collection: ${collectionName}, id: ${collectionRecord.id}). Error: ${err.message}`);
-                                failedIds[collectionName].push(`ID: "${collectionRecord.id}". Error: ${err.message}`);
-                              }
-                              return doneRecord();
-                            });
+                                  // error ?
+                                  if (err) {
+                                    app.logger.debug(`Sync ${syncLogEntry.id}: Failed syncing record (collection: ${collectionName}, id: ${collectionRecord.id}). Error: ${err.message}`);
+                                    failedIds[collectionName].push(`ID: "${collectionRecord.id}". Error: ${err.message}`);
+                                  }
+                                  syncReceivedSummary.count(
+                                    receivedSummary,
+                                    collectionName,
+                                    receivedRecord,
+                                    err ?
+                                      syncReceivedSummary.STATE.FAILED :
+                                      syncReceivedSummary.STATE.IMPORTED,
+                                    collectionName === 'outbreak' ?
+                                      collectionRecord.id :
+                                      collectionRecord.outbreakId
+                                  );
+                                  return doneRecord();
+                                });
+                              })
+                              .catch((prepareError) => {
+                                app.logger.debug(`Sync ${syncLogEntry.id}: Failed mapping record (collection: ${collectionName}, id: ${receivedRecord.id}). Error: ${prepareError && prepareError.message ? prepareError.message : prepareError}`);
+                                failedIds[collectionName].push(`ID: "${receivedRecord.id}". Error: ${prepareError && prepareError.message ? prepareError.message : prepareError}`);
+                                syncReceivedSummary.count(receivedSummary, collectionName, receivedRecord, syncReceivedSummary.STATE.FAILED);
+                                return doneRecord();
+                              });
                           });
 
                           // depending on collection the sync can be done in parallel or in series
@@ -446,6 +559,15 @@ module.exports = function (Sync) {
                       err += `Collection ${collectionName}. Records: ${failedIds[collectionName].join('; ')} `;
                     });
                   }
+
+                  // records kept aside until the mapping of their outbreak / questionnaire is approved
+                  const stagedMessage = mappingContext ? syncOutbreakMapping.getStagedMessage(mappingContext) : null;
+                  if (stagedMessage) {
+                    err = (err || '') + stagedMessage;
+                  }
+
+                  // what happened to the records of each outbreak; saved with the sync log
+                  syncLogEntry.receivedSummary = syncReceivedSummary.toLogFormat(receivedSummary, mappingContext);
 
                   // some/all collections could fail when copying related files
                   if (failedCollectionsRelatedFiles.length) {

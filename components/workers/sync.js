@@ -782,13 +782,17 @@ const worker = {
                       let mongoDBFilter = {};
                       if (!options.noDataFiltering) {
                         // get mongoDB filter that will be sent; for some collections we might send additional filters
+                        // the outbreaks are always sent to upstream servers, even if they weren't changed, so the upstream server always knows their questionnaires (needed to map them to its own outbreaks)
+                        const collectionCustomFilter = options.dbForUpstreamServer && collectionName === 'outbreak' ?
+                          null :
+                          customFilter;
                         mongoDBFilter = dbSync.collectionsFilterMap[collectionName] ?
                           dbSync.collectionsFilterMap[collectionName](
                             collectionName,
-                            customFilter,
+                            collectionCustomFilter,
                             filter
                           ) :
-                          customFilter;
+                          collectionCustomFilter;
                       }
                       logger.debug(`Exporting collection: ${collectionName}`);
 

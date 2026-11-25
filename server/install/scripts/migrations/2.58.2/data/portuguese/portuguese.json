@@ -77,25 +77,25 @@
       "translation": "Por padrão, só é enviado o que foi criado, alterado ou excluído desde a última sincronização bem-sucedida."
     },
     "LNG_INFO_BANNER_SYNCED_DATA_NOTE_OUTBREAKS": {
-      "translation": "Só são enviados os dados dos surtos permitidos para as credenciais do cliente."
+      "translation": "Só são enviados os dados dos surtos aceitos pelo destino (ou permitidos na chave do aplicativo móvel)."
     },
     "LNG_LAYOUT_MENU_ITEM_DATA_SYNC_LABEL": {
       "translation": "Sincronização de dados"
     },
     "LNG_LAYOUT_MENU_ITEM_UPSTREAM_SERVERS_LABEL": {
-      "translation": "Enviar dados para Servidores"
+      "translation": "Envio de dados"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TITLE": {
-      "translation": "Enviar dados para Servidores"
+      "translation": "Envio de dados"
     },
     "LNG_LAYOUT_MENU_ITEM_CLIENT_APPLICATIONS_LABEL": {
-      "translation": "Receber dados de Servidores"
+      "translation": "Recebimento de dados"
     },
     "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TITLE": {
-      "translation": "Receber dados de Servidores"
+      "translation": "Recebimento de dados"
     },
     "LNG_APP_PAGE_SYSTEM_CLIENT_APPLICATIONS": {
-      "translation": "Receber dados de Servidores"
+      "translation": "Recebimento de dados"
     },
     "LNG_LAYOUT_MENU_ITEM_SYNC_LABEL": {
       "translation": "Acompanhar sincronização"
@@ -118,83 +118,8 @@
     "LNG_UPSTREAM_SERVER_FIELD_LABEL_LAST_SYNC_STATUS": {
       "translation": "Status da última sincronização"
     },
-    "LNG_UPSTREAM_SERVER_FIELD_LABEL_LAST_SYNC_LOGS": {
-      "translation": "Logs"
-    },
     "LNG_UPSTREAM_SERVER_LAST_SYNC_NEVER": {
       "translation": "Nunca sincronizado"
-    },
-    "LNG_UPSTREAM_SERVER_LAST_SYNC_NO_MESSAGES": {
-      "translation": "Sem erros ou avisos"
-    },
-    "LNG_UPSTREAM_SERVER_LAST_SYNC_VIEW_LOGS": {
-      "translation": "Ver logs"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_TITLE": {
-      "translation": "Para que serve esta tela?"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_DESCRIPTION": {
-      "translation": "Cadastre aqui as outras instâncias do Go.Data (servidores upstream, por exemplo um servidor central) para onde esta instância envia os seus dados e controle quando a sincronização acontece."
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_1_TITLE": {
-      "translation": "Cadastre o servidor"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_1_DESCRIPTION": {
-      "translation": "Informe a URL da outra instância do Go.Data e o ID e o segredo do cliente gerados nela, na página \"Receber dados de Servidores\"."
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_2_TITLE": {
-      "translation": "Escolha quando sincronizar"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_2_DESCRIPTION": {
-      "translation": "Inicie manualmente pelo botão de sincronizar (dá para enviar também dados mais antigos ou tudo), defina um intervalo (em horas) para a sincronização automática ou ative \"Sincronizar em cada alteração\" para enviar as mudanças assim que acontecem."
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_3_TITLE": {
-      "translation": "Os dados são enviados"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_3_DESCRIPTION": {
-      "translation": "Esta instância exporta seus dados e os envia ao servidor upstream, que faz a importação. A primeira sincronização envia tudo; as seguintes enviam apenas o que mudou desde a última sincronização bem-sucedida."
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_4_TITLE": {
-      "translation": "Acompanhe o resultado"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_STEP_4_DESCRIPTION": {
-      "translation": "O resultado (sucesso, sucesso com avisos ou falha) fica registrado na página \"Acompanhar sincronização\"."
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_INFO_NOTE_1": {
-      "translation": "A sincronização é de mão única: os dados são enviados desta instância para o servidor upstream, e não o contrário."
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_TITLE": {
-      "translation": "Para que serve esta tela?"
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_DESCRIPTION": {
-      "translation": "Aqui você cria as credenciais que permitem que outros sistemas se conectem a esta instância e enviem dados para ela: outra instância do Go.Data que envia seus dados para cá (cadastrando esta instância em \"Enviar dados para Servidores\") ou o aplicativo móvel."
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_1_TITLE": {
-      "translation": "Crie o aplicativo"
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_1_DESCRIPTION": {
-      "translation": "Dê um nome a ele. O ID e o segredo do cliente podem ser gerados automaticamente."
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_2_TITLE": {
-      "translation": "Escolha os surtos"
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_2_DESCRIPTION": {
-      "translation": "Limite a quais surtos o aplicativo tem acesso. Deixe vazio para permitir todos os surtos."
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_3_TITLE": {
-      "translation": "Compartilhe as credenciais"
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_3_DESCRIPTION": {
-      "translation": "Use o ID e o segredo do cliente ao cadastrar esta instância em \"Enviar dados para Servidores\" na outra instância do Go.Data, ou baixe o arquivo de configuração (QR code) para configurar o aplicativo móvel."
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_4_TITLE": {
-      "translation": "Controle o acesso"
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_STEP_4_DESCRIPTION": {
-      "translation": "As requisições só são aceitas enquanto o aplicativo estiver ativo e as credenciais forem válidas. Desative-o para bloquear o acesso sem excluí-lo."
-    },
-    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_INFO_NOTE_1": {
-      "translation": "Trate o segredo do cliente como uma senha: quem o possui pode se conectar a esta instância como esse aplicativo."
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_SECTION_GENERAL": {
       "translation": "Geral"
@@ -215,7 +140,7 @@
       "translation": "Testar credenciais"
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_CREDENTIALS_ACCEPTED_ALL_OUTBREAKS": {
-      "translation": "Conexão estabelecida. As credenciais foram aceitas, com acesso a todos os surtos."
+      "translation": "Conexão estabelecida. As credenciais foram aceitas; o destino decide quais surtos recebe."
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_CREDENTIALS_ACCEPTED_SOME_OUTBREAKS": {
       "translation": "Conexão estabelecida. As credenciais foram aceitas, com acesso a {{count}} surto(s)."
@@ -236,7 +161,7 @@
       "translation": "O endereço respondeu, mas não parece ser um servidor Go.Data."
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_INVALID_CREDENTIALS": {
-      "translation": "O servidor está online, mas as credenciais foram rejeitadas. Confira o ID e o segredo do cliente e se o aplicativo está ativo na outra instância."
+      "translation": "O servidor está online, mas as credenciais foram rejeitadas. Confira o ID e o segredo do cliente e se a origem está ativa na outra instância."
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_ERROR_API_NOT_FOUND": {
       "translation": "O servidor está online, mas a API não foi encontrada neste endereço. A URL deve terminar em /api."
@@ -260,37 +185,31 @@
       "translation": "Quando desativado, o servidor é ignorado nas sincronizações manual, automática e a cada alteração."
     },
     "LNG_UPSTREAM_SERVER_FIELD_LABEL_CREDENTIALS_CLIENT_ID_DESCRIPTION": {
-      "translation": "ID do cliente criado na página \"Receber dados de Servidores\" da outra instância do Go.Data."
+      "translation": "ID do cliente criado em \"Recebimento de dados\" da outra instância do Go.Data."
     },
     "LNG_UPSTREAM_SERVER_FIELD_LABEL_CREDENTIALS_CLIENT_SECRET_DESCRIPTION": {
-      "translation": "Segredo do cliente criado na página \"Receber dados de Servidores\" da outra instância do Go.Data."
+      "translation": "Segredo do cliente criado em \"Recebimento de dados\" da outra instância do Go.Data."
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_URL_ALREADY_REGISTERED": {
-      "translation": "Já existe um servidor cadastrado com esta URL. Para alterá-lo, use o ícone de lápis na lista, ou use outro endereço."
+      "translation": "Já existe um destino cadastrado com esta URL. Para alterá-lo, abra-o na lista e use \"Editar\", ou use outro endereço."
     },
     "LNG_UPSTREAM_SERVER_LAST_SYNC_UP_TO_DATE": {
       "translation": "Já atualizado"
-    },
-    "LNG_UPSTREAM_SERVER_LAST_SYNC_NO_NEW_DATA": {
-      "translation": "Nenhum dado novo para enviar"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_UP_TO_DATE_MESSAGE": {
       "translation": "O servidor já está atualizado: não há dados novos para enviar."
     },
     "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_TITLE": {
-      "translation": "Modificar servidor upstream: {{name}}"
+      "translation": "Modificar destino: {{name}}"
     },
     "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_ACTION_MODIFY_UPSTREAM_SERVER_SUCCESS_MESSAGE": {
-      "translation": "Servidor upstream atualizado"
+      "translation": "Destino salvo"
     },
     "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_NOT_FOUND": {
-      "translation": "Servidor upstream não encontrado. Ele pode ter sido excluído."
+      "translation": "Destino não encontrado. Ele pode ter sido excluído."
     },
     "LNG_PAGE_MODIFY_SYSTEM_UPSTREAM_SERVER_URL_CHANGED_NOTE": {
       "translation": "A URL foi alterada. O histórico de sincronização é mantido por URL, então a próxima sincronização enviará todos os dados para este novo endereço."
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_ACTION_MODIFY_SERVER": {
-      "translation": "Modificar servidor"
     },
     "LNG_UPSTREAM_SERVER_FIELD_LABEL_CONNECTION": {
       "translation": "Conexão"
@@ -395,7 +314,7 @@
       "translation": "Recebido"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_TITLE": {
-      "translation": "Sincronizar com o servidor"
+      "translation": "Sincronizar com o destino"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_HINT_SINCE_LAST": {
       "translation": "São enviados apenas os registros criados ou alterados desde a última sincronização com sucesso. É a opção usual e a mais rápida."
@@ -413,19 +332,16 @@
       "translation": "Surtos"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_OUTBREAKS_TOOLTIP": {
-      "translation": "Vem preenchido com os surtos configurados no servidor. Deixe vazio para enviar todos os surtos."
+      "translation": "Vem preenchido com os surtos oferecidos ao destino. Escolha pelo menos um."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_HINT_PARTIAL": {
       "translation": "Os surtos escolhidos não incluem todos os configurados neste servidor. Esta sincronização não é usada para definir o que as próximas enviam, então elas continuam enviando o que mudou nos surtos que ficaram de fora."
     },
     "LNG_UPSTREAM_SERVER_FIELD_LABEL_OUTBREAKS_TO_SYNC": {
-      "translation": "Surtos a sincronizar"
-    },
-    "LNG_UPSTREAM_SERVER_FIELD_LABEL_OUTBREAKS_TO_SYNC_ALL": {
-      "translation": "Todos os surtos"
+      "translation": "Surtos oferecidos ao destino"
     },
     "LNG_UPSTREAM_SERVER_FIELD_LABEL_OUTBREAKS_TO_SYNC_DESCRIPTION": {
-      "translation": "Deixe vazio para sincronizar todos os surtos. As sincronizações agendadas e as feitas a cada alteração enviam apenas os surtos escolhidos. Ao incluir um surto, a próxima sincronização envia todos os dados dos surtos escolhidos."
+      "translation": "Escolha os surtos desta instância oferecidos ao destino. Obrigatório: um surto novo só é oferecido depois de escolhido aqui. O destino ainda decide quais aceita, e só os aceitos são enviados."
     },
     "LNG_SYNC_PROGRESS_DIALOG_TITLE": {
       "translation": "Sincronizando com o servidor"
@@ -485,7 +401,7 @@
       "translation": "Não foi possível conectar ao servidor \"{{name}}\". Verifique se ele está online e se a URL está correta."
     },
     "LNG_SYNC_PROGRESS_DIALOG_ERROR_CREDENTIALS": {
-      "translation": "O servidor \"{{name}}\" não aceitou as credenciais. Verifique o ID e o segredo do cliente no cadastro do servidor."
+      "translation": "O destino \"{{name}}\" não aceitou as credenciais. Verifique o ID e o segredo do cliente ao editar o destino."
     },
     "LNG_SYNC_PROGRESS_DIALOG_ERROR_SYNC": {
       "translation": "Ocorreu um erro ao sincronizar os dados."
@@ -494,7 +410,7 @@
       "translation": "Detalhes do erro"
     },
     "LNG_SYNC_PROGRESS_DIALOG_LOG_HELP": {
-      "translation": "Se o problema continuar, entre em contato com o administrador do sistema ou com o responsável pelo servidor de destino."
+      "translation": "Se o problema continuar, entre em contato com o administrador do sistema ou com o responsável pelo destino."
     },
     "LNG_SYNC_PROGRESS_DIALOG_VIEW_ERROR_BUTTON": {
       "translation": "Ver log completo"
@@ -504,9 +420,6 @@
     },
     "LNG_SYNC_PROGRESS_DIALOG_BACKGROUND_BUTTON": {
       "translation": "Continuar em segundo plano"
-    },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_OUTBREAKS_ALL": {
-      "translation": "Todos os surtos (nenhum selecionado)"
     },
     "LNG_LAYOUT_MENU_ITEM_SYNC_DOCUMENTATION_LABEL": {
       "translation": "Documentação"
@@ -536,10 +449,10 @@
       "translation": "Vai receber dados? Comece gerando as chaves"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_CALLOUT_DESCRIPTION": {
-      "translation": "Antes de qualquer envio, a instância que vai receber os dados precisa criar um aplicativo cliente em \"Receber dados de Servidores\". É ele que gera o ID e o segredo do cliente, as chaves que a outra instância usa para se conectar. Sem essas chaves, nenhum servidor consegue enviar dados para cá."
+      "translation": "Antes de qualquer envio, a instância que vai receber os dados precisa adicionar uma origem em \"Recebimento de dados\". É ela que gera o ID e o segredo do cliente, as chaves que a outra instância usa para se conectar. Sem essas chaves, nenhuma instância consegue enviar dados para cá."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_CALLOUT_BUTTON": {
-      "translation": "Gerar chaves em \"Receber dados de Servidores\""
+      "translation": "Gerar chaves em \"Recebimento de dados\""
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEPS_TITLE": {
       "translation": "Passo a passo para configurar"
@@ -557,25 +470,25 @@
       "translation": "Gere as chaves de acesso"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_1_DESCRIPTION": {
-      "translation": "Em \"Receber dados de Servidores\", crie um aplicativo cliente para cada instância que vai enviar dados. Use o botão de gerar para criar o ID e o segredo do cliente e o botão de copiar para enviá-los ao responsável pela outra instância. Deixe o aplicativo ativo."
+      "translation": "Em \"Recebimento de dados\", adicione uma origem para cada instância que vai enviar dados, com o tipo \"Instância do Go.Data\". Use o botão de gerar para criar o ID e o segredo do cliente e o botão de copiar para enviá-los ao responsável pela outra instância. Deixe a origem ativa."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_2_TITLE": {
-      "translation": "Cadastre o servidor de destino"
+      "translation": "Cadastre o destino"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_2_DESCRIPTION": {
-      "translation": "Em \"Enviar dados para Servidores\", cadastre a instância que vai receber: informe a URL dela e cole o ID e o segredo do cliente gerados no passo 1. Use os botões \"Testar servidor\" e \"Testar credenciais\" para confirmar que está tudo certo antes de salvar."
+      "translation": "Em \"Envio de dados\", cadastre a instância que vai receber: informe a URL dela e cole o ID e o segredo do cliente gerados no passo 1. Use os botões \"Testar servidor\" e \"Testar credenciais\" para confirmar que está tudo certo antes de salvar."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_3_TITLE": {
       "translation": "Escolha quando e o que sincronizar"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_3_DESCRIPTION": {
-      "translation": "No mesmo cadastro, defina um intervalo para a sincronização automática, ative \"Sincronizar em cada alteração\" ou sincronize manualmente pelo botão da lista. Em \"Surtos a sincronizar\" você escolhe quais surtos enviar; vazio envia todos."
+      "translation": "No mesmo cadastro, escolha \"Quando enviar\": a cada 1, 6, 12 ou 24 horas, ou só manualmente. O \"Sincronizar agora\", na página do destino, envia a qualquer momento. Em \"Surtos oferecidos ao destino\" você escolhe quais surtos são oferecidos; o destino decide quais aceita."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_4_TITLE": {
       "translation": "Acompanhe o resultado"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_4_DESCRIPTION": {
-      "translation": "Em \"Acompanhar sincronização\", cada envio e cada recebimento fica registrado com a direção, o status e, em caso de problema, os detalhes do erro."
+      "translation": "A aba \"Histórico\" de cada origem e de cada destino mostra as sincronizações dele. Em \"Acompanhar sincronização\" fica o histórico completo, com a direção, o status e, em caso de problema, os detalhes do erro."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_GO_TO": {
       "translation": "Ir para"
@@ -587,16 +500,16 @@
       "translation": "O que cada tela faz"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_SEND_TITLE": {
-      "translation": "Enviar dados para Servidores"
+      "translation": "Envio de dados"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_SEND_DESCRIPTION": {
-      "translation": "Usada pela instância que envia. Aqui ficam os servidores para onde os dados vão."
+      "translation": "Usada pela instância que envia. Lista os destinos para onde os dados vão; em cada um você vê os surtos aceitos, o que foi enviado e pode sincronizar agora."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_1": {
-      "translation": "Cadastro do servidor com URL, credenciais e teste de conexão."
+      "translation": "Cadastro do destino com URL, credenciais e teste de conexão."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_2": {
-      "translation": "Sincronização automática por intervalo ou a cada alteração."
+      "translation": "Envio programado (a cada 1, 6, 12 ou 24 horas) ou só manual."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_3": {
       "translation": "Sincronização manual: só o que mudou, desde uma data ou todos os dados."
@@ -605,28 +518,28 @@
       "translation": "Janela de progresso com cada etapa: conexão, credenciais, envio e resultado."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_TITLE": {
-      "translation": "Receber dados de Servidores"
+      "translation": "Recebimento de dados"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_DESCRIPTION": {
-      "translation": "Usada pela instância que recebe. Aqui ficam as chaves de quem pode enviar dados para cá."
+      "translation": "Usada pela instância que recebe. Lista as origens que podem enviar dados para cá; em cada uma você decide os surtos, vê o que ela enviou e gerencia a chave."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_1": {
-      "translation": "Criação de um aplicativo cliente para cada instância que envia."
+      "translation": "Uma origem para cada instância ou aplicativo móvel que envia dados."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_2": {
       "translation": "Geração e cópia do ID e do segredo do cliente."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_3": {
-      "translation": "Restrição opcional dos surtos que cada cliente pode enviar."
+      "translation": "Aceite, pausa ou recusa de cada surto que a origem pede para enviar."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_4": {
-      "translation": "Desativação do acesso a qualquer momento, sem excluir o cliente."
+      "translation": "Desativação do acesso a qualquer momento, sem excluir a origem."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_TITLE": {
       "translation": "Acompanhar sincronização"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_DESCRIPTION": {
-      "translation": "Histórico de tudo que esta instância enviou e recebeu."
+      "translation": "Histórico completo de tudo que esta instância enviou e recebeu. As últimas sincronizações também aparecem nas telas de enviar e de receber."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_TRACK_ITEM_1": {
       "translation": "Coluna Direção indicando se os dados foram enviados ou recebidos."
@@ -647,7 +560,7 @@
       "translation": "A sincronização vai e volta?"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_DIRECTION_ANSWER": {
-      "translation": "Não. Os dados vão apenas da instância que envia para a que recebe. Se as duas precisarem enviar dados uma para a outra, cada uma deve cadastrar a outra como servidor de destino."
+      "translation": "Não. Os dados vão apenas da instância que envia para a que recebe. Se as duas precisarem enviar dados uma para a outra, cada uma deve cadastrar a outra como destino."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_WHAT_IS_SENT_QUESTION": {
       "translation": "O que é enviado em cada sincronização?"
@@ -659,7 +572,7 @@
       "translation": "Posso enviar só alguns surtos?"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OUTBREAKS_ANSWER": {
-      "translation": "Sim. Escolha os surtos em \"Surtos a sincronizar\", no cadastro do servidor, ou na própria janela de sincronização manual. Ao incluir um surto novo na lista, a próxima sincronização envia todos os dados dos surtos escolhidos."
+      "translation": "Sim. Escolha em \"Surtos oferecidos ao destino\", ao editar o destino, ou nas opções avançadas do \"Sincronizar agora\". Ao incluir um surto novo, a próxima sincronização envia todos os dados dele."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OVERWRITE_QUESTION": {
       "translation": "A sincronização pode apagar ou sobrescrever dados de quem recebe?"
@@ -667,11 +580,17 @@
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OVERWRITE_ANSWER": {
       "translation": "Um registro só é atualizado quando a versão recebida é mais recente do que a que já existe. Configurações próprias de quem recebe, como perfis, configurações do sistema e traduções personalizadas, não são alteradas."
     },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_RECEIVER_EDITS_QUESTION": {
+      "translation": "Quem recebe pode alterar os dados de quem envia?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_RECEIVER_EDITS_ANSWER": {
+      "translation": "Não. Se a instância que recebe editar um registro recebido, a alteração fica só nela e nunca volta para quem enviou. Quem enviou continua sendo o dono do registro: quando ele alterar esse registro de novo, a versão dele substitui a edição feita aqui nas respostas que vêm dele (as respostas de perguntas que existem só aqui são mantidas). Por isso, para corrigir um dado recebido, peça a correção a quem enviou, para que seja feita na origem e chegue aqui na próxima sincronização. Informações próprias desta instância devem ficar em perguntas que existem só no questionário daqui."
+    },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_FAILED_QUESTION": {
       "translation": "A sincronização falhou. O que fazer?"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_FAILED_ANSWER": {
-      "translation": "A janela de progresso mostra em qual etapa falhou e o motivo. As causas mais comuns são o servidor de destino fora do ar, a URL errada ou credenciais inválidas ou desativadas. Os detalhes completos ficam em \"Acompanhar sincronização\". Se o problema continuar, fale com o administrador do servidor de destino."
+      "translation": "A janela de progresso mostra em qual etapa falhou e o motivo. As causas mais comuns são o destino fora do ar, a URL errada ou credenciais inválidas ou desativadas. Os detalhes completos ficam na aba \"Histórico\" do destino e em \"Acompanhar sincronização\". Se o problema continuar, fale com o administrador do destino."
     },
     "LNG_INFO_BANNER_SYNCED_DATA_DATA_TEXTS": {
       "translation": "Textos dos questionários e das listas"
@@ -687,6 +606,918 @@
     },
     "LNG_INFO_BANNER_SYNCED_DATA_EXCLUDED_TEMPLATES": {
       "translation": "Modelos de surto, mapeamentos de importação e filtros salvos"
+    },
+    "LNG_LAYOUT_MENU_ITEM_SYNC_OUTBREAK_MAPPINGS_LABEL": {
+      "translation": "Revisar dados recebidos"
+    },
+    "LNG_SYNC_OUTBREAK_MAPPING_STATUS_PENDING": {
+      "translation": "Aguardando revisão"
+    },
+    "LNG_SYNC_OUTBREAK_MAPPING_STATUS_APPROVED": {
+      "translation": "Aprovado"
+    },
+    "LNG_SYNC_OUTBREAK_MAPPING_STATUS_REVIEW": {
+      "translation": "Perguntas novas para revisar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_TITLE": {
+      "translation": "Revisão de perguntas"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_RECEIVED_FROM": {
+      "translation": "Recebido de"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_UNKNOWN_OUTBREAK": {
+      "translation": "Surto ainda não recebido"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_HERE": {
+      "translation": "Nesta instância"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_IMPORTED_AS_NEW": {
+      "translation": "Importado como surto novo"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_NOT_DEFINED": {
+      "translation": "Ainda não definido"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_NEW_QUESTIONS": {
+      "translation": "{{count}} pergunta(s) nova(s) ou alterada(s) para revisar."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_NOTE": {
+      "translation": "Os registros deste surto estão guardados até a aprovação."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_MAP_BUTTON": {
+      "translation": "Revisar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_VIEW_BUTTON": {
+      "translation": "Ver ou alterar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_TITLE": {
+      "translation": "Mapeamento do surto"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STAGED_RECORDS": {
+      "translation": "{{count}} registro(s) aguardando a aprovação deste mapeamento."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_NO_QUESTIONNAIRE": {
+      "translation": "O questionário deste surto ainda não foi recebido. Ele chega na próxima sincronização da outra instância."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STEP_OUTBREAK": {
+      "translation": "A qual surto ele corresponde?"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_MODE_MAP": {
+      "translation": "É um surto que já existe aqui"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_MODE_MAP_DESCRIPTION": {
+      "translation": "Os registros recebidos passam para o surto escolhido, e você liga as perguntas dos questionários."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_MODE_NEW": {
+      "translation": "Importar como surto novo"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_MODE_NEW_DESCRIPTION": {
+      "translation": "O surto não existe aqui e é importado como foi recebido, com o seu próprio questionário."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_TARGET_OUTBREAK": {
+      "translation": "Surto desta instância"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STEP_QUESTIONS": {
+      "translation": "Ligue as perguntas"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STEP_QUESTIONS_DESCRIPTION": {
+      "translation": "Para cada pergunta recebida, escolha a pergunta correspondente deste surto ou \"Ignorar\". Nas perguntas de escolha, ligue também cada opção de resposta. Ignorar significa descartar: a resposta não é importada, os registros chegam aqui sem ela e a pergunta não é criada no questionário deste surto. Vale o mesmo para uma opção ignorada, e as outras opções da pergunta são importadas normalmente. Nada é apagado na instância que enviou os dados. O mapeamento fica salvo, e a pergunta continua ignorada nas próximas sincronizações."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_BUTTON": {
+      "translation": "Sugerir correspondências"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_RESULT": {
+      "translation": "{{count}} pergunta(s) ligada(s) automaticamente por variável ou texto iguais. Confira antes de aprovar."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_ONLY_PENDING": {
+      "translation": "Mostrar só pendentes"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_COLUMN_RECEIVED": {
+      "translation": "Pergunta recebida"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_COLUMN_HERE": {
+      "translation": "Pergunta desta instância"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_NEW": {
+      "translation": "Nova"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_CHOOSE_QUESTION": {
+      "translation": "Escolha a pergunta"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_IGNORE": {
+      "translation": "Ignorar (fica em branco)"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_ANSWERS": {
+      "translation": "Opções de resposta"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_CHOOSE_ANSWER": {
+      "translation": "Escolha a opção"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_TAB_DONE": {
+      "translation": "Todas as perguntas deste questionário foram decididas."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_IGNORE_REMAINING": {
+      "translation": "Ignorar as perguntas e opções restantes"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_COMPATIBILITY_HINT": {
+      "translation": "Só podem ser escolhidas perguntas com tipo de resposta compatível: o mesmo tipo, resposta única para múltipla escolha ou pergunta de escolha para texto livre. Cada pergunta deste surto recebe as respostas de uma única pergunta recebida."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_INCOMPATIBLE_TYPE": {
+      "translation": "tipo de resposta incompatível"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_ALREADY_LINKED": {
+      "translation": "já ligada a outra pergunta recebida"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_CHOICE_TO_TEXT": {
+      "translation": "As opções recebidas serão gravadas como texto nesta pergunta (por exemplo, \"UBS\"). Várias opções marcadas ficam separadas por vírgula."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_STEP_QUESTIONS_SHORT": {
+      "translation": "Para cada pergunta recebida, escolha onde as respostas devem ficar neste surto. Comece pela sugestão automática e revise o que faltar."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_LINK_TITLE": {
+      "translation": "Ligar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_LINK_TEXT": {
+      "translation": "Escolha a pergunta correspondente deste surto. Nas perguntas de escolha, ligue também cada opção de resposta."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_IGNORE_TITLE": {
+      "translation": "Ignorar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_IGNORE_TEXT": {
+      "translation": "A resposta é descartada na importação e a pergunta fica em branco aqui. Nada muda na instância que enviou."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_TYPES_TITLE": {
+      "translation": "Tipos compatíveis"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_GUIDE_TYPES_TEXT": {
+      "translation": "Perguntas de tipo incompatível ou já ligadas a outra pergunta aparecem desabilitadas na lista, com o motivo."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_RULES_SHOW": {
+      "translation": "Ver regras completas"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_RULES_HIDE": {
+      "translation": "Ocultar regras"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_DESCRIPTION": {
+      "translation": "Liga automaticamente as perguntas e as opções que têm a mesma variável ou o mesmo texto. Você confere e ajusta depois."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_TITLE": {
+      "translation": "Sugestão automática"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_RUNNING": {
+      "translation": "Procurando correspondências…"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_SUMMARY": {
+      "translation": "{{questions}} pergunta(s) e {{answers}} opção(ões) ligadas automaticamente. Confira as marcadas como \"Sugerida\" antes de aprovar."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGEST_NONE": {
+      "translation": "Nenhuma correspondência nova encontrada. Ligue as perguntas restantes manualmente ou marque \"Ignorar\"."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_SUGGESTED_BADGE": {
+      "translation": "Sugerida"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_HELP_COLUMN_RECEIVED": {
+      "translation": "Pergunta do questionário da instância que enviou os dados."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_HELP_COLUMN_HERE": {
+      "translation": "Pergunta deste surto que vai receber as respostas. \"Ignorar\" descarta a resposta."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_HELP_ANSWERS": {
+      "translation": "Cada opção recebida é convertida na opção escolhida aqui. Várias opções recebidas podem ir para a mesma opção."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_HELP_ONLY_PENDING": {
+      "translation": "Esconde as perguntas que já foram decididas, para focar no que falta."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_UPDATED_AT": {
+      "translation": "Atualizado em {{date}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_PENDING_COUNT": {
+      "translation": "{{count}} pergunta(s) ainda sem decisão"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_READY": {
+      "translation": "Pronto para aprovar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_BUTTON": {
+      "translation": "Aprovar mapeamento"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_DIALOG_TITLE": {
+      "translation": "Aprovar mapeamento"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_DIALOG_MESSAGE": {
+      "translation": "O mapeamento será usado em todas as próximas sincronizações, e os {{count}} registro(s) guardado(s) serão importados agora. Deseja continuar?"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_SUCCESS_MESSAGE": {
+      "translation": "Mapeamento aprovado. {{count}} registro(s) importado(s)."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPING_APPROVE_PARTIAL_MESSAGE": {
+      "translation": "Mapeamento aprovado. {{imported}} registro(s) importado(s) e {{failed}} com erro. Veja os detalhes no histórico de notificações."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_ONLY": {
+      "translation": "Somente: {{name}}"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_SHOW_ALL": {
+      "translation": "Mostrar todos"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_REFRESH": {
+      "translation": "Atualizar"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_SENT_EMPTY": {
+      "translation": "Nenhum envio ainda. Use \"Sincronizar agora\" para enviar."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_RECEIVED_EMPTY": {
+      "translation": "Nenhum dado recebido ainda."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_DETAILS": {
+      "translation": "Detalhes"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_FULL_HISTORY": {
+      "translation": "Ver histórico completo"
+    },
+    "LNG_PAGE_LIST_SYSTEM_SYNC_LOGS_ACTION_REVIEW_RECEIVED": {
+      "translation": "Registros aguardando: revisar dados recebidos"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_REVIEW_TITLE": {
+      "translation": "Revise os dados recebidos"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_STEP_REVIEW_DESCRIPTION": {
+      "translation": "Quando chega um surto que não existe aqui, ou que usa outro questionário, os registros dele ficam guardados e a origem mostra o surto na aba \"Surtos\". Use \"Revisar e aceitar\", escolha em qual surto os dados entram e ligue as perguntas. Isso é feito uma vez por surto; as próximas sincronizações entram direto."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_RECEIVE_ITEM_5": {
+      "translation": "Revisão de onde entram os dados de um surto novo, na aba \"Surtos\" da origem."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PAGES_QUESTION": {
+      "translation": "Qual a diferença entre as telas de sincronização?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PAGES_ANSWER": {
+      "translation": "\"Envio de dados\" é usada por quem envia: os destinos, quais surtos cada um aceitou e quando os dados vão. \"Recebimento de dados\" é usada por quem recebe: as origens, a decisão sobre cada surto e onde os dados dele entram. \"Acompanhar sincronização\" é o histórico completo dos dois lados."
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_IN_PROGRESS": {
+      "translation": "Em andamento"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_SENT": {
+      "translation": "Enviado"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_SENT_WITH_WARNINGS": {
+      "translation": "Enviado, com avisos do destino"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_NOTHING_RECEIVED": {
+      "translation": "Nenhum dado novo"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_PARTIAL": {
+      "translation": "Recebido, mas alguns registros não entraram"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_WAITING": {
+      "translation": "Recebido, parte aguardando revisão"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_RECEIVED": {
+      "translation": "Recebido e importado"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_NOTHING_TO_SEND": {
+      "translation": "Nada novo para enviar"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_FAILED": {
+      "translation": "Falhou"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_ALL_OUTBREAKS": {
+      "translation": "Todos os surtos"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_SAVED_IN": {
+      "translation": "Surto desta instância onde os dados foram salvos"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_IMPORTED": {
+      "translation": "{{count}} importado(s)"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_STAGED": {
+      "translation": "{{count}} aguardando revisão"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_STAGED_TOOLTIP": {
+      "translation": "Os registros estão guardados. Clique para dizer onde eles entram."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_FAILED": {
+      "translation": "{{count}} com erro"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_FAILED_TOOLTIP": {
+      "translation": "Clique em \"Detalhes\" para ver o erro de cada registro."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_NOT_ALLOWED": {
+      "translation": "{{count}} recusado(s)"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COUNT_NOT_ALLOWED_TOOLTIP": {
+      "translation": "Esta origem não tem permissão para enviar dados deste surto. Decida o surto na aba \"Surtos\" da origem."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_OTHER": {
+      "translation": "+ {{count}} registro(s) gerais"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_OTHER_TOOLTIP": {
+      "translation": "Dados que não pertencem a um surto, como locais, dados de referência e textos dos questionários."
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TABLE_TITLE": {
+      "translation": "Origens"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_TABLE_DESCRIPTION": {
+      "translation": "Instâncias do Go.Data e aplicativos móveis que enviam dados para cá. Abra uma origem para decidir os surtos, ver o que ela enviou e gerenciar a chave de acesso."
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TABLE_TITLE": {
+      "translation": "Destinos"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_TABLE_DESCRIPTION": {
+      "translation": "Instâncias para onde esta envia os seus dados. Abra um destino para ver os surtos aceitos, o que foi enviado e sincronizar agora."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_MORE_OUTBREAKS": {
+      "translation": "Ver mais {{count}} surto(s)"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_FEWER_OUTBREAKS": {
+      "translation": "Ver menos surtos"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_MAPPINGS_WAITING_DESCRIPTION": {
+      "translation": "Surtos aceitos que ganharam perguntas novas, ou recebidos sem solicitação (instâncias antigas). Diga onde as respostas entram."
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COLUMN_DATE": {
+      "translation": "Data"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COLUMN_FROM": {
+      "translation": "Quem enviou"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COLUMN_TO": {
+      "translation": "Para onde"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_COLUMN_RESULT": {
+      "translation": "O que aconteceu"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_TOTAL": {
+      "translation": "{{count}} sincronização(ões) no total"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_PAGE": {
+      "translation": "{{first}}-{{last}} de {{total}}"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_PREVIOUS": {
+      "translation": "Página anterior"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_NEXT": {
+      "translation": "Próxima página"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_PARTIAL_DETAILS": {
+      "translation": "Recebido antes desta versão: mostra só o que ficou aguardando ou falhou, sem a contagem de importados."
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_TYPE": {
+      "translation": "Tipo de chave"
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_TYPE_DESCRIPTION": {
+      "translation": "Instância do Go.Data: a outra instância pede para enviar cada surto e você aceita ou recusa na aba \"Surtos\" da origem. Aplicativo móvel: o celular envia os surtos escolhidos em \"Acesso\"."
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_TYPE_INSTANCE": {
+      "translation": "Instância do Go.Data (pede cada surto)"
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_TYPE_MOBILE": {
+      "translation": "Aplicativo móvel"
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_AUTO_ACCEPT": {
+      "translation": "Aceitar automaticamente surtos que já existem aqui"
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_AUTO_ACCEPT_DESCRIPTION": {
+      "translation": "Surtos que existem nesta instância com o mesmo ID (por exemplo, criados aqui e copiados para a outra instância) são aceitos sem esperar a sua decisão. Os demais aguardam na aba \"Surtos\" da origem."
+    },
+    "LNG_SYNC_OUTBREAK_ACCESS_STATUS_PENDING": {
+      "translation": "Aguardando decisão"
+    },
+    "LNG_SYNC_OUTBREAK_ACCESS_STATUS_ACCEPTED": {
+      "translation": "Aceito"
+    },
+    "LNG_SYNC_OUTBREAK_ACCESS_STATUS_REFUSED": {
+      "translation": "Recusado"
+    },
+    "LNG_SYNC_OUTBREAK_ACCESS_STATUS_PAUSED": {
+      "translation": "Pausado"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_WAITING_TITLE": {
+      "translation": "Aguardando sua decisão"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_WAITING_DESCRIPTION": {
+      "translation": "Surtos que outras instâncias pediram para enviar. Nenhum dado de pessoa chega antes de você aceitar."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_WAITING_EMPTY": {
+      "translation": "Nenhuma solicitação aguardando decisão."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_ACCEPTED_TITLE": {
+      "translation": "Aceitos"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_ACCEPTED_DESCRIPTION": {
+      "translation": "Surtos cujos dados esta instância recebe. Você pode recusar a qualquer momento; o que já chegou é mantido."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_ACCEPTED_EMPTY": {
+      "translation": "Nenhum surto aceito ainda."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSED_TITLE": {
+      "translation": "Recusados"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSED_DESCRIPTION": {
+      "translation": "Surtos cujos dados não são recebidos. A outra instância vê que foram recusados e não os envia."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REQUESTED_AT": {
+      "translation": "Solicitado em {{date}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_DECIDED_AT": {
+      "translation": "Decidido em {{date}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_AUTO_ACCEPTED_AT": {
+      "translation": "Aceito automaticamente em {{date}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_COUNTS": {
+      "translation": "{{cases}} caso(s) · {{contacts}} contato(s)"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_DESTINATION_SAME": {
+      "translation": "Já existe aqui: os dados entram em {{name}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_DESTINATION_MAP": {
+      "translation": "Os dados entram em {{name}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_DESTINATION_NEW": {
+      "translation": "Entra como um surto novo nesta instância"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_DESTINATION_UNDEFINED": {
+      "translation": "Não existe aqui: revise onde os dados entram antes de aceitar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_ACCEPT_BUTTON": {
+      "translation": "Aceitar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REVIEW_AND_ACCEPT_BUTTON": {
+      "translation": "Revisar e aceitar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REVIEW_AND_ACCEPT_TOOLTIP": {
+      "translation": "Diga em qual surto e em quais perguntas os dados entram; ao aprovar, o surto é aceito."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSE_BUTTON": {
+      "translation": "Recusar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSE_TITLE": {
+      "translation": "Recusar {{name}}?"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSE_MESSAGE": {
+      "translation": "Os dados de \"{{name}}\" enviados por {{client}} deixarão de ser recebidos. O que já chegou é mantido."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_ACCEPT_SUCCESS": {
+      "translation": "\"{{name}}\" aceito. Os dados chegam na próxima sincronização."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REFUSE_SUCCESS": {
+      "translation": "\"{{name}}\" recusado."
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_TITLE": {
+      "translation": "Aprovação dos surtos"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_DESCRIPTION": {
+      "translation": "Cada destino decide quais surtos desta instância aceita. Só os surtos aceitos são enviados."
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_CHECKED_AT": {
+      "translation": "Consultado em {{date}}"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_NOT_CHECKED": {
+      "translation": "Ainda não consultado"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_REFRESH": {
+      "translation": "Consultar agora"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_ERROR": {
+      "translation": "Não foi possível consultar o destino; mostrando a última decisão conhecida."
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_LEGACY": {
+      "translation": "Este destino recebe os surtos sem aprovação (versão anterior ou chave de aplicativo móvel)."
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_PENDING": {
+      "translation": "{{count}} aguardando aprovação"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_PENDING_HINT": {
+      "translation": "Os dados desses surtos só serão enviados depois que o destino aceitar."
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_ACCEPTED": {
+      "translation": "{{count}} aceito(s): enviados nas sincronizações"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_REFUSED": {
+      "translation": "{{count}} recusado(s) ou pausado(s): não são enviados"
+    },
+    "LNG_SYNC_UPSTREAM_ACCESS_NO_OUTBREAKS": {
+      "translation": "Nenhum surto para enviar."
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_WAITING": {
+      "translation": "Aguardando aprovação"
+    },
+    "LNG_SYNC_PROGRESS_DIALOG_RESULT_WAITING_MESSAGE": {
+      "translation": "{{name}} ainda não aceitou nenhum surto desta instância. Os dados serão enviados assim que forem aceitos."
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_WAITING_ACCESS": {
+      "translation": "Nada enviado: aguardando aprovação do destino"
+    },
+    "LNG_SYNC_ACTIVITY_RESULT_NOTHING_ACCEPTED": {
+      "translation": "Nada enviado: nenhum surto aceito pelo destino"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSED_TITLE": {
+      "translation": "Pausados"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSED_DESCRIPTION": {
+      "translation": "Surtos cujos dados deixaram de ser recebidos por um tempo. Ao retomar, a outra instância envia o que mudou nesse período."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSE_BUTTON": {
+      "translation": "Pausar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSE_TOOLTIP": {
+      "translation": "Para de receber os dados deste surto até você retomar. O que já chegou é mantido."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSE_TITLE": {
+      "translation": "Pausar {{name}}?"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSE_MESSAGE": {
+      "translation": "Os dados de \"{{name}}\" enviados por {{client}} deixam de ser recebidos até você retomar. O que já chegou é mantido, e as mudanças feitas nesse período são enviadas ao retomar."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_PAUSE_SUCCESS": {
+      "translation": "\"{{name}}\" pausado."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_RESUME_BUTTON": {
+      "translation": "Retomar"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_RESUME_TOOLTIP": {
+      "translation": "Volta a receber os dados deste surto; a outra instância envia o que mudou enquanto ele estava pausado."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_RESUME_SUCCESS": {
+      "translation": "\"{{name}}\" retomado. O que mudou nesse período chega na próxima sincronização."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REMOVE_TOOLTIP": {
+      "translation": "Tira o surto da lista. O que já chegou é mantido; se a outra instância ainda quiser enviá-lo, ele volta como uma nova solicitação."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REMOVE_TITLE": {
+      "translation": "Remover {{name}}?"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REMOVE_MESSAGE": {
+      "translation": "\"{{name}}\" sai da lista e seus dados deixam de ser recebidos. O que já chegou de {{client}} é mantido. Se {{client}} ainda quiser enviá-lo, ele volta como uma nova solicitação, aguardando a sua decisão."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_REMOVE_SUCCESS": {
+      "translation": "\"{{name}}\" removido da lista."
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PENDING_QUESTION": {
+      "translation": "Por que meus dados não estão sendo enviados?"
+    },
+    "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_PENDING_ANSWER": {
+      "translation": "O destino decide quais surtos recebe. Em \"Envio de dados\", a coluna \"Aprovação dos surtos\" e a aba \"Surtos\" de cada destino mostram o que está aguardando aprovação, o que foi aceito e o que foi recusado ou pausado. Só os surtos aceitos são enviados; os demais são enviados assim que o destino aceitar ou retomar."
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_INBOX_EMPTY": {
+      "translation": "Nada aguardando sua decisão. Os surtos aceitos, pausados e recusados ficam na página de cada origem."
+    },
+    "LNG_SYNC_CLIENT_OPEN": {
+      "translation": "Abrir origem"
+    },
+    "LNG_SYNC_CLIENT_KEY_TITLE": {
+      "translation": "Chave de acesso"
+    },
+    "LNG_SYNC_CLIENT_KEY_DESCRIPTION": {
+      "translation": "Como esta origem se conecta e o que ela pode enviar."
+    },
+    "LNG_SYNC_CLIENT_TYPE_LEGACY": {
+      "translation": "Chave antiga (sem tipo)"
+    },
+    "LNG_SYNC_CLIENT_TYPE_SHORT_INSTANCE": {
+      "translation": "Instância do Go.Data"
+    },
+    "LNG_SYNC_CLIENT_ACTIVE": {
+      "translation": "Ativo"
+    },
+    "LNG_SYNC_CLIENT_INACTIVE": {
+      "translation": "Inativo"
+    },
+    "LNG_SYNC_CLIENT_OUTBREAKS_TITLE": {
+      "translation": "Surtos recebidos"
+    },
+    "LNG_SYNC_CLIENT_NO_REQUESTS": {
+      "translation": "Esta origem envia os surtos escolhidos na chave, sem solicitação. Aqui aparecem só os surtos que precisam de revisão de onde os dados entram."
+    },
+    "LNG_SYNC_CLIENT_HISTORY_TITLE": {
+      "translation": "Recebimentos desta origem"
+    },
+    "LNG_SYNC_CLIENT_HISTORY_DESCRIPTION": {
+      "translation": "O que esta origem enviou, surto por surto, e o que aconteceu com os registros."
+    },
+    "LNG_SYNC_CLIENT_COLUMN_PENDING": {
+      "translation": "Aguardando decisão"
+    },
+    "LNG_SYNC_CLIENT_COLUMN_ACCEPTED": {
+      "translation": "Surtos aceitos"
+    },
+    "LNG_SYNC_CLIENT_OUTBREAKS_BY_REQUEST": {
+      "translation": "Decididos por solicitação"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_DATA_TITLE": {
+      "translation": "Destino"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_DATA_DESCRIPTION": {
+      "translation": "Para onde e quando esta instância envia os seus dados."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_EVERY_HOURS": {
+      "translation": "A cada {{hours}} hora(s)"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_NO_INTERVAL": {
+      "translation": "Só manualmente"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_HISTORY_TITLE": {
+      "translation": "Envios para este destino"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_HISTORY_DESCRIPTION": {
+      "translation": "O que esta instância enviou para este destino e como terminou."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_NOT_FOUND": {
+      "translation": "Destino não encontrado."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_COLUMN_APPROVAL": {
+      "translation": "Aprovação dos surtos"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_APPROVAL_NOT_NEEDED": {
+      "translation": "Sem aprovação"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_APPROVAL_PENDING": {
+      "translation": "{{count}} aguardando"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_APPROVAL_ACCEPTED": {
+      "translation": "{{count}} aceito(s)"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_APPROVAL_REFUSED": {
+      "translation": "{{count}} recusado(s) / pausado(s)"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_OPEN": {
+      "translation": "Abrir destino"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_APPROVAL_UNREACHABLE": {
+      "translation": "Sem resposta na última consulta"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_SHOW_EMPTY_RECEIVED": {
+      "translation": "Mostrar recebimentos sem dados novos"
+    },
+    "LNG_SYNC_ACTIVITY_PANEL_SHOW_EMPTY_SENT": {
+      "translation": "Mostrar envios sem dados novos"
+    },
+    "LNG_SYNC_CLIENT_TITLE": {
+      "translation": "Origem"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_TITLE": {
+      "translation": "Destino"
+    },
+    "LNG_SYNC_TAB_OUTBREAKS": {
+      "translation": "Surtos"
+    },
+    "LNG_SYNC_TAB_HISTORY": {
+      "translation": "Histórico"
+    },
+    "LNG_SYNC_TAB_SETTINGS": {
+      "translation": "Configurações"
+    },
+    "LNG_SYNC_TAB_WAITING_COUNT": {
+      "translation": "{{count}} aguardando sua decisão"
+    },
+    "LNG_SYNC_TAB_WAITING_SERVER_COUNT": {
+      "translation": "{{count}} aguardando decisão do destino"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_LAST_SYNC": {
+      "translation": "Último envio: {{date}}"
+    },
+    "LNG_SYNC_CREDENTIALS_SECRET": {
+      "translation": "Segredo do cliente"
+    },
+    "LNG_SYNC_CREDENTIALS_SHOW": {
+      "translation": "Mostrar"
+    },
+    "LNG_SYNC_CREDENTIALS_HIDE": {
+      "translation": "Ocultar"
+    },
+    "LNG_SYNC_CREDENTIALS_COPY": {
+      "translation": "Copiar"
+    },
+    "LNG_SYNC_CREDENTIALS_COPIED": {
+      "translation": "Copiado"
+    },
+    "LNG_SYNC_ACTIONS_TITLE": {
+      "translation": "Ações"
+    },
+    "LNG_SYNC_CLIENT_ACTIONS_DESCRIPTION": {
+      "translation": "O que pode ser feito com esta origem."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTIONS_DESCRIPTION": {
+      "translation": "O que pode ser feito com este destino."
+    },
+    "LNG_SYNC_DANGER_TITLE": {
+      "translation": "Zona de perigo"
+    },
+    "LNG_SYNC_DANGER_DESCRIPTION": {
+      "translation": "Ações que não podem ser desfeitas."
+    },
+    "LNG_SYNC_ACTION_BUTTON_ENABLE": {
+      "translation": "Ativar"
+    },
+    "LNG_SYNC_ACTION_BUTTON_DISABLE": {
+      "translation": "Desativar"
+    },
+    "LNG_SYNC_ACTION_BUTTON_EDIT": {
+      "translation": "Editar"
+    },
+    "LNG_SYNC_ACTION_BUTTON_DOWNLOAD": {
+      "translation": "Baixar"
+    },
+    "LNG_SYNC_ACTION_BUTTON_SYNC": {
+      "translation": "Sincronizar"
+    },
+    "LNG_SYNC_ACTION_BUTTON_DELETE": {
+      "translation": "Excluir"
+    },
+    "LNG_SYNC_CLIENT_ACTION_EDIT_TITLE": {
+      "translation": "Editar origem"
+    },
+    "LNG_SYNC_CLIENT_ACTION_EDIT_DESCRIPTION": {
+      "translation": "Alterar o nome, o tipo da chave e como os surtos são aceitos."
+    },
+    "LNG_SYNC_CLIENT_ACTION_DISABLE_TITLE": {
+      "translation": "Desativar origem"
+    },
+    "LNG_SYNC_CLIENT_ACTION_DISABLE_DESCRIPTION": {
+      "translation": "A origem deixa de conseguir enviar dados. Nada do que já chegou é apagado, e ela pode ser ativada de novo a qualquer momento."
+    },
+    "LNG_SYNC_CLIENT_ACTION_ENABLE_TITLE": {
+      "translation": "Ativar origem"
+    },
+    "LNG_SYNC_CLIENT_ACTION_ENABLE_DESCRIPTION": {
+      "translation": "A origem volta a conseguir enviar dados para cá."
+    },
+    "LNG_SYNC_CLIENT_ACTION_DOWNLOAD_TITLE": {
+      "translation": "Arquivo de configuração"
+    },
+    "LNG_SYNC_CLIENT_ACTION_DOWNLOAD_DESCRIPTION": {
+      "translation": "Arquivo com o endereço desta instância e as credenciais, para configurar o aplicativo móvel. Disponível apenas com a origem ativa."
+    },
+    "LNG_SYNC_CLIENT_ACTION_DELETE_TITLE": {
+      "translation": "Excluir origem"
+    },
+    "LNG_SYNC_CLIENT_ACTION_DELETE_DESCRIPTION": {
+      "translation": "A chave deixa de existir e a origem não consegue mais enviar dados. Os dados já recebidos são mantidos."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_SYNC_TITLE": {
+      "translation": "Sincronizar agora"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_SYNC_DESCRIPTION": {
+      "translation": "Envia agora o que mudou nos surtos aceitos por este destino, sem esperar o próximo envio programado."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_EDIT_TITLE": {
+      "translation": "Editar destino"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_EDIT_DESCRIPTION": {
+      "translation": "Alterar o endereço, as credenciais, quando enviar e os surtos oferecidos."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_DELETE_TITLE": {
+      "translation": "Excluir destino"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_DELETE_DESCRIPTION": {
+      "translation": "Esta instância deixa de enviar dados para ele. Nada é apagado no destino."
+    },
+    "LNG_SYNC_ADD_ORIGIN": {
+      "translation": "Adicionar origem"
+    },
+    "LNG_SYNC_ADD_DESTINATION": {
+      "translation": "Adicionar destino"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_TITLE": {
+      "translation": "Nova origem"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_ACTION_CREATE_UPSTREAM_SERVER_BUTTON": {
+      "translation": "Criar origem"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_CLIENT_APPLICATION_ACTION_CREATE_CLIENT_APPLICATION_SUCCESS_MESSAGE": {
+      "translation": "Origem criada"
+    },
+    "LNG_PAGE_MODIFY_SYSTEM_CLIENT_APPLICATION_ACTION_MODIFY_CLIENT_APPLICATION_SUCCESS_MESSAGE": {
+      "translation": "Origem salva"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_ACTION_DELETE_SUCCESS_MESSAGE": {
+      "translation": "Origem excluída"
+    },
+    "LNG_PAGE_LIST_SYSTEM_CLIENT_APPLICATIONS_ACTION_TOGGLE_ENABLED_SUCCESS_MESSAGE": {
+      "translation": "Origem atualizada"
+    },
+    "LNG_DIALOG_CONFIRM_DELETE_CLIENT_APPLICATION": {
+      "translation": "Tem certeza de que deseja excluir a origem \"{{name}}\"?"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_TITLE": {
+      "translation": "Novo destino"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_ACTION_CREATE_UPSTREAM_SERVER_BUTTON": {
+      "translation": "Criar destino"
+    },
+    "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_ACTION_CREATE_UPSTREAM_SERVER_SUCCESS_MESSAGE": {
+      "translation": "Destino criado"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_ACTION_DELETE_SUCCESS_MESSAGE": {
+      "translation": "Destino excluído"
+    },
+    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_ACTION_TOGGLE_SYNC_ENABLED_SUCCESS_MESSAGE": {
+      "translation": "Sincronização automática atualizada"
+    },
+    "LNG_DIALOG_CONFIRM_DELETE_SYSTEM_UPSTREAM_SERVER": {
+      "translation": "Tem certeza de que deseja excluir o destino \"{{name}}\"?"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_FIELD_ACTIVE": {
+      "translation": "Destino ativo"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_FIELD_ACTIVE_DESCRIPTION": {
+      "translation": "Quando pausado, nada é enviado para este destino, nem automaticamente nem pelo \"Sincronizar agora\". Os dados continuam sendo registrados aqui e vão no próximo envio depois de retomado."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_FIELD_SCHEDULE": {
+      "translation": "Quando enviar"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_FIELD_SCHEDULE_DESCRIPTION": {
+      "translation": "Com que frequência esta instância envia o que mudou para o destino. O \"Sincronizar agora\" pode ser usado a qualquer momento."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTIVE": {
+      "translation": "Ativo"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_PAUSED": {
+      "translation": "Pausado"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_SYNC_PAUSED": {
+      "translation": "O destino está pausado: retome os envios para sincronizar."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_PAUSE_TITLE": {
+      "translation": "Pausar envios"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_PAUSE_DESCRIPTION": {
+      "translation": "Nada é enviado para este destino, nem automaticamente nem pelo \"Sincronizar agora\", até você retomar. Nada é apagado."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_RESUME_TITLE": {
+      "translation": "Retomar envios"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_RESUME_DESCRIPTION": {
+      "translation": "Os dados voltam a ser enviados conforme \"Quando enviar\", e o \"Sincronizar agora\" volta a funcionar."
+    },
+    "LNG_SYNC_ACTION_BUTTON_PAUSE": {
+      "translation": "Pausar"
+    },
+    "LNG_SYNC_ACTION_BUTTON_RESUME": {
+      "translation": "Retomar"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_PAUSED_MESSAGE": {
+      "translation": "Envios pausados"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_RESUMED_MESSAGE": {
+      "translation": "Envios retomados"
+    },
+    "LNG_SYNC_DIALOG_ADVANCED": {
+      "translation": "Opções avançadas"
+    },
+    "LNG_SYNC_DIALOG_ADVANCED_TOOLTIP": {
+      "translation": "Enviar a partir de uma data, reenviar tudo ou escolher os surtos. Use para recuperar dados; normalmente só o que mudou é enviado."
+    },
+    "LNG_SYNC_NO_OUTBREAKS_CHOSEN": {
+      "translation": "Nenhum surto escolhido"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_SYNC_NO_OUTBREAKS": {
+      "translation": "Nenhum surto é oferecido a este destino: edite o destino e escolha os surtos."
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_OUTBREAKS_DESCRIPTION": {
+      "translation": "Surtos que o aplicativo móvel pode receber e enviar com esta chave. Obrigatório: um surto novo só fica disponível depois de escolhido aqui."
+    },
+    "LNG_API_ERROR_CODE_UPSTREAM_SERVER_NO_OUTBREAKS_CHOSEN": {
+      "translation": "Nenhum surto foi escolhido para enviar ao destino \"{{upstreamServerName}}\". Edite o destino e escolha os surtos oferecidos a ele."
+    },
+    "LNG_API_ERROR_CODE_CLIENT_APPLICATION_NO_OUTBREAKS": {
+      "translation": "A chave \"{{clientName}}\" não permite nenhum surto. Escolha os surtos dela na instância que recebe os dados."
+    },
+    "LNG_API_ERROR_CODE_CLIENT_APPLICATION_SEND_ONLY": {
+      "translation": "A chave \"{{clientName}}\" é de outra instância: ela só envia dados e não pode baixar os dados desta instância."
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_CASE_FOLLOWUP_TEMPLATE": {
+      "translation": "Modelo de acompanhamento de caso"
+    },
+    "LNG_SYNC_CLIENT_COLUMN_SCHEDULE": {
+      "translation": "Envia dados"
+    },
+    "LNG_SYNC_CLIENT_COLUMN_LAST_SYNC": {
+      "translation": "Último recebimento"
+    },
+    "LNG_SYNC_CLIENT_SCHEDULE_MOBILE": {
+      "translation": "Quando o aplicativo sincroniza"
+    },
+    "LNG_SYNC_CLIENT_SCHEDULE_UNKNOWN": {
+      "translation": "Ainda não informado (a origem informa quando sincroniza)"
+    },
+    "LNG_SYNC_CLIENT_SCHEDULE_PAUSED": {
+      "translation": "Pausado na origem"
+    },
+    "LNG_SYNC_CLIENT_LAST_SYNC_AT": {
+      "translation": "Último recebimento: {{date}}"
+    },
+    "LNG_SYNC_CLIENT_LAST_SYNC_NEVER": {
+      "translation": "Nada recebido ainda"
+    },
+    "LNG_SYNC_CLIENT_LAST_SYNC_FAILED": {
+      "translation": "falhou"
+    },
+    "LNG_SYNC_CLIENT_LAST_SYNC_LATE": {
+      "translation": "atrasado"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_LAST_RECEIVED_AT": {
+      "translation": "Últimos dados recebidos: {{date}}"
+    },
+    "LNG_PAGE_SYNC_OUTBREAK_REQUESTS_NOTHING_RECEIVED": {
+      "translation": "Nenhum dado recebido ainda"
     }
   }
 }

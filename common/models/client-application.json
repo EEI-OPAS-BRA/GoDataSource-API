@@ -20,7 +20,39 @@
     },
     "outbreakIDs": {
       "type": ["string"],
-      "description": "Available outbreaks for this client. Not present/empty array means that all outbreaks are available"
+      "description": "Available outbreaks for this client. Not present/empty array means that all outbreaks are available. Not used by the keys of other Go.Data instances (type instance): they ask for each outbreak"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "instance",
+        "mobile"
+      ],
+      "description": "instance: another Go.Data instance, that asks to send each outbreak (the outbreaks are accepted / refused here); mobile: the mobile app (or an older key), limited by outbreakIDs"
+    },
+    "autoAcceptSameIdOutbreaks": {
+      "type": "boolean",
+      "description": "Keys of other instances: accept automatically the outbreaks that exist in this instance with the same id"
+    },
+    "senderSyncInterval": {
+      "type": "number",
+      "description": "Keys of other instances: hours between the syncs of the instance (0: only manually); told by the instance when it syncs"
+    },
+    "senderSyncEnabled": {
+      "type": "boolean",
+      "description": "Keys of other instances: the instance has its syncs enabled; told by the instance when it syncs"
+    },
+    "senderScheduleReportedAt": {
+      "type": "date",
+      "description": "Keys of other instances: when the instance told when it syncs"
+    },
+    "lastSyncAt": {
+      "type": "date",
+      "description": "When data was sent with this key the last time"
+    },
+    "lastSyncStatus": {
+      "type": "string",
+      "description": "Status of the last data sent with this key"
     }
   },
   "validations": [],

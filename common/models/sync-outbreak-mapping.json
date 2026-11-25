@@ -1,0 +1,201 @@
+{
+  "name": "syncOutbreakMapping",
+  "base": "extendedPersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "clientId": {
+      "type": "string",
+      "required": true,
+      "description": "Client ID of the instance that sends the outbreak"
+    },
+    "sourceOutbreakId": {
+      "type": "string",
+      "required": true,
+      "description": "Outbreak of the instance that sends the data"
+    },
+    "sourceOutbreakName": {
+      "type": "string"
+    },
+    "sourceQuestionnaires": {
+      "type": "object",
+      "description": "Last received questionnaires of the outbreak, as flat lists of questions"
+    },
+    "sourceTexts": {
+      "type": "object",
+      "description": "Texts of the received questions & answers (token => {languageId: translation}), sent with the request of the outbreak, before its data arrives"
+    },
+    "mode": {
+      "type": "string",
+      "description": "map: the outbreak corresponds to targetOutbreakId; new: it is imported as it is. Empty until the mapping is approved (validated on approval)"
+    },
+    "targetOutbreakId": {
+      "type": "string",
+      "description": "Outbreak of this instance that corresponds to the received one"
+    },
+    "questionMappings": {
+      "type": "object",
+      "description": "Per questionnaire, the question of this instance (targetVariable; null means ignored) & the answers of this instance (answers; null means ignored) for each received question"
+    },
+    "status": {
+      "type": "string",
+      "required": true,
+      "enum": [
+        "PENDING",
+        "APPROVED",
+        "REVIEW"
+      ],
+      "default": "PENDING"
+    },
+    "pendingQuestions": {
+      "type": [
+        "object"
+      ],
+      "description": "Received questions (questionnaire & variable) that weren't mapped yet"
+    },
+    "approvedAt": {
+      "type": "date"
+    },
+    "approvedBy": {
+      "type": "string"
+    }
+  },
+  "indexes": {
+    "clientId_sourceOutbreakId_index": {
+      "clientId": 1,
+      "sourceOutbreakId": 1
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "client_application_list",
+      "permission": "ALLOW",
+      "property": "find"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "client_application_list",
+      "permission": "ALLOW",
+      "property": "count"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "client_application_view",
+      "permission": "ALLOW",
+      "property": "getDetails"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "client_application_view",
+      "permission": "ALLOW",
+      "property": "getTargetQuestionnaires"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "client_application_modify",
+      "permission": "ALLOW",
+      "property": "approve"
+    }
+  ],
+  "methods": {
+    "getDetails": {
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "details",
+          "type": "object",
+          "root": true,
+          "description": "Mapping, received questionnaires with their texts, outbreaks of this instance & number of records waiting for the approval"
+        }
+      ],
+      "description": "Retrieve what is needed to map a received outbreak",
+      "http": {
+        "verb": "get",
+        "path": "/:id/details"
+      }
+    },
+    "getTargetQuestionnaires": {
+      "accepts": [
+        {
+          "arg": "outbreakId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "questionnaires",
+          "type": "object",
+          "root": true
+        }
+      ],
+      "description": "Retrieve the questionnaires of an outbreak of this instance, with their texts",
+      "http": {
+        "verb": "get",
+        "path": "/target-questionnaires"
+      }
+    },
+    "approve": {
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "arg": "data",
+          "type": "object",
+          "http": {
+            "source": "body"
+          },
+          "required": true,
+          "description": "mode, targetOutbreakId (when mode is map) & questionMappings"
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "result",
+          "type": "object",
+          "root": true,
+          "description": "Approved mapping & the records that were waiting for it"
+        }
+      ],
+      "description": "Approve the mapping of a received outbreak & import the records that were waiting for it",
+      "http": {
+        "verb": "post",
+        "path": "/:id/approve"
+      }
+    }
+  }
+}

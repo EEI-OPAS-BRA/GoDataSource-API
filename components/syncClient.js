@@ -23,19 +23,30 @@ function normalizeURL(url) {
  * @param syncLogEntry
  * @constructor
  */
+// time limit of each request; the import is asynchronous, so the longest request is the upload of the package
+// it is also the minimum (the field isn't displayed anymore, so a short limit saved before can't break the upload of a large package),
+// and a connection that stopped answering isn't kept forever
+const DEFAULT_REQUEST_TIMEOUT_MS = 600000;
+
 const SyncClient = function (upstreamServer, syncLogEntry) {
   // initialize request options
   this.options = {
     prefixUrl: normalizeURL(upstreamServer.url),
     username: upstreamServer.credentials.clientId,
     password: upstreamServer.credentials.clientSecret,
-    timeout: upstreamServer.timeout != 0 ? upstreamServer.timeout : undefined
+    timeout: Math.max(Number(upstreamServer.timeout) || 0, DEFAULT_REQUEST_TIMEOUT_MS)
   };
 
   // keep upstream server information for future use
   this.upstreamServerName = upstreamServer.name;
   this.upstreamServerURL = upstreamServer.url;
   this.syncLogEntry = syncLogEntry;
+
+  // when this instance sends its data (hours between syncs, 0: only manually)
+  this.schedule = {
+    syncInterval: Number(upstreamServer.syncInterval) > 0 ? Number(upstreamServer.syncInterval) : 0,
+    syncEnabled: upstreamServer.syncEnabled !== false
+  };
 
   /**
    * Send request to server
@@ -218,6 +229,69 @@ const SyncClient = function (upstreamServer, syncLogEntry) {
           // return response
           resolve(body);
         }
+      });
+    });
+  };
+
+  /**
+   * Decisions of the upstream server about the outbreaks of this instance
+   * @returns {Promise<Object|null>} {mode, outbreaks: [{outbreakId, status, decidedAt}]}; null when the upstream server doesn't know this request (older version)
+   */
+  this.getOutbreakAccess = function () {
+    let requestOptions = Object.assign({}, this.options, {
+      method: 'GET',
+      responseType: 'json',
+      // when this instance sends its data, so the upstream server can display it
+      searchParams: this.schedule
+    });
+
+    let that = this;
+
+    return new Promise(function (resolve, reject) {
+      that.sendRequest('sync/outbreak-access', requestOptions, function (error, response, body) {
+        // older versions don't have this request
+        if (
+          error &&
+          error.response &&
+          error.response.statusCode === 404
+        ) {
+          return resolve(null);
+        }
+
+        // get error response depending on error and response status code
+        error = that.getErrorResponse(error, response);
+        if (error) {
+          return reject(error);
+        }
+
+        resolve(body);
+      });
+    });
+  };
+
+  /**
+   * Ask the upstream server to send outbreaks (only the outbreaks & their questionnaires are sent, never the data of the persons)
+   * @param payload {outbreaks, texts}
+   * @returns {Promise<Object>} decisions {mode, outbreaks: [{outbreakId, status, decidedAt}]}
+   */
+  this.requestOutbreakAccess = function (payload) {
+    let requestOptions = Object.assign({}, this.options, {
+      method: 'POST',
+      json: payload,
+      responseType: 'json'
+    });
+
+    let that = this;
+
+    return new Promise(function (resolve, reject) {
+      that.sendRequest('sync/outbreak-access', requestOptions, function (error, response, body) {
+        // get error response depending on error and response status code
+        error = that.getErrorResponse(error, response);
+        if (error) {
+          return reject(error);
+        }
+
+        resolve(body);
       });
     });
   };

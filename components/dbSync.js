@@ -649,12 +649,31 @@ const syncRecord = function (app, logger, model, record, options, done) {
     model.mergeFieldsOnUpdate.forEach((mergeField) => {
       // not a merge field ?
       // OR not need to merge data since we don't try to update it ?
+      // OR the received data is complete for this field (e.g. answers converted from a mapped outbreak), so removed values must stay removed ?
       if (
         !record[mergeField] ||
-        !dbRecord[mergeField]
+        !dbRecord[mergeField] ||
+        (
+          Array.isArray(options.skipMergeFields) &&
+          options.skipMergeFields.includes(mergeField)
+        )
       ) {
         return;
       }
+
+      // another Go.Data instance sends complete records: the received value of each key is the current one there
+      // (an answer cleared / an option unselected must stay so here), only keys that weren't received are kept (e.g. answers of questions that exist only here)
+      if (options.snapshotFromClient) {
+        Object.keys(dbRecord[mergeField]).forEach((mergeFieldProp) => {
+          if (!Object.prototype.hasOwnProperty.call(record[mergeField], mergeFieldProp)) {
+            record[mergeField][mergeFieldProp] = dbRecord[mergeField][mergeFieldProp];
+          }
+        });
+        return;
+      }
+
+      // list of values (e.g. the options selected in a multiple answers question)
+      const isValuesList = (value) => _.isArray(value) && value.every((item) => item === null || typeof item !== 'object');
 
       // merge properties recursively
       const mergeRecursive = (
@@ -665,6 +684,14 @@ const syncRecord = function (app, logger, model, record, options, done) {
         if (!destination.hasOwnProperty(property)) {
           destination[property] = source[property];
         } else {
+          // a received list of values is always the current one: merging it position by position would bring back unselected options or duplicate values
+          if (
+            isValuesList(destination[property]) &&
+            isValuesList(source[property])
+          ) {
+            return;
+          }
+
           // if array or object we need to look further
           if (
             _.isArray(source[property]) ||
@@ -941,6 +968,15 @@ const syncRecord = function (app, logger, model, record, options, done) {
           });
         }
 
+        // the users received from another Go.Data instance never have roles or a password that can be used here
+        // (the instance removes them before sending, but the received data can't be trusted)
+        if (
+          options.snapshotFromClient &&
+          model.name === 'user'
+        ) {
+          alterUserData([record]);
+        }
+
         log('debug', `Record not found (id: ${record.id}), creating record.`);
         return model
           .create(record, options)
@@ -959,6 +995,20 @@ const syncRecord = function (app, logger, model, record, options, done) {
         ['team', 'user'].includes(model.name)
       ) {
         log('debug', `Record found (id: ${record.id}) but it is a ${model.name} in a sync from a client instance. Skipped record`);
+        return Promise.resolve({
+          record: dbRecord,
+          flag: syncRecordFlags.UNTOUCHED
+        });
+      }
+
+      // if we are in a sync action from another Go.Data instance, the shared data of this instance (reference data, locations, texts, icons) isn't changed
+      // e.g. a label changed by a municipality would change it here too; new records are still created
+      if (
+        options.snapshotFromClient &&
+        ['referenceData', 'location', 'languageToken', 'icon'].includes(model.name) &&
+        !dbRecord.outbreakId
+      ) {
+        log('debug', `Record found (id: ${record.id}) but it is a ${model.name} of this instance in a sync from a client instance. Skipped record`);
         return Promise.resolve({
           record: dbRecord,
           flag: syncRecordFlags.UNTOUCHED

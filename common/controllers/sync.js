@@ -10,6 +10,7 @@ const localizationHelper = require('../../components/localizationHelper');
 const Platform = require('../../components/platform');
 const upstreamServerCheck = require('../../components/upstreamServerCheck');
 const syncFromDate = require('../../components/syncFromDate');
+const syncOutbreakAccess = require('../../components/syncOutbreakAccess');
 
 module.exports = function (Sync) {
 
@@ -218,6 +219,24 @@ module.exports = function (Sync) {
     userEmailLogic
       // check if user active outbreak is one of the client outbreaks
       .then(function () {
+        const client = _.get(options, 'remotingContext.req.authData.client');
+        const allowedOutbreakIDs = _.get(client, 'outbreakIDs') || [];
+        if (client) {
+          // the keys of other instances only send data; they never download the data of this instance
+          if (syncOutbreakAccess.usesRequests(client)) {
+            throw app.utils.apiError.getError('CLIENT_APPLICATION_SEND_ONLY', {
+              clientName: client.name || _.get(client, 'credentials.clientId')
+            });
+          }
+
+          // the outbreaks of a key must be chosen: a key without outbreaks doesn't give access to any of them
+          if (_.isEmpty(allowedOutbreakIDs)) {
+            throw app.utils.apiError.getError('CLIENT_APPLICATION_NO_OUTBREAKS', {
+              clientName: client.name || _.get(client, 'credentials.clientId')
+            });
+          }
+        }
+
         // if we don't have an user account, then there is nothing to check
         if (_.isEmpty(userModel)) {
           return;
@@ -229,9 +248,6 @@ module.exports = function (Sync) {
             username: userModel.email
           });
         }
-
-        // if there aren't any outbreak limitations for this client then there is no point in checking if user has access
-        const allowedOutbreakIDs = _.get(options, 'remotingContext.req.authData.client.outbreakIDs', []);
         if (_.isEmpty(allowedOutbreakIDs)) {
           return;
         }
@@ -620,6 +636,9 @@ module.exports = function (Sync) {
         syncLogEntry.status = 'LNG_SYNC_STATUS_SUCCESS';
       }
 
+      // the key knows when it sent data the last time (and its outbreaks, when their data arrived)
+      syncOutbreakAccess.saveReceivedSync(_.get(req, 'authData.client.credentials.clientId'), syncLogEntry);
+
       // save sync log entry
       syncLogEntry
         .save(requestOptions)
@@ -687,8 +706,20 @@ module.exports = function (Sync) {
       };
 
       // get outbreaks IDs for client
-      let outbreakIDs = _.get(req, 'authData.client.outbreakIDs');
-      if (!Array.isArray(outbreakIDs)) {
+      const client = _.get(req, 'authData.client');
+      let outbreakIDs = _.get(client, 'outbreakIDs');
+      if (syncOutbreakAccess.usesRequests(client)) {
+        // the keys of other instances ask for each outbreak; the records are checked against the accepted ones while they are imported
+        outbreakIDs = [];
+      } else if (
+        client &&
+        (!Array.isArray(outbreakIDs) || !outbreakIDs.length)
+      ) {
+        // the outbreaks of a key must be chosen: a key without outbreaks can't send data of any of them
+        return done(buildError('CLIENT_APPLICATION_NO_OUTBREAKS', {
+          clientName: client.name || _.get(client, 'credentials.clientId')
+        }));
+      } else if (!Array.isArray(outbreakIDs)) {
         outbreakIDs = [];
       }
 
@@ -728,6 +759,12 @@ module.exports = function (Sync) {
         snapshotFromClient = true;
       }
 
+      // the data sent by the key of another instance is always checked (only the accepted outbreaks, the synced collections, no changes to the users ...)
+      // the flag is sent by the instance itself, so it can't be trusted
+      if (syncOutbreakAccess.usesRequests(_.get(req, 'authData.client'))) {
+        snapshotFromClient = true;
+      }
+
       // get password
       const password = getSyncEncryptPassword(fields.password, _.get(requestOptions, 'remotingContext.req.authData.credentials'), autoEncrypt);
 
@@ -751,7 +788,9 @@ module.exports = function (Sync) {
               {
                 password: password,
                 generatePersonVisualId: generatePersonVisualId,
-                snapshotFromClient: snapshotFromClient
+                snapshotFromClient: snapshotFromClient,
+                // used to map the outbreaks of the instance that sent the data
+                clientId: _.get(req, 'authData.client.credentials.clientId')
               },
               function (err) {
                 // send done function to return the response
@@ -772,7 +811,9 @@ module.exports = function (Sync) {
               {
                 password: password,
                 generatePersonVisualId: generatePersonVisualId,
-                snapshotFromClient: snapshotFromClient
+                snapshotFromClient: snapshotFromClient,
+                // used to map the outbreaks of the instance that sent the data
+                clientId: _.get(req, 'authData.client.credentials.clientId')
               },
               function (err) {
                 // don't send the done function as the response was already sent
@@ -789,6 +830,80 @@ module.exports = function (Sync) {
    * @param options
    * @param callback
    */
+  /**
+   * Another instance retrieves the decisions about its outbreaks (and tells when it sends its data)
+   * @param syncInterval Hours between its syncs (0: only manually)
+   * @param syncEnabled Its syncs are enabled
+   * @param options
+   * @param callback
+   */
+  Sync.getOutbreakAccess = function (syncInterval, syncEnabled, options, callback) {
+    const client = _.get(options, 'remotingContext.req.authData.client');
+    syncOutbreakAccess
+      .saveSenderSchedule(client, {
+        syncInterval,
+        syncEnabled
+      })
+      .then(() => syncOutbreakAccess.getClientResponse(client))
+      .then((response) => callback(null, response))
+      .catch(callback);
+  };
+
+  /**
+   * Another instance asks to send outbreaks
+   * @param data
+   * @param options
+   * @param callback
+   */
+  Sync.requestOutbreakAccess = function (data, options, callback) {
+    syncOutbreakAccess
+      .receiveRequest(
+        _.get(options, 'remotingContext.req.authData.client'),
+        data,
+        options
+      )
+      .then((response) => callback(null, response))
+      .catch(callback);
+  };
+
+  /**
+   * Ask an upstream server which outbreaks of this instance it accepts (the new ones are requested)
+   * @param data
+   * @param options
+   * @param callback
+   */
+  Sync.checkUpstreamOutbreakAccess = function (data, options, callback) {
+    if (
+      !data ||
+      !data.upstreamServerURL ||
+      typeof data.upstreamServerURL !== 'string'
+    ) {
+      return callback(app.utils.apiError.getError('REQUEST_VALIDATION_ERROR', {
+        errorMessages: 'Missing required property "upstreamServerURL"'
+      }));
+    }
+
+    app.models.systemSettings
+      .findOne()
+      .then((systemSettings) => {
+        const upstreamServer = _.find(
+          _.get(systemSettings, 'upstreamServers') || [],
+          (server) => server.url === data.upstreamServerURL
+        );
+        if (!upstreamServer) {
+          throw app.utils.apiError.getError('UPSTREAM_SERVER_NOT_CONFIGURED', {
+            upstreamServerURL: data.upstreamServerURL
+          });
+        }
+
+        return syncOutbreakAccess.refreshSenderState(upstreamServer, {
+          options
+        });
+      })
+      .then((state) => callback(null, state))
+      .catch(callback);
+  };
+
   Sync.getAvailableOutbreaksForClient = function (options, callback) {
     let clientInformation = options.remotingContext.req.authData.client;
     callback(null, {
@@ -838,9 +953,16 @@ module.exports = function (Sync) {
       requestedOutbreakIDs = _.uniq(data.outbreakIDs);
     }
 
+    // outbreaks offered to the upstream server: the ones chosen by the user or, when none was chosen, the ones configured for it
+    // there are no "all the outbreaks": an empty list means nothing is sent
+    let offeredOutbreakIDs = [];
+
     // initialize flag to know if the callback function was already called
     // need to do this as we will call it and then continue doing some actions
     let callbackCalled = false;
+
+    // whether this sync marked the upstream server as being synced
+    let inProgressSet = false;
 
     // initialize upstreamServer options container
     let upstreamServerEntry;
@@ -901,6 +1023,10 @@ module.exports = function (Sync) {
           });
         }
 
+        // the sync is in progress from now on, so a sync started at the same time is refused
+        Sync.inProgress.servers[upstreamServerEntry.url] = true;
+        inProgressSet = true;
+
         // start sync with upstream server
         // create syncLog entry in the DB
         return app.models.syncLog.create({
@@ -914,15 +1040,63 @@ module.exports = function (Sync) {
         // cache sync log entry as it will need to be updated with different statuses
         syncLogEntry = syncLog;
 
-        // update Sync.inProgress map; Sync action is in progress
-        Sync.inProgress.servers[upstreamServerEntry.url] = true;
+        // the API might run in several processes, each one with its own in progress map
+        // the sync logs are shared: when a sync to the same server started first, this one is dropped
+        if (data.forceSync) {
+          return;
+        }
+        return app.models.syncLog
+          .find({
+            where: {
+              syncServerUrl: upstreamServerEntry.url,
+              status: 'LNG_SYNC_STATUS_IN_PROGRESS',
+              id: {
+                neq: syncLog.id
+              }
+            },
+            fields: ['id', 'actionStartDate']
+          })
+          .then((otherSyncs) => {
+            const startedFirst = otherSyncs.some((otherSync) => {
+              const otherStart = new Date(otherSync.actionStartDate).getTime();
+              const start = new Date(syncLog.actionStartDate).getTime();
+              return otherStart < start || (
+                otherStart === start &&
+                otherSync.id < syncLog.id
+              );
+            });
+            if (!startedFirst) {
+              return;
+            }
 
+            return syncLog
+              .destroy(options)
+              .catch(() => null)
+              .then(() => {
+                throw app.utils.apiError.getError('UPSTREAM_SERVER_SYNC_IN_PROGRESS', {
+                  upstreamServerName: upstreamServerEntry.name,
+                  upstreamServerURL: upstreamServerEntry.url
+                });
+              });
+          });
+      })
+      .then(function () {
         // send response with the syncLogEntry ID
         // the sync action continues after the response is sent with the syncLogEntry being updated when the sync fails/succeeds
         callback(null, syncLogEntry.id);
         callbackCalled = true;
 
         app.logger.debug(`Started sync ${syncLogEntry.id}`);
+
+        // the outbreaks must be chosen; the sync log tells why nothing was sent
+        offeredOutbreakIDs = requestedOutbreakIDs && requestedOutbreakIDs.length ?
+          requestedOutbreakIDs :
+          _.uniq(upstreamServerEntry.outbreakIDs || []);
+        if (!offeredOutbreakIDs.length) {
+          throw app.utils.apiError.getError('UPSTREAM_SERVER_NO_OUTBREAKS_CHOSEN', {
+            upstreamServerName: upstreamServerEntry.name
+          });
+        }
 
         // check if the server can be reached & if it accepts the credentials, so the user knows which step failed
         // Note: the check only explains a failure; it never stops a sync that would work
@@ -957,15 +1131,65 @@ module.exports = function (Sync) {
                   syncLogEntry.syncStepErrorDetail = failedCheck.code;
                 }
 
-                throw err;
+                // the approval of the outbreaks displayed by this instance must say why it isn't up to date
+                return syncOutbreakAccess
+                  .saveSenderError(upstreamServerEntry, {
+                    code: failedCheck ? failedCheck.errorCode : undefined,
+                    message: err && err.message ? err.message : String(err)
+                  }, options)
+                  .catch(() => null)
+                  .then(() => {
+                    throw err;
+                  });
               });
           });
       })
       .then(function (outbreakIDs) {
-        // send only the chosen outbreaks, if the upstream server accepts them (no outbreaks means all of them)
-        const chosenOutbreakIDs = requestedOutbreakIDs !== undefined ?
+        // the upstream server might decide which outbreaks it receives: only the accepted ones are sent, the new ones are requested
+        return setSyncStep('ACCESS')
+          .then(() => syncOutbreakAccess.refreshSenderState(upstreamServerEntry, {
+            syncLogEntry,
+            options
+          }))
+          .then((accessState) => {
+            if (accessState.mode !== syncOutbreakAccess.MODE.REQUEST) {
+              return outbreakIDs;
+            }
+
+            // accepted outbreaks, among the offered ones (an outbreak accepted before & no longer offered isn't sent)
+            const acceptedOutbreakIDs = (accessState.outbreaks || [])
+              .filter((outbreak) => outbreak.status === syncOutbreakAccess.STATUS.ACCEPTED)
+              .map((outbreak) => outbreak.outbreakId)
+              .filter((outbreakId) => offeredOutbreakIDs.includes(outbreakId));
+            if (!acceptedOutbreakIDs.length) {
+              // nothing can be sent yet; the sync log tells why (about the offered outbreaks)
+              const consideredOutbreaks = (accessState.outbreaks || [])
+                .filter((outbreak) => offeredOutbreakIDs.includes(outbreak.outbreakId));
+              const names = (status) => consideredOutbreaks
+                .filter((outbreak) => status.includes(outbreak.status))
+                .map((outbreak) => outbreak.name || outbreak.outbreakId)
+                .join(', ') || '-';
+              const pending = consideredOutbreaks.some((outbreak) => outbreak.status === syncOutbreakAccess.STATUS.PENDING);
+              syncLogEntry.syncStepErrorCode = pending ?
+                'ACCESS_PENDING' :
+                'ACCESS_REFUSED';
+              throw app.utils.apiError.getError('UPSTREAM_SERVER_OUTBREAKS_NOT_ACCEPTED', {
+                upstreamServerName: upstreamServerEntry.name,
+                pending: names([syncOutbreakAccess.STATUS.PENDING]),
+                refused: names([syncOutbreakAccess.STATUS.REFUSED, syncOutbreakAccess.STATUS.PAUSED])
+              });
+            }
+
+            // the accepted outbreaks are the ones that are sent (never "all the outbreaks", so a new outbreak isn't sent before it is accepted)
+            requestedOutbreakIDs = acceptedOutbreakIDs;
+            return [];
+          });
+      })
+      .then(function (outbreakIDs) {
+        // send only the chosen outbreaks (the accepted ones, when the upstream server decides), if the upstream server allows them
+        const chosenOutbreakIDs = requestedOutbreakIDs && requestedOutbreakIDs.length ?
           requestedOutbreakIDs :
-          _.uniq(upstreamServerEntry.outbreakIDs || []);
+          offeredOutbreakIDs;
         if (chosenOutbreakIDs.length) {
           const acceptedOutbreakIDs = outbreakIDs.length ?
             chosenOutbreakIDs.filter((outbreakId) => outbreakIDs.includes(outbreakId)) :
@@ -1145,6 +1369,9 @@ module.exports = function (Sync) {
         };
         if (!callbackCalled) {
           // sync wasn't started; the error response is sent directly in the response
+          if (inProgressSet) {
+            Sync.inProgress.servers[upstreamServerEntry.url] = false;
+          }
           callback(err);
           callbackCalled = true;
         } else {

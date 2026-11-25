@@ -164,6 +164,18 @@
     "dataSource": "mongoDb",
     "public": true
   },
+  "syncOutbreakMapping": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "syncOutbreakAccess": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
+  "upstreamOutbreakAccess": {
+    "dataSource": "mongoDb",
+    "public": true
+  },
   "dataBackup": {
     "dataSource": null,
     "public": false

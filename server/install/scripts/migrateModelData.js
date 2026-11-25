@@ -701,13 +701,25 @@ const migrationVersions = [{
     fileName: 'languageToken.js',
     actions: [{
       name: 'createUpdateLanguageTokens',
-      buildNo: 8
+      buildNo: 23
     }, {
       name: 'createUpdateSingleEnglishLanguageTokens',
       buildNo: 1
     }, {
       name: 'createUpdatePortugueseLanguageTokens',
-      buildNo: 8
+      buildNo: 23
+    }]
+  }, {
+    fileName: 'upstreamServer.js',
+    actions: [{
+      name: 'disableSyncOnEveryChange',
+      buildNo: 1
+    }, {
+      name: 'chooseOutbreaksExplicitly',
+      buildNo: 1
+    }, {
+      name: 'saveLastReceivedSyncs',
+      buildNo: 1
     }]
   }]
 }, {

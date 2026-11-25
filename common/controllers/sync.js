@@ -1058,18 +1058,20 @@ module.exports = function (Sync) {
               return outbreakIDs;
             }
 
-            // accepted outbreaks (only the ones chosen for this sync, when the user chose some)
+            // accepted outbreaks (only the ones chosen for this sync, when the user chose some; an empty list means all of them)
             const acceptedOutbreakIDs = (accessState.outbreaks || [])
               .filter((outbreak) => outbreak.status === syncOutbreakAccess.STATUS.ACCEPTED)
               .map((outbreak) => outbreak.outbreakId)
-              .filter((outbreakId) => requestedOutbreakIDs === undefined || requestedOutbreakIDs.includes(outbreakId));
+              .filter((outbreakId) => !requestedOutbreakIDs || !requestedOutbreakIDs.length || requestedOutbreakIDs.includes(outbreakId));
             if (!acceptedOutbreakIDs.length) {
-              // nothing can be sent yet; the sync log tells why
-              const names = (status) => (accessState.outbreaks || [])
+              // nothing can be sent yet; the sync log tells why (about the outbreaks chosen for this sync, when the user chose some)
+              const consideredOutbreaks = (accessState.outbreaks || [])
+                .filter((outbreak) => !requestedOutbreakIDs || !requestedOutbreakIDs.length || requestedOutbreakIDs.includes(outbreak.outbreakId));
+              const names = (status) => consideredOutbreaks
                 .filter((outbreak) => status.includes(outbreak.status))
                 .map((outbreak) => outbreak.name || outbreak.outbreakId)
                 .join(', ') || '-';
-              const pending = (accessState.outbreaks || []).some((outbreak) => outbreak.status === syncOutbreakAccess.STATUS.PENDING);
+              const pending = consideredOutbreaks.some((outbreak) => outbreak.status === syncOutbreakAccess.STATUS.PENDING);
               syncLogEntry.syncStepErrorCode = pending ?
                 'ACCESS_PENDING' :
                 'ACCESS_REFUSED';

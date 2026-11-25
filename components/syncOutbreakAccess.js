@@ -439,19 +439,23 @@ function buildRequestPayload(outbreakIds) {
 }
 
 /**
- * Outbreaks of this instance that are sent to an upstream server (none chosen means all of them)
+ * Outbreaks of this instance that are offered to an upstream server (the outbreaks must be chosen: none chosen means none is offered)
  */
 function getSentOutbreaks(upstreamServer, requestedOutbreakIds) {
   const chosen = Array.isArray(requestedOutbreakIds) && requestedOutbreakIds.length ?
     requestedOutbreakIds :
     (upstreamServer.outbreakIDs || []);
+  if (!chosen.length) {
+    return Promise.resolve([]);
+  }
+
   return app.models.outbreak
     .rawFind(
-      chosen.length ? {
+      {
         _id: {
           $in: chosen
         }
-      } : {}, {
+      }, {
         projection: {
           name: 1
         }

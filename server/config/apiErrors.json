@@ -199,6 +199,14 @@
     "defaultStatusCode": 422,
     "messagePattern": "Sync with upstream server `<%= upstreamServerName %>` is disabled"
   },
+  "UPSTREAM_SERVER_NO_OUTBREAKS_CHOSEN": {
+    "defaultStatusCode": 422,
+    "messagePattern": "No outbreak was chosen to be sent to the upstream server `<%= upstreamServerName %>`. Choose the outbreaks offered to it."
+  },
+  "CLIENT_APPLICATION_NO_OUTBREAKS": {
+    "defaultStatusCode": 403,
+    "messagePattern": "The key `<%= clientName %>` doesn't allow any outbreak. Choose its outbreaks on the instance that receives the data."
+  },
   "UPSTREAM_SERVER_OUTBREAKS_NOT_ACCEPTED": {
     "defaultStatusCode": 424,
     "messagePattern": "Upstream server `<%= upstreamServerName %>` didn't accept any of the outbreaks of this instance yet. Waiting for its decision: <%= pending %>. Refused / paused: <%= refused %>"

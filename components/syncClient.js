@@ -23,13 +23,18 @@ function normalizeURL(url) {
  * @param syncLogEntry
  * @constructor
  */
+// time limit of each request; the import is asynchronous, so the longest request is the upload of the package
+// it is also the minimum (the field isn't displayed anymore, so a short limit saved before can't break the upload of a large package),
+// and a connection that stopped answering isn't kept forever
+const DEFAULT_REQUEST_TIMEOUT_MS = 600000;
+
 const SyncClient = function (upstreamServer, syncLogEntry) {
   // initialize request options
   this.options = {
     prefixUrl: normalizeURL(upstreamServer.url),
     username: upstreamServer.credentials.clientId,
     password: upstreamServer.credentials.clientSecret,
-    timeout: upstreamServer.timeout != 0 ? upstreamServer.timeout : undefined
+    timeout: Math.max(Number(upstreamServer.timeout) || 0, DEFAULT_REQUEST_TIMEOUT_MS)
   };
 
   // keep upstream server information for future use

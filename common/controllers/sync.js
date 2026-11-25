@@ -231,8 +231,17 @@ module.exports = function (Sync) {
           });
         }
 
-        // if there aren't any outbreak limitations for this client then there is no point in checking if user has access
-        const allowedOutbreakIDs = _.get(options, 'remotingContext.req.authData.client.outbreakIDs', []);
+        // the outbreaks of a key must be chosen: a key without outbreaks doesn't give access to any of them
+        const client = _.get(options, 'remotingContext.req.authData.client');
+        const allowedOutbreakIDs = _.get(client, 'outbreakIDs') || [];
+        if (
+          client &&
+          _.isEmpty(allowedOutbreakIDs)
+        ) {
+          throw app.utils.apiError.getError('CLIENT_APPLICATION_NO_OUTBREAKS', {
+            clientName: client.name || _.get(client, 'credentials.clientId')
+          });
+        }
         if (_.isEmpty(allowedOutbreakIDs)) {
           return;
         }
@@ -688,12 +697,20 @@ module.exports = function (Sync) {
       };
 
       // get outbreaks IDs for client
-      let outbreakIDs = _.get(req, 'authData.client.outbreakIDs');
-      if (
-        !Array.isArray(outbreakIDs) ||
+      const client = _.get(req, 'authData.client');
+      let outbreakIDs = _.get(client, 'outbreakIDs');
+      if (syncOutbreakAccess.usesRequests(client)) {
         // the keys of other instances ask for each outbreak; the records are checked against the accepted ones while they are imported
-        syncOutbreakAccess.usesRequests(_.get(req, 'authData.client'))
+        outbreakIDs = [];
+      } else if (
+        client &&
+        (!Array.isArray(outbreakIDs) || !outbreakIDs.length)
       ) {
+        // the outbreaks of a key must be chosen: a key without outbreaks can't send data of any of them
+        return done(buildError('CLIENT_APPLICATION_NO_OUTBREAKS', {
+          clientName: client.name || _.get(client, 'credentials.clientId')
+        }));
+      } else if (!Array.isArray(outbreakIDs)) {
         outbreakIDs = [];
       }
 
@@ -914,6 +931,10 @@ module.exports = function (Sync) {
       requestedOutbreakIDs = _.uniq(data.outbreakIDs);
     }
 
+    // outbreaks offered to the upstream server: the ones chosen by the user or, when none was chosen, the ones configured for it
+    // there are no "all the outbreaks": an empty list means nothing is sent
+    let offeredOutbreakIDs = [];
+
     // initialize flag to know if the callback function was already called
     // need to do this as we will call it and then continue doing some actions
     let callbackCalled = false;
@@ -1000,6 +1021,16 @@ module.exports = function (Sync) {
 
         app.logger.debug(`Started sync ${syncLogEntry.id}`);
 
+        // the outbreaks must be chosen; the sync log tells why nothing was sent
+        offeredOutbreakIDs = requestedOutbreakIDs && requestedOutbreakIDs.length ?
+          requestedOutbreakIDs :
+          _.uniq(upstreamServerEntry.outbreakIDs || []);
+        if (!offeredOutbreakIDs.length) {
+          throw app.utils.apiError.getError('UPSTREAM_SERVER_NO_OUTBREAKS_CHOSEN', {
+            upstreamServerName: upstreamServerEntry.name
+          });
+        }
+
         // check if the server can be reached & if it accepts the credentials, so the user knows which step failed
         // Note: the check only explains a failure; it never stops a sync that would work
         return upstreamServerCheck
@@ -1058,15 +1089,15 @@ module.exports = function (Sync) {
               return outbreakIDs;
             }
 
-            // accepted outbreaks (only the ones chosen for this sync, when the user chose some; an empty list means all of them)
+            // accepted outbreaks, among the offered ones (an outbreak accepted before & no longer offered isn't sent)
             const acceptedOutbreakIDs = (accessState.outbreaks || [])
               .filter((outbreak) => outbreak.status === syncOutbreakAccess.STATUS.ACCEPTED)
               .map((outbreak) => outbreak.outbreakId)
-              .filter((outbreakId) => !requestedOutbreakIDs || !requestedOutbreakIDs.length || requestedOutbreakIDs.includes(outbreakId));
+              .filter((outbreakId) => offeredOutbreakIDs.includes(outbreakId));
             if (!acceptedOutbreakIDs.length) {
-              // nothing can be sent yet; the sync log tells why (about the outbreaks chosen for this sync, when the user chose some)
+              // nothing can be sent yet; the sync log tells why (about the offered outbreaks)
               const consideredOutbreaks = (accessState.outbreaks || [])
-                .filter((outbreak) => !requestedOutbreakIDs || !requestedOutbreakIDs.length || requestedOutbreakIDs.includes(outbreak.outbreakId));
+                .filter((outbreak) => offeredOutbreakIDs.includes(outbreak.outbreakId));
               const names = (status) => consideredOutbreaks
                 .filter((outbreak) => status.includes(outbreak.status))
                 .map((outbreak) => outbreak.name || outbreak.outbreakId)
@@ -1088,10 +1119,10 @@ module.exports = function (Sync) {
           });
       })
       .then(function (outbreakIDs) {
-        // send only the chosen outbreaks, if the upstream server accepts them (no outbreaks means all of them)
-        const chosenOutbreakIDs = requestedOutbreakIDs !== undefined ?
+        // send only the chosen outbreaks (the accepted ones, when the upstream server decides), if the upstream server allows them
+        const chosenOutbreakIDs = requestedOutbreakIDs && requestedOutbreakIDs.length ?
           requestedOutbreakIDs :
-          _.uniq(upstreamServerEntry.outbreakIDs || []);
+          offeredOutbreakIDs;
         if (chosenOutbreakIDs.length) {
           const acceptedOutbreakIDs = outbreakIDs.length ?
             chosenOutbreakIDs.filter((outbreakId) => outbreakIDs.includes(outbreakId)) :

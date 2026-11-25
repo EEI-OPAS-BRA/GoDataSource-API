@@ -140,7 +140,7 @@
       "translation": "Testar credenciais"
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_CREDENTIALS_ACCEPTED_ALL_OUTBREAKS": {
-      "translation": "Conexão estabelecida. As credenciais foram aceitas, com acesso a todos os surtos."
+      "translation": "Conexão estabelecida. As credenciais foram aceitas; o destino decide quais surtos recebe."
     },
     "LNG_PAGE_CREATE_SYSTEM_UPSTREAM_SERVER_CHECK_CREDENTIALS_ACCEPTED_SOME_OUTBREAKS": {
       "translation": "Conexão estabelecida. As credenciais foram aceitas, com acesso a {{count}} surto(s)."
@@ -332,19 +332,16 @@
       "translation": "Surtos"
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_OUTBREAKS_TOOLTIP": {
-      "translation": "Vem preenchido com os surtos configurados no servidor. Deixe vazio para enviar todos os surtos."
+      "translation": "Vem preenchido com os surtos oferecidos ao destino. Escolha pelo menos um."
     },
     "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_HINT_PARTIAL": {
       "translation": "Os surtos escolhidos não incluem todos os configurados neste servidor. Esta sincronização não é usada para definir o que as próximas enviam, então elas continuam enviando o que mudou nos surtos que ficaram de fora."
     },
     "LNG_UPSTREAM_SERVER_FIELD_LABEL_OUTBREAKS_TO_SYNC": {
-      "translation": "Surtos a sincronizar"
-    },
-    "LNG_UPSTREAM_SERVER_FIELD_LABEL_OUTBREAKS_TO_SYNC_ALL": {
-      "translation": "Todos os surtos"
+      "translation": "Surtos oferecidos ao destino"
     },
     "LNG_UPSTREAM_SERVER_FIELD_LABEL_OUTBREAKS_TO_SYNC_DESCRIPTION": {
-      "translation": "Deixe vazio para sincronizar todos os surtos. As sincronizações agendadas e as feitas a cada alteração enviam apenas os surtos escolhidos. Ao incluir um surto, a próxima sincronização envia todos os dados dos surtos escolhidos."
+      "translation": "Escolha os surtos desta instância oferecidos ao destino. Obrigatório: um surto novo só é oferecido depois de escolhido aqui. O destino ainda decide quais aceita, e só os aceitos são enviados."
     },
     "LNG_SYNC_PROGRESS_DIALOG_TITLE": {
       "translation": "Sincronizando com o servidor"
@@ -424,9 +421,6 @@
     "LNG_SYNC_PROGRESS_DIALOG_BACKGROUND_BUTTON": {
       "translation": "Continuar em segundo plano"
     },
-    "LNG_PAGE_LIST_SYSTEM_UPSTREAM_SERVERS_SYNC_DIALOG_OUTBREAKS_ALL": {
-      "translation": "Todos os surtos (nenhum selecionado)"
-    },
     "LNG_LAYOUT_MENU_ITEM_SYNC_DOCUMENTATION_LABEL": {
       "translation": "Documentação"
     },
@@ -488,7 +482,7 @@
       "translation": "Escolha quando e o que sincronizar"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_3_DESCRIPTION": {
-      "translation": "No mesmo cadastro, defina um intervalo para a sincronização automática, ative \"Sincronizar em cada alteração\" ou sincronize manualmente pelo botão da lista. Em \"Surtos a sincronizar\" você escolhe quais surtos enviar; vazio envia todos."
+      "translation": "No mesmo cadastro, escolha \"Quando enviar\": a cada 1, 6, 12 ou 24 horas, ou só manualmente. O \"Sincronizar agora\", na página do destino, envia a qualquer momento. Em \"Surtos oferecidos ao destino\" você escolhe quais surtos são oferecidos; o destino decide quais aceita."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_STEP_4_TITLE": {
       "translation": "Acompanhe o resultado"
@@ -515,7 +509,7 @@
       "translation": "Cadastro do destino com URL, credenciais e teste de conexão."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_2": {
-      "translation": "Sincronização automática por intervalo ou a cada alteração."
+      "translation": "Envio programado (a cada 1, 6, 12 ou 24 horas) ou só manual."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_SEND_ITEM_3": {
       "translation": "Sincronização manual: só o que mudou, desde uma data ou todos os dados."
@@ -578,7 +572,7 @@
       "translation": "Posso enviar só alguns surtos?"
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OUTBREAKS_ANSWER": {
-      "translation": "Sim. Escolha os surtos em \"Surtos a sincronizar\", ao editar o destino, ou na própria janela de sincronização manual. Ao incluir um surto novo na lista, a próxima sincronização envia todos os dados dos surtos escolhidos."
+      "translation": "Sim. Escolha em \"Surtos oferecidos ao destino\", ao editar o destino, ou nas opções avançadas do \"Sincronizar agora\". Ao incluir um surto novo, a próxima sincronização envia todos os dados dele."
     },
     "LNG_PAGE_SYNC_DOCUMENTATION_FAQ_OVERWRITE_QUESTION": {
       "translation": "A sincronização pode apagar ou sobrescrever dados de quem recebe?"
@@ -1217,7 +1211,7 @@
       "translation": "A cada {{hours}} hora(s)"
     },
     "LNG_SYNC_UPSTREAM_SERVER_NO_INTERVAL": {
-      "translation": "Sem envio automático por intervalo"
+      "translation": "Só manualmente"
     },
     "LNG_SYNC_UPSTREAM_SERVER_HISTORY_TITLE": {
       "translation": "Envios para este destino"
@@ -1275,12 +1269,6 @@
     },
     "LNG_SYNC_TAB_WAITING_SERVER_COUNT": {
       "translation": "{{count}} aguardando decisão do destino"
-    },
-    "LNG_SYNC_UPSTREAM_SERVER_AUTO_ON": {
-      "translation": "Sincronização automática ativa"
-    },
-    "LNG_SYNC_UPSTREAM_SERVER_AUTO_OFF": {
-      "translation": "Sincronização automática desativada"
     },
     "LNG_SYNC_UPSTREAM_SERVER_LAST_SYNC": {
       "translation": "Último envio: {{date}}"
@@ -1367,25 +1355,13 @@
       "translation": "Sincronizar agora"
     },
     "LNG_SYNC_UPSTREAM_SERVER_ACTION_SYNC_DESCRIPTION": {
-      "translation": "Envia agora os dados dos surtos aceitos por este destino, sem esperar a sincronização automática."
-    },
-    "LNG_SYNC_UPSTREAM_SERVER_ACTION_DISABLE_TITLE": {
-      "translation": "Desativar sincronização automática"
-    },
-    "LNG_SYNC_UPSTREAM_SERVER_ACTION_DISABLE_DESCRIPTION": {
-      "translation": "Os envios automáticos (por intervalo e a cada alteração) param. Você ainda pode sincronizar manualmente."
-    },
-    "LNG_SYNC_UPSTREAM_SERVER_ACTION_ENABLE_TITLE": {
-      "translation": "Ativar sincronização automática"
-    },
-    "LNG_SYNC_UPSTREAM_SERVER_ACTION_ENABLE_DESCRIPTION": {
-      "translation": "Os dados voltam a ser enviados por intervalo e a cada alteração, conforme configurado."
+      "translation": "Envia agora o que mudou nos surtos aceitos por este destino, sem esperar o próximo envio programado."
     },
     "LNG_SYNC_UPSTREAM_SERVER_ACTION_EDIT_TITLE": {
       "translation": "Editar destino"
     },
     "LNG_SYNC_UPSTREAM_SERVER_ACTION_EDIT_DESCRIPTION": {
-      "translation": "Alterar o endereço, as credenciais, o intervalo e os surtos a sincronizar."
+      "translation": "Alterar o endereço, as credenciais, quando enviar e os surtos oferecidos."
     },
     "LNG_SYNC_UPSTREAM_SERVER_ACTION_DELETE_TITLE": {
       "translation": "Excluir destino"
@@ -1437,6 +1413,72 @@
     },
     "LNG_DIALOG_CONFIRM_DELETE_SYSTEM_UPSTREAM_SERVER": {
       "translation": "Tem certeza de que deseja excluir o destino \"{{name}}\"?"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_FIELD_ACTIVE": {
+      "translation": "Destino ativo"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_FIELD_ACTIVE_DESCRIPTION": {
+      "translation": "Quando pausado, nada é enviado para este destino, nem automaticamente nem pelo \"Sincronizar agora\". Os dados continuam sendo registrados aqui e vão no próximo envio depois de retomado."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_FIELD_SCHEDULE": {
+      "translation": "Quando enviar"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_FIELD_SCHEDULE_DESCRIPTION": {
+      "translation": "Com que frequência esta instância envia o que mudou para o destino. O \"Sincronizar agora\" pode ser usado a qualquer momento."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTIVE": {
+      "translation": "Ativo"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_PAUSED": {
+      "translation": "Pausado"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_SYNC_PAUSED": {
+      "translation": "O destino está pausado: retome os envios para sincronizar."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_PAUSE_TITLE": {
+      "translation": "Pausar envios"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_PAUSE_DESCRIPTION": {
+      "translation": "Nada é enviado para este destino, nem automaticamente nem pelo \"Sincronizar agora\", até você retomar. Nada é apagado."
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_RESUME_TITLE": {
+      "translation": "Retomar envios"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_RESUME_DESCRIPTION": {
+      "translation": "Os dados voltam a ser enviados conforme \"Quando enviar\", e o \"Sincronizar agora\" volta a funcionar."
+    },
+    "LNG_SYNC_ACTION_BUTTON_PAUSE": {
+      "translation": "Pausar"
+    },
+    "LNG_SYNC_ACTION_BUTTON_RESUME": {
+      "translation": "Retomar"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_PAUSED_MESSAGE": {
+      "translation": "Envios pausados"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_RESUMED_MESSAGE": {
+      "translation": "Envios retomados"
+    },
+    "LNG_SYNC_DIALOG_ADVANCED": {
+      "translation": "Opções avançadas"
+    },
+    "LNG_SYNC_DIALOG_ADVANCED_TOOLTIP": {
+      "translation": "Enviar a partir de uma data, reenviar tudo ou escolher os surtos. Use para recuperar dados; normalmente só o que mudou é enviado."
+    },
+    "LNG_SYNC_NO_OUTBREAKS_CHOSEN": {
+      "translation": "Nenhum surto escolhido"
+    },
+    "LNG_SYNC_UPSTREAM_SERVER_ACTION_SYNC_NO_OUTBREAKS": {
+      "translation": "Nenhum surto é oferecido a este destino: edite o destino e escolha os surtos."
+    },
+    "LNG_SYSTEM_CLIENT_APPLICATION_FIELD_LABEL_OUTBREAKS_DESCRIPTION": {
+      "translation": "Surtos que o aplicativo móvel pode receber e enviar com esta chave. Obrigatório: um surto novo só fica disponível depois de escolhido aqui."
+    },
+    "LNG_API_ERROR_CODE_UPSTREAM_SERVER_NO_OUTBREAKS_CHOSEN": {
+      "translation": "Nenhum surto foi escolhido para enviar ao destino \"{{upstreamServerName}}\". Edite o destino e escolha os surtos oferecidos a ele."
+    },
+    "LNG_API_ERROR_CODE_CLIENT_APPLICATION_NO_OUTBREAKS": {
+      "translation": "A chave \"{{clientName}}\" não permite nenhum surto. Escolha os surtos dela na instância que recebe os dados."
     }
   }
 }

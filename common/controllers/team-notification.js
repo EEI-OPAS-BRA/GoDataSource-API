@@ -21,6 +21,67 @@ module.exports = function (TeamNotification) {
   }
 
   /**
+   * Build the filter that matches the notification occurrences visible to a user
+   * - the occurrence targets at least one of the user's teams ( teamIds, or teamId for legacy occurrences )
+   * - the user has access to the occurrence outbreak ( users without outbreak restrictions access all outbreaks; legacy occurrences have no outbreak )
+   * Resolves with null if the user can't see any occurrence ( doesn't belong to any team )
+   * @param userId
+   * @return {Promise<Object|null>}
+   */
+  function getUserOccurrencesWhere(userId) {
+    return Promise.all([
+      getUserTeamIds(userId),
+      app.models.user.findById(userId, {
+        fields: ['id', 'outbreakIds']
+      })
+    ])
+      .then(([teamIds, user]) => {
+        // no teams, nothing to retrieve
+        if (!teamIds.length) {
+          return null;
+        }
+
+        // teams
+        const conditions = [{
+          or: [{
+            teamIds: {
+              inq: teamIds
+            }
+          }, {
+            teamId: {
+              inq: teamIds
+            }
+          }]
+        }, {
+          dismissedBy: {
+            nin: [userId]
+          }
+        }];
+
+        // outbreaks
+        const outbreakIds = user && user.outbreakIds && user.outbreakIds.length ?
+          user.outbreakIds :
+          null;
+        if (outbreakIds) {
+          conditions.push({
+            or: [{
+              outbreakId: {
+                inq: outbreakIds
+              }
+            }, {
+              outbreakId: null
+            }]
+          });
+        }
+
+        // finished
+        return {
+          and: conditions
+        };
+      });
+  }
+
+  /**
    * Retrieve the current user's unread notification occurrences count and the notification occurrences history
    * @param options
    * @param callback
@@ -32,12 +93,12 @@ module.exports = function (TeamNotification) {
     const defaultHistoryCount = 20;
 
     Promise.all([
-      getUserTeamIds(userId),
+      getUserOccurrencesWhere(userId),
       app.models.systemSettings.findOne()
     ])
-      .then(([teamIds, systemSettings]) => {
+      .then(([where, systemSettings]) => {
         // no teams, nothing to retrieve
-        if (!teamIds.length) {
+        if (!where) {
           return {
             unreadCount: 0,
             history: []
@@ -53,20 +114,17 @@ module.exports = function (TeamNotification) {
         return Promise.all([
           app.models.teamNotificationOccurrence
             .count({
-              teamId: {
-                inq: teamIds
-              },
-              readBy: {
-                nin: [userId]
-              }
+              and: [
+                where, {
+                  readBy: {
+                    nin: [userId]
+                  }
+                }
+              ]
             }),
           app.models.teamNotificationOccurrence
             .find({
-              where: {
-                teamId: {
-                  inq: teamIds
-                }
-              },
+              where: where,
               order: 'triggeredAt DESC',
               limit: historyCount
             })
@@ -114,6 +172,37 @@ module.exports = function (TeamNotification) {
   };
 
   /**
+   * Remove a team notification occurrence from the current user notifications ( other users still see it )
+   * @param occurrenceId
+   * @param options
+   * @param callback
+   */
+  TeamNotification.dismissOccurrence = function (occurrenceId, options, callback) {
+    const userId = app.utils.remote.getUserFromOptions(options).id;
+
+    app.models.teamNotificationOccurrence
+      .findById(occurrenceId)
+      .then((occurrence) => {
+        if (!occurrence) {
+          throw app.utils.apiError.getError('MODEL_NOT_FOUND', {
+            model: app.models.teamNotificationOccurrence.modelName,
+            id: occurrenceId
+          });
+        }
+
+        const dismissedBy = occurrence.dismissedBy || [];
+        if (dismissedBy.indexOf(userId) === -1) {
+          dismissedBy.push(userId);
+          return occurrence.updateAttributes({
+            dismissedBy: dismissedBy
+          });
+        }
+      })
+      .then(() => callback())
+      .catch(callback);
+  };
+
+  /**
    * Mark all team notification occurrences, for the teams the current user belongs to, as read by the current user
    * @param options
    * @param callback
@@ -121,21 +210,22 @@ module.exports = function (TeamNotification) {
   TeamNotification.markAllOccurrencesRead = function (options, callback) {
     const userId = app.utils.remote.getUserFromOptions(options).id;
 
-    getUserTeamIds(userId)
-      .then((teamIds) => {
-        if (!teamIds.length) {
+    getUserOccurrencesWhere(userId)
+      .then((where) => {
+        if (!where) {
           return [];
         }
 
         return app.models.teamNotificationOccurrence
           .find({
             where: {
-              teamId: {
-                inq: teamIds
-              },
-              readBy: {
-                nin: [userId]
-              }
+              and: [
+                where, {
+                  readBy: {
+                    nin: [userId]
+                  }
+                }
+              ]
             }
           });
       })

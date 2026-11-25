@@ -1,0 +1,29 @@
+{
+  "id": "russian_ru",
+  "tokens": {
+    "LNG_PAGE_CREATE_CASE_ACTION_CREATE_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Случай успешно зарегистрирован, но его адрес находится за пределами зоны вашей команды."
+    },
+    "LNG_PAGE_CREATE_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Контакт успешно зарегистрирован, но его адрес находится за пределами зоны вашей команды."
+    },
+    "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Контакт контакта успешно зарегистрирован, но его адрес находится за пределами зоны вашей команды."
+    },
+    "LNG_PAGE_CREATE_EVENT_ACTION_CREATE_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Событие успешно зарегистрировано, но его адрес находится за пределами зоны вашей команды."
+    },
+    "LNG_PAGE_MODIFY_CASE_ACTION_MODIFY_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Случай успешно обновлен, но его адрес находится за пределами зоны вашей команды."
+    },
+    "LNG_PAGE_MODIFY_CONTACT_ACTION_MODIFY_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Контакт успешно обновлен, но его адрес находится за пределами зоны вашей команды."
+    },
+    "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_MODIFY_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Контакт контакта успешно обновлен, но его адрес находится за пределами зоны вашей команды."
+    },
+    "LNG_PAGE_MODIFY_EVENT_ACTION_MODIFY_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Событие успешно обновлено, но его адрес находится за пределами зоны вашей команды."
+    }
+  }
+}

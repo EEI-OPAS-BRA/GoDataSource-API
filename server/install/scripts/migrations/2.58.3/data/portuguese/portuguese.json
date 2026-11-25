@@ -1,0 +1,17 @@
+{
+  "id": "portuguese_pt",
+  "tokens": {
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_NOTIFY_TEAM": {
+      "translation": "Permitir notificar equipe ao cadastrar casos"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CASE_NOTIFY_TEAM_DESCRIPTION": {
+      "translation": "Exibe, no cadastro de casos deste surto, a opção de notificar uma equipe assim que o caso for criado"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CONTACT_NOTIFY_TEAM": {
+      "translation": "Permitir notificar equipe ao cadastrar contatos"
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_ALLOW_CONTACT_NOTIFY_TEAM_DESCRIPTION": {
+      "translation": "Exibe, no cadastro de contatos deste surto, a opção de notificar uma equipe assim que o contato for criado"
+    }
+  }
+}

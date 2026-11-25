@@ -1,0 +1,29 @@
+{
+  "id": "french_fr",
+  "tokens": {
+    "LNG_PAGE_CREATE_CASE_ACTION_CREATE_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Cas enregistré avec succès, mais son adresse est en dehors de la zone de votre équipe."
+    },
+    "LNG_PAGE_CREATE_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Contact enregistré avec succès, mais son adresse est en dehors de la zone de votre équipe."
+    },
+    "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Contact de contact enregistré avec succès, mais son adresse est en dehors de la zone de votre équipe."
+    },
+    "LNG_PAGE_CREATE_EVENT_ACTION_CREATE_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Événement enregistré avec succès, mais son adresse est en dehors de la zone de votre équipe."
+    },
+    "LNG_PAGE_MODIFY_CASE_ACTION_MODIFY_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Cas mis à jour avec succès, mais son adresse est en dehors de la zone de votre équipe."
+    },
+    "LNG_PAGE_MODIFY_CONTACT_ACTION_MODIFY_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Contact mis à jour avec succès, mais son adresse est en dehors de la zone de votre équipe."
+    },
+    "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_MODIFY_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Contact de contact mis à jour avec succès, mais son adresse est en dehors de la zone de votre équipe."
+    },
+    "LNG_PAGE_MODIFY_EVENT_ACTION_MODIFY_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+      "translation": "Événement mis à jour avec succès, mais son adresse est en dehors de la zone de votre équipe."
+    }
+  }
+}

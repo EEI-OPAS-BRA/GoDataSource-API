@@ -421,15 +421,15 @@ module.exports = function (Sync) {
                                   if (syncResult &&
                                     syncResult.flag === app.utils.dbSync.syncRecordFlags.CREATED &&
                                     automaticGenFollowupOutbreaks[syncResult.record.outbreakId] && (
-                                      (
-                                        syncResult.record.type === 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE' &&
+                                    (
+                                      syncResult.record.type === 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CASE' &&
                                         automaticGenFollowupOutbreaks[syncResult.record.outbreakId]['allowCasesFollowUp'] &&
                                         automaticGenFollowupOutbreaks[syncResult.record.outbreakId]['generateFollowUpsWhenCreatingCases']
-                                      )  || (
-                                        syncResult.record.type === 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT' &&
+                                    )  || (
+                                      syncResult.record.type === 'LNG_REFERENCE_DATA_CATEGORY_PERSON_TYPE_CONTACT' &&
                                         automaticGenFollowupOutbreaks[syncResult.record.outbreakId]['generateFollowUpsWhenCreatingContacts']
-                                      )
                                     )
+                                  )
                                   ) {
                                     // keep the contact ids per outbreak and createdBy user
                                     if (!automaticGenFollowupCreatedContacts[syncResult.record.outbreakId]) {

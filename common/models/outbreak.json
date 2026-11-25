@@ -227,6 +227,16 @@
       "type": "boolean",
       "default": false
     },
+    "allowCaseNotifyTeam": {
+      "description": "Flag specifying whether the 'notify team' option is available when creating a case for this outbreak. Default: false",
+      "type": "boolean",
+      "default": false
+    },
+    "allowContactNotifyTeam": {
+      "description": "Flag specifying whether the 'notify team' option is available when creating a contact for this outbreak. Default: false",
+      "type": "boolean",
+      "default": false
+    },
     "checkLastContactDateAgainstDateOnSet": {
       "description": "Flag specifying whether Date of Last Contact that is BEFORE the Date of Onset of source case. Default: false",
       "type": "boolean",

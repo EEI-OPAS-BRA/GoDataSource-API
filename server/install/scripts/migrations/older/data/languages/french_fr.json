@@ -6227,6 +6227,9 @@
       "LNG_PAGE_CREATE_CASE_ACTION_CREATE_CASE_SUCCESS_MESSAGE": {
         "translation": "Cas créé"
       },
+      "LNG_PAGE_CREATE_CASE_ACTION_CREATE_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Cas enregistré avec succès, mais son adresse est en dehors de la zone de votre équipe."
+      },
       "LNG_PAGE_CREATE_CASE_DUPLICATES_DIALOG_CONFIRM_MSG": {
         "translation": "Ce cas est peut-être déjà dans le système (voir correspondances possibles ci-dessous). Voulez-vous toujours créer un nouveau cas?"
       },
@@ -6255,6 +6258,9 @@
     "uiModifyCasePage": {
       "LNG_PAGE_MODIFY_CASE_ACTION_MODIFY_CASE_SUCCESS_MESSAGE": {
         "translation": "Cas sauvegardée"
+      },
+      "LNG_PAGE_MODIFY_CASE_ACTION_MODIFY_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Cas mis à jour avec succès, mais son adresse est en dehors de la zone de votre équipe."
       },
       "LNG_PAGE_MODIFY_CASE_ACTION_SEE_LAB_RESULTS": {
         "translation": "Résultats de laboratoire"
@@ -6846,6 +6852,9 @@
       "LNG_PAGE_CREATE_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Contact créé"
       },
+      "LNG_PAGE_CREATE_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Contact enregistré avec succès, mais son adresse est en dehors de la zone de votre équipe."
+      },
       "LNG_PAGE_CREATE_CONTACT_DUPLICATES_DIALOG_CONFIRM_MSG": {
         "translation": "Ce contact est peut-être déjà dans le système (voir correspondances possibles ci-dessous). Voulez-vous toujours créer un nouveau contact?"
       },
@@ -6889,6 +6898,9 @@
     "uiModifyContactPage": {
       "LNG_PAGE_MODIFY_CONTACT_ACTION_MODIFY_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Contactez enregistré!"
+      },
+      "LNG_PAGE_MODIFY_CONTACT_ACTION_MODIFY_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Contact mis à jour avec succès, mais son adresse est en dehors de la zone de votre équipe."
       },
       "LNG_PAGE_MODIFY_CONTACT_ACTION_VIEW_CHRONOLOGY": {
         "translation": "Voir la chronologie"
@@ -7556,6 +7568,9 @@
       },
       "LNG_PAGE_CREATE_EVENT_ACTION_CREATE_EVENT_SUCCESS_MESSAGE": {
         "translation": "Événement créé"
+      },
+      "LNG_PAGE_CREATE_EVENT_ACTION_CREATE_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Événement enregistré avec succès, mais son adresse est en dehors de la zone de votre équipe."
       },
       "LNG_PAGE_CREATE_EVENT_TAB_ADDRESS_TITLE": {
         "translation": "Adresse"
@@ -11738,6 +11753,9 @@
     "uiModifyEventPage": {
       "LNG_PAGE_MODIFY_EVENT_ACTION_MODIFY_EVENT_SUCCESS_MESSAGE": {
         "translation": "Evénement sauvegardé"
+      },
+      "LNG_PAGE_MODIFY_EVENT_ACTION_MODIFY_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Événement mis à jour avec succès, mais son adresse est en dehors de la zone de votre équipe."
       },
       "LNG_PAGE_MODIFY_EVENT_TAB_ADDRESS_TITLE": {
         "translation": "Adresse"
@@ -17469,6 +17487,9 @@
       "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_BUTTON": {
         "translation": "Create contact of contact"
       },
+      "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Contact de contact enregistré avec succès, mais son adresse est en dehors de la zone de votre équipe."
+      },
       "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Contact de contact créé"
       },
@@ -17506,6 +17527,9 @@
     "uiModifyContactOfContactPage": {
       "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_MODIFY_CONTACT_OF_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Contact de contact sauvegardé"
+      },
+      "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_MODIFY_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Contact de contact mis à jour avec succès, mais son adresse est en dehors de la zone de votre équipe."
       },
       "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_VIEW_CHRONOLOGY": {
         "translation": "Voir la chronologie"

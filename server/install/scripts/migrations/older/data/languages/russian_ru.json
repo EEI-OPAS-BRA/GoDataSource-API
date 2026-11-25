@@ -6224,6 +6224,9 @@
       "LNG_PAGE_CREATE_CASE_ACTION_CREATE_CASE_SUCCESS_MESSAGE": {
         "translation": "Случай создан"
       },
+      "LNG_PAGE_CREATE_CASE_ACTION_CREATE_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Случай успешно зарегистрирован, но его адрес находится за пределами зоны вашей команды."
+      },
       "LNG_PAGE_CREATE_CASE_DUPLICATES_DIALOG_CONFIRM_MSG": {
         "translation": "Возможно, случай уже внесен в систему (см. возможные совпадения ниже). Вы по-прежнему хотите создать новый случай?"
       },
@@ -6252,6 +6255,9 @@
     "uiModifyCasePage": {
       "LNG_PAGE_MODIFY_CASE_ACTION_MODIFY_CASE_SUCCESS_MESSAGE": {
         "translation": "Случай сохранен"
+      },
+      "LNG_PAGE_MODIFY_CASE_ACTION_MODIFY_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Случай успешно обновлен, но его адрес находится за пределами зоны вашей команды."
       },
       "LNG_PAGE_MODIFY_CASE_ACTION_SEE_LAB_RESULTS": {
         "translation": "Результаты лабораторных исследований"
@@ -6843,6 +6849,9 @@
       "LNG_PAGE_CREATE_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Контакт создан"
       },
+      "LNG_PAGE_CREATE_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Контакт успешно зарегистрирован, но его адрес находится за пределами зоны вашей команды."
+      },
       "LNG_PAGE_CREATE_CONTACT_DUPLICATES_DIALOG_CONFIRM_MSG": {
         "translation": "Возможно, контакт уже внесен в систему (см. возможные совпадения ниже). Вы по-прежнему хотите создать новый контакт?"
       },
@@ -6886,6 +6895,9 @@
     "uiModifyContactPage": {
       "LNG_PAGE_MODIFY_CONTACT_ACTION_MODIFY_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Контакт сохранен"
+      },
+      "LNG_PAGE_MODIFY_CONTACT_ACTION_MODIFY_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Контакт успешно обновлен, но его адрес находится за пределами зоны вашей команды."
       },
       "LNG_PAGE_MODIFY_CONTACT_ACTION_VIEW_CHRONOLOGY": {
         "translation": "Просмотреть хронологию"
@@ -7553,6 +7565,9 @@
       },
       "LNG_PAGE_CREATE_EVENT_ACTION_CREATE_EVENT_SUCCESS_MESSAGE": {
         "translation": "Событие создано"
+      },
+      "LNG_PAGE_CREATE_EVENT_ACTION_CREATE_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Событие успешно зарегистрировано, но его адрес находится за пределами зоны вашей команды."
       },
       "LNG_PAGE_CREATE_EVENT_TAB_ADDRESS_TITLE": {
         "translation": "Адрес"
@@ -11735,6 +11750,9 @@
     "uiModifyEventPage": {
       "LNG_PAGE_MODIFY_EVENT_ACTION_MODIFY_EVENT_SUCCESS_MESSAGE": {
         "translation": "Событие сохранено"
+      },
+      "LNG_PAGE_MODIFY_EVENT_ACTION_MODIFY_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Событие успешно обновлено, но его адрес находится за пределами зоны вашей команды."
       },
       "LNG_PAGE_MODIFY_EVENT_TAB_ADDRESS_TITLE": {
         "translation": "Адрес"
@@ -17466,6 +17484,9 @@
       "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_BUTTON": {
         "translation": "Create contact of contact"
       },
+      "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Контакт контакта успешно зарегистрирован, но его адрес находится за пределами зоны вашей команды."
+      },
       "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Contact of contact created"
       },
@@ -17503,6 +17524,9 @@
     "uiModifyContactOfContactPage": {
       "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_MODIFY_CONTACT_OF_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Contact of contact saved"
+      },
+      "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_MODIFY_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Контакт контакта успешно обновлен, но его адрес находится за пределами зоны вашей команды."
       },
       "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_VIEW_CHRONOLOGY": {
         "translation": "View chronology"

@@ -6224,6 +6224,9 @@
       "LNG_PAGE_CREATE_CASE_ACTION_CREATE_CASE_SUCCESS_MESSAGE": {
         "translation": "Caso creado "
       },
+      "LNG_PAGE_CREATE_CASE_ACTION_CREATE_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Caso registrado con éxito, pero su dirección está fuera del área de su equipo."
+      },
       "LNG_PAGE_CREATE_CASE_DUPLICATES_DIALOG_CONFIRM_MSG": {
         "translation": "Este caso puede existir ya en el sistema (ver posibles coincidencias a continuación). ¿Todavía desea crear un nuevo caso?"
       },
@@ -6252,6 +6255,9 @@
     "uiModifyCasePage": {
       "LNG_PAGE_MODIFY_CASE_ACTION_MODIFY_CASE_SUCCESS_MESSAGE": {
         "translation": "Caso salvo"
+      },
+      "LNG_PAGE_MODIFY_CASE_ACTION_MODIFY_CASE_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Caso actualizado con éxito, pero su dirección está fuera del área de su equipo."
       },
       "LNG_PAGE_MODIFY_CASE_ACTION_SEE_LAB_RESULTS": {
         "translation": "Resultados de laboratorio"
@@ -6843,6 +6849,9 @@
       "LNG_PAGE_CREATE_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Contacto creado "
       },
+      "LNG_PAGE_CREATE_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Contacto registrado con éxito, pero su dirección está fuera del área de su equipo."
+      },
       "LNG_PAGE_CREATE_CONTACT_DUPLICATES_DIALOG_CONFIRM_MSG": {
         "translation": "Este contacto puede existir ya en el sistema (ver posibles coincidencias a continuación). ¿Todavía desea crear un nuevo contacto?"
       },
@@ -6886,6 +6895,9 @@
     "uiModifyContactPage": {
       "LNG_PAGE_MODIFY_CONTACT_ACTION_MODIFY_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Contacto guardado"
+      },
+      "LNG_PAGE_MODIFY_CONTACT_ACTION_MODIFY_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Contacto actualizado con éxito, pero su dirección está fuera del área de su equipo."
       },
       "LNG_PAGE_MODIFY_CONTACT_ACTION_VIEW_CHRONOLOGY": {
         "translation": "Ver cronología"
@@ -7553,6 +7565,9 @@
       },
       "LNG_PAGE_CREATE_EVENT_ACTION_CREATE_EVENT_SUCCESS_MESSAGE": {
         "translation": "Evento creado "
+      },
+      "LNG_PAGE_CREATE_EVENT_ACTION_CREATE_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Evento registrado con éxito, pero su dirección está fuera del área de su equipo."
       },
       "LNG_PAGE_CREATE_EVENT_TAB_ADDRESS_TITLE": {
         "translation": "Dirección"
@@ -11735,6 +11750,9 @@
     "uiModifyEventPage": {
       "LNG_PAGE_MODIFY_EVENT_ACTION_MODIFY_EVENT_SUCCESS_MESSAGE": {
         "translation": "Evento guardado "
+      },
+      "LNG_PAGE_MODIFY_EVENT_ACTION_MODIFY_EVENT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Evento actualizado con éxito, pero su dirección está fuera del área de su equipo."
       },
       "LNG_PAGE_MODIFY_EVENT_TAB_ADDRESS_TITLE": {
         "translation": "Dirección"
@@ -17466,6 +17484,9 @@
       "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_BUTTON": {
         "translation": "Create contact of contact"
       },
+      "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Contacto de contacto registrado con éxito, pero su dirección está fuera del área de su equipo."
+      },
       "LNG_PAGE_CREATE_CONTACT_OF_CONTACT_ACTION_CREATE_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Contact of contact created"
       },
@@ -17503,6 +17524,9 @@
     "uiModifyContactOfContactPage": {
       "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_MODIFY_CONTACT_OF_CONTACT_SUCCESS_MESSAGE": {
         "translation": "Contact of contact saved"
+      },
+      "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_MODIFY_CONTACT_OF_CONTACT_SUCCESS_OUT_OF_AREA_MESSAGE": {
+        "translation": "Contacto de contacto actualizado con éxito, pero su dirección está fuera del área de su equipo."
       },
       "LNG_PAGE_MODIFY_CONTACT_OF_CONTACT_ACTION_VIEW_CHRONOLOGY": {
         "translation": "View chronology"

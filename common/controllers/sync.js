@@ -219,6 +219,24 @@ module.exports = function (Sync) {
     userEmailLogic
       // check if user active outbreak is one of the client outbreaks
       .then(function () {
+        const client = _.get(options, 'remotingContext.req.authData.client');
+        const allowedOutbreakIDs = _.get(client, 'outbreakIDs') || [];
+        if (client) {
+          // the keys of other instances only send data; they never download the data of this instance
+          if (syncOutbreakAccess.usesRequests(client)) {
+            throw app.utils.apiError.getError('CLIENT_APPLICATION_SEND_ONLY', {
+              clientName: client.name || _.get(client, 'credentials.clientId')
+            });
+          }
+
+          // the outbreaks of a key must be chosen: a key without outbreaks doesn't give access to any of them
+          if (_.isEmpty(allowedOutbreakIDs)) {
+            throw app.utils.apiError.getError('CLIENT_APPLICATION_NO_OUTBREAKS', {
+              clientName: client.name || _.get(client, 'credentials.clientId')
+            });
+          }
+        }
+
         // if we don't have an user account, then there is nothing to check
         if (_.isEmpty(userModel)) {
           return;
@@ -228,18 +246,6 @@ module.exports = function (Sync) {
         if (_.isEmpty(userModel.activeOutbreakId)) {
           throw app.utils.apiError.getError('NO_ACTIVE_OUTBREAK', {
             username: userModel.email
-          });
-        }
-
-        // the outbreaks of a key must be chosen: a key without outbreaks doesn't give access to any of them
-        const client = _.get(options, 'remotingContext.req.authData.client');
-        const allowedOutbreakIDs = _.get(client, 'outbreakIDs') || [];
-        if (
-          client &&
-          _.isEmpty(allowedOutbreakIDs)
-        ) {
-          throw app.utils.apiError.getError('CLIENT_APPLICATION_NO_OUTBREAKS', {
-            clientName: client.name || _.get(client, 'credentials.clientId')
           });
         }
         if (_.isEmpty(allowedOutbreakIDs)) {
@@ -939,6 +945,9 @@ module.exports = function (Sync) {
     // need to do this as we will call it and then continue doing some actions
     let callbackCalled = false;
 
+    // whether this sync marked the upstream server as being synced
+    let inProgressSet = false;
+
     // initialize upstreamServer options container
     let upstreamServerEntry;
 
@@ -998,6 +1007,10 @@ module.exports = function (Sync) {
           });
         }
 
+        // the sync is in progress from now on, so a sync started at the same time is refused
+        Sync.inProgress.servers[upstreamServerEntry.url] = true;
+        inProgressSet = true;
+
         // start sync with upstream server
         // create syncLog entry in the DB
         return app.models.syncLog.create({
@@ -1011,9 +1024,47 @@ module.exports = function (Sync) {
         // cache sync log entry as it will need to be updated with different statuses
         syncLogEntry = syncLog;
 
-        // update Sync.inProgress map; Sync action is in progress
-        Sync.inProgress.servers[upstreamServerEntry.url] = true;
+        // the API might run in several processes, each one with its own in progress map
+        // the sync logs are shared: when a sync to the same server started first, this one is dropped
+        if (data.forceSync) {
+          return;
+        }
+        return app.models.syncLog
+          .find({
+            where: {
+              syncServerUrl: upstreamServerEntry.url,
+              status: 'LNG_SYNC_STATUS_IN_PROGRESS',
+              id: {
+                neq: syncLog.id
+              }
+            },
+            fields: ['id', 'actionStartDate']
+          })
+          .then((otherSyncs) => {
+            const startedFirst = otherSyncs.some((otherSync) => {
+              const otherStart = new Date(otherSync.actionStartDate).getTime();
+              const start = new Date(syncLog.actionStartDate).getTime();
+              return otherStart < start || (
+                otherStart === start &&
+                otherSync.id < syncLog.id
+              );
+            });
+            if (!startedFirst) {
+              return;
+            }
 
+            return syncLog
+              .destroy(options)
+              .catch(() => null)
+              .then(() => {
+                throw app.utils.apiError.getError('UPSTREAM_SERVER_SYNC_IN_PROGRESS', {
+                  upstreamServerName: upstreamServerEntry.name,
+                  upstreamServerURL: upstreamServerEntry.url
+                });
+              });
+          });
+      })
+      .then(function () {
         // send response with the syncLogEntry ID
         // the sync action continues after the response is sent with the syncLogEntry being updated when the sync fails/succeeds
         callback(null, syncLogEntry.id);
@@ -1302,6 +1353,9 @@ module.exports = function (Sync) {
         };
         if (!callbackCalled) {
           // sync wasn't started; the error response is sent directly in the response
+          if (inProgressSet) {
+            Sync.inProgress.servers[upstreamServerEntry.url] = false;
+          }
           callback(err);
           callbackCalled = true;
         } else {

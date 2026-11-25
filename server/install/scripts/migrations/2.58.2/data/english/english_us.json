@@ -1461,6 +1461,12 @@
     },
     "LNG_API_ERROR_CODE_CLIENT_APPLICATION_NO_OUTBREAKS": {
       "translation": "The key \"{{clientName}}\" doesn't allow any outbreak. Choose its outbreaks on the instance that receives the data."
+    },
+    "LNG_API_ERROR_CODE_CLIENT_APPLICATION_SEND_ONLY": {
+      "translation": "The key \"{{clientName}}\" belongs to another instance: it only sends data and cannot download the data of this instance."
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_CASE_FOLLOWUP_TEMPLATE": {
+      "translation": "Case follow-up template"
     }
   }
 }

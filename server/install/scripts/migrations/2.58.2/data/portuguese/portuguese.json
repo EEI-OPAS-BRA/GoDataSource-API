@@ -1479,6 +1479,12 @@
     },
     "LNG_API_ERROR_CODE_CLIENT_APPLICATION_NO_OUTBREAKS": {
       "translation": "A chave \"{{clientName}}\" não permite nenhum surto. Escolha os surtos dela na instância que recebe os dados."
+    },
+    "LNG_API_ERROR_CODE_CLIENT_APPLICATION_SEND_ONLY": {
+      "translation": "A chave \"{{clientName}}\" é de outra instância: ela só envia dados e não pode baixar os dados desta instância."
+    },
+    "LNG_OUTBREAK_FIELD_LABEL_CASE_FOLLOWUP_TEMPLATE": {
+      "translation": "Modelo de acompanhamento de caso"
     }
   }
 }
